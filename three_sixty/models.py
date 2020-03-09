@@ -9,6 +9,8 @@ class User (models.Model):
 
 
 class EvaluationMessage (models.Model):
+    def __init__(self):
+        return
     #TODO
 
 
@@ -17,9 +19,5 @@ class SocialCircle (models.Model):
         self.upper_circe = SocialCircle
         self.lower_circle = SocialCircle
     #TODO
-
-
-
-
 
 # Create your models here.
