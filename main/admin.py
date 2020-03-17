@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, EvaluationMessage, SocialCircle
+from .models import User, EvaluationMessage, Group
 
 
 

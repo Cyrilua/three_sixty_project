@@ -14,10 +14,10 @@ class EvaluationMessage (models.Model):
     #TODO
 
 
-class SocialCircle (models.Model):
+class Group (models.Model):
     def __init__(self, upper_circe, lower_circle):
-        self.upper_circe = SocialCircle
-        self.lower_circle = SocialCircle
+        self.upper_group = Group
+        self.lower_group = Group
     #TODO
 
 # Create your models here.
