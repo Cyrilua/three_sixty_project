@@ -19,19 +19,19 @@
     <!-- Кодировка страницы-->
     <meta charset="utf-8"/>
 
-  <title>Название страницы</title>
+  <title>Проект 360</title>
 </head>
 <body>
     <!-- Тело сайта, отвечает за вывод на страницу-->
-
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar" style="background-color: #6f42c1">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             Проект 360
         </a>
         <div class="navbar-nav-scroll">
             <ul class="navbar-nav bd-navbar-nav flex-row">
+                {% block nav-items %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Профиль</a>
+                    <a class="nav-link" href="{% url 'user' %}">Профиль</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Группы</a>
@@ -39,8 +39,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Уведомления</a>
                 </li>
+                {% endblock %}
             </ul>
         </div>
+
     </header>
 
     <div class="container-fluid">

@@ -1,5 +1,20 @@
 {% extends 'main/wrapper.html' %}
 
+{% block nav-items %}
+
+    <li class="nav-item, active">
+        <a class="nav-link" href="{% url 'user' %}">Профиль</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Группы</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Уведомления</a>
+    </li>
+
+{% endblock %}
+
+
 {% block content %}
 
     <div class="row">
