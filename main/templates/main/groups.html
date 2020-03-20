@@ -1,0 +1,65 @@
+{% extends 'main/wrapper.html' %}
+
+{% block nav-items %}
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'user' %}">Профиль</a>
+    </li>
+    <li class="nav-item, active">
+        <a class="nav-link" href="{% url 'groups' %}">Группы</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Уведомления</a>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2">
+        Left
+            <!-- Поиск по группам -->
+            <!-- Список групп -->
+            <p>Поиск / Список групп</p>
+        </div>
+        <div class="col-md-8" style="background-color: #7abaff">
+            <div class="row" style="padding-top: 2%">
+                <!-- Профиль выбранной группы -->
+                <div class="col-md-4" style="background-color: blanchedalmond">
+                     <!-- Аватар и кнопки -->
+                     <div class="row">
+                          <!-- Аватар -->
+                         <div class="col-12" style="background-color: #9fcdff">
+                             Аватарка
+                         </div>
+                     </div>
+                     <div class="row">
+                         <!-- Кнопки -->
+                         <div class="col-12">
+                             Конопочки
+                         </div>
+                     </div>
+                </div>
+                <div class="col-md-8" style="background-color: #8fd19e">
+                    <div class="row">
+                      <!-- Инфо -->
+                        <div class="col-12">
+                         Инфо
+                        </div>
+                    </div>
+                    <div class="row">
+                     <!-- Юзеры в группе -->
+                        <div class="col-12" style="background-color: #b1dfbb">
+                         Юзеры
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+        Righ
+        </div>
+    </div>
+
+{% endblock %}

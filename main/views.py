@@ -8,4 +8,8 @@ def user_view(request):
 
 def index_view(request):
     return render(request, 'main/index.html', {})
+
+
+def groups_view(request):
+    return render(request, 'main/groups.html', {})
 # Create your views here.
