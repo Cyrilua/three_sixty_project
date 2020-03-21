@@ -15,25 +15,6 @@ def index_view(request):
     return render(request, 'main/index.html', {})
 
 
-@login_required
-@transaction.atomic
-def user_login(request):
-    if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return redirect('')
-    else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'main/login.html', {
-        'user_form': user_form,
-        'profile_form': profile_form
-    })
-
-
 def user_login(request):
     args = {}
     if request.POST:
@@ -57,4 +38,6 @@ def user_logout(request):
     return request('/')
 
 
+def groups_view(request):
+    return render(request, 'main/groups.html', {})
 # Create your views here.
