@@ -51,7 +51,7 @@ def user_login(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            args['login_error'] = "User has not been found"
+            args['login_error'] = "Логин или пароль неверны"
             return render(request, 'main/login.html', args)
     else:
         return render(request, 'main/login.html', {

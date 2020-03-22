@@ -2,13 +2,13 @@
 
 {% block sidebar-nav-items %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'user' %}">Профиль</a>
+        <a class="nav-link" href="{% url 'main:user' %}">Профиль</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Уведомления</a>
     </li>
     <li class="nav-item, active">
-        <a class="nav-link" href="{% url 'groups' %}">Группы</a>
+        <a class="nav-link" href="{% url 'main:groups' %}">Группы</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Настройки</a>

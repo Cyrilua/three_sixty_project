@@ -2,7 +2,7 @@
 
 {% block nav-items %}
     <li class="nav-item, active">
-        <a class="nav-link" href="{% url 'user' %}">Иван Иванов</a>
+        <a class="nav-link" href="{% url 'main:user' %}">Виталий Петрович</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Выйти</a>
@@ -18,13 +18,13 @@
                 <ul class="navbar-nav flex-column">
                     {% block sidebar-nav-items %}
                     <li class="nav-item, active">
-                        <a class="nav-link" href="{% url 'user' %}">Профиль</a>
+                        <a class="nav-link" href="{% url 'main:user' %}">Профиль</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Уведомления</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'groups' %}">Группы</a>
+                        <a class="nav-link" href="{% url 'main:groups' %}">Группы</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Настройки</a>
@@ -84,5 +84,5 @@
         </div>
         {% endblock %}
     </div>
-    
+
 {% endblock %}
