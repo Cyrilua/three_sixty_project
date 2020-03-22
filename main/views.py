@@ -4,12 +4,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import auth
 from main.models import Profile
-from .forms import  ProfileForm
+from .forms import ProfileForm
 
 
 def user_view(request):
-    user_id = auth.get_user(request).id
-    user = Profile.objects.get(user=user_id)
     return render(request, 'main/user.html', {})
 
 
