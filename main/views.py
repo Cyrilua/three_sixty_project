@@ -32,12 +32,15 @@ def user_register(request):
         profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'main/register.html', {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        "title": "Регистрация",
     })
 
 
 def user_login(request):
-    args = {}
+    args = {
+        "title": "Вход",
+    }
     if request.POST:
         username = request.POST.get("username", '')
         password = request.POST.get("password", '')
@@ -49,7 +52,9 @@ def user_login(request):
             args['login_error'] = "User has not been found"
             return render(request, 'main/login.html', args)
     else:
-        return render(request, 'main/login.html', {})
+        return render(request, 'main/login.html', {
+            "title": "Вход",
+        })
 
 
 def user_logout(request):
