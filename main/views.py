@@ -8,6 +8,8 @@ from .forms import UserForm, ProfileForm
 
 
 def user_view(request):
+    user_id = auth.get_user(request).id
+    user = Profile.objects.get(user=user_id)
     return render(request, 'main/user.html', {})
 
 
