@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Group as Group_model
 
 
 class Profile (models.Model):
@@ -14,6 +13,9 @@ class Profile (models.Model):
     organization = models.CharField(max_length=20)
     position = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
+
+    class Meta:
+        db_table = "user"
 
     def __str__(self):
         return 'Profile for user {} {}'.format(self.name, self.surname)
@@ -37,8 +39,9 @@ class EvaluationMessage (models.Model):
 
 
 class Group (models.Model):
-    group = models.ForeignKey(Group_model, on_delete=models.CASCADE)
-
+    def __init__(self, upper_circe, lower_circle):
+        self.upper_group = Group
+        self.lower_group = Group
 
 
 # Create your models here.
