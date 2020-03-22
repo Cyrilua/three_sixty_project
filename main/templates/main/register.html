@@ -1,5 +1,11 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-Страница регистрации
+<-- Страница входа -->
+<form method="post">
+  {% csrf_token %}
+  {{ user_form.as_p }}
+  {{ profile_form.as_p }}
+  <button type="submit">Сохранить изменения</button>
+</form>
 {% endblock %}

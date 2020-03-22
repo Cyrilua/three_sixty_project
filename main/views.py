@@ -1,10 +1,10 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import auth
 from main.models import Profile
-from .forms import UserForm, ProfileForm
+from .forms import  ProfileForm
 
 
 def user_view(request):
@@ -19,20 +19,22 @@ def index_view(request):
 
 def user_register(request):
     args = {}
+    args['user_form'] = UserCreationForm()
+    args['profile_form'] = ProfileForm()
     if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        user_form = UserCreationForm(request.POST)
+        profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             auth.login(request, user_form)
             return redirect('')
-    else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
+        else:
+            args['user_form'] = user_form
+            args['profile_form'] = profile_form
     return render(request, 'main/register.html', {
-        'user_form': user_form,
-        'profile_form': profile_form,
+        'user_form': args['user_form'],
+        'profile_form': args['profile_form'],
         "title": "Регистрация",
     })
 
@@ -59,7 +61,7 @@ def user_login(request):
 
 def user_logout(request):
     auth.logout(request)
-    return request('/')
+    return redirect('/')
 
 
 def groups_view(request):
