@@ -1,21 +1,29 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-    <h1>Вход</h1><br>
+    <h1>Вход</h1>
+
+    {% if login_error %}
+        <b style="color: red">{{ login_error }}</b>
+    {% else %}
+        <br>
+    {% endif %}
+
     <div>
         <form method="post" action="">
             {% csrf_token %}
-            <label for="username">Логин:</label>
-            <input type="text" name="username" value="" id="username">
-            <br>
-            <label for="password">Пароль:</label>
-            <input type="password" name="password" value="" id="password">
-            <br>
-            {% if login_error %}
-                {{ login_error }}
-            {% endif %}
+            <div class="form-group">
+                <label for="username">Логин</label>
+                <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин" type="text" name="username" value="" id="username">
+                <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль" type="password" name="password" value="" id="password">
+                <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+            </div>
             <hr>
-            <input type="submit" value="Вход" />
+            <input class="btn btn-primary" type="submit" value="Вход" />
         </form>
     </div>
 
