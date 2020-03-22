@@ -1,45 +1,83 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-<!-- Страница входа -->
 
-    {#<form method="post">#}
-    {#  {% csrf_token %}#}
-    {#  {{ user_form.as_p }}#}
-    {#  {{ profile_form.as_p }}#}
-    {#  <button type="submit">Сохранить изменения</button>#}
-    {#</form>#}
-    <h1>Регистрация пользователя</h1><br>
-    <div>
-        <form method="post" action="">
-            {% csrf_token %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1>Регистрация пользователя</h1>
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_username">Логин: </label>
+                        <input class="form-control" placeholder="Придумайте логин" type="text" name="username"
+                               maxlength="150" autocapitalize="none" autocomplete="username"
+                               autofocus="" required="" id="id_username">
+                        {% if user_form.username.errors %}
+                            {% for error in user_form.username.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password1">Пароль</label>
+                        <input class="form-control" placeholder="Придумайте пароль" {{ user_form.password1 }}
+                        {% if user_form.username.errors %}
+                            {% for error in user_form.password1.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password2">Повторите пароль</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ user_form.password2 }}
+                        {% if user_form.username.errors %}
+                            {% for error in user_form.password2.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <hr>
 
-            <label>Логин: {{ user_form.username }}</label>
-            {% if user_form.errors %}
-                {{ user_form.username.errors }}
-            {% endif %}
-            <br>
-            <label>Пароль: {{ user_form.password1 }}</label>
-            {% if user_form.errors %}
-                {{ user_form.password1.errors }}
-            {% endif %}
-            <br>
-            <label>Пароль (повторить): {{ user_form.password2 }}</label>
-            {% if user_form.errors %}
-                {{ user_form.password2.errors }}
-            {% endif %}
-            <hr>
+                    <div class="form-group">
+                        <label for="id_name">Имя</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_surname">Фамилия</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.surname }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_patronymic">Отчество</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.patronymic }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_organization">Организация</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.organization }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_position">Должность</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.position }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_city">Город</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.city }}
+                    </div>
+                    <hr>
 
-            <label >Имя: {{ profile_form.name }}</label> <br>
-            <label >Фамилия: {{ profile_form.surname }}</label> <br>
-            <label >Отчество: {{ profile_form.patronymic }}</label> <br>
-            <label >Организация: {{ profile_form.organization }}</label> <br>
-            <label >Должность: {{ profile_form.position }}</label> <br>
-            <label >Город: {{ profile_form.city }}</label> <hr>
+                    <input class="btn btn-primary" type="submit" value="Зарегистрировать"/>
 
-            <input type="submit" value="Зарегистрировать"/>
-
-        </form>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
     </div>
 
 {% endblock %}
