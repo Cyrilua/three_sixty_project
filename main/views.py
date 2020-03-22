@@ -67,5 +67,7 @@ def user_logout(request):
 
 
 def groups_view(request):
-    return render(request, 'main/groups.html', {})
+    return render(request, 'main/groups.html', {
+        "title": "Группы"
+    })
 # Create your views here.
