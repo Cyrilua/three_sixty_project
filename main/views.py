@@ -15,16 +15,33 @@ def index_view(request):
     return render(request, 'main/index.html', {})
 
 
+def user_register(request):
+    args = {}
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            auth.login(request, user_form)
+            return redirect('')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'main/register.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
+
 def user_login(request):
     args = {}
     if request.POST:
         username = request.POST.get("username", '')
         password = request.POST.get("password", '')
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
         user = auth.authenticate(username=username, password=password)
-        if user is not None and profile_form.is_valid():
+        if user is not None:
             auth.login(request, user)
-            profile_form.save()
             return redirect('/')
         else:
             args['login_error'] = "User has not been found"
