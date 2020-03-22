@@ -1,6 +1,22 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-Страница входа
+    <h1>Вход</h1><br>
+    <div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="username">Логин:</label>
+            <input type="text" name="username" value="" id="username">
+            <br>
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" value="" id="password">
+            <br>
+            {% if login_error %}
+                {{ login_error }}
+            {% endif %}
+            <hr>
+            <input type="submit" value="Вход" />
+        </form>
+    </div>
 
 {% endblock %}

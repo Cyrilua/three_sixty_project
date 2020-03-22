@@ -13,9 +13,10 @@ class Profile (models.Model):
     organization = models.CharField(max_length=20)
     position = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
+    objects = models.Manager()
 
     class Meta:
-        db_table = "user"
+        db_table = "Profile"
 
     def __str__(self):
         return 'Profile for user {} {}'.format(self.name, self.surname)

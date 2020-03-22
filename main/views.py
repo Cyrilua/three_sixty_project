@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib import auth
-from main.models import Profile
-from .forms import ProfileForm
+from .forms import ProfileForm, ProfileAddedForm
 
 
 def user_view(request):
@@ -23,10 +24,11 @@ def user_register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            auth.login(request, user_form)
-            return redirect('')
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            #auth.login(request, request.user)
+            return redirect('/')
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
