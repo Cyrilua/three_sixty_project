@@ -1,11 +1,45 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-<-- Страница входа -->
-<form method="post">
-  {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ profile_form.as_p }}
-  <button type="submit">Сохранить изменения</button>
-</form>
+<!-- Страница входа -->
+
+{#<form method="post">#}
+{#  {% csrf_token %}#}
+{#  {{ user_form.as_p }}#}
+{#  {{ profile_form.as_p }}#}
+{#  <button type="submit">Сохранить изменения</button>#}
+{#</form>#}
+<h1>Регистрация пользователя</h1><br>
+<div>
+    <form method="post" action=".">
+        {% csrf_token %}
+
+        <label>Логин: {{ user_form.username }}</label>
+        {% if user_form.errors %}
+            {{ user_form.username.errors }}
+        {% endif %}
+        <br>
+        <label>Пароль: {{ user_form.password1 }}</label>
+        {% if user_form.errors %}
+            {{ user_form.password1.errors }}
+        {% endif %}
+        <br>
+        <label>Пароль (повторить): {{ user_form.password2 }}</label>
+        {% if user_form.errors %}
+            {{ user_form.password2.errors }}
+        {% endif %}
+        <hr>
+
+        <label >Имя: {{ profile_form.name }}</label> <br>
+        <label >Фамилия: {{ profile_form.surname }}</label> <br>
+        <label >Отчество: {{ profile_form.patronymic }}</label> <br>
+        <label >Организация: {{ profile_form.organization }}</label> <br>
+        <label >Должность: {{ profile_form.position }}</label> <br>
+        <label >Город: {{ profile_form.city }}</label> <hr>
+
+        <input type="submit" value="Зарегистрировать"/>
+
+    </form>
+</div>
+
 {% endblock %}
