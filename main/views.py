@@ -9,7 +9,9 @@ from .forms import ProfileForm, ProfileAddedForm
 
 
 def user_view(request):
-    return render(request, 'main/user.html', {})
+    return render(request, 'main/user.html', {
+        "title": "Мой профиль"
+    })
 
 
 def index_view(request):
