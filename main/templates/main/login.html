@@ -1,30 +1,41 @@
 {% extends "main/wrapper.html" %}
 
 {% block content %}
-    <h1>Вход</h1>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h1>Вход</h1>
 
-    {% if login_error %}
-        <b style="color: red">{{ login_error }}</b>
-    {% else %}
-        <br>
-    {% endif %}
 
-    <div>
-        <form method="post" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Логин</label>
-                <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин" type="text" name="username" value="" id="username">
-                <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+            {% if login_error %}
+                <div class="alert alert-danger" role="alert">
+                    <b>{{ login_error }}</b>
+                </div>
+            {% endif %}
+
+
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Логин</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"
+                               type="text"
+                               name="username" value="" id="username">
+                        <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Пароль:</label>
+                        <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"
+                               type="password" name="password" value="" id="password">
+                        <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                    </div>
+                    <hr>
+                    <input class="btn btn-primary" type="submit" value="Вход"/>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль" type="password" name="password" value="" id="password">
-                <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
-            </div>
-            <hr>
-            <input class="btn btn-primary" type="submit" value="Вход" />
-        </form>
+        </div>
+        <div class="col-md-2"></div>
     </div>
 
 {% endblock %}
