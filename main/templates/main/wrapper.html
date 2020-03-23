@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
     {% load static %}
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/custom.css' %}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,7 +28,7 @@
 </head>
 <body>
 <!-- Тело сайта, отвечает за вывод на страницу-->
-<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar"
+<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top"
         style="background: linear-gradient(to left, #a68aff, #ffba5a)">
     <a class="navbar-brand" href="/">
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="150px" height="36px"
@@ -72,7 +73,7 @@
 
 </header>
 
-<div class="container-fluid"> <!--style="background: radial-gradient(40% 50%, lightcoral, white )"-->
+<div class="container-fluid" style="padding-top: 62px; padding-bottom: 2%">
     {% block content %}
     {% endblock %}
 </div>
