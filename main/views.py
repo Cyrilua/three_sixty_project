@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib import auth
 from .forms import ProfileForm, ProfileAddedForm
+from django.contrib.auth import get_user
 
 
 def user_view(request):
@@ -24,9 +25,11 @@ def user_register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
+            user.save()
+            profile.save()
             #auth.login(request, request.user)
             return redirect('/')
         else:
