@@ -8,8 +8,3 @@ class ProfileForm(ModelForm):
         model = Profile
         fields = ('name', 'surname', 'patronymic', 'organization', 'position', 'city')
 
-
-class ProfileAddedForm(ModelForm):
-    class Meta:
-        model = Profile
-        exclude = ['user']
