@@ -1,0 +1,9 @@
+{% extends 'main/wrapper.html' %}
+
+{% block content %}
+    {% if error %}
+        <div class="alert alert-danger">
+            <b>Ошибка: </b>{{ error }}
+        </div>
+    {% endif %}
+{% endblock %}
