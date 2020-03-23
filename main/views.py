@@ -32,7 +32,7 @@ def user_register(request):
             profile.user = user
             user.save()
             profile.save()
-            #auth.login(request, request.user)
+            auth.login(request, user)
             return redirect('/')
         else:
             args['user_form'] = user_form
