@@ -17,33 +17,37 @@ def index_view(request):
 
 def user_register(request):
     args = {}
+    if auth.get_user(request).is_authenticated:
+        args['error'] = "Пользователь уже авторизирован"
+        return render(request, 'main/error.html', args)
+
     args['user_form'] = UserCreationForm()
     args['profile_form'] = ProfileForm()
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            username = user_form.Meta.model.username.__str__().lower()
-            user_form.username = username
+
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
             user.save()
             profile.save()
 
+            # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
             auth.login(request, user)
-
-            user.username = user.username.lower()
 
             return redirect('/')
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
-    return render(request, 'main/register.html', {
-        'user_form': args['user_form'],
-        'profile_form': args['profile_form'],
-        "title": "Регистрация",
-    })
+    args['title'] = "Регистрация"
+    return render(request, 'main/register.html', args)
+    #return render(request, 'main/register.html', {
+    #    'user_form': args['user_form'],
+    #   'profile_form': args['profile_form'],
+    #    "title": "Регистрация",
+    #})
 
 
 def user_login(request):
@@ -61,9 +65,7 @@ def user_login(request):
             args['login_error'] = "Логин или пароль неверны"
             return render(request, 'main/login.html', args)
     else:
-        return render(request, 'main/login.html', {
-            "title": "Вход",
-        })
+        return render(request, 'main/login.html', args)
 
 
 def user_logout(request):
