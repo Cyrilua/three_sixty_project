@@ -10,7 +10,9 @@ from django.contrib.auth import get_user
 
 
 def user_view(request):
-    return render(request, 'main/user.html', {})
+    return render(request, 'main/user.html', {
+        "title": "Мой профиль"
+    })
 
 
 def index_view(request):
@@ -68,5 +70,7 @@ def user_logout(request):
 
 
 def groups_view(request):
-    return render(request, 'main/groups.html', {})
+    return render(request, 'main/groups.html', {
+        "title": "Группы"
+    })
 # Create your views here.
