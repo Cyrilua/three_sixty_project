@@ -43,11 +43,6 @@ def user_register(request):
             args['profile_form'] = profile_form
     args['title'] = "Регистрация"
     return render(request, 'main/register.html', args)
-    #return render(request, 'main/register.html', {
-    #    'user_form': args['user_form'],
-    #   'profile_form': args['profile_form'],
-    #    "title": "Регистрация",
-    #})
 
 
 def user_login(request):
