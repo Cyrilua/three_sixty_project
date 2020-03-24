@@ -8,5 +8,3 @@ class ProfileForm(ModelForm):
         model = Profile
         fields = ('name', 'surname', 'patronymic', 'organization', 'position', 'city')
 
-        def to_lower_username(self):
-            self.model.user.username.lower()

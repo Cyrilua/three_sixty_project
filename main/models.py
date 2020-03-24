@@ -11,7 +11,7 @@ class Profile (models.Model):
     surname = models.CharField(max_length=20)
     patronymic = models.CharField(max_length=20)
     organization = models.CharField(max_length=20)
-    position = models.ForeignKey('Position', on_delete=models.CASCADE)
+    position = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     objects = models.Manager()
 
@@ -19,17 +19,18 @@ class Profile (models.Model):
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {} ({} {})'.format(self.user.username, self.name, self.surname)
-
-
-class Position (models.Model):
-    position = models.CharField(max_length=50)
+        return 'Profile for user {} {}'.format(self.name, self.surname)
 
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+
+#@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class EvaluationMessage (models.Model):
