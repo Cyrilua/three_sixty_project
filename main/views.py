@@ -31,6 +31,7 @@ def user_register(request):
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.Meta.to_lower_username()
             user.save()
             profile.save()
 
