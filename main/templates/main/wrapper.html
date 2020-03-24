@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html lang="ru">
-<head>
+<>
     <!-- Подключаемые файлы, метатеги, название страницы -->
 
     {% load static %}
@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
     {% load static %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
+    <script type="text/javascript" src={% static 'main/jquery.com_jquery-3.4.1.js' %}></script>
     {% load static %}
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'main/custom.css' %}">
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -73,13 +75,16 @@
 
 </header>
 
-<div class="container-fluid" style="padding-top: 102px; padding-bottom: 2%">
+<div class="container-fluid" style="padding-top: 102px; padding-bottom: 5%; min-height: 100vh">
     {% block content %}
     {% endblock %}
 </div>
 
-<footer>
-    <!-- Подвал сайта-->
-</footer>
+    <footer class="section footer-classic context-dark bg-image"
+            style="background: #2d3246;">
+        <div class="container" style="height: 200px">
+            Затычка
+        </div>
+    </footer>
 </body>
 </html>
