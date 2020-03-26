@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <label for="{{ user_form.password1.id_for_label }}">Пароль</label>
                         <input class="form-control" placeholder="Придумайте пароль" {{ user_form.password1 }}
-                        {% if user_form.username.errors %}
+                        {% if user_form.password1.errors %}
                             {% for error in user_form.password1.errors %}
                                 <div class="alert alert-danger" role="alert">
                                     <b>{{ error }}</b>
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label for="{{ user_form.password2.id_for_label }}">Повторите пароль</label>
                         <input class="form-control" placeholder="Повторите пароль" {{ user_form.password2 }}
-                        {% if user_form.username.errors %}
+                        {% if user_form.password2.errors %}
                             {% for error in user_form.password2.errors %}
                                 <div class="alert alert-danger" role="alert">
                                     <b>{{ error }}</b>
