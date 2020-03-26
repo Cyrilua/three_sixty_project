@@ -5,16 +5,14 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1 >Регистрация</h1>
+            <h1>Регистрация</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="id_username">Логин</label>
-                        <input class="form-control" placeholder="Придумайте логин" type="text" name="username"
-                               maxlength="150" autocapitalize="none" autocomplete="username"
-                               autofocus="" required="" id="id_username">
+                        <label for="{{ user_form.username.id_for_label }}">Логин</label>
+                        <input class="form-control" placeholder="Придумайте логин" {{ user_form.username }}
                         {% if user_form.username.errors %}
                             {% for error in user_form.username.errors %}
                                 <div class="alert alert-danger" role="alert">
@@ -24,9 +22,8 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="id_password1">Пароль</label>
-                    <input class="form-control" placeholder="Придумайте пароль" type="password" name="password1"
-                           autocomplete="new-password" required="" id="id_password1">
+                        <label for="{{ user_form.password1.id_for_label }}">Пароль</label>
+                        <input class="form-control" placeholder="Придумайте пароль" {{ user_form.password1 }}
                         {% if user_form.username.errors %}
                             {% for error in user_form.password1.errors %}
                                 <div class="alert alert-danger" role="alert">
@@ -36,9 +33,8 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="id_password2">Повторите пароль</label>
-                        <input class="form-control" placeholder="Повторите пароль" type="password" name="password2"
-                               autocomplete="new-password" required="" id="id_password2">
+                        <label for="{{ user_form.password2.id_for_label }}">Повторите пароль</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ user_form.password2 }}
                         {% if user_form.username.errors %}
                             {% for error in user_form.password2.errors %}
                                 <div class="alert alert-danger" role="alert">
@@ -50,35 +46,29 @@
                     <hr>
 
                     <div class="form-group">
-                        <label for="id_name">Имя</label>
-                        <input class="form-control" placeholder="Ваше имя" type="text" name="name"
-                               maxlength="20" required="" id="id_name">
+                        <label for="{{ profile_form.name.id_for_label }}">Имя</label>
+                        <input class="form-control" placeholder="Ваше имя" {{ profile_form.name }}
                     </div>
                     <div class="form-group">
-                        <label for="id_surname">Фамилия</label>
-                        <input class="form-control" placeholder="Ваша фамилия" type="text" name="surname"
-                               maxlength="20" required="" id="id_surname">
+                        <label for="{{ profile_form.surname.id_for_label }}">Фамилия</label>
+                        <input class="form-control" placeholder="Ваша фамилия" {{ profile_form.surname }}
                     </div>
                     <div class="form-group">
-                        <label for="id_patronymic">Отчество</label>
-                        <input class="form-control" placeholder="Ваше отчество" type="text" name="patronymic"
-                               maxlength="20" required="" id="id_patronymic">
+                        <label for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>
+                        <input class="form-control" placeholder="Ваше отчество" {{ profile_form.patronymic }}
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label for="id_organization">Организация</label>
-                        <input class="form-control" placeholder="Повторите пароль"  type="text" name="organization"
-                               maxlength="20" required="" id="id_organization">
+                        <label for="{{ profile_form.organization.id_for_label }}">Организация</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.organization }}
                     </div>
                     <div class="form-group">
-                        <label for="id_position">Должность</label>
-                        <input class="form-control" placeholder="Повторите пароль" type="text" name="position"
-                               maxlength="20" required="" id="id_position">
+                        <label for="{{ profile_form.position.id_for_label }}">Должность</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.position }}
                     </div>
                     <div class="form-group">
-                        <label for="id_city">Город</label>
-                        <input class="form-control" placeholder="Повторите пароль"
-                               type="text" name="city" maxlength="20" required="" id="id_city">
+                        <label for="{{ profile_form.city.id_for_label }}">Город</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ profile_form.city }}
                     </div>
                     <hr>
                     <div style="text-align: right">
