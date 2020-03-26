@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm
+import copy
 
 
 def user_view(request):
@@ -24,8 +25,12 @@ def user_register(request):
     args['user_form'] = UserCreationForm()
     args['profile_form'] = ProfileForm()
     if request.method == 'POST':
-        user_form = UserCreationForm(request.POST)
-        profile_form = ProfileForm(request.POST)
+
+        post = copy.deepcopy(request.POST)
+        post['username'] = post['username'].lower()
+
+        user_form = UserCreationForm(post)
+        profile_form = ProfileForm(post)
         if user_form.is_valid() and profile_form.is_valid():
 
             user = user_form.save(commit=False)
@@ -50,7 +55,7 @@ def user_login(request):
         "title": "Вход",
     }
     if request.POST:
-        username = request.POST.get("username", '')
+        username = request.POST.get("username", '').lower()
         password = request.POST.get("password", '')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
