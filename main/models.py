@@ -6,13 +6,14 @@ from django.contrib.auth.models import User
 
 
 class Profile (models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     patronymic = models.CharField(max_length=20)
-    organization = models.CharField(max_length=20)
-    position = models.CharField(max_length=20)
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
+    #position = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
+    #company = models.ManyToManyField('Company')
     objects = models.Manager()
 
     class Meta:
@@ -23,9 +24,11 @@ class Profile (models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    workers = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+
+    def __str__(self):
+        return 'Company name: {}, Owner: {}'.format(self.name, self.owner)
 
 
 class Platform(models.Model):

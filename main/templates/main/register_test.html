@@ -1,0 +1,75 @@
+{% extends "main/wrapper.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1>Регистрация</h1>
+
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ user_form.username.id_for_label }}">Логин</label>
+                        <input class="form-control" placeholder="Придумайте логин" {{ user_form.username }}
+                        {% if user_form.username.errors %}
+                            {% for error in user_form.username.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ user_form.password1.id_for_label }}">Пароль</label>
+                        <input class="form-control" placeholder="Придумайте пароль" {{ user_form.password1 }}
+                        {% if user_form.password1.errors %}
+                            {% for error in user_form.password1.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ user_form.password2.id_for_label }}">Повторите пароль</label>
+                        <input class="form-control" placeholder="Повторите пароль" {{ user_form.password2 }}
+                        {% if user_form.password2.errors %}
+                            {% for error in user_form.password2.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="{{ profile_form.name.id_for_label }}">Имя</label>
+                        <input class="form-control" placeholder="Ваше имя" {{ profile_form.name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ profile_form.surname.id_for_label }}">Фамилия</label>
+                        <input class="form-control" placeholder="Ваша фамилия" {{ profile_form.surname }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>
+                        <input class="form-control" placeholder="Ваше отчество" {{ profile_form.patronymic }}
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="{{ profile_form.city.id_for_label }}">Город</label>
+                        <input class="form-control" placeholder="Ваш город" {{ profile_form.city }}
+                    </div>
+                    <hr>
+                    <div style="text-align: right">
+                        <input class="btn btn-primary" type="submit" value="Зарегистрировать"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+{% endblock %}
