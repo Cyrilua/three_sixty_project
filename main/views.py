@@ -18,24 +18,34 @@ def exception_if_user_not_autinficated(request):
         return render(request, 'main/error.html', {'error' "Пользователь еще не авторизирован"})
 
 
-def user_view_test(request):
+def change_user_profile_test(request):
     exception_if_user_not_autinficated(request)
+    args = {}
     user = auth.get_user(request)
-
-    try:
-        company = Company.objects.get(workers=user)
-    except:
-        print('Нет компании')
-    else:
-        print(company)
-    return redirect('/')
+    profile = Profile.objects.get(user=user)
+    args['profile_form'] = ProfileForm({
+        'name': profile.name,
+        'surname': profile.surname,
+        'patronymic': profile.patronymic,
+        'city': profile.city,
+    })
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST)
+        if profile_form.is_valid():
+            profile.name = request.POST.get('name', '')
+            profile.patronymic = request.POST.get('patronymic', '')
+            profile.surname = request.POST.get('surname', '')
+            profile.city = request.POST.get('city', '')
+            profile.save()
+            return redirect('/')
+    args['title'] = "Редактирование профия"
+    return render(request, 'main/change_user_profile.html', args)
 
 
 def add_company_test(request):
     exception_if_user_not_autinficated(request)
 
-    args = {}
-    args['company_form'] = CompanyForm()
+    args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
         if company_form.is_valid():
@@ -72,7 +82,7 @@ def connect_to_company(request):
             profile.save()
             return redirect('/')
     args['title'] = "Добавление участников"
-    return render(request, 'main/connect_to_company.html', args)
+    return render(request, 'main/connect_to_company_test.html', args)
 
 
 def get_all_users_in_company(request):

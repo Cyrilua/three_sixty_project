@@ -11,8 +11,8 @@ urlpatterns = [
     path('groups/', views.groups_view, name='groups'),
     path('register/', views.user_register, name='register'),
 
-    path('user_test/', views.user_view_test, name='user_view_test'),
-    path('add_company_test/', views.add_company_test, name='add_company_test'),
+    path('change_profile_test/', views.change_user_profile_test, name='change_profile'),
+    path('add_company_test/', views.add_company_test, name='add_company'),
     path('connect_to_company_test/', views.connect_to_company, name='connect_to_company'),
     path('get_all_companies_users/', views.get_all_users_in_company, name='get_all_companies_users')
 ]
