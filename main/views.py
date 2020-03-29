@@ -13,15 +13,14 @@ def user_view(request):
     })
 
 
+def exception_if_user_not_autinficated(request):
+    if not auth.get_user(request).is_authenticated:
+        return render(request, 'main/error.html', {'error' "Пользователь еще не авторизирован"})
+
+
 def user_view_test(request):
-    try:
-        user = auth.get_user(request)
-        profile_user = Profile.objects.get(user=user)
-    except:
-        print('Пользователь не авторизирован')
-    else:
-        print(profile_user.name)
-        print(profile_user.surname)
+    exception_if_user_not_autinficated(request)
+    user = auth.get_user(request)
 
     try:
         company = Company.objects.get(workers=user)
@@ -33,11 +32,9 @@ def user_view_test(request):
 
 
 def add_company_test(request):
-    args = {}
-    if not auth.get_user(request).is_authenticated:
-        args['error'] = "Пользователь еще не авторизирован"
-        return render(request, 'main/error.html', args)
+    exception_if_user_not_autinficated(request)
 
+    args = {}
     args['company_form'] = CompanyForm()
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
@@ -59,13 +56,10 @@ def add_company_test(request):
 
 
 def connect_to_company(request):
-    args = {}
-    user = auth.get_user(request)
-    if not user.is_authenticated:
-        args['error'] = "Пользователь еще не авторизирован"
-        return render(request, 'main/error.html', args)
+    exception_if_user_not_autinficated(request)
 
-    args['company_form'] = CompanyForm()
+    user = auth.get_user(request)
+    args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
             name_company = request.POST.get("name", '')
@@ -79,6 +73,17 @@ def connect_to_company(request):
             return redirect('/')
     args['title'] = "Добавление участников"
     return render(request, 'main/connect_to_company.html', args)
+
+
+def get_all_users_in_company(request):
+    exception_if_user_not_autinficated(request)
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+    company = profile.company
+    users = company.profile_set.all()
+    for i in users:
+        print(i)
+    return redirect('/')
 
 
 def index_view(request):
