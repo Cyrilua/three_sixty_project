@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
-from .models import Profile, Company, Platforms
+from .models import Profile, Company, Platforms, Position
 
 
 def user_view(request):
@@ -67,6 +67,24 @@ def add_platform(request):
             return render(request, 'main/error.html', {'error': "Эта платформа уже существует",
                                                        'title': "Ошибка"})
     return render(request, 'main/add_new_platform.html', {'title': 'Добавление новой платформы'})
+
+
+def add_new_position(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    if request.method == "POST":
+        new_position = request.POST.get("position", '').lower()
+        try:
+            Position.objects.get(name=new_position)
+        except:
+            position = Position(name=new_position)
+            position.save()
+            return redirect('/')
+        else:
+            return render(request, 'main/error.html', {'error': "Эта должность уже существует",
+                                                       'title': "Ошибка"})
+    return render(request, 'main/add_new_position.html', {'title': 'Добавление новой должности'})
 
 
 def add_company_test(request):

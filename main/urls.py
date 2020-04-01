@@ -15,5 +15,6 @@ urlpatterns = [
     path('add_company_test/', views.add_company_test, name='add_company'),
     path('connect_to_company_test/', views.connect_to_company, name='connect_to_company'),
     path('get_all_companies_users/', views.get_all_users_in_company, name='get_all_companies_users'),
-    path('add_new_platform/', views.add_platform, name='add_new_platform')
+    path('add_new_platform/', views.add_platform, name='add_new_platform'),
+    path('add_new_position/', views.add_new_position, name='add_new_position'),
 ]

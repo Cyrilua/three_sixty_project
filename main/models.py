@@ -47,12 +47,16 @@ class Platforms (models.Model):
         return self.name
 
 
-class Position(models.Model):
-    name = models.CharField(max_length=20)
+class PositionCompany (models.Model):
+    position = models.ForeignKey('Position', on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+
+class Position(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+
     def __str__(self):
-        return '{} in company {}'.format(self.name, self.company)
+        return self.name
 
 
 class Command(models.Model):
