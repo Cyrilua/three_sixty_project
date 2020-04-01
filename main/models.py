@@ -11,7 +11,7 @@ class Profile (models.Model):
     surname = models.CharField(max_length=20)
     patronymic = models.CharField(max_length=20)
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
-    platform = models.ForeignKey('Platform', on_delete=models.CASCADE, null=True)
+    platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     city = models.CharField(max_length=20)
     objects = models.Manager()
@@ -32,12 +32,19 @@ class Company(models.Model):
         return 'Company name: {}, Owner: {}'.format(self.name, self.owner)
 
 
-class Platform(models.Model):
-    name = models.CharField(max_length=50)
+class PlatformCompany(models.Model):
+    name = models.ForeignKey('Platforms', on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} in company {}'.format(self.name, self.company)
+
+
+class Platforms (models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Position(models.Model):

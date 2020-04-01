@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
-from .models import Profile, Company
+from .models import Profile, Company, Platforms
 
 
 def user_view(request):
@@ -51,14 +51,22 @@ def change_user_profile_test(request):
     return render(request, 'main/change_user_profile.html', args)
 
 
-def add_company_platform(request):
+def add_platform(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
-    args = {}
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
-    company = profile.company
+    if request.method == "POST":
+        new_platform = request.POST.get("platform", '').lower()
+        try:
+            Platforms.objects.get(name=new_platform)
+        except:
+            platform = Platforms(name=new_platform)
+            platform.save()
+            return redirect('/')
+        else:
+            return render(request, 'main/error.html', {'error': "Эта платформа уже существует",
+                                                       'title': "Ошибка"})
+    return render(request, 'main/add_new_platform.html', {'title': 'Добавление новой платформы'})
 
 
 def add_company_test(request):

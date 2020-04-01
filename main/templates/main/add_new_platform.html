@@ -1,0 +1,25 @@
+{% extends "main/wrapper.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1>Добавление участников</h1>
+
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="platform">Логин</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите название новой платформы"
+                               type="text"
+                               name="platform" value="" id="platform">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+{% endblock %}
