@@ -11,11 +11,11 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="{{ profile_form.name.id_for_label }}">Имя</label>
-                        <input class="form-control" placeholder="Ваше имя" {{ company_form.name }}
-                    </div>
-                    <div style="text-align: right">
-                        <input class="btn btn-primary" type="submit" value="Добавить"/>
+                        <label for="username">Логин</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите ключ"
+                               type="text"
+                               name="key" value="" id="key">
+                        <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
                     </div>
                 </form>
             </div>

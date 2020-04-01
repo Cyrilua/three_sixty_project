@@ -24,8 +24,9 @@ class Profile (models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=36, unique=True, default='')
 
     def __str__(self):
         return 'Company name: {}, Owner: {}'.format(self.name, self.owner)
@@ -50,6 +51,7 @@ class Position(models.Model):
 class Command(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    key = models.CharField(max_length=36, default='')
 
 
 class Poll(models.Model):

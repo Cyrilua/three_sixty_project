@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
-import copy
+import copy, uuid
 from .models import Profile, Company
 
 
@@ -44,6 +44,16 @@ def change_user_profile_test(request):
     return render(request, 'main/change_user_profile.html', args)
 
 
+def add_company_platform(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    args = {}
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+    company = profile.company
+
+
 
 def add_company_test(request):
     error = exception_if_user_not_autinficated(request)
@@ -57,6 +67,7 @@ def add_company_test(request):
             company = company_form.save(commit=False)
             user = auth.get_user(request)
             company.owner = user
+            company.key = uuid.uuid4().__str__()
             company.save()
 
             profile = Profile.objects.get(user=user)
@@ -78,12 +89,14 @@ def connect_to_company(request):
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
-            name_company = request.POST.get("name", '')
-            company = Company.objects.get(name=name_company)
+            key_company = request.POST.get("key", '')
+            company = Company.objects.get(key=key_company)
         except:
-            return render(request, 'main/error.html', {'error': "Такой компании не существует"})
+            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
         else:
             profile = Profile.objects.get(user=user)
+            if profile.company is not None:
+                return render(request, 'main/error.html', {'error': "Данный пользователь уже состоит в компании"})
             profile.company = company
             profile.save()
             return redirect('/')
