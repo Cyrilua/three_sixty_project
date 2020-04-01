@@ -15,11 +15,13 @@ def user_view(request):
 
 def exception_if_user_not_autinficated(request):
     if not auth.get_user(request).is_authenticated:
-        return render(request, 'main/error.html', {'error' "Пользователь еще не авторизирован"})
+        return render(request, 'main/error.html', {'error': "Пользователь еще не авторизирован"})
 
 
 def change_user_profile_test(request):
-    exception_if_user_not_autinficated(request)
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     args = {}
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
@@ -42,8 +44,11 @@ def change_user_profile_test(request):
     return render(request, 'main/change_user_profile.html', args)
 
 
+
 def add_company_test(request):
-    exception_if_user_not_autinficated(request)
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
 
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
@@ -66,8 +71,9 @@ def add_company_test(request):
 
 
 def connect_to_company(request):
-    exception_if_user_not_autinficated(request)
-
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     user = auth.get_user(request)
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
