@@ -102,7 +102,9 @@ def index_view(request):
 
 def user_register(request):
     args = {}
+
     if auth.get_user(request).is_authenticated:
+        args['title'] = "Ошибка"
         args['error'] = "Пользователь уже авторизирован"
         return render(request, 'main/error.html', args)
 
@@ -134,9 +136,14 @@ def user_register(request):
 
 
 def user_login(request):
-    args = {
-        "title": "Вход",
-    }
+    args = {}
+
+    if auth.get_user(request).is_authenticated:
+        args['title'] = "Ошибка"
+        args['error'] = "Пользователь уже авторизирован"
+        return render(request, 'main/error.html', args)
+
+    args['title'] = "Вход"
     if request.POST:
         username = request.POST.get("username", '').lower()
         password = request.POST.get("password", '')
@@ -152,6 +159,12 @@ def user_login(request):
 
 
 def user_logout(request):
+    args = {}
+    if not auth.get_user(request).is_authenticated:
+        args['title'] = "Ошибка"
+        args['error'] = "Пользователь не авторизирован"
+        return render(request, 'main/error.html', args)
+
     auth.logout(request)
     return redirect('/')
 
