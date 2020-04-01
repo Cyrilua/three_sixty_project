@@ -11,9 +11,9 @@ class Profile (models.Model):
     surname = models.CharField(max_length=20)
     patronymic = models.CharField(max_length=20)
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
-    #position = models.CharField(max_length=20)
+    platform = models.ForeignKey('Platform', on_delete=models.CASCADE, null=True)
+    position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     city = models.CharField(max_length=20)
-    #company = models.ManyToManyField('Company')
     objects = models.Manager()
 
     class Meta:
@@ -33,25 +33,23 @@ class Company(models.Model):
 
 class Platform(models.Model):
     name = models.CharField(max_length=50)
-    workers = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{} in company {}'.format(self.name, self.company)
 
 
 class Position(models.Model):
     name = models.CharField(max_length=20)
-    workers = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{} in company {}'.format(self.name, self.company)
 
 
 class Command(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    workers = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
-
-
-class UserCommand(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    commands = models.ForeignKey(Command, on_delete=models.CASCADE)
 
 
 class Poll(models.Model):

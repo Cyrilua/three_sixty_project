@@ -15,11 +15,20 @@ def user_view(request):
 
 def exception_if_user_not_autinficated(request):
     if not auth.get_user(request).is_authenticated:
-        return render(request, 'main/error.html', {'error' "Пользователь еще не авторизирован"})
+        return render(request, 'main/error.html', {'error': "Пользователь еще не авторизирован",
+                                                   'title': "Ошибка"})
+
+
+def exception_if_user_autinficated(request):
+    if auth.get_user(request).is_authenticated:
+        return render(request, 'main/error.html', {'error': "Пользователь уже авторизирован",
+                                                   'title': "Ошибка"})
 
 
 def change_user_profile_test(request):
-    exception_if_user_not_autinficated(request)
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     args = {}
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
@@ -43,7 +52,9 @@ def change_user_profile_test(request):
 
 
 def add_company_test(request):
-    exception_if_user_not_autinficated(request)
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
 
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
@@ -66,8 +77,9 @@ def add_company_test(request):
 
 
 def connect_to_company(request):
-    exception_if_user_not_autinficated(request)
-
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     user = auth.get_user(request)
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
@@ -101,13 +113,10 @@ def index_view(request):
 
 
 def user_register(request):
-    args = {}
-    if auth.get_user(request).is_authenticated:
-        args['error'] = "Пользователь уже авторизирован"
-        return render(request, 'main/error.html', args)
-
-    args['user_form'] = UserCreationForm()
-    args['profile_form'] = ProfileForm()
+    error = exception_if_user_autinficated(request)
+    if error is not None:
+        return error
+    args = {'user_form': UserCreationForm(), 'profile_form': ProfileForm()}
     if request.method == 'POST':
 
         post = copy.deepcopy(request.POST)
@@ -134,9 +143,10 @@ def user_register(request):
 
 
 def user_login(request):
-    args = {
-        "title": "Вход",
-    }
+    error = exception_if_user_autinficated(request)
+    if error is not None:
+        return error
+    args = {'title': "Вход"}
     if request.POST:
         username = request.POST.get("username", '').lower()
         password = request.POST.get("password", '')
@@ -152,6 +162,9 @@ def user_login(request):
 
 
 def user_logout(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     auth.logout(request)
     return redirect('/')
 
