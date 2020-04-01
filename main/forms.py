@@ -13,3 +13,4 @@ class CompanyForm(ModelForm):
     class Meta:
         model = Company
         fields = ('name',)
+
