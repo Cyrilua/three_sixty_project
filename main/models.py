@@ -59,7 +59,7 @@ class Position(models.Model):
         return self.name
 
 
-class Command(models.Model):
+class Group(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=36, default='')

@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
-from .models import Profile, Company, Platforms, Position
+from .models import Profile, Company, Platforms, Position, Group
 
 
 def user_view(request):
@@ -51,7 +51,7 @@ def change_user_profile_test(request):
     return render(request, 'main/change_user_profile.html', args)
 
 
-def add_platform(request):
+def add_new_platform(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
@@ -196,8 +196,7 @@ def user_login(request):
         else:
             args['login_error'] = "Логин или пароль неверны"
             return render(request, 'main/login.html', args)
-    else:
-        return render(request, 'main/login.html', args)
+    return render(request, 'main/login.html', args)
 
 
 def user_logout(request):
@@ -206,6 +205,24 @@ def user_logout(request):
         return error
     auth.logout(request)
     return redirect('/')
+
+
+def create_group(request):
+    #TODO
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    user = auth.get_user(request)
+    platform = Platforms.objects.get(user=user)
+    if request.method == "POST":
+        new_group_name = request.POST.get('name', '')
+        new_group = Group()
+        new_group.name = new_group_name
+        new_group.owner = user
+        new_group.key = uuid.uuid4().__str__()
+        new_group.save()
+        return redirect('/')
+
 
 
 def groups_view(request):
