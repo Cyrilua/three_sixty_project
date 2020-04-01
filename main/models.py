@@ -60,8 +60,9 @@ class Position(models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=20)
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20, default='')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='+', null=True)
+    user = models.ManyToManyField(User)
     key = models.CharField(max_length=36, default='')
 
 
@@ -94,12 +95,6 @@ class EvaluationMessage (models.Model):
     def __init__(self):
         return
     #TODO
-
-
-class Group (models.Model):
-    def __init__(self, upper_circe, lower_circle):
-        self.upper_group = Group
-        self.lower_group = Group
 
 
 # Create your models here.

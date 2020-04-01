@@ -208,21 +208,25 @@ def user_logout(request):
 
 
 def create_group(request):
-    #TODO
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
     user = auth.get_user(request)
-    platform = Platforms.objects.get(user=user)
+    profile = Profile.objects.get(user=user)
     if request.method == "POST":
-        new_group_name = request.POST.get('name', '')
-        new_group = Group()
-        new_group.name = new_group_name
-        new_group.owner = user
-        new_group.key = uuid.uuid4().__str__()
+        new_group_name = request.POST.get('name_company', '')
+        print(new_group_name)
+        new_group = Group(
+            name=new_group_name,
+            owner=user,
+            key=uuid.uuid4().__str__()
+        )
+        new_group.save()
+
+        new_group.user.add(user)
         new_group.save()
         return redirect('/')
-
+    return render(request, 'main/create_group.html', {'title': 'Создание новой группы'})
 
 
 def groups_view(request):

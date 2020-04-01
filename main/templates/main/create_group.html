@@ -1,0 +1,25 @@
+{% extends "main/wrapper.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1>Добавление новой группы</h1>
+
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name_company">Логин</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите название новой группы"
+                               type="text"
+                               name="name_company" value="" id="name_company">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+{% endblock %}
