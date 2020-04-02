@@ -8,6 +8,21 @@ from .models import Profile, Company, Platforms, Position, Group
 
 
 def user_view(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    ### для отладки
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+    groups = profile.groups.all()
+    print('########################')
+    for i in groups:
+        print(i)
+        users = i.profile_set.all()
+        for j in users:
+            print('    ' + j.__str__())
+    print('###################')
+    ####
     return render(request, 'main/user.html', {
         "title": "Мой профиль"
     })
@@ -215,7 +230,6 @@ def create_group(request):
     profile = Profile.objects.get(user=user)
     if request.method == "POST":
         new_group_name = request.POST.get('name_company', '')
-        print(new_group_name)
         new_group = Group(
             name=new_group_name,
             owner=user,
@@ -223,10 +237,30 @@ def create_group(request):
         )
         new_group.save()
 
-        new_group.user.add(user)
-        new_group.save()
+        profile.groups.add(new_group)
+        profile.groups.add()
         return redirect('/')
     return render(request, 'main/create_group.html', {'title': 'Создание новой группы'})
+
+
+def connect_to_group(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+    if request.method == "POST":
+        try:
+            key_group = request.POST.get('key', '')
+            group = Group.objects.get(key=key_group)
+        except:
+            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
+        else:
+            profile.groups.add(group)
+            profile.save()
+            return redirect('/')
+    return render(request, 'main/connect_to_group.html', {'title': 'Присоединиться к группе'})
+
 
 
 def groups_view(request):
