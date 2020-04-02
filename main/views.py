@@ -144,9 +144,14 @@ def get_all_users_in_company(request):
     exception_if_user_not_autinficated(request)
     profile = get_user_profile(request)
     company = profile.company
-    users = company.profile_set.all()
-    #return render(request, 'main/some_file.html', {'users': users})
-    return redirect('/')
+    try:
+        users = company.profile_set.all()
+    except:
+        return render(request, 'main/error.html', {'error': "Пользователь не состоит в компании",
+                                                   'title': "Ошибка"})
+    else:
+        # return render(request, 'main/some_file.html', {'users': users})
+        return redirect('/')
 
 
 def index_view(request):
@@ -266,4 +271,11 @@ def groups_view(request):
         "title": "Группы",
         'groups': groups,
     })
+
+
+def add_new_question(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+
 # Create your views here.
