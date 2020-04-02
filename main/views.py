@@ -8,21 +8,7 @@ from .models import Profile, Company, Platforms, Position, Group
 
 
 def user_view(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
-    ### для отладки
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
-    groups = profile.groups.all()
-    print('########################')
-    for i in groups:
-        print(i)
-        users = i.profile_set.all()
-        for j in users:
-            print('    ' + j.__str__())
-    print('###################')
-    ####
+
     return render(request, 'main/user.html', {
         "title": "Мой профиль"
     })
@@ -264,7 +250,21 @@ def connect_to_group(request):
 
 
 def groups_view(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+    groups = profile.groups.all()
+    ### для отладки
+    for i in groups:
+        print(i)
+        users = i.profile_set.all()
+        for j in users:
+            print('    ' + j.__str__())
+    ####
     return render(request, 'main/groups.html', {
-        "title": "Группы"
+        "title": "Группы",
+        'groups': groups,
     })
 # Create your views here.
