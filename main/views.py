@@ -8,7 +8,6 @@ from .models import Profile, Company, Platforms, Position, Group
 
 
 def user_view(request):
-
     return render(request, 'main/user.html', {
         "title": "Мой профиль"
     })
@@ -26,13 +25,17 @@ def exception_if_user_autinficated(request):
                                                    'title': "Ошибка"})
 
 
+def get_user_profile(request):
+    user = auth.get_user(request)
+    return Profile.objects.get(user=user)
+
+
 def change_user_profile_test(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
     args = {}
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+    profile = get_user_profile(request)
     args['profile_form'] = ProfileForm({
         'name': profile.name,
         'surname': profile.surname,
@@ -118,7 +121,8 @@ def connect_to_company(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
-    user = auth.get_user(request)
+
+    profile = get_user_profile(request)
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
@@ -127,7 +131,6 @@ def connect_to_company(request):
         except:
             return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
         else:
-            profile = Profile.objects.get(user=user)
             if profile.company is not None:
                 return render(request, 'main/error.html', {'error': "Данный пользователь уже состоит в компании"})
             profile.company = company
@@ -139,12 +142,10 @@ def connect_to_company(request):
 
 def get_all_users_in_company(request):
     exception_if_user_not_autinficated(request)
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+    profile = get_user_profile(request)
     company = profile.company
     users = company.profile_set.all()
-    for i in users:
-        print(i)
+    #return render(request, 'main/some_file.html', {'users': users})
     return redirect('/')
 
 
@@ -225,6 +226,7 @@ def create_group(request):
 
         profile.groups.add(new_group)
         profile.groups.add()
+        #Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
     return render(request, 'main/create_group.html', {'title': 'Создание новой группы'})
 
@@ -233,8 +235,7 @@ def connect_to_group(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+    profile = get_user_profile(request)
     if request.method == "POST":
         try:
             key_group = request.POST.get('key', '')
@@ -248,13 +249,11 @@ def connect_to_group(request):
     return render(request, 'main/connect_to_group.html', {'title': 'Присоединиться к группе'})
 
 
-
 def groups_view(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+    profile = get_user_profile(request)
     groups = profile.groups.all()
     ### для отладки
     for i in groups:
