@@ -8,9 +8,14 @@ from .models import Profile, Company, Platforms, Position, Group
 
 
 def user_view(request):
-    return render(request, 'main/user.html', {
-        "title": "Мой профиль"
-    })
+    # Раскомментировать, после разработки
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    args = {"title": "Мой профиль"}
+    if auth.get_user(request).is_authenticated:
+        args['profile'] = get_user_profile(request)
+    return render(request, 'main/user.html', args)
 
 
 def exception_if_user_not_autinficated(request):
@@ -155,7 +160,10 @@ def get_all_users_in_company(request):
 
 
 def index_view(request):
-    return render(request, 'main/index.html', {})
+    args = {}
+    if auth.get_user(request).is_authenticated:
+        args['name'] = get_user_profile(request).name
+    return render(request, 'main/index.html', args)
 
 
 def user_register(request):
