@@ -91,6 +91,8 @@ class Group(models.Model):
 class Poll(models.Model):
     assessed = models.OneToOneField(User, on_delete=models.CASCADE)
     respondent = models.OneToOneField(User, on_delete=models.CASCADE, related_name='+')
+    questions = models.ManyToManyField('Questions')
+    answers = models.ManyToManyField('Answers')
     start_date = models.DateField()
     end_date = models.DateField()
 

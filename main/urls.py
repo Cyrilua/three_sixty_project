@@ -19,4 +19,5 @@ urlpatterns = [
     path('add_new_position/', views.add_new_position, name='add_new_position'),
     path('create_group/', views.create_group, name='create_group'),
     path('connect_to_group/', views.connect_to_group, name='connect_to_group'),
+    path('find_questions/', views.find_question, name='find_questions')
 ]

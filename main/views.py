@@ -5,6 +5,7 @@ from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions
+import re
 
 
 def user_view(request):
@@ -286,7 +287,7 @@ def add_new_question(request):
     if error is not None:
         return error
     if request.method == "POST":
-        new_question = request.POST.get('question', '')
+        new_question = request.POST.get('question', '').lower()
         try:
             question = Questions.objecte.get(question=new_question)
         except:
@@ -294,6 +295,7 @@ def add_new_question(request):
             question.save()
         else:
             return render(request, 'main/error.html', {'error': "Вопрос уже существует"})
+    return render(request, 'main/new_question', {'title': "Добавить новый вопрос"})
 
 
 def find_question(request):
@@ -302,6 +304,38 @@ def find_question(request):
         return error
     if request.method == "POST":
         required_question = request.POST.get('question', '')
+        clear_request = clear_find_request(required_question)
+        result = find_result(clear_request)
+        return render(request, 'main/find_questions.html', {
+            'title': "Поиск вопроса",
+            'questions': result
+        })
+    return render(request, 'main/find_questions.html', {'title': "Поиск вопроса"})
 
+
+def clear_find_request(question):
+    new_s = re.sub('[^a-zA-Zа-яА-Я 0-9]+', '', question)
+    return new_s
+
+
+def find_result(question):
+    # Не смог сделать уже реализованные решения, написал свое.
+    # Потом, скорее всего, будет более оптимальное
+    questions = []
+    base_questions = Questions.objects.all()
+    for base_num in range(len(base_questions)):
+        temp_result = 0
+        for i in question:
+            base_question = base_questions[base_num].question.split()
+            if i in base_question:
+                temp_result += 1
+        questions.append((temp_result, base_num))
+    questions.sort()
+    result = []
+    number_questions = 10
+    for i in range(number_questions):
+        position = len(questions) - i - 1
+        result.append(base_questions[questions[position][1]].question)
+    return result
 
 # Create your views here.
