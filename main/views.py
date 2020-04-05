@@ -210,6 +210,7 @@ def user_login(request):
             return redirect('/')
         else:
             args['login_error'] = "Логин или пароль неверны"
+            args['username'] = username
             return render(request, 'main/login.html', args)
     return render(request, 'main/login.html', args)
 
