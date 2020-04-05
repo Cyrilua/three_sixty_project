@@ -9,43 +9,45 @@
             </div>
         </div>
 
-        <div class="col-md-3" style="max-height: 365px; background-color: white; border-radius: 10px; padding: 20px;">
-            <h1 style="text-align: center">Вход</h1>
+        <div class="col-md-3">
+            <div style="height: auto; background-color: white; border-radius: 10px; padding: 20px;">
+                <h1 style="text-align: center">Вход</h1>
 
 
-            {% if login_error %}
-                <div class="alert alert-danger" role="alert">
-                    <b>{{ login_error }}</b>
+                {% if login_error %}
+                    <div class="alert alert-danger" role="alert">
+                        <b>{{ login_error }}</b>
+                    </div>
+                {% endif %}
+
+
+                <div>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Логин</label>
+                            <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"
+                                   type="text"
+                                   name="username" value="" id="username">
+                            <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Пароль</label>
+                            <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"
+                                   type="password" name="password" value="" id="password">
+                            <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                        </div>
+                         <div style="text-align: center">
+                             <p style="color: #6c757d">
+                                 Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>
+                             </p>
+                        </div>
+                        <hr>
+                        <div style="text-align: right">
+                            <input class="btn btn-primary" type="submit" value="Войти"/>
+                        </div>
+                    </form>
                 </div>
-            {% endif %}
-
-
-            <div>
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="username">Логин</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"
-                               type="text"
-                               name="username" value="" id="username">
-                        <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Пароль</label>
-                        <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"
-                               type="password" name="password" value="" id="password">
-                        <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
-                    </div>
-                     <div style="text-align: center">
-                         <p style="color: #6c757d">
-                             Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>
-                         </p>
-                    </div>
-                    <hr>
-                    <div style="text-align: right">
-                        <input class="btn btn-primary" type="submit" value="Войти"/>
-                    </div>
-                </form>
             </div>
 
         </div>
