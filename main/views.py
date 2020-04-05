@@ -338,4 +338,13 @@ def find_result(question):
         result.append(base_questions[questions[position][1]].question)
     return result
 
+
+def poll_view(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    if request.method == "POST":
+        pass
+    return redirect('/')
+
 # Create your views here.
