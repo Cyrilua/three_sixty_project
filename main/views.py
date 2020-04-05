@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import auth
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
-from .models import Profile, Company, Platforms, Position, Group
+from .models import Profile, Company, Platforms, Position, Group, Questions
 
 
 def user_view(request):
@@ -231,7 +231,7 @@ def create_group(request):
 
         profile.groups.add(new_group)
         profile.groups.add()
-        #Не плохо было бы сразу направлять на страницу группы
+        # Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
     return render(request, 'main/create_group.html', {'title': 'Создание новой группы'})
 
@@ -277,5 +277,23 @@ def add_new_question(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
+    if request.method == "POST":
+        new_question = request.POST.get('question', '')
+        try:
+            question = Questions.objecte.get(question=new_question)
+        except:
+            question = Questions(question=new_question)
+            question.save()
+        else:
+            return render(request, 'main/error.html', {'error': "Вопрос уже существует"})
+
+
+def find_question(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    if request.method == "POST":
+        required_question = request.POST.get('question', '')
+
 
 # Create your views here.
