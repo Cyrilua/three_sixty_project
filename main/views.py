@@ -2,9 +2,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
+
 from .forms import ProfileForm, CompanyForm
 import copy, uuid
-from .models import Profile, Company, Platforms, Position, Group, Questions
+from .models import Profile, Company, Platforms, Position, Group, Questions, Poll
 import re
 
 
@@ -340,12 +341,50 @@ def find_result(question):
     return result
 
 
-def poll_view(request):
+def poll_view(request, pool_id):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
         return error
-    if request.method == "POST":
-        pass
-    return redirect('/')
+    poll = Poll.objects.get(id=pool_id)
+    user_auth = auth.get_user(request)
+    user_init = poll.initiator
+    questions = Questions.objects.filter(poll=poll)
+    if user_auth.username == user_init.username:
+        #TODO
+        return render(request, 'main.error.html', {'error': "Вывод описания опроса"})
+    else:
+        return render(request, 'main.error.html', {'error': "У вас пользователя прав для редактирования опроса"})
+
+
+def create_pool(request):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    user = auth.get_user(request)
+    poll = Poll()
+    poll.initiator = user
+    poll.save()
+    id = str(poll.id)
+    #Должна будет перенаправляться на страницу выбора списка вопросов
+    return redirect(id + '/add_question')
+
+
+def add_questions_in_pool(request, pool_id):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    if request.method == 'POST':
+        try:
+            poll = Poll.objects.get(id=pool_id)
+        except:
+            return render(request, 'main/error.html', {'error': 'Данного опроса не существует'})
+        question_id = request.POST.get('question', '')
+        try:
+            question = Questions.objects.get(id=question_id)
+        except:
+            return render(request, 'main/error.html', {'error': 'Данного вопроса не существует'})
+        question.poll_set.add(poll)
+        return redirect('/')
+    return render(request, 'main/add_question_in_poll.html', {'title': "Добавление вопроса в опрос"})
 
 # Create your views here.

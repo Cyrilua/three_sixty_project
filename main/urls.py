@@ -19,5 +19,8 @@ urlpatterns = [
     path('add_new_position/', views.add_new_position, name='add_new_position'),
     path('create_group/', views.create_group, name='create_group'),
     path('connect_to_group/', views.connect_to_group, name='connect_to_group'),
-    path('find_questions/', views.find_question, name='find_questions')
+    path('find_questions/', views.find_question, name='find_questions'),
+    path('create_poll/', views.create_pool, name='create_pool'),
+    path('view_poll/<int:id_pool>/', views.poll_view, name='view_poll'),
+    path('create_poll/<int:pool_id>/add_question', views.add_questions_in_pool, name='add_question_in_pool')
 ]

@@ -89,12 +89,11 @@ class Group(models.Model):
 
 
 class Poll(models.Model):
-    assessed = models.OneToOneField(User, on_delete=models.CASCADE)
-    respondent = models.OneToOneField(User, on_delete=models.CASCADE, related_name='+')
+    initiator = models.ForeignKey(User, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
     answers = models.ManyToManyField('Answers')
-    start_date = models.DateField()
-    end_date = models.DateField()
+    #start_date = models.DateField()
+    #end_date = models.DateField()
 
 
 class Questions(models.Model):
