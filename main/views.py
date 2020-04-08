@@ -211,7 +211,7 @@ def user_login(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            args['login_error'] = "Логин или пароль неверны"
+            args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
             return render(request, 'main/login.html', args)
     return render(request, 'main/login.html', args)

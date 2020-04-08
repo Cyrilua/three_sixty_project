@@ -15,11 +15,11 @@
 
     <div class="row">
         <div class="col-md-2" style="padding-left: 3%;">
-            <div class="navbar-light">
+            <div class="navbar-light position-fixed">
                 <ul class="navbar-nav flex-column">
                     {% block sidebar-nav-items %}
                         <li class="nav-item, active">
-                            <a class="nav-link" href="{% url 'main:user' %}">Профиль</a>
+                            <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Уведомления</a>
@@ -34,23 +34,23 @@
                 </ul>
             </div>
         </div>
-
+        <div class="col-md-8">
         {% block small-content %}
-            <div class="col-md-8">
+
                 <div class="row">
                     <!-- Профиль пользователя -->
                     <div class="col-md-3" style="padding-right: 25px">
                         <!-- Аватар и кнопки -->
                         <div class="row">
                             <!-- Аватар -->
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 10px; height: 250px">
+                            <div class="col-12 rounded-block"
+                                 style="margin-bottom: 10px; height: 250px">
                                 <h3>Аватарка</h3>
                             </div>
                         </div>
                         <div class="row">
                             <!-- Кнопки -->
-                            <div class="col-12" style="background-color: white; border-radius: 10px; padding: 20px;">
+                            <div class="col-12 rounded-block">
                                 <h3>Конопочки</h3>
                             </div>
                         </div>
@@ -59,8 +59,8 @@
                         <!-- Информация и оценка -->
                         <div class="row">
                             <!-- Инфо -->
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 10px; height: 200px">
+                            <div class="col-12 rounded-block"
+                                 style="margin-bottom: 10px; height: 200px">
                                 <h3>Инфо</h3>
                                 <p>
                                     <b>ФИО</b> {{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}
@@ -71,36 +71,36 @@
                         </div>
                         <div class="row">
                             <!-- Рейтинг -->
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; margin-bottom: 10px; height: 100px">
+                            <div class="col-12 rounded-block"
+                                 style="margin-bottom: 10px; height: 100px">
                                 <h3>Рейтинг</h3>
                             </div>
                         </div>
                         <div class="row">
                             <!-- Последние оценки -->
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; height: 100px; margin-bottom: 10px">
+                            <div class="col-12 rounded-block"
+                                 style="height: 100px; margin-bottom: 10px">
                                 <b>Последние оценки</b>
                             </div>
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; height: 100px; margin-bottom: 10px">
+                            <div class="col-12 rounded-block"
+                                 style="height: 100px; margin-bottom: 10px">
                                 <b>Последние оценки</b>
                             </div>
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; height: 100px; margin-bottom: 10px">
+                            <div class="col-12 rounded-block"
+                                 style="height: 100px; margin-bottom: 10px">
                                 <b>Последние оценки</b>
                             </div>
-                            <div class="col-12"
-                                 style="background-color: white; border-radius: 10px; padding: 20px; height: 100px; margin-bottom: 10px">
+                            <div class="col-12 rounded-block"
+                                 style="height: 100px; margin-bottom: 10px">
                                 <b>Последние оценки</b>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-            </div>
         {% endblock %}
+    </div>
+    <div class="col-md-2">
+    </div>
     </div>
 
 {% endblock %}
