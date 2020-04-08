@@ -209,7 +209,7 @@ def user_login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('/user')
         else:
             args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
@@ -222,7 +222,7 @@ def user_logout(request):
     if error is not None:
         return error
     auth.logout(request)
-    return redirect('/')
+    return redirect('/login')
 
 
 def create_group(request):
