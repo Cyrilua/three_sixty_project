@@ -284,6 +284,16 @@ def groups_view(request):
     })
 
 
+def group_user_view(request, group_id):
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
+    group = Group.objects.get(id=group_id)
+    print(group)
+    users = group.profile_set.all()
+    return render(request, 'main/group_user.html', {'users': users})
+
+
 def add_new_question(request):
     error = exception_if_user_not_autinficated(request)
     if error is not None:
