@@ -199,9 +199,11 @@ def user_register(request):
 
 
 def user_login(request):
-    error = exception_if_user_autinficated(request)
-    if error is not None:
-        return error
+    #error = exception_if_user_autinficated(request)
+    #if error is not None:
+    #    return error
+    if auth.get_user(request).is_authenticated:
+        return redirect('user/')
     args = {'title': "Вход"}
     if request.POST:
         username = request.POST.get("username", '').lower()
