@@ -1,5 +1,14 @@
 {% extends "main/wrapper.html" %}
 
+{% block nav-items %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:login' %}">Вход</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'main:register' %}">Регистрация</a>
+    </li>
+{% endblock %}
+
 {% load widget_tweaks %}
 
 {% block content %}
