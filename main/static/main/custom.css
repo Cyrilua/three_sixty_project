@@ -52,13 +52,30 @@
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0.5rem;
-  color: rgba(0,89,180,0.93);
-  font-weight: bolder;
+  color: rgba(0, 0, 0, 0.93);
 }
 
 .rounded-block {
-  background-color: #ede7e0;
+  background-color: #fafafa;
   border-radius: 5px;
   padding: 20px;
   height: auto;
+}
+
+.animated-back {
+	background: linear-gradient(90deg, #ff001c, #d300ff, #0000ff, #00afbe);
+	background-size: 400% 400%;
+	animation: gradient 30s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
