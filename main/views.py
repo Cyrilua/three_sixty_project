@@ -10,10 +10,9 @@ import re
 
 
 def user_view(request):
-    # Раскомментировать, после разработки
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
+    error = exception_if_user_not_autinficated(request)
+    if error is not None:
+        return error
     args = {"title": "Мой профиль"}
     if auth.get_user(request).is_authenticated:
         args['profile'] = get_user_profile(request)
