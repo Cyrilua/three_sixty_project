@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animated-back {
-	background: linear-gradient(90deg, #ff001c, #d300ff, #0000ff, #00afbe);
+	background: linear-gradient(90deg, #ff001c, #d300ff, #0000ff, #00c3fb);
 	background-size: 400% 400%;
 	animation: gradient 30s ease infinite;
 }
@@ -78,4 +78,24 @@ h1, h2, h3, h4, h5, h6 {
 	100% {
 		background-position: 0% 50%;
 	}
+}
+
+.logo:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    transition: 50ms linear;
+}
+
+.sidebar-user-item {
+    display: block;
+    width: 150px;
+    background: transparent;
+    padding-left: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
+}
+
+.sidebar-user-item:hover{
+   background: #FAFAFA;
 }

@@ -1,14 +1,5 @@
 {% extends 'main/wrapper.html' %}
 
-{#{% block nav-items %}#}
-{#    <!li class="nav-item, active">#}
-{#        <a class="nav-link" href="{% url 'main:user' %}">Виталий Петрович</a>#}
-{#    </li>#}
-{#    <li class="nav-item">#}
-{#        <a class="nav-link" href="#">Выйти</a>#}
-{#    </li>#}
-{#{% endblock %}#}
-
 {% load static %}
 
 {% block content %}
@@ -18,16 +9,16 @@
             <div class="navbar-light position-fixed">
                 <ul class="navbar-nav flex-column">
                     {% block sidebar-nav-items %}
-                        <li class="nav-item, active">
+                        <li class="active sidebar-user-item">
                             <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="sidebar-user-item">
                             <a class="nav-link" href="#">Уведомления</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="sidebar-user-item">
                             <a class="nav-link" href="{% url 'main:groups' %}">Группы</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="sidebar-user-item">
                             <a class="nav-link" href="#">Настройки</a>
                         </li>
                     {% endblock %}
