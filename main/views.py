@@ -202,7 +202,7 @@ def user_login(request):
     #if error is not None:
     #    return error
     if auth.get_user(request).is_authenticated:
-        return redirect('user/')
+        return redirect('/user')
     args = {'title': "Вход"}
     if request.POST:
         username = request.POST.get("username", '').lower()
