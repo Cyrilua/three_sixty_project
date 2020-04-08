@@ -61,10 +61,9 @@
                             <!-- Инфо -->
                             <div class="col-12 rounded-block"
                                  style="margin-bottom: 10px; height: 200px">
-                                <h3>Инфо</h3>
+                                <h3>{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</h3>
+                                <hr>
                                 <p>
-                                    <b>ФИО</b> {{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}
-                                    <br>
                                     <b>Город</b> {{ profile.city }}
                                 </p>
                             </div>
