@@ -32,12 +32,13 @@
 </head>
 <body>
 <!-- Тело сайта, отвечает за вывод на страницу-->
-<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back">
-    <div class="container" style="max-width: 1366px; padding-left: 10px; padding-right: 10px">
+<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back"
+        style="padding: 8px 0px;">
+    <div class="container" style="max-width: 1366px;">
     {% if user.is_authenticated %}
-        <a class="navbar-brand logo" href="{% url 'main:login' %}">
+        <a class="navbar-brand logo" style="margin-left: 25px" href="{% url 'main:login' %}">
     {% else %}
-        <a class="navbar-brand logo" href="{% url 'main:login' %}">
+        <a class="navbar-brand logo" style="margin-left: 25px" href="{% url 'main:login' %}">
     {% endif %}
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="120" height="30px" viewBox="0 0 12000 3190"
          preserveAspectRatio="xMidYMid meet" style="">
@@ -58,7 +59,7 @@
         </g>
     </svg>
     </a>
-    <div class='navbar-nav ml-auto'>
+    <div class='navbar-nav ml-auto' style="margin-right: 25px">
         <ul class="navbar-nav bd-navbar-nav flex-row">
 
 

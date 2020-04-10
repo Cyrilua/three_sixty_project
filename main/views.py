@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm, TeamForm
+from .forms import ProfileForm, CompanyForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll
 import re
@@ -80,7 +80,7 @@ def get_user_profile(request):
     return Profile.objects.get(user=user)
 
 
-def change_user_profile(request):
+def change_user_profile_test(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -147,18 +147,11 @@ def add_new_position(request):
     return render(request, 'main/add_new_position.html', {'title': 'Добавление новой должности'})
 
 
-def add_company(request):
+def add_company_test(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
     if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
-
-    if profile.company is not None:
-        #TODO Сделать вывод ошибки
         return redirect('/')
 
     args = {'company_form': CompanyForm()}
@@ -166,10 +159,12 @@ def add_company(request):
         company_form = CompanyForm(request.POST)
         if company_form.is_valid():
             company = company_form.save(commit=False)
+            user = auth.get_user(request)
             company.owner = user
             company.key = uuid.uuid4().__str__()
             company.save()
 
+            profile = Profile.objects.get(user=user)
             profile.company = company
             profile.save()
 
@@ -188,11 +183,6 @@ def connect_to_company(request):
         return redirect('/')
 
     profile = get_user_profile(request)
-
-    if profile.company is not None:
-        # TODO Сделать вывод ошибки
-        return redirect('/')
-
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
@@ -288,7 +278,7 @@ def user_logout(request):
     return redirect('/')
 
 
-def create_team(request):
+def create_group(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -296,12 +286,8 @@ def create_team(request):
         return redirect('/')
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
-    args = {
-        'title': 'Создание новой группы',
-        'team_form': TeamForm(),
-    }
     if request.method == "POST":
-        new_group_name = request.POST.get('name', '')
+        new_group_name = request.POST.get('name_company', '')
         new_group = Group(
             name=new_group_name,
             owner=user,
@@ -313,10 +299,13 @@ def create_team(request):
         profile.groups.add()
         # Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
-    return render(request, 'main/add_new_team.html', args)
+    return render(request, 'main/add_new_team.html', {'title': 'Создание новой группы'})
 
 
-def connect_to_team(request):
+def connect_to_group(request):
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
@@ -325,7 +314,7 @@ def connect_to_team(request):
             key_group = request.POST.get('key', '')
             group = Group.objects.get(key=key_group)
         except:
-            return render(request, 'main/connect_to_team.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
         else:
             profile.groups.add(group)
             profile.save()
@@ -333,7 +322,10 @@ def connect_to_team(request):
     return render(request, 'main/connect_to_team.html', {'title': 'Присоединиться к группе'})
 
 
-def team_view(request):
+def groups_view(request):
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
@@ -352,7 +344,7 @@ def team_view(request):
     })
 
 
-def team_user_view(request, group_id):
+def group_user_view(request, group_id):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
