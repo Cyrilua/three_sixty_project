@@ -77,7 +77,7 @@ class Position(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=20, default='')
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='+', null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     #user = models.ManyToManyField(User)
     key = models.CharField(max_length=36, default='')
 

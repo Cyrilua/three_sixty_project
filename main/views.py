@@ -287,7 +287,8 @@ def create_group(request):
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
     if request.method == "POST":
-        new_group_name = request.POST.get('name_company', '')
+        new_group_name = request.POST.get('name', '')
+        print(new_group_name)
         new_group = Group(
             name=new_group_name,
             owner=user,
