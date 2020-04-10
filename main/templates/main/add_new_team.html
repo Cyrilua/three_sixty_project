@@ -5,17 +5,17 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1>Добавление новой группы</h1>
+            <h1>Создание команды</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="name_company">Логин</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите название новой группы"
-                               type="text"
-                               name="name_company" value="" id="name_company">
+                        <label for="name">Название команды</label>
+                        <input class="form-control" placeholder="Введите название команды" type="text"
+                               name="name" value="" id="name">
                     </div>
+                    <input class="btn btn-primary" type="submit" value="Создать">
                 </form>
             </div>
         </div>

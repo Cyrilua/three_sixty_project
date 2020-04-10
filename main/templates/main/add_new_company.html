@@ -11,8 +11,8 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="{{ profile_form.name.id_for_label }}">Имя</label>
-                        <input class="form-control" placeholder="Ваше имя" {{ company_form.name }}
+                        <label for="{{ company_form.name.id_for_label }}">Название компании</label>
+                        {{ company_form.name|attr:"placeholder:Придумайте название компании"|add_class:"form-control" }}
                     </div>
                     <div style="text-align: right">
                         <input class="btn btn-primary" type="submit" value="Создать"/>

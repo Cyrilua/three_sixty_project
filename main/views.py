@@ -130,7 +130,7 @@ def add_company_test(request):
         else:
             args['company_form'] = company_form
     args['title'] = "Создание компании"
-    return render(request, 'main/add_company_test.html', args)
+    return render(request, 'main/add_new_company.html', args)
 
 
 def connect_to_company(request):
@@ -155,7 +155,7 @@ def connect_to_company(request):
             profile.save()
             return redirect('/')
     args['title'] = "Добавление участников"
-    return render(request, 'main/connect_to_company_test.html', args)
+    return render(request, 'main/connect_to_company.html', args)
 
 
 def get_all_users_in_company(request):
@@ -257,7 +257,7 @@ def create_group(request):
         profile.groups.add()
         # Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
-    return render(request, 'main/create_group.html', {'title': 'Создание новой группы'})
+    return render(request, 'main/add_new_team.html', {'title': 'Создание новой группы'})
 
 
 def connect_to_group(request):
@@ -277,7 +277,7 @@ def connect_to_group(request):
             profile.groups.add(group)
             profile.save()
             return redirect('/')
-    return render(request, 'main/connect_to_group.html', {'title': 'Присоединиться к группе'})
+    return render(request, 'main/connect_to_team.html', {'title': 'Присоединиться к группе'})
 
 
 def groups_view(request):
@@ -295,9 +295,10 @@ def groups_view(request):
         for j in users:
             print('    ' + j.__str__())
     ####
-    return render(request, 'main/groups.html', {
-        "title": "Группы",
+    return render(request, 'main/communication.html', {
+        'title': "Группы",
         'groups': groups,
+        'profile': profile,
     })
 
 
