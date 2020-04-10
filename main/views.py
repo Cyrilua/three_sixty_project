@@ -19,6 +19,48 @@ def user_view(request):
     return render(request, 'main/user.html', args)
 
 
+def other_user_view(request, profile_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    profile = Profile.objects.get(id=profile_id)
+    args = {
+        'title': "Профиль просматриваемого пользователя",
+        'name': profile.name,
+        'surname': profile.surname,
+        'patronymic': profile.patronymic,
+    }
+
+    try:
+        groups = profile.groups.all()
+    except:
+        args['groups'] = []
+    else:
+        args['groups'] = groups
+
+    try:
+        position = profile.position.name
+    except:
+        args['position'] = ''
+    else:
+        args['position'] = position
+
+    try:
+        company = profile.company.name
+    except:
+        args['company'] = ''
+    else:
+        args['company'] = company
+
+    try:
+        platform = profile.platform.name
+    except:
+        args['platform'] = ''
+    else:
+        args['platform'] = platform
+
+    return render(request, 'main/other_user.html', args)
+
+
 def exception_if_user_not_autinficated(request):
     if not auth.get_user(request).is_authenticated:
         return render(request, 'main/error.html', {'error': "Пользователь еще не авторизирован",
