@@ -13,8 +13,8 @@ urlpatterns = [
     path('register/', views.user_register, name='register'),
     path('other_user/<int:profile_id>/', views.other_user_view, name='other_user_view'),
 
-    path('change_profile_test/', views.change_user_profile_test, name='change_profile'),
-    path('add_company_test/', views.add_company_test, name='add_company'),
+    path('change_profile_test/', views.change_user_profile, name='change_profile'),
+    path('add_company_test/', views.add_company, name='add_company'),
     path('connect_to_company_test/', views.connect_to_company, name='connect_to_company'),
     path('get_all_companies_users/', views.get_all_users_in_company, name='get_all_companies_users'),
     path('add_new_platform/', views.add_new_platform, name='add_new_platform'),

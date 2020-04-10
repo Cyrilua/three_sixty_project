@@ -80,7 +80,7 @@ def get_user_profile(request):
     return Profile.objects.get(user=user)
 
 
-def change_user_profile_test(request):
+def change_user_profile(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -147,11 +147,18 @@ def add_new_position(request):
     return render(request, 'main/add_new_position.html', {'title': 'Добавление новой должности'})
 
 
-def add_company_test(request):
+def add_company(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
     if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+
+    if profile.company is not None:
+        #TODO Сделать вывод ошибки
         return redirect('/')
 
     args = {'company_form': CompanyForm()}
@@ -159,12 +166,10 @@ def add_company_test(request):
         company_form = CompanyForm(request.POST)
         if company_form.is_valid():
             company = company_form.save(commit=False)
-            user = auth.get_user(request)
             company.owner = user
             company.key = uuid.uuid4().__str__()
             company.save()
 
-            profile = Profile.objects.get(user=user)
             profile.company = company
             profile.save()
 
@@ -183,6 +188,11 @@ def connect_to_company(request):
         return redirect('/')
 
     profile = get_user_profile(request)
+
+    if profile.company is not None:
+        # TODO Сделать вывод ошибки
+        return redirect('/')
+
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
@@ -303,9 +313,6 @@ def create_team(request):
 
 
 def connect_to_team(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
@@ -314,7 +321,7 @@ def connect_to_team(request):
             key_group = request.POST.get('key', '')
             group = Group.objects.get(key=key_group)
         except:
-            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/connect_to_team.html', {'error': "Ключ не существует или введен неверно"})
         else:
             profile.groups.add(group)
             profile.save()
@@ -323,9 +330,6 @@ def connect_to_team(request):
 
 
 def team_view(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
