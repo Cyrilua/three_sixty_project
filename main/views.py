@@ -337,9 +337,9 @@ def team_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
-    groups = profile.groups.all()
+    teams = profile.groups.all()
     ### для отладки
-    for i in groups:
+    for i in teams:
         print(i)
         users = i.profile_set.all()
         for j in users:
@@ -347,7 +347,7 @@ def team_view(request):
     ####
     return render(request, 'main/communication.html', {
         'title': "Группы",
-        'groups': groups,
+        'teams': teams,
         'profile': profile,
     })
 
