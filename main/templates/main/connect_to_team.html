@@ -5,18 +5,17 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1>Добавление к группе</h1>
+            <h1>Присоединение к команде</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="key">Ключ</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите ключ"
-                               type="text"
-                               name="key" value="" id="key">
-                        <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                        <input class="form-control" type="text" name="key" id="key">
                     </div>
+                    <hr>
+                    <input class="btn btn-primary" type="submit" value="Присоединиться">
                 </form>
             </div>
         </div>
