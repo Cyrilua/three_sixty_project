@@ -278,7 +278,7 @@ def user_logout(request):
     return redirect('/')
 
 
-def create_group(request):
+def create_team(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -288,7 +288,6 @@ def create_group(request):
     profile = Profile.objects.get(user=user)
     if request.method == "POST":
         new_group_name = request.POST.get('name', '')
-        print(new_group_name)
         new_group = Group(
             name=new_group_name,
             owner=user,
@@ -303,7 +302,7 @@ def create_group(request):
     return render(request, 'main/add_new_team.html', {'title': 'Создание новой группы'})
 
 
-def connect_to_group(request):
+def connect_to_team(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -323,7 +322,7 @@ def connect_to_group(request):
     return render(request, 'main/connect_to_team.html', {'title': 'Присоединиться к группе'})
 
 
-def groups_view(request):
+def team_view(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -345,7 +344,7 @@ def groups_view(request):
     })
 
 
-def group_user_view(request, group_id):
+def team_user_view(request, group_id):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
