@@ -10,9 +10,11 @@ import re
 
 
 def user_view(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     args = {"title": "Мой профиль"}
     if auth.get_user(request).is_authenticated:
         args['profile'] = get_user_profile(request)
@@ -37,9 +39,11 @@ def get_user_profile(request):
 
 
 def change_user_profile_test(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     args = {}
     profile = get_user_profile(request)
     args['profile_form'] = ProfileForm({
@@ -62,9 +66,11 @@ def change_user_profile_test(request):
 
 
 def add_new_platform(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     if request.method == "POST":
         new_platform = request.POST.get("platform", '').lower()
         try:
@@ -80,9 +86,11 @@ def add_new_platform(request):
 
 
 def add_new_position(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     if request.method == "POST":
         new_position = request.POST.get("position", '').lower()
         try:
@@ -98,9 +106,11 @@ def add_new_position(request):
 
 
 def add_company_test(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
 
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
@@ -124,9 +134,11 @@ def add_company_test(request):
 
 
 def connect_to_company(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
 
     profile = get_user_profile(request)
     args = {'company_form': CompanyForm()}
@@ -160,17 +172,16 @@ def get_all_users_in_company(request):
         return redirect('/')
 
 
-def index_view(request):
-    args = {}
-    if auth.get_user(request).is_authenticated:
-        args['name'] = get_user_profile(request).name
-    return render(request, 'main/index.html', args)
+# def index_view(request):
+#     args = {}
+#     if auth.get_user(request).is_authenticated:
+#         args['name'] = get_user_profile(request).name
+#     return render(request, 'main/index_old.html', args)
 
 
 def user_register(request):
-    error = exception_if_user_autinficated(request)
-    if error is not None:
-        return error
+    if auth.get_user(request).is_authenticated:
+        return redirect('/user')
     args = {'user_form': UserCreationForm(), 'profile_form': ProfileForm()}
     if request.method == 'POST':
 
@@ -198,9 +209,6 @@ def user_register(request):
 
 
 def user_login(request):
-    #error = exception_if_user_autinficated(request)
-    #if error is not None:
-    #    return error
     if auth.get_user(request).is_authenticated:
         return redirect('/user')
     args = {'title': "Вход"}
@@ -219,17 +227,21 @@ def user_login(request):
 
 
 def user_logout(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     auth.logout(request)
-    return redirect('/login')
+    return redirect('/')
 
 
 def create_group(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
     if request.method == "POST":
@@ -249,9 +261,11 @@ def create_group(request):
 
 
 def connect_to_group(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     profile = get_user_profile(request)
     if request.method == "POST":
         try:
@@ -267,9 +281,11 @@ def connect_to_group(request):
 
 
 def groups_view(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     profile = get_user_profile(request)
     groups = profile.groups.all()
     ### для отладки
@@ -286,9 +302,11 @@ def groups_view(request):
 
 
 def group_user_view(request, group_id):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     group = Group.objects.get(id=group_id)
     print(group)
     users = group.profile_set.all()
@@ -296,9 +314,11 @@ def group_user_view(request, group_id):
 
 
 def add_new_question(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     if request.method == "POST":
         new_question = request.POST.get('question', '').lower()
         try:
@@ -312,9 +332,11 @@ def add_new_question(request):
 
 
 def find_question(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     if request.method == "POST":
         required_question = request.POST.get('question', '')
         clear_request = clear_find_request(required_question)
@@ -353,9 +375,11 @@ def find_result(question):
 
 
 def poll_view(request, pool_id):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     poll = Poll.objects.get(id=pool_id)
     user_auth = auth.get_user(request)
     user_init = poll.initiator
@@ -368,9 +392,11 @@ def poll_view(request, pool_id):
 
 
 def create_pool(request):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     user = auth.get_user(request)
     poll = Poll()
     poll.initiator = user
@@ -381,9 +407,11 @@ def create_pool(request):
 
 
 def add_questions_in_pool(request, pool_id):
-    error = exception_if_user_not_autinficated(request)
-    if error is not None:
-        return error
+    # error = exception_if_user_not_autinficated(request)
+    # if error is not None:
+    #     return error
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     if request.method == 'POST':
         try:
             poll = Poll.objects.get(id=pool_id)
