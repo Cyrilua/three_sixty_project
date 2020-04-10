@@ -33,10 +33,11 @@
 <body>
 <!-- Тело сайта, отвечает за вывод на страницу-->
 <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back">
+    <div class="container" style="max-width: 1366px">
     {% if user.is_authenticated %}
-        <a class="navbar-brand logo" href="{% url 'main:login' %}">
+        <a class="navbar-brand logo" href="{% url 'main:login' %}"></a>
     {% else %}
-        <a class="navbar-brand logo" href="{% url 'main:login' %}">
+        <a class="navbar-brand logo" href="{% url 'main:login' %}"></a>
     {% endif %}
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="150px" height="30px" viewBox="0 0 12000 3190"
          preserveAspectRatio="xMidYMid meet">
@@ -81,16 +82,16 @@
             {% endif %}
         </ul>
     </div>
-
+    </div>
 </header>
 
-<div class="container-fluid " style="background: white; padding-top:104px; padding-bottom: 5%; min-height: 100vh;">
+<div class="container-fluid" style="background: white; padding-top:104px; padding-bottom: 5%; min-height: 100vh; max-width: 1366px">
     {% block content %}
     {% endblock %}
 </div>
 
-<footer class="section footer-classic context-dark bg-image" style="background: rgba(134,134,134,0.95)">
-    <div class="container" style="height: 200px">
+<footer class="section footer-classic context-dark container-fluid" style="background: rgba(134,134,134,0.95);">
+    <div class="container" style="height: 200px; max-width: 1366px;">
     </div>
 </footer>
 </body>
