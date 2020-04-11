@@ -1,5 +1,7 @@
 {% extends "main/wrapper.html" %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
     <div class="row">
@@ -11,11 +13,12 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="name">Название команды</label>
-                        <input class="form-control" placeholder="Введите название команды" type="text"
-                               name="name" value="" id="name">
+                        <label for="{{ team_form.name.id_for_label }}">Название команды</label>
+                        {{ team_form.name|attr:"placeholder:Придумайте название команды"|add_class:"form-control" }}
                     </div>
-                    <input class="btn btn-primary" type="submit" value="Создать">
+                    <div style="text-align: right">
+                        <input class="btn btn-primary" type="submit" value="Создать"/>
+                    </div>
                 </form>
             </div>
         </div>
