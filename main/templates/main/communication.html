@@ -5,20 +5,7 @@
 {% load widget_tweaks %}
 
 {% block sidebar-nav-items %}
-
-    <li class="sidebar-user-item">
-        <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
-    </li>
-    <li class="sidebar-user-item">
-        <a class="nav-link" href="#">Уведомления</a>
-    </li>
-    <li class="active sidebar-user-item">
-        <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
-    </li>
-    <li class="sidebar-user-item">
-        <a class="nav-link" href="#">Настройки</a>
-    </li>
-
+    {% include 'main/menu.html' with menu_communications="active" only %}
 {% endblock %}
 
 
@@ -129,13 +116,13 @@
                      style="height: 100px; margin-bottom: 10px">
                     <h4>Команды</h4>
                     <p>
-{#                                    {% if not profile.groups.count == 0 %}#}
-{#                                        {% for e in profile.groups %}#}
-{#                                            {{ e }}#}
-{#                                        {% endfor %}#}
-{#                                    {% else %}#}
-{#                                        Команды отсутствует#}
-{#                                    {% endif %}#}
+{#                        {% if not profile.groups.count == 0 %}#}
+{#                            {% for e in profile.groups %}#}
+{#                                {{ e }}#}
+{#                            {% endfor %}#}
+{#                        {% else %}#}
+{#                            Команды отсутствует#}
+{#                        {% endif %}#}
                         {{ profile.groups }}
                     </p>
                 </div>
