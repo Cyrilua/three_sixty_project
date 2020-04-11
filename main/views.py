@@ -301,24 +301,12 @@ def create_team(request):
     }
     if request.method == "POST":
 
-        #TODO раскомментировать, когда начнется использование формы
-        #team_form = TeamForm(request.POST)
-        #if team_form.is_valid():
-        #    new_team = team_form.save(commit=False)
-        #    new_team.owner = user
-        #    new_team.key = uuid.uuid4().__str__()
-        #    new_team.save()
-
-        #TODO закомментировать, когда начнется использование формы
-        ######
-        new_group_name = request.POST.get('name', '')
-        new_team = Group(
-            name=new_group_name,
-            owner=user,
-            key=uuid.uuid4().__str__()
-        )
-        new_team.save()
-        ######
+        team_form = TeamForm(request.POST)
+        if team_form.is_valid():
+            new_team = team_form.save(commit=False)
+            new_team.owner = user
+            new_team.key = uuid.uuid4().__str__()
+            new_team.save()
 
         profile.groups.add(new_team)
         profile.groups.add()
