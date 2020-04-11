@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
     <div class="row">
@@ -19,15 +21,15 @@
                             <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
                         </li>
                         <li class="sidebar-user-item">
-                            <a class="nav-link" href="#">Настройки</a>
+                            <a class="nav-link" href="{% url 'main:change_profile' %}">Настройки</a>
                         </li>
                     {% endblock %}
                 </ul>
             </div>
         </div>
-        <div class="col-md-8">
-        {% block small-content %}
 
+        <div class="col-md-8">
+            {% block profile-content %}
                 <div class="row">
                     <!-- Профиль пользователя -->
                     <div class="col-md-3" style="padding-right: 25px">
@@ -87,10 +89,9 @@
                         </div>
                     </div>
                 </div>
-        {% endblock %}
-    </div>
-    <div class="col-md-2">
-    </div>
+            {% endblock %}
+        </div>
+        <div class="col-md-2"></div>
     </div>
 
 {% endblock %}

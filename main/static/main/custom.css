@@ -80,10 +80,7 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-.logo:hover {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-    transition: 50ms linear;
+.logo:hover{
 }
 
 .sidebar-user-item {

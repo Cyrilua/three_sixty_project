@@ -1,31 +1,53 @@
-{% extends "main/wrapper.html" %}
+{% extends "main/user.html" %}
 
-{% block content %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block sidebar-nav-items %}
+
+    <li class="active sidebar-user-item">
+        <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
+    </li>
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="#">Уведомления</a>
+    </li>
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
+    </li>
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="{% url 'main:change_profile' %}">Настройки</a>
+    </li>
+
+{% endblock %}
+
+
+{% block profile-content %}
 
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1>Редактирование профия</h1>
+            <h1 style="text-align: center">Редактирование профиля</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="{{ profile_form.name.id_for_label }}">Имя</label>
-                        <input class="form-control" placeholder="Ваше имя" {{ profile_form.name }}
+                        {{ profile_form.name|attr:"placeholder:Ваше имя"|add_class:"form-control" }}
                     </div>
                     <div class="form-group">
                         <label for="{{ profile_form.surname.id_for_label }}">Фамилия</label>
-                        <input class="form-control" placeholder="Ваша фамилия" {{ profile_form.surname }}
+                        {{ profile_form.surname|attr:"placeholder:Ваша фамилия"|add_class:"form-control" }}
                     </div>
                     <div class="form-group">
                         <label for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>
-                        <input class="form-control" placeholder="Ваше отчество" {{ profile_form.patronymic }}
+                        {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|add_class:"form-control" }}
                     </div>
                     <hr>
                     <div class="form-group">
                         <label for="{{ profile_form.city.id_for_label }}">Город</label>
-                        <input class="form-control" placeholder="Ваш город" {{ profile_form.city }}
+                        {{ profile_form.city|attr:"placeholder:Ваш город"|add_class:"form-control" }}
                     </div>
                     <hr>
                     <div style="text-align: right">
@@ -34,7 +56,6 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-4"></div>
     </div>
 
 {% endblock %}
