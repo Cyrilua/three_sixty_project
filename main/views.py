@@ -300,7 +300,6 @@ def create_team(request):
         'team_form': TeamForm()
     }
     if request.method == "POST":
-
         team_form = TeamForm(request.POST)
         if team_form.is_valid():
             new_team = team_form.save(commit=False)
@@ -312,7 +311,7 @@ def create_team(request):
         profile.groups.add()
         # Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
-    return render(request, 'main/add_new_team.html', {})
+    return render(request, 'main/add_new_team.html', args)
 
 
 def connect_to_team(request):
