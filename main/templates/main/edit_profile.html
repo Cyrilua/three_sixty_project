@@ -4,8 +4,8 @@
 
 {% load widget_tweaks %}
 
-{% block sidebar-nav-items %}
-    {% include 'main/menu.html' with menu_settings="active" only %}
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_settings="active" only %}
 {% endblock %}
 
 
