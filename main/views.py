@@ -80,7 +80,7 @@ def get_user_profile(request):
     return Profile.objects.get(user=user)
 
 
-def change_user_profile_test(request):
+def edit_profile(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -88,12 +88,6 @@ def change_user_profile_test(request):
         return redirect('/')
     args = {}
     profile = get_user_profile(request)
-    args['profile_form'] = ProfileForm({
-        'name': profile.name,
-        'surname': profile.surname,
-        'patronymic': profile.patronymic,
-        'city': profile.city,
-    })
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
@@ -102,8 +96,14 @@ def change_user_profile_test(request):
             profile.surname = request.POST.get('surname', '')
             profile.city = request.POST.get('city', '')
             profile.save()
-            return redirect('/')
+    args['profile_form'] = ProfileForm({
+        'name': profile.name,
+        'surname': profile.surname,
+        'patronymic': profile.patronymic,
+        'city': profile.city,
+    })
     args['title'] = "Редактирование профия"
+    args['profile'] = profile
     return render(request, 'main/edit_profile.html', args)
 
 

@@ -11,7 +11,7 @@ urlpatterns = [
     path('communications/', views.groups_view, name='groups'),
     path('groups/<int:group_id>/', views.group_user_view, name='group_user_view'),
     path('register/', views.user_register, name='register'),
-    path('edit/', views.change_user_profile_test, name='edit'),
+    path('edit/', views.edit_profile, name='edit'),
 
     path('other_user/<int:profile_id>/', views.other_user_view, name='other_user_view'),
     path('add_company_test/', views.add_company_test, name='add_company'),
