@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm
+from .forms import ProfileForm, CompanyForm, TeamForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll
 import re
@@ -295,20 +295,36 @@ def create_team(request):
         return redirect('/')
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
+    args = {
+        'title': 'Создание новой группы',
+        'team_form': TeamForm()
+    }
     if request.method == "POST":
+
+        #TODO раскомментировать, когда начнется использование формы
+        #team_form = TeamForm(request.POST)
+        #if team_form.is_valid():
+        #    new_team = team_form.save(commit=False)
+        #    new_team.owner = user
+        #    new_team.key = uuid.uuid4().__str__()
+        #    new_team.save()
+
+        #TODO закомментировать, когда начнется использование формы
+        ######
         new_group_name = request.POST.get('name', '')
-        new_group = Group(
+        new_team = Group(
             name=new_group_name,
             owner=user,
             key=uuid.uuid4().__str__()
         )
-        new_group.save()
+        new_team.save()
+        ######
 
-        profile.groups.add(new_group)
+        profile.groups.add(new_team)
         profile.groups.add()
         # Не плохо было бы сразу направлять на страницу группы
         return redirect('/')
-    return render(request, 'main/add_new_team.html', {'title': 'Создание новой группы'})
+    return render(request, 'main/add_new_team.html', {})
 
 
 def connect_to_team(request):
