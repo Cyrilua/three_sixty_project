@@ -14,7 +14,7 @@ urlpatterns = [
     path('edit/', views.edit_profile, name='edit'),
 
     path('other_user/<int:profile_id>/', views.other_user_view, name='other_user_view'),
-    path('add_company_test/', views.add_company_test, name='add_company'),
+    path('add_company_test/', views.add_company, name='add_company'),
     path('connect_to_company_test/', views.connect_to_company, name='connect_to_company'),
     path('get_all_companies_users/', views.get_all_users_in_company, name='get_all_companies_users'),
     path('add_new_platform/', views.add_new_platform, name='add_new_platform'),

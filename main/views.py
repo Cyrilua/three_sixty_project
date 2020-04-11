@@ -10,9 +10,6 @@ import re
 
 
 def user_view(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {"title": "Мой профиль"}
@@ -81,9 +78,6 @@ def get_user_profile(request):
 
 
 def edit_profile(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {}
@@ -108,11 +102,9 @@ def edit_profile(request):
 
 
 def add_new_platform(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+    args = {'title': 'Добавление новой платформы'}
     if request.method == "POST":
         new_platform = request.POST.get("platform", '').lower()
         try:
@@ -122,17 +114,15 @@ def add_new_platform(request):
             platform.save()
             return redirect('/')
         else:
-            return render(request, 'main/error.html', {'error': "Эта платформа уже существует",
-                                                       'title': "Ошибка"})
-    return render(request, 'main/add_new_platform.html', {'title': 'Добавление новой платформы'})
+            args['error'] = "Эта платформа уже существует"
+            return render(request, 'main/add_new_platform.html', args)
+    return render(request, 'main/add_new_platform.html', args)
 
 
 def add_new_position(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+    args = {'title': 'Добавление новой должности'}
     if request.method == "POST":
         new_position = request.POST.get("position", '').lower()
         try:
@@ -142,25 +132,25 @@ def add_new_position(request):
             position.save()
             return redirect('/')
         else:
-            return render(request, 'main/error.html', {'error': "Эта должность уже существует",
-                                                       'title': "Ошибка"})
-    return render(request, 'main/add_new_position.html', {'title': 'Добавление новой должности'})
+            args['error'] = "Эта должность уже существует"
+            return render(request, 'main/add_new_position.html', args)
+    return render(request, 'main/add_new_position.html', args)
 
 
-def add_company_test(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
+def add_company(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
 
-    if profile.company is not None:
-        #TODO Сделать вывод ошибки
-        return redirect('/')
+    args = {'title': "Создание компании"}
 
-    args = {'company_form': CompanyForm()}
+    args['company_form'] = CompanyForm()
+
+    if profile.company is not None:
+        args['error'] = "Пользователь уже состоит в компании"
+        return render(request, 'main/add_new_company.html', args)
+
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
         if company_form.is_valid():
@@ -175,37 +165,30 @@ def add_company_test(request):
             return redirect('/')
         else:
             args['company_form'] = company_form
-    args['title'] = "Создание компании"
     return render(request, 'main/add_new_company.html', args)
 
 
 def connect_to_company(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     profile = get_user_profile(request)
+    args = {'company_form': CompanyForm(),
+            'title': "Добавление участников"}
 
-    if profile.company is not None:
-        #TODO Сделать вывод ошибки
-        return redirect('/')
-
-    args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
         except:
-            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
         else:
             if profile.company is not None:
-                return render(request, 'main/error.html', {'error': "Данный пользователь уже состоит в компании"})
+                args['error'] = "Данный пользователь уже состоит в компании"
+                return render(request, 'main/connect_to_company.html', args)
             profile.company = company
             profile.save()
             return redirect('/')
-    args['title'] = "Добавление участников"
     return render(request, 'main/connect_to_company.html', args)
 
 
@@ -213,14 +196,25 @@ def get_all_users_in_company(request):
     exception_if_user_not_autinficated(request)
     profile = get_user_profile(request)
     company = profile.company
+    args = {"title": "Все пользователи компании"}
     try:
         users = company.profile_set.all()
     except:
-        return render(request, 'main/error.html', {'error': "Пользователь не состоит в компании",
-                                                   'title': "Ошибка"})
+        args['error'] = "Пользователь не состоит в компании"
+        return render(request, 'main/users_company.html', args)
     else:
-        # return render(request, 'main/some_file.html', {'users': users})
+        args['user'] = users
+        return render(request, 'main/users_company.html', args)
+
+
+def company_view(request):
+    if auth.get_user(request).is_anonymous:
         return redirect('/')
+    profile = get_user_profile(request)
+    company = profile.company
+    if company is None:
+        pass
+
 
 
 # def index_view(request):
@@ -233,14 +227,17 @@ def get_all_users_in_company(request):
 def user_register(request):
     if auth.get_user(request).is_authenticated:
         return redirect('/profile')
-    args = {'user_form': UserCreationForm(), 'profile_form': ProfileForm()}
-    if request.method == 'POST':
 
+    args = {'user_form': UserCreationForm(),
+            'profile_form': ProfileForm(),
+            'title': "Регистрация"}
+
+    if request.method == 'POST':
         post = copy.deepcopy(request.POST)
         post['username'] = post['username'].lower()
-
         user_form = UserCreationForm(post)
         profile_form = ProfileForm(post)
+
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
@@ -250,23 +247,24 @@ def user_register(request):
 
             # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
             auth.login(request, user)
-
             return redirect('/')
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
-    args['title'] = "Регистрация"
     return render(request, 'main/register.html', args)
 
 
 def user_login(request):
     if auth.get_user(request).is_authenticated:
         return redirect('/profile')
+
     args = {'title': "Вход"}
+
     if request.POST:
         username = request.POST.get("username", '').lower()
         password = request.POST.get("password", '')
         user = auth.authenticate(username=username, password=password)
+
         if user is not None:
             auth.login(request, user)
             return redirect('/profile')
@@ -278,9 +276,6 @@ def user_login(request):
 
 
 def user_logout(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     auth.logout(request)
@@ -288,64 +283,57 @@ def user_logout(request):
 
 
 def create_team(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+
     args = {
         'title': 'Создание новой группы',
         'team_form': TeamForm()
     }
+
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+
     if request.method == "POST":
         team_form = TeamForm(request.POST)
+
         if team_form.is_valid():
             new_team = team_form.save(commit=False)
             new_team.owner = user
             new_team.key = uuid.uuid4().__str__()
             new_team.save()
 
-        profile.groups.add(new_team)
-        profile.groups.add()
-        # Не плохо было бы сразу направлять на страницу группы
+            profile.groups.add(new_team)
+            profile.groups.add()
         return redirect('/')
     return render(request, 'main/add_new_team.html', args)
 
 
 def connect_to_team(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    args = {'title': 'Присоединиться к комманде'}
     profile = get_user_profile(request)
+
     if request.method == "POST":
         try:
             key_group = request.POST.get('key', '')
             group = Group.objects.get(key=key_group)
             if group in profile.groups.all():
-                return render(request, 'main/connect_to_team.html', {
-                    'title': 'Присоединиться к группе',
-                    'error': "Пользователь уже состоит в этой команде"
-                })
+                args['error'] = "Пользователь уже состоит в этой команде"
+                return render(request, 'main/connect_to_team.html', args)
         except:
-            return render(request, 'main/connect_to_team.html', {
-                'title': 'Присоединиться к группе',
-                'error': "Ключ не существует или введен неверно"
-                                                                 })
+            args['error'] = "Ключ не существует или введен неверно"
+            return render(request, 'main/connect_to_team.html', args)
         else:
             profile.groups.add(group)
             profile.save()
             return redirect('/')
-    return render(request, 'main/connect_to_team.html', {'title': 'Присоединиться к группе'})
+    return render(request, 'main/connect_to_team.html', args)
 
 
 def teams_view(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
@@ -365,50 +353,54 @@ def teams_view(request):
 
 
 def team_user_view(request, group_id):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
+    args = {'title': "Просмотр пользователей группы"}
+
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    group = Group.objects.get(id=group_id)
-    print(group)
-    users = group.profile_set.all()
-    return render(request, 'main/group_user.html', {'users': users})
+    try:
+        group = Group.objects.get(id=group_id)
+    except:
+        args['error'] = "Данной группы не существует"
+        return render(request, 'main/group_user.html', args)
+
+    args['users'] = group.profile_set.all()
+    return render(request, 'main/group_user.html', args)
 
 
 def add_new_question(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    args = {'title': "Добавить новый вопрос"}
+
     if request.method == "POST":
         new_question = request.POST.get('question', '').lower()
         try:
-            question = Questions.objecte.get(question=new_question)
+           Questions.objecte.get(question=new_question)
         except:
             question = Questions(question=new_question)
             question.save()
+            #TODO Перенаправлять на нужную страницу
+            return redirect('/')
         else:
-            return render(request, 'main/error.html', {'error': "Вопрос уже существует"})
-    return render(request, 'main/new_question', {'title': "Добавить новый вопрос"})
+            args['title'] = "Вопрос уже существует"
+            return render(request, 'main/new_question.html', args)
+    return render(request, 'main/new_question.html', args)
 
 
 def find_question(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    args = {'title': "Поиск вопроса"}
+
     if request.method == "POST":
         required_question = request.POST.get('question', '')
         clear_request = clear_find_request(required_question)
         result = find_result(clear_request)
-        return render(request, 'main/find_questions.html', {
-            'title': "Поиск вопроса",
-            'questions': result
-        })
-    return render(request, 'main/find_questions.html', {'title': "Поиск вопроса"})
+        args['questions'] = result
+        return render(request, 'main/find_questions.html', args)
+    return render(request, 'main/find_questions.html', args)
 
 
 def clear_find_request(question):
