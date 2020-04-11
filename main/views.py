@@ -18,7 +18,7 @@ def user_view(request):
     args = {"title": "Мой профиль"}
     if auth.get_user(request).is_authenticated:
         args['profile'] = get_user_profile(request)
-    return render(request, 'main/profile.html', args)
+    return render(request, 'main/user.html', args)
 
 
 def other_user_view(request, profile_id):
@@ -223,7 +223,7 @@ def get_all_users_in_company(request):
 
 def user_register(request):
     if auth.get_user(request).is_authenticated:
-        return redirect('/profile')
+        return redirect('/user')
     args = {'user_form': UserCreationForm(), 'profile_form': ProfileForm()}
     if request.method == 'POST':
 
@@ -252,7 +252,7 @@ def user_register(request):
 
 def user_login(request):
     if auth.get_user(request).is_authenticated:
-        return redirect('/profile')
+        return redirect('/user')
     args = {'title': "Вход"}
     if request.POST:
         username = request.POST.get("username", '').lower()
@@ -260,7 +260,7 @@ def user_login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/profile')
+            return redirect('/user')
         else:
             args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
@@ -337,7 +337,7 @@ def groups_view(request):
         for j in users:
             print('    ' + j.__str__())
     ####
-    return render(request, 'main/communications.html', {
+    return render(request, 'main/communication.html', {
         'title': "Группы",
         'teams': teams,
         'profile': profile,
