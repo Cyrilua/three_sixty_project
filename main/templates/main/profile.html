@@ -76,7 +76,10 @@
                 </div>
             {% endblock %}
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-2">
+            {% block right-sidebar-nav %}
+            {% endblock %}
+        </div>
     </div>
 
 {% endblock %}
