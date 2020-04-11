@@ -1,0 +1,18 @@
+<div class="navbar-light position-fixed">
+    <ul class="navbar-nav flex-column">
+        {% block sidebar-nav-items %}
+            <li class="{{ menu_profile }} sidebar-user-item">
+                <a class="nav-link" href="{% url 'main:profile' %}" style="">Профиль</a>
+            </li>
+            <li class="{{ menu_notifications }} sidebar-user-item">
+                <a class="nav-link" href="#">Уведомления</a>
+            </li>
+            <li class="{{ menu_communications }} sidebar-user-item">
+                <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
+            </li>
+            <li class="{{ menu_settings }} sidebar-user-item">
+                <a class="nav-link" href="#">Настройки</a>
+            </li>
+        {% endblock %}
+    </ul>
+</div>
