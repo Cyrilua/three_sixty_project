@@ -137,7 +137,7 @@ def add_company(request):
             profile.company = company
             profile.save()
 
-            return redirect('/')
+            return redirect('/communications/')
         else:
             args['company_form'] = company_form
     return render(request, 'main/add_new_company.html', args)
@@ -163,7 +163,7 @@ def connect_to_company(request):
                 return render(request, 'main/connect_to_company.html', args)
             profile.company = company
             profile.save()
-            return redirect('/')
+            return redirect('/communications/')
     return render(request, 'main/connect_to_company.html', args)
 
 
@@ -189,7 +189,6 @@ def company_view(request):
     company = profile.company
     if company is None:
         pass
-
 
 
 # def index_view(request):
@@ -280,7 +279,7 @@ def create_team(request):
 
             profile.groups.add(new_team)
             profile.groups.add()
-        return redirect('/')
+        return redirect('/communications/')
     return render(request, 'main/add_new_team.html', args)
 
 
@@ -304,7 +303,7 @@ def connect_to_team(request):
         else:
             profile.groups.add(group)
             profile.save()
-            return redirect('/')
+            return redirect('/communications/')
     return render(request, 'main/connect_to_team.html', args)
 
 
@@ -422,11 +421,9 @@ def poll_view(request, pool_id):
 
 
 def create_pool(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
     user = auth.get_user(request)
     poll = Poll()
     poll.initiator = user
