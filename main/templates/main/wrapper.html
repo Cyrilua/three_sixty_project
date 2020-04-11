@@ -59,30 +59,9 @@
         </g>
     </svg>
     </a>
-    <div class='navbar-nav ml-auto' style="margin-right: 25px">
-        <ul class="navbar-nav bd-navbar-nav flex-row">
-
-
-            {% if user.is_authenticated %}
-                <li class="nav-item, active">
-                    {#                        <a class="nav-link" href="{% url 'main:user' %}">{{ profile.name }} {{ profile.surname }}</a>#}
-                    <a class="nav-link" href="{% url 'main:user' %}">Мой профиль</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:logout' %}">Выход</a>
-                </li>
-            {% else %}
-                {% block nav-items %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:login' %}">Вход</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:register' %}">Регистрация</a>
-                    </li>
-                {% endblock %}
-            {% endif %}
-        </ul>
-    </div>
+    {% block header-nav %}
+        {% include 'main/includes/header_nav.html' %}
+    {% endblock %}
     </div>
 </header>
 

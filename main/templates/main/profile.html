@@ -2,32 +2,19 @@
 
 {% load static %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
     <div class="row">
         <div class="col-md-2" style="padding-left: 25px;">
-            <div class="navbar-light position-fixed">
-                <ul class="navbar-nav flex-column">
-                    {% block sidebar-nav-items %}
-                        <li class="active sidebar-user-item">
-                            <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
-                        </li>
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="#">Уведомления</a>
-                        </li>
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
-                        </li>
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="#">Настройки</a>
-                        </li>
-                    {% endblock %}
-                </ul>
-            </div>
+            {% block sidebar-nav %}
+                {% include 'main/includes/menu.html' with menu_profile="active" only %}
+            {% endblock %}
         </div>
-        <div class="col-md-8">
-        {% block small-content %}
 
+        <div class="col-md-8">
+            {% block profile-content %}
                 <div class="row">
                     <!-- Профиль пользователя -->
                     <div class="col-md-3" style="padding-right: 25px">
@@ -87,10 +74,12 @@
                         </div>
                     </div>
                 </div>
-        {% endblock %}
-    </div>
-    <div class="col-md-2">
-    </div>
+            {% endblock %}
+        </div>
+        <div class="col-md-2">
+            {% block right-sidebar-nav %}
+            {% endblock %}
+        </div>
     </div>
 
 {% endblock %}
