@@ -104,7 +104,7 @@ def change_user_profile_test(request):
             profile.save()
             return redirect('/')
     args['title'] = "Редактирование профия"
-    return render(request, 'main/change_user_profile.html', args)
+    return render(request, 'main/edit_profile.html', args)
 
 
 def add_new_platform(request):
