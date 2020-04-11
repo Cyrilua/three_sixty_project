@@ -1,15 +1,15 @@
 <div class="navbar-light position-fixed">
     <ul class="navbar-nav flex-column">
-        <li class="{{ menu_profile }} sidebar-user-item">
+        <li class="{{ menu_profile }} user-sidebar-item">
             <a class="nav-link" href="{% url 'main:profile' %}" style="">Профиль</a>
         </li>
-        <li class="{{ menu_notifications }} sidebar-user-item">
+        <li class="{{ menu_notifications }} user-sidebar-item">
             <a class="nav-link" href="#">Уведомления</a>
         </li>
-        <li class="{{ menu_communications }} sidebar-user-item">
+        <li class="{{ menu_communications }} user-sidebar-item">
             <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
         </li>
-        <li class="{{ menu_settings }} sidebar-user-item">
+        <li class="{{ menu_settings }} user-sidebar-item">
             <a class="nav-link" href="{% url 'main:edit' %}">Настройки</a>
         </li>
     </ul>

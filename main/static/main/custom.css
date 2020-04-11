@@ -83,16 +83,29 @@ h1, h2, h3, h4, h5, h6 {
 .logo:hover{
 }
 
-.sidebar-user-item {
+.user-sidebar-item {
     display: block;
     width: 150px;
     background: transparent;
     padding-left: 10px;
     border-radius: 5px;
     margin-bottom: 5px;
-
 }
 
-.sidebar-user-item:hover{
+.user-sidebar-item:hover{
    background: #FAFAFA;
+}
+
+.profile-footer-item {
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 5px;
+}
+
+.footer-link {
+    font-size: 10pt;
+    display: block;
+}
+
+.footer-link:hover {
 }

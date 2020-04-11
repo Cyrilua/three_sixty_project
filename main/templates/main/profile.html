@@ -11,6 +11,8 @@
             {% block sidebar-nav %}
                 {% include 'main/includes/menu.html' with menu_profile="active" only %}
             {% endblock %}
+
+            {% include 'main/includes/profile_footer.html' %}
         </div>
 
         <div class="col-md-8">
@@ -76,10 +78,13 @@
                 </div>
             {% endblock %}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" style="padding-right: 25px;">
             {% block right-sidebar-nav %}
             {% endblock %}
         </div>
     </div>
 
+{% endblock %}
+
+{% block footer %}
 {% endblock %}
