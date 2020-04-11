@@ -27,37 +27,13 @@ def other_user_view(request, profile_id):
         'name': profile.name,
         'surname': profile.surname,
         'patronymic': profile.patronymic,
+        'groups': profile.groups.all(),
+        'position': profile.position.name,
+        'company': profile.company.name,
+        'platform': profile.platform.name
     }
 
-    try:
-        groups = profile.groups.all()
-    except:
-        args['groups'] = []
-    else:
-        args['groups'] = groups
-
-    try:
-        position = profile.position.name
-    except:
-        args['position'] = ''
-    else:
-        args['position'] = position
-
-    try:
-        company = profile.company.name
-    except:
-        args['company'] = ''
-    else:
-        args['company'] = company
-
-    try:
-        platform = profile.platform.name
-    except:
-        args['platform'] = ''
-    else:
-        args['platform'] = platform
-
-    return render(request, 'main/other_user.html', args)
+    return render(request, "main/other_profile_view.html", args)
 
 
 def exception_if_user_not_autinficated(request):
@@ -143,9 +119,8 @@ def add_company(request):
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
 
-    args = {'title': "Создание компании"}
-
-    args['company_form'] = CompanyForm()
+    args = {'title': "Создание компании",
+            'company_form': CompanyForm()}
 
     if profile.company is not None:
         args['error'] = "Пользователь уже состоит в компании"
