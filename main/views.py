@@ -153,18 +153,22 @@ def add_company_test(request):
     #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+    user = auth.get_user(request)
+    profile = Profile.objects.get(user=user)
+
+    if profile.company is not None:
+        #TODO Сделать вывод ошибки
+        return redirect('/')
 
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
         if company_form.is_valid():
             company = company_form.save(commit=False)
-            user = auth.get_user(request)
             company.owner = user
             company.key = uuid.uuid4().__str__()
             company.save()
 
-            profile = Profile.objects.get(user=user)
             profile.company = company
             profile.save()
 
@@ -183,6 +187,11 @@ def connect_to_company(request):
         return redirect('/')
 
     profile = get_user_profile(request)
+
+    if profile.company is not None:
+        #TODO Сделать вывод ошибки
+        return redirect('/')
+
     args = {'company_form': CompanyForm()}
     if request.method == 'POST':
         try:
@@ -278,7 +287,7 @@ def user_logout(request):
     return redirect('/')
 
 
-def create_group(request):
+def create_team(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -287,7 +296,7 @@ def create_group(request):
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
     if request.method == "POST":
-        new_group_name = request.POST.get('name_company', '')
+        new_group_name = request.POST.get('name', '')
         new_group = Group(
             name=new_group_name,
             owner=user,
@@ -302,7 +311,7 @@ def create_group(request):
     return render(request, 'main/add_new_team.html', {'title': 'Создание новой группы'})
 
 
-def connect_to_group(request):
+def connect_to_team(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -313,8 +322,16 @@ def connect_to_group(request):
         try:
             key_group = request.POST.get('key', '')
             group = Group.objects.get(key=key_group)
+            if group in profile.groups.all():
+                return render(request, 'main/connect_to_team.html', {
+                    'title': 'Присоединиться к группе',
+                    'error': "Пользователь уже состоит в этой команде"
+                })
         except:
-            return render(request, 'main/error.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/connect_to_team.html', {
+                'title': 'Присоединиться к группе',
+                'error': "Ключ не существует или введен неверно"
+                                                                 })
         else:
             profile.groups.add(group)
             profile.save()
@@ -322,7 +339,7 @@ def connect_to_group(request):
     return render(request, 'main/connect_to_team.html', {'title': 'Присоединиться к группе'})
 
 
-def groups_view(request):
+def teams_view(request):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
@@ -344,7 +361,7 @@ def groups_view(request):
     })
 
 
-def group_user_view(request, group_id):
+def team_user_view(request, group_id):
     # error = exception_if_user_not_autinficated(request)
     # if error is not None:
     #     return error
