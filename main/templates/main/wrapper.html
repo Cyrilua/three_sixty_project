@@ -63,7 +63,7 @@
         <ul class="navbar-nav bd-navbar-nav flex-row">
             {% if user.is_authenticated %}
                 <li class="nav-item, active">
-                    <a class="nav-link" href="{% url 'main:user' %}">{{ profile.name }} {{ profile.surname }}</a>
+                    <a class="nav-link" href="{% url 'main:profile' %}">{{ profile.name }} {{ profile.surname }}</a>
 {#                    <a class="nav-link" href="{% url 'main:user' %}">Мой профиль</a>#}
                 </li>
                 <li class="nav-item">
