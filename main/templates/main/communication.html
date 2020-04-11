@@ -1,138 +1,134 @@
-{% extends 'main/wrapper.html' %}
+{% extends 'main/user.html' %}
 
 {% load static %}
 
-{% block content %}
+{% load widget_tweaks %}
+
+{% block sidebar-nav-items %}
+
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
+    </li>
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="#">Уведомления</a>
+    </li>
+    <li class="active sidebar-user-item">
+        <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
+    </li>
+    <li class="sidebar-user-item">
+        <a class="nav-link" href="#">Настройки</a>
+    </li>
+
+{% endblock %}
+
+
+{% block profile-content %}
 
     <div class="row">
-        <div class="col-md-2" style="padding-left: 25px;">
-            <div class="navbar-light position-fixed">
-                <ul class="navbar-nav flex-column">
-                    {% block sidebar-nav-items %}
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="{% url 'main:user' %}" style="">Профиль</a>
-                        </li>
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="#">Уведомления</a>
-                        </li>
-                        <li class="active sidebar-user-item">
-                            <a class="nav-link" href="{% url 'main:groups' %}">Круги общения</a>
-                        </li>
-                        <li class="sidebar-user-item">
-                            <a class="nav-link" href="#">Настройки</a>
-                        </li>
-                    {% endblock %}
-                </ul>
+        <!-- Профиль пользователя -->
+        <div class="col-md-3" style="padding-right: 25px">
+            <!-- Аватар и кнопки -->
+            <div class="row">
+                <!-- Аватар -->
+                <div class="col-12 rounded-block"
+                     style="margin-bottom: 10px; height: 250px">
+                    <h3>Аватарка</h3>
+                </div>
             </div>
-        </div>
-        <div class="col-md-8">
-            {% block small-content %}
-
-                <div class="row">
-                    <!-- Профиль пользователя -->
-                    <div class="col-md-3" style="padding-right: 25px">
-                        <!-- Аватар и кнопки -->
-                        <div class="row">
-                            <!-- Аватар -->
-                            <div class="col-12 rounded-block"
-                                 style="margin-bottom: 10px; height: 250px">
-                                <h3>Аватарка</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- Кнопки -->
-                            <div class="col-12 rounded-block">
-                                <h3>Конопочки</h3>
-                                <p>
-                                    <a href="{% url 'main:connect_to_company' %}">Присоединиться к компании</a><br>
-                                    <a href="{% url 'main:connect_to_group' %}">Присоединиться к команде</a><br>
-                                    <a href="#">Выбрать платформу</a><br>
-                                    <a href="#">Выбрать должность</a>
-                                </p>
-                                <hr>
-                                <p>
-                                    <a href="{% url 'main:add_company' %}">Создать компанию</a><br>
-                                    <a href="{% url 'main:create_group' %}">Создать команду</a><br>
-                                </p>
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#connectToCompany" disabled>Присоединиться к компании
-                                </button>
-                                <div class="modal fade" id="connectToCompany" tabindex="-1" role="dialog"
-                                     aria-labelledby="connectToCompany" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="connectToCompanyTitle">Присоединение к компании</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post" action="{% url 'main:connect_to_company' %}">
-                                                    {% csrf_token %}
-                                                    <div class="form-group">
-                                                        <label for="connectToCompany">Ключ</label>
-                                                        <input class="form-control" type="text" id="connectToCompany">
-                                                    </div>
-                                                    <hr>
-                                                    <input class="btn btn-primary" type="submit" value="Присоединиться">
-                                                </form>
-                                            </div>
+            <div class="row">
+                <!-- Кнопки -->
+                <div class="col-12 rounded-block">
+                    <h3>Конопочки</h3>
+                    <p>
+                        <a href="{% url 'main:connect_to_company' %}">Присоединиться к компании</a><br>
+                        <a href="{% url 'main:connect_to_group' %}">Присоединиться к команде</a><br>
+                        <a href="#">Выбрать платформу</a><br>
+                        <a href="#">Выбрать должность</a>
+                    </p>
+                    <hr>
+                    <p>
+                        <a href="{% url 'main:add_company' %}">Создать компанию</a><br>
+                        <a href="{% url 'main:create_group' %}">Создать команду</a><br>
+                    </p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#connectToCompany" disabled>Присоединиться к компании
+                    </button>
+                    <div class="modal fade" id="connectToCompany" tabindex="-1" role="dialog"
+                         aria-labelledby="connectToCompany" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="connectToCompanyTitle">Присоединение к компании</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="{% url 'main:connect_to_company' %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="connectToCompany">Ключ</label>
+                                            <input class="form-control" type="text" id="connectToCompany">
                                         </div>
-                                    </div>
+                                        <hr>
+                                        <input class="btn btn-primary" type="submit" value="Присоединиться">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
-                        <div class="row">
-                            <!-- Инфо -->
-                            <div class="col-12 rounded-block"
-                                 style="margin-bottom: 10px; height: 200px">
-                                <h3>{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</h3>
-                                <hr>
-                                <h4>Компания</h4>
-                                <p>
-                                    {% if profile.company %}
-                                        {{ profile.company }}
-                                    {% else %}
-                                        Компания отсутствует
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- Рейтинг -->
-                            <div class="col-12 rounded-block"
-                                 style="margin-bottom: 10px; height: 100px">
-                                <h4>Платформа</h4>
-                                <p>
-                                    {% if profile.platform %}
-                                        {{ profile.platform }}
-                                    {% else %}
-                                        Платформа отсутствует
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- Последние оценки -->
-                            <div class="col-12 rounded-block"
-                                 style="height: 100px; margin-bottom: 10px">
-                                <h4>Должность</h4>
-                                <p>
-                                    {% if profile.position %}
-                                        {{ profile.position }}
-                                    {% else %}
-                                        Должность отсутствует
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-12 rounded-block"
-                                 style="height: 100px; margin-bottom: 10px">
-                                <h4>Команды</h4>
-                                <p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <!-- Инфо -->
+                <div class="col-12 rounded-block"
+                     style="margin-bottom: 10px; height: 200px">
+                    <h3>{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</h3>
+                    <hr>
+                    <h4>Компания</h4>
+                    <p>
+                        {% if profile.company %}
+                            {{ profile.company }}
+                        {% else %}
+                            Компания отсутствует
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Рейтинг -->
+                <div class="col-12 rounded-block"
+                     style="margin-bottom: 10px; height: 100px">
+                    <h4>Платформа</h4>
+                    <p>
+                        {% if profile.platform %}
+                            {{ profile.platform }}
+                        {% else %}
+                            Платформа отсутствует
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Последние оценки -->
+                <div class="col-12 rounded-block"
+                     style="height: 100px; margin-bottom: 10px">
+                    <h4>Должность</h4>
+                    <p>
+                        {% if profile.position %}
+                            {{ profile.position }}
+                        {% else %}
+                            Должность отсутствует
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-12 rounded-block"
+                     style="height: 100px; margin-bottom: 10px">
+                    <h4>Команды</h4>
+                    <p>
 {#                                    {% if not profile.groups.count == 0 %}#}
 {#                                        {% for e in profile.groups %}#}
 {#                                            {{ e }}#}
@@ -140,18 +136,12 @@
 {#                                    {% else %}#}
 {#                                        Команды отсутствует#}
 {#                                    {% endif %}#}
-                                    {{ profile.groups }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        {{ profile.groups }}
+                    </p>
                 </div>
-            {% endblock %}
-        </div>
-        <div class="col-md-2">
+            </div>
         </div>
     </div>
 
 {% endblock %}
-
 
