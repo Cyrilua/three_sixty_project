@@ -337,7 +337,7 @@ def groups_view(request):
         for j in users:
             print('    ' + j.__str__())
     ####
-    return render(request, 'main/communication.html', {
+    return render(request, 'main/communications.html', {
         'title': "Группы",
         'teams': teams,
         'profile': profile,
