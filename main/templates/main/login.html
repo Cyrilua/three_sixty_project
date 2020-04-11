@@ -2,13 +2,8 @@
 
 {% load widget_tweaks %}
 
-{% block nav-items %}
-    <li class="nav-item active">
-        <a class="nav-link" href="{% url 'main:login' %}">Вход</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'main:register' %}">Регистрация</a>
-    </li>
+{% block header-nav %}
+    {% include 'main/includes/header_nav.html' with nav_login='active' only %}
 {% endblock %}
 
 {% block content %}
