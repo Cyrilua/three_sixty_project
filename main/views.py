@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm, FindQuestionsForm
+from .forms import ProfileForm, CompanyForm, TeamForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany
 import re
@@ -149,16 +149,13 @@ def connect_to_company(request):
 
     profile = get_user_profile(request)
     args = {'company_form': CompanyForm(),
-            'title': "Добавление участников",
-            'key_company_form': KeyCompanyForm()}
+            'title': "Добавление участников"}
 
     if profile.company is not None:
         args['error'] = "Данный пользователь уже состоит в компании"
         return render(request, 'main/connect_to_company.html', args)
 
     if request.method == 'POST':
-        key_company_form = KeyCompanyForm(request.POST)
-        #if key_company_form.is_valid():
         try:
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
