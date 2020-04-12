@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm, TeamForm
+from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm
 import copy, uuid
-from .models import Profile, Company, Platforms, Position, Group, Questions, Poll
+from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany
 import re
 
 
@@ -27,37 +27,13 @@ def other_user_view(request, profile_id):
         'name': profile.name,
         'surname': profile.surname,
         'patronymic': profile.patronymic,
+        'groups': profile.groups.all(),
+        'position': profile.position.name,
+        'company': profile.company.name,
+        'platform': profile.platform.name
     }
 
-    try:
-        groups = profile.groups.all()
-    except:
-        args['groups'] = []
-    else:
-        args['groups'] = groups
-
-    try:
-        position = profile.position.name
-    except:
-        args['position'] = ''
-    else:
-        args['position'] = position
-
-    try:
-        company = profile.company.name
-    except:
-        args['company'] = ''
-    else:
-        args['company'] = company
-
-    try:
-        platform = profile.platform.name
-    except:
-        args['platform'] = ''
-    else:
-        args['platform'] = platform
-
-    return render(request, 'main/other_user.html', args)
+    return render(request, "main/other_profile_view.html", args)
 
 
 def exception_if_user_not_autinficated(request):
@@ -143,9 +119,8 @@ def add_company(request):
     user = auth.get_user(request)
     profile = Profile.objects.get(user=user)
 
-    args = {'title': "Создание компании"}
-
-    args['company_form'] = CompanyForm()
+    args = {'title': "Создание компании",
+            'company_form': CompanyForm()}
 
     if profile.company is not None:
         args['error'] = "Пользователь уже состоит в компании"
@@ -162,7 +137,7 @@ def add_company(request):
             profile.company = company
             profile.save()
 
-            return redirect('/')
+            return redirect('/communications/')
         else:
             args['company_form'] = company_form
     return render(request, 'main/add_new_company.html', args)
@@ -174,26 +149,32 @@ def connect_to_company(request):
 
     profile = get_user_profile(request)
     args = {'company_form': CompanyForm(),
-            'title': "Добавление участников"}
+            'title': "Добавление участников",
+            'key_company_form': KeyCompanyForm()}
+
+    if profile.company is not None:
+        args['error'] = "Данный пользователь уже состоит в компании"
+        return render(request, 'main/connect_to_company.html', args)
 
     if request.method == 'POST':
-        try:
-            key_company = request.POST.get("key", '')
-            company = Company.objects.get(key=key_company)
-        except:
-            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
-        else:
-            if profile.company is not None:
-                args['error'] = "Данный пользователь уже состоит в компании"
-                return render(request, 'main/connect_to_company.html', args)
-            profile.company = company
-            profile.save()
-            return redirect('/')
+        key_company_form = KeyCompanyForm(request.POST)
+        if key_company_form.is_valid():
+            try:
+                key_company = request.POST.get("key", '')
+                company = Company.objects.get(key=key_company)
+            except:
+                return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
+            else:
+                profile.company = company
+                profile.save()
+                return redirect('/communications/')
     return render(request, 'main/connect_to_company.html', args)
 
 
 def get_all_users_in_company(request):
-    exception_if_user_not_autinficated(request)
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
     profile = get_user_profile(request)
     company = profile.company
     args = {"title": "Все пользователи компании"}
@@ -207,14 +188,65 @@ def get_all_users_in_company(request):
         return render(request, 'main/users_company.html', args)
 
 
+def add_position_in_company(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    args = {'title': "Добавление должности в компанию"}
+
+    if company is None:
+        args['error'] = "Пользователь не состоит в компании"
+        return render(request, 'main/add_new_position.html', args)
+
+    if request.method == "POST":
+        position_name = request.POST.get('position', '')
+        try:
+            position = Position.objects.get(name=position_name)
+        except:
+            position = Position(name=position_name)
+            position.save()
+
+        positions_in_company = PositionCompany.objects.filter(company=company)
+        for i in positions_in_company:
+            if i.position.id == position.id:
+                args['error'] = "Эта должность уже выбрана для этой компании"
+                return render(request, 'main/add_new_position.html', args)
+
+        position_in_company = PositionCompany()
+        position_in_company.position = position
+        position_in_company.company = company
+        position_in_company.save()
+
+        return redirect('/')
+    return render(request, 'main/add_new_position.html', args)
+
+
+
+
 def company_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
     profile = get_user_profile(request)
     company = profile.company
+    args = {'title': "Просмотр компании"}
+
     if company is None:
         pass
 
+    positions = company.positioncompany_set.all()
+    print(positions)
+    platform = company.platformcompany_set.all()
+    print(platform)
+    name = company.name
+    print(name)
+    owner = company.owner
+    print(owner)
+    key = company.key
+    print(key)
+    return redirect('/')
 
 
 # def index_view(request):
@@ -305,7 +337,7 @@ def create_team(request):
 
             profile.groups.add(new_team)
             profile.groups.add()
-        return redirect('/')
+        return redirect('/communications/')
     return render(request, 'main/add_new_team.html', args)
 
 
@@ -329,7 +361,7 @@ def connect_to_team(request):
         else:
             profile.groups.add(group)
             profile.save()
-            return redirect('/')
+            return redirect('/communications/')
     return render(request, 'main/connect_to_team.html', args)
 
 
@@ -447,11 +479,9 @@ def poll_view(request, pool_id):
 
 
 def create_pool(request):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
     user = auth.get_user(request)
     poll = Poll()
     poll.initiator = user
