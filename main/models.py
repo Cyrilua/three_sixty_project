@@ -37,14 +37,14 @@ class Company(models.Model):
 
 
 class PlatformCompany(models.Model):
-    name = models.ForeignKey('Platforms', on_delete=models.CASCADE)
+    platform = models.ForeignKey('Platforms', on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     class Meta:
         db_table = "Platforms in company"
 
     def __str__(self):
-        return '{} in company {}'.format(self.name, self.company)
+        return '{} in company {}'.format(self.platform, self.company)
 
 
 class Platforms (models.Model):

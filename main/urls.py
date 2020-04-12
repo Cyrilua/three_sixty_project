@@ -21,6 +21,7 @@ urlpatterns = [
     path('add_new_platform/', views.add_new_platform, name='add_new_platform'),
     path('add_new_position/', views.add_new_position, name='add_new_position'),
     path('add_new_position_in_company/', views.add_position_in_company, name="add_new_position_in_company"),
+    path('add_new_platform_in_company/', views.add_platform_in_company, name="add_new_platform_in_company"),
     path('create_group/', views.create_team, name='create_group'),
     path('connect_to_group/', views.connect_to_team, name='connect_to_group'),
     path('questions_search/', views.find_question, name='questions_search'),

@@ -223,7 +223,39 @@ def add_position_in_company(request):
     return render(request, 'main/add_new_position.html', args)
 
 
+def add_platform_in_company(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
 
+    args = {'title': "Добавление платформы в компанию"}
+    profile = get_user_profile(request)
+    company = profile.company
+
+    if company is None:
+        args['error'] = "Пользователь не состоит в компании"
+        return render(request, 'main/add_new_platform.html', args)
+
+    if request.method == "POST":
+        platform_name = request.POST.get('platform', '')
+        try:
+            platform = Position.objects.get(name=platform_name)
+        except:
+            platform = Platforms(name=platform_name)
+            platform.save()
+
+        platforms_in_company = PlatformCompany.objects.filter(company=company)
+        for i in platforms_in_company:
+            if i.position.id == platform.id:
+                args['error'] = "Эта платформа уже выбрана для этой компании"
+                return render(request, 'main/add_new_platform.html', args)
+
+        platform_in_company = PlatformCompany()
+        platform_in_company.platform = platform
+        platform_in_company.company = company
+        platform_in_company.save()
+
+        return redirect('/')
+    return render(request, 'main/add_new_platform.html', args)
 
 def company_view(request):
     if auth.get_user(request).is_anonymous:
@@ -236,10 +268,12 @@ def company_view(request):
     if company is None:
         pass
 
-    positions = company.positioncompany_set.all()
-    print(positions)
-    platform = company.platformcompany_set.all()
-    print(platform)
+    positions = PositionCompany.objects.filter(company=company)
+    for i in positions:
+        print("   " + i.__str__())
+    platform = PlatformCompany.objects.filter(company=company)
+    for i in platform:
+        print("   " + i.__str__())
     name = company.name
     print(name)
     owner = company.owner
