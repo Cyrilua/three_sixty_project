@@ -399,8 +399,8 @@ def find_question(request):
         clear_request = clear_find_request(required_question)
         result = find_result(clear_request)
         args['questions'] = result
-        return render(request, 'main/find_questions.html', args)
-    return render(request, 'main/find_questions.html', args)
+        return render(request, 'main/questions_search.html', args)
+    return render(request, 'main/questions_search.html', args)
 
 
 def clear_find_request(question):
