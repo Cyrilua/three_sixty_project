@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            <h1>Присоединение к компании</h1>
+            <h1>Поиск вопроса</h1>
             <div>
                 <h4 style="color: #b21f2d">Если есть ошибки : {{ error }}</h4>
             </div>
@@ -13,12 +13,27 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="key">Ваш вопрос</label>
-                        <input class="form-control" type="text" id="key" name="key">
+                        <label for="question">Ваш вопрос</label>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input class="form-control" type="text" id="question" name="question"
+                                       placeholder="Введите вопрос">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="btn btn-primary" type="submit" value="Поиск">
+                            </div>
+                        </div>
                     </div>
-                    <hr>
-                    <input class="btn btn-primary" type="submit" value="Присоединиться">
                 </form>
+            </div>
+            <hr>
+            <div>
+                <h5>Результаты поиска</h5>
+                <ul>
+                    {% for e in questions %}
+                        <li>{{ e }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
         <div class="col-md-2"></div>
