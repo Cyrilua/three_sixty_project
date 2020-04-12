@@ -123,8 +123,7 @@ def add_company(request):
             'company_form': CompanyForm()}
 
     if profile.company is not None:
-        args['error'] = "Пользователь уже состоит в компании"
-        return render(request, 'main/add_new_company.html', args)
+        return redirect('/communications/')
 
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
@@ -152,8 +151,7 @@ def connect_to_company(request):
             'title': "Добавление участников"}
 
     if profile.company is not None:
-        args['error'] = "Данный пользователь уже состоит в компании"
-        return render(request, 'main/connect_to_company.html', args)
+        return redirect('/communications/')
 
     if request.method == 'POST':
         try:
