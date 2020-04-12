@@ -19,3 +19,15 @@ class TeamForm(ModelForm):
     class Meta:
         model = Group
         fields = ('name',)
+
+
+class KeyCompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = ('key',)
+
+
+class KeyTeamForm(ModelForm):
+    class Meta:
+        model = Group
+        fields = ('key',)
