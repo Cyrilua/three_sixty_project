@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm
+from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm, FindQuestionsForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany
 import re
@@ -158,16 +158,16 @@ def connect_to_company(request):
 
     if request.method == 'POST':
         key_company_form = KeyCompanyForm(request.POST)
-        if key_company_form.is_valid():
-            try:
-                key_company = request.POST.get("key", '')
-                company = Company.objects.get(key=key_company)
-            except:
-                return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
-            else:
-                profile.company = company
-                profile.save()
-                return redirect('/communications/')
+        #if key_company_form.is_valid():
+        try:
+            key_company = request.POST.get("key", '')
+            company = Company.objects.get(key=key_company)
+        except:
+            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
+        else:
+            profile.company = company
+            profile.save()
+            return redirect('/communications/')
     return render(request, 'main/connect_to_company.html', args)
 
 
@@ -271,6 +271,7 @@ def user_register(request):
         profile_form = ProfileForm(post)
 
         if user_form.is_valid() and profile_form.is_valid():
+            print(request.POST.get('username', ''))
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
@@ -427,10 +428,11 @@ def find_question(request):
     args = {'title': "Поиск вопроса"}
 
     if request.method == "POST":
-        required_question = request.POST.get('question', '')
+        required_question = request.POST.get('key', '')
         clear_request = clear_find_request(required_question)
         result = find_result(clear_request)
         args['questions'] = result
+        print(result)
         return render(request, 'main/questions_search.html', args)
     return render(request, 'main/questions_search.html', args)
 

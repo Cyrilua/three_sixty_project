@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Profile, Company, Group
+from .models import Profile, Company, Group, Questions
 from django.contrib.auth.models import User
 
 
@@ -31,3 +31,9 @@ class KeyTeamForm(ModelForm):
     class Meta:
         model = Group
         fields = ('key',)
+
+
+class FindQuestionsForm(ModelForm):
+    class Meta:
+        model = Questions
+        fields = ('question',)
