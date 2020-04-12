@@ -116,14 +116,6 @@
                      style="height: 100px; margin-bottom: 10px">
                     <h4>Команды</h4>
                     <p>
-{#                        {% if not profile.groups.count == 0 %}#}
-{#                            {% for e in profile.groups %}#}
-{#                                {{ e }}#}
-{#                            {% endfor %}#}
-{#                        {% else %}#}
-{#                            Команды отсутствует#}
-{#                        {% endif %}#}
-{#                        {{ profile.groups }}#}
                         {% for e in teams %}
                             {{ e }}<br>
                         {% endfor %}
