@@ -44,7 +44,7 @@ class PlatformCompany(models.Model):
         db_table = "Platforms in company"
 
     def __str__(self):
-        return '{} in company {}'.format(self.platform, self.company)
+        return '{}'.format(self.platform)
 
 
 class Platforms (models.Model):
@@ -63,6 +63,9 @@ class PositionCompany (models.Model):
 
     class Meta:
         db_table = "Positions in company"
+
+    def __str__(self):
+        return '{}'.format(self.position)
 
 
 class Position(models.Model):

@@ -252,30 +252,27 @@ def add_platform_in_company(request):
         return redirect('/')
     return render(request, 'main/add_new_platform.html', args)
 
+
 def company_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     profile = get_user_profile(request)
     company = profile.company
-    args = {'title': "Просмотр компании"}
 
     if company is None:
-        pass
+        return redirect('/communications/')
 
-    positions = PositionCompany.objects.filter(company=company)
-    for i in positions:
-        print("   " + i.__str__())
-    platform = PlatformCompany.objects.filter(company=company)
-    for i in platform:
-        print("   " + i.__str__())
-    name = company.name
-    print(name)
-    owner = company.owner
-    print(owner)
-    key = company.key
-    print(key)
-    return redirect('/')
+    args = {
+        'title': "Просмотр компании",
+        'positions': PositionCompany.objects.filter(company=company),
+        'platform': PlatformCompany.objects.filter(company=company),
+        'name': company.name,
+        'owner': company.owner,
+        'key': company.key,
+        }
+
+    return render(request, 'main/company_view.html', args)
 
 
 # def index_view(request):
