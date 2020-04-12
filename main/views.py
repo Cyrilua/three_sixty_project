@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import auth
 
-from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm
+from .forms import ProfileForm, CompanyForm, TeamForm, KeyCompanyForm, KeyTeamForm, FindQuestionsForm
 import copy, uuid
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany
 import re
@@ -424,14 +424,20 @@ def find_question(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    args = {'title': "Поиск вопроса"}
+    args = {'title': "Поиск вопроса",
+            'find_questions_form': FindQuestionsForm()}
 
     if request.method == "POST":
-        required_question = request.POST.get('question', '')
-        clear_request = clear_find_request(required_question)
-        result = find_result(clear_request)
-        args['questions'] = result
-        return render(request, 'main/questions_search.html', args)
+        find_question_form = FindQuestionsForm(request.POST)
+        if find_question_form.is_valid():
+            required_question = request.POST.get('question', '')
+            clear_request = clear_find_request(required_question)
+            result = find_result(clear_request)
+            args['questions'] = result
+            return render(request, 'main/questions_search.html', args)
+        else:
+            args['error'] = "Введите корректный вопрос"
+            return render(request, 'main/questions_search.html', args)
     return render(request, 'main/questions_search.html', args)
 
 
