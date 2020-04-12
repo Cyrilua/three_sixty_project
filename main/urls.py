@@ -27,5 +27,6 @@ urlpatterns = [
     path('questions_search/', views.find_question, name='questions_search'),
     path('create_poll/', views.create_pool, name='create_pool'),
     path('view_poll/<int:id_pool>/', views.poll_view, name='view_poll'),
-    path('create_poll/<int:pool_id>/add_question', views.add_questions_in_pool, name='add_question_in_pool')
+    path('create_poll/<int:pool_id>/add_question', views.add_questions_in_pool, name='add_question_in_pool'),
+    path('add_new_question', views.add_new_question, name="add_new_question")
 ]

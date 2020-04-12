@@ -433,7 +433,7 @@ def add_new_question(request):
     args = {'title': "Добавить новый вопрос"}
 
     if request.method == "POST":
-        new_question = request.POST.get('question', '').lower()
+        new_question = clear_request(request.POST.get('question', '')).lower()
         try:
            Questions.objecte.get(question=new_question)
         except:
@@ -455,14 +455,14 @@ def find_question(request):
 
     if request.method == "POST":
         required_question = request.POST.get('question', '')
-        clear_request = clear_find_request(required_question)
-        result = find_result(clear_request)
+        question = clear_request(required_question)
+        result = find_result(question)
         args['questions'] = result
         return render(request, 'main/questions_search.html', args)
     return render(request, 'main/questions_search.html', args)
 
 
-def clear_find_request(question):
+def clear_request(question):
     new_s = re.sub('[^a-zA-Zа-яА-Я 0-9]+', '', question)
     return new_s
 

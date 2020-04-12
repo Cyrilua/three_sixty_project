@@ -1,0 +1,25 @@
+{% extends "main/wrapper.html" %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h1>Добавление нового вопроса</h1>
+
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="question">ID вопроса</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="введите новый вопрос"
+                               type="text"
+                               name="question" value="" id="question">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+{% endblock %}
