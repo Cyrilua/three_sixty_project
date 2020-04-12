@@ -158,16 +158,16 @@ def connect_to_company(request):
 
     if request.method == 'POST':
         key_company_form = KeyCompanyForm(request.POST)
-        if key_company_form.is_valid():
-            try:
-                key_company = request.POST.get("key", '')
-                company = Company.objects.get(key=key_company)
-            except:
-                return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
-            else:
-                profile.company = company
-                profile.save()
-                return redirect('/communications/')
+        #if key_company_form.is_valid():
+        try:
+            key_company = request.POST.get("key", '')
+            company = Company.objects.get(key=key_company)
+        except:
+            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
+        else:
+            profile.company = company
+            profile.save()
+            return redirect('/communications/')
     return render(request, 'main/connect_to_company.html', args)
 
 
@@ -271,6 +271,7 @@ def user_register(request):
         profile_form = ProfileForm(post)
 
         if user_form.is_valid() and profile_form.is_valid():
+            print(request.POST.get('username', ''))
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
@@ -424,20 +425,15 @@ def find_question(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    args = {'title': "Поиск вопроса",
-            'find_questions_form': FindQuestionsForm()}
+    args = {'title': "Поиск вопроса"}
 
     if request.method == "POST":
-        find_question_form = FindQuestionsForm(request.POST)
-        if find_question_form.is_valid():
-            required_question = request.POST.get('question', '')
-            clear_request = clear_find_request(required_question)
-            result = find_result(clear_request)
-            args['questions'] = result
-            return render(request, 'main/questions_search.html', args)
-        else:
-            args['error'] = "Введите корректный вопрос"
-            return render(request, 'main/questions_search.html', args)
+        required_question = request.POST.get('key', '')
+        clear_request = clear_find_request(required_question)
+        result = find_result(clear_request)
+        args['questions'] = result
+        print(result)
+        return render(request, 'main/questions_search.html', args)
     return render(request, 'main/questions_search.html', args)
 
 
