@@ -454,11 +454,10 @@ def find_question(request):
     args = {'title': "Поиск вопроса"}
 
     if request.method == "POST":
-        required_question = request.POST.get('key', '')
+        required_question = request.POST.get('question', '')
         clear_request = clear_find_request(required_question)
         result = find_result(clear_request)
         args['questions'] = result
-        print(result)
         return render(request, 'main/questions_search.html', args)
     return render(request, 'main/questions_search.html', args)
 
@@ -471,28 +470,23 @@ def clear_find_request(question):
 def find_result(question):
     # Не смог сделать уже реализованные решения, написал свое.
     # Потом, скорее всего, будет более оптимальное
-    questions = []
+    question = question.split(' ')
+    temp_result = []
     base_questions = Questions.objects.all()
-    for base_num in range(len(base_questions)):
-        temp_result = 0
+    for ques in base_questions:
+        number_matches = 0
+        split_base_ques = ques.question.split()
         for i in question:
-            base_question = base_questions[base_num].question.split()
-            if i in base_question:
-                temp_result += 1
-        questions.append((temp_result, base_num))
-    questions.sort()
-    result = []
-    number_questions = 10
-    for i in range(number_questions):
-        position = len(questions) - i - 1
-        result.append(base_questions[questions[position][1]].question)
+            if i in split_base_ques:
+                number_matches += 1
+        if number_matches > 0:
+            temp_result.append((number_matches, ques.id))
+    temp_result.sort()
+    result = [Questions.objects.get(id=i[1]) for i in temp_result]
     return result
 
 
 def poll_view(request, pool_id):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     poll = Poll.objects.get(id=pool_id)
@@ -520,9 +514,6 @@ def create_pool(request):
 
 
 def add_questions_in_pool(request, pool_id):
-    # error = exception_if_user_not_autinficated(request)
-    # if error is not None:
-    #     return error
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.method == 'POST':
