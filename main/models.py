@@ -27,6 +27,22 @@ class Profile (models.Model):
         return 'Profile for user {} {}'.format(self.name, self.surname)
 
 
+class ProfilePhoto (models.Model):
+    photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "Profile photo"
+
+    def __str__(self):
+        return "Profile: {}".format(self.profile)
+
+    #@property
+    def photo_url(self):
+        if self.photo and hasattr(self.photo, 'url'):
+            return self.photo.url
+
+
 class Company(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)

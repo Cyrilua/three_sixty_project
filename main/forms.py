@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Profile, Company, Group, Questions
+from .models import Profile, Company, Group, ProfilePhoto
 from django.contrib.auth.models import User
 
 
@@ -19,3 +19,9 @@ class TeamForm(ModelForm):
     class Meta:
         model = Group
         fields = ('name',)
+
+
+class PhotoProfileForm(ModelForm):
+    class Meta:
+        model = ProfilePhoto
+        fields = ('photo',)

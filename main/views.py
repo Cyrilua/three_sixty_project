@@ -7,9 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from .forms import ProfileForm, CompanyForm, TeamForm
+from .forms import ProfileForm, CompanyForm, TeamForm, PhotoProfileForm
 from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany, \
-    Answers
+    Answers, ProfilePhoto
 
 
 def user_view(request):
@@ -32,6 +32,37 @@ def user_view(request):
     }
 
     return render(request, 'main/profile.html', args)
+
+
+def upload_profile_photo(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    args = {
+        'title': "Добавление фотографии пользователя",
+        'form': PhotoProfileForm()
+    }
+
+    if request.method == "POST":
+        photo_profile = ProfilePhoto()
+        photo_profile.photo = request.FILES['photo']
+        photo_profile.profile = profile
+        photo_profile.save()
+        return redirect('/')
+    return render(request, "main/upload_photo.html", args)
+
+
+def get_photo_test(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    photo = profile.profilephoto.photo
+    print("####")
+    print(photo)
+    print('###')
+    return render(request, 'main/test_view_profile_photo.html', {'photo': photo})
 
 
 def other_user_view(request, profile_id):

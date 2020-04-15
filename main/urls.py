@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 app_name = "main"
@@ -13,6 +16,8 @@ urlpatterns = [
     path('register/', views.user_register, name='register'),
     path('edit/', views.edit_profile, name='edit'),
     path('company_view/', views.company_view, name='company_view'),
+    path('upload_photo/', views.upload_profile_photo, name='upload_profile_photo'),
+    path('test_view_photo/', views.get_photo_test, name='test'),
 
     path('other_user/<int:profile_id>/', views.other_user_view, name='other_user_view'),
     path('add_company/', views.add_company, name='add_company'),
@@ -31,4 +36,9 @@ urlpatterns = [
     path('add_new_question', views.add_new_question, name="add_new_question"),
     path('<int:poll_id>/add_answer/<int:question_id>/', views.add_answer, name='add_answer_in_poll_for_question'),
     path('<int:poll_id>/poll_questions/', views.questions_in_pool_view, name='view_questions_in_poll'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
