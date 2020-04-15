@@ -29,6 +29,7 @@ def user_view(request):
         'profile': profile,
         'rating': rating,
         'last_poll': last_poll,
+        'photo': profile.profilephoto.photo,
     }
 
     return render(request, 'main/profile.html', args)
