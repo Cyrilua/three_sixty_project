@@ -5,16 +5,16 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h1>Добавление вопроса в опрос</h1>
+            <h1>Ответ на вопрос опроса</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="question">ID вопроса</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите ID вопроса"
+                        <label for="answer">Логин</label>
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите ответ на вопрос"
                                type="text"
-                               name="question" value="" id="question">
+                               name="answer" value="" id="answer">
                     </div>
                 </form>
             </div>

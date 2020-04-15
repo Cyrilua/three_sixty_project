@@ -26,7 +26,9 @@ urlpatterns = [
     path('connect_to_group/', views.connect_to_team, name='connect_to_group'),
     path('questions_search/', views.find_question, name='questions_search'),
     path('create_poll/', views.create_pool, name='create_pool'),
-    path('view_poll/<int:id_pool>/', views.poll_view, name='view_poll'),
-    path('create_poll/<int:pool_id>/add_question', views.add_questions_in_pool, name='add_question_in_pool'),
-    path('add_new_question', views.add_new_question, name="add_new_question")
+    #path('view_poll/<int:id_pool>/', views.poll_view, name='view_poll'),
+    path('<int:pool_id>/add_question', views.add_questions_in_poll, name='add_question_in_pool'),
+    path('add_new_question', views.add_new_question, name="add_new_question"),
+    path('<int:poll_id>/add_answer/<int:question_id>/', views.add_answer, name='add_answer_in_poll_for_question'),
+    path('<int:poll_id>/poll_questions/', views.questions_in_pool_view, name='view_questions_in_poll'),
 ]

@@ -16,6 +16,7 @@ class Profile (models.Model):
     groups = models.ManyToManyField('Group', null=True)
     city = models.CharField(max_length=20)
     objects = models.Manager()
+    last_poll = models.OneToOneField('Poll', on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = "Profile"
@@ -28,6 +29,7 @@ class Company(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=36, unique=True, default='')
+    objects = models.Manager()
 
     class Meta:
         db_table = "Company"
@@ -39,6 +41,7 @@ class Company(models.Model):
 class PlatformCompany(models.Model):
     platform = models.ForeignKey('Platforms', on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Platforms in company"
@@ -49,6 +52,7 @@ class PlatformCompany(models.Model):
 
 class Platforms (models.Model):
     name = models.CharField(max_length=50, unique=True)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Platforms"
@@ -60,6 +64,7 @@ class Platforms (models.Model):
 class PositionCompany (models.Model):
     position = models.ForeignKey('Position', on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Positions in company"
@@ -70,6 +75,7 @@ class PositionCompany (models.Model):
 
 class Position(models.Model):
     name = models.CharField(max_length=20, unique=True)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Positions"
@@ -83,6 +89,7 @@ class Group(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     #user = models.ManyToManyField(User)
     key = models.CharField(max_length=36, default='')
+    objects = models.Manager()
 
     class Meta:
         db_table = "Groups"
@@ -93,28 +100,48 @@ class Group(models.Model):
 
 class Poll(models.Model):
     initiator = models.ForeignKey(User, on_delete=models.CASCADE)
+    name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')
-    answers = models.ManyToManyField('Answers')
+    count_answers = models.IntegerField(default=0)
+    objects = models.Manager()
+    #answers = models.ManyToManyField('Answers')
     #start_date = models.DateField()
     #end_date = models.DateField()
 
 
 class Questions(models.Model):
     question = models.CharField(max_length=100)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Questions"
+
+    def __str__(self):
+        return self.question
 
 
 class Answers(models.Model):
     question = models.ForeignKey(Questions, on_delete=models.CASCADE)
-    answer = models.CharField(max_length=50)
+    answer = models.IntegerField()
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Answer"
+
+    def __str__(self):
+        return "{}: {}".format(self.question, self.answer)
 
 
 class OpenQuestions(models.Model):
     question = models.CharField(max_length=100)
+    objects = models.Manager()
 
 
 class OpenAnswer(models.Model):
     open_question = models.OneToOneField(OpenQuestions, on_delete=models.CASCADE)
     answer = models.CharField(max_length=200)
+    objects = models.Manager()
 
 
 class EvaluationMessage (models.Model):
