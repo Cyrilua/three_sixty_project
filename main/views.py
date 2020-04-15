@@ -1,20 +1,36 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
-from django.shortcuts import redirect
+import copy
+import re
+import uuid
+
 from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
+from django.shortcuts import render
 
 from .forms import ProfileForm, CompanyForm, TeamForm
-import copy, uuid
-from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany, Answers
-import re
+from .models import Profile, Company, Platforms, Position, Group, Questions, Poll, PositionCompany, PlatformCompany, \
+    Answers
 
 
 def user_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    args = {"title": "Мой профиль"}
-    if auth.get_user(request).is_authenticated:
-        args['profile'] = get_user_profile(request)
+
+    profile = get_user_profile(request)
+
+    rating = 0
+    if profile.count_answers > 0:
+        rating = profile.answers_sum / profile.count_answers
+
+    last_poll = profile.last_poll
+
+    args = {
+        "title": "Мой профиль",
+        'profile': profile,
+        'rating': rating,
+        'last_poll': last_poll,
+    }
+
     return render(request, 'main/profile.html', args)
 
 
@@ -568,6 +584,12 @@ def add_answer(request, poll_id, question_id):
         answer.answer = answer_user
         answer.poll = poll
         answer.save()
+
+        profile = get_user_profile(request)
+        profile.answers_sum += answer_user
+        profile.count_answers += 1
+        profile.save()
+
         #Временно, не знаю куда отправлять
         return redirect('/')
     return render(request, 'main/add_answer.html', args)

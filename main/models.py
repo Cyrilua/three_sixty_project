@@ -17,6 +17,8 @@ class Profile (models.Model):
     city = models.CharField(max_length=20)
     objects = models.Manager()
     last_poll = models.OneToOneField('Poll', on_delete=models.CASCADE, null=True)
+    answers_sum = models.IntegerField(default=0)
+    count_answers = models.IntegerField(default=0)
 
     class Meta:
         db_table = "Profile"
