@@ -18,11 +18,11 @@
             <div class="row">
                 <!-- Аватар -->
                 <div class="col-12 rounded-block"
-                     style="margin-bottom: 10px; height: 250px">
-{#                    <h3>Аватарка</h3>#}
+                     style="margin-bottom: 10px">
+                    {#                                <h3>Аватарка</h3>#}
                     <div>
                         {% if photo %}
-                            <p><img height="215px" src="{{ photo.url }}"></p>
+                            <p><img width="175px" src="{{ photo.url }}"></p>
                         {% else %}
                             <p><img height="215px" src="{% static 'main/images/none_photo.png' %}"></p>
                         {% endif %}
