@@ -2,21 +2,31 @@
 
 {% load static %}
 
+{% load widget_tweaks %}
+
 {% block sidebar-nav %}
-    {% include 'main/includes/menu.html'%}
+    {% include 'main/includes/menu.html' %}
 {% endblock %}
+
 {% block profile-content %}
 
     <div class="row">
         <div class="col-md-3">
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 rounded-block">
             <H3>Загрузка фото</H3><br>
             <div>
-                <form method="post" action="">
+                <form method="post" action="" enctype="multipart/form-data">
                     {% csrf_token %}
-
+                    <div class="form-group">
+                        <label for="{{ form.photo.id_for_label }}">Новое фото</label>
+                        {{ form.photo|add_class:"form-control" }}
+                    </div>
+                    <hr>
+                    <div style="text-align: right">
+                        <input class="btn btn-primary" type="submit" value="Загрузить фото"/>
+                    </div>
                 </form>
             </div>
         </div>

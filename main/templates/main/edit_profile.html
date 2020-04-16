@@ -11,7 +11,31 @@
 {% block profile-content %}
 
     <div class="row">
-        <div class="col-md-3"></div>
+        <div class="col-md-3" style="padding-right: 25px">
+            <div class="row">
+                <!-- Аватар -->
+                <div class="col-12 rounded-block"
+                     style="margin-bottom: 10px; height: 250px">
+{#                    <h3>Аватарка</h3>#}
+                    <div>
+                        {% if photo %}
+                            <p><img height="215px" src="{{ photo }}"></p>
+                        {% else %}
+                            <p><img height="215px" src="{% static 'main/images/none_photo.png' %}"></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Кнопки -->
+                <div class="col-12 rounded-block">
+                    <p>
+                        <a href="{% url 'main:upload_photo' %}">Загрузить фото</a>
+
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6 rounded-block">
             <h1 style="text-align: center">Редактирование профиля</h1>
 
