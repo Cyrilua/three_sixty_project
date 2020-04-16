@@ -19,7 +19,7 @@
 {#                    <h3>Аватарка</h3>#}
                     <div>
                         {% if photo %}
-                            <p><img height="215px" src="{{ photo }}"></p>
+                            <p><img height="215px" src="{{ photo.url }}"></p>
                         {% else %}
                             <p><img height="215px" src="{% static 'main/images/none_photo.png' %}"></p>
                         {% endif %}
