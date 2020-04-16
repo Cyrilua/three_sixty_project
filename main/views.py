@@ -23,13 +23,16 @@ def user_view(request):
         rating = profile.answers_sum / profile.count_answers
 
     last_poll = profile.last_poll
-
+    try:
+        photo = profile.profilephoto.photo
+    except:
+        photo = None
     args = {
         "title": "Мой профиль",
         'profile': profile,
         'rating': rating,
         'last_poll': last_poll,
-        'photo': profile.profilephoto.photo,
+        'photo': photo,
     }
 
     return render(request, 'main/profile.html', args)
