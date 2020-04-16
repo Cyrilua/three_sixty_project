@@ -26,6 +26,9 @@
                             <div class="col-12 rounded-block"
                                  style="margin-bottom: 10px; height: 250px">
                                 <h3>Аватарка</h3>
+                                {% if photo != None %}
+                                    <p><img src="{{ photo }}"></p>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="row">
@@ -81,7 +84,7 @@
         <div class="col-md-2" style="padding-right: 25px;">
             {% block right-sidebar-nav %}
                 <h3 style="color: #b21f2d">Для отладки</h3>
-                <div><a class="btn btn-success" href="{% url 'main:questions_search' %}">Поиск вопросов</a> </div>
+                <div><a class="btn btn-success" href="{% url 'main:questions_search' %}">Поиск вопросов</a></div>
             {% endblock %}
         </div>
     </div>
