@@ -23,10 +23,12 @@ def user_view(request):
         rating = profile.answers_sum / profile.count_answers
 
     last_poll = profile.last_poll
+
     try:
         photo = profile.profilephoto.photo
     except:
         photo = None
+
     args = {
         "title": "Мой профиль",
         'profile': profile,
@@ -49,10 +51,16 @@ def upload_profile_photo(request):
     }
 
     if request.method == "POST":
-        photo_profile = ProfilePhoto()
-        photo_profile.photo = request.FILES['photo']
-        photo_profile.profile = profile
-        photo_profile.save()
+        user_photo = request.FILES['photo']
+
+        try:
+            profile.profilephoto.photo = user_photo
+            profile.profilephoto.save()
+        except:
+            photo_profile = ProfilePhoto()
+            photo_profile.photo = user_photo
+            photo_profile.profile = profile
+            photo_profile.save()
         return redirect('/')
     return render(request, "main/upload_photo.html", args)
 
@@ -109,6 +117,10 @@ def edit_profile(request):
         return redirect('/')
     args = {}
     profile = get_user_profile(request)
+    try:
+        args['photo'] = profile.profilephoto.photo
+    except:
+        args['photo'] = None
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
