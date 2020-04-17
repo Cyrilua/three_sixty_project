@@ -246,3 +246,45 @@ def choose_position(request, position_id):
     profile.position = position
     profile.save()
     return redirect('/communications/')
+
+
+def all_platfom_in_company_views(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    if company is None:
+        return redirect('/communications/')
+
+    args = {
+        'title': "Список всех платформ в компании",
+        'profile': profile,
+        'company': company
+    }
+    list_platform = company.platformcompany_set.all()
+    args['list_positions'] = list_platform
+    return render(request, 'main/all_position_company.html', args)
+
+
+def choose_platform(request, platform_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    args = {
+        'title': "Список всех должностей в компании",
+        'profile': profile,
+        'company': company
+    }
+    platform = Position.objects.get(id=platform_id)
+    list_platform = [i.platform for i in company.platformcompany_set.all()]
+    if platform not in list_platform:
+        args['list_positions'] = list_platform
+        args['error'] = 'Данной должности не существует'
+        return render(request, 'main/all_position_company.html', args)
+
+    profile.platform = platform
+    profile.save()
+    return redirect('/communications/')
