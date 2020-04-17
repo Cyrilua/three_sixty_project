@@ -471,6 +471,7 @@ def teams_view(request):
         'title': "Группы",
         'teams': teams,
         'profile': profile,
+        'photo': profile.profilephoto.photo
     })
 
 
