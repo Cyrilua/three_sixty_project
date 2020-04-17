@@ -29,6 +29,8 @@ urlpatterns = [
     path('add_new_position/', company_views.add_new_position, name='add_new_position'),
     path('add_new_position_in_company/', company_views.add_position_in_company, name="add_new_position_in_company"),
     path('add_new_platform_in_company/', company_views.add_platform_in_company, name="add_new_platform_in_company"),
+    path('get_all_positions/', company_views.all_positions_in_company_views, name="all_positions_in_company"),
+    path('choose_position/<int:position_id>/', company_views.choose_position, name='choose_position_in_company'),
 
     path('questions_search/', questions_views.find_question, name='questions_search'),
     path('add_new_question', questions_views.add_new_question, name="add_new_question"),

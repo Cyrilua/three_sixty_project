@@ -204,3 +204,45 @@ def company_view(request):
     }
 
     return render(request, 'main/company_view.html', args)
+
+
+def all_positions_in_company_views(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    if company is None:
+        return redirect('/communications/')
+
+    args = {
+        'title': "Список всех должностей в компании",
+        'profile': profile,
+        'company': company
+    }
+    list_positions = company.positioncompany_set.all()
+    args['list_positions'] = list_positions
+    return render(request, 'main/all_position_company.html', args)
+
+
+def choose_position(request, position_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    args = {
+        'title': "Список всех должностей в компании",
+        'profile': profile,
+        'company': company
+    }
+    position = Position.objects.get(id=position_id)
+    list_positions = [i.position for i in company.positioncompany_set.all()]
+    if position not in list_positions:
+        args['list_positions'] = list_positions
+        args['error'] = 'Данной должности не существует'
+        return render(request, 'main/all_position_company.html', args)
+
+    profile.position = position
+    profile.save()
+    return redirect('/communications/')
