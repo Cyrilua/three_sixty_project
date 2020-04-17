@@ -4,8 +4,6 @@
 
 {% load widget_tweaks %}
 
-{#{% load staticfiles %} #}
-
 {% block content %}
 
     <div class="row">
@@ -27,14 +25,20 @@
                             <!-- Аватар -->
                             <div class="col-12 rounded-block"
                                  style="margin-bottom: 10px">
-{#                                <h3>Аватарка</h3>#}
-                                <div>
-                                    {% if photo %}
-                                        <p><img  width="175px" src="{{ photo.url }}"></p>
-                                    {% else %}
-                                        <p><img height="215px" src="{% static 'main/images/none_photo.png' %}"></p>
-                                    {% endif %}
-                                </div>
+                                {% if photo %}
+                                    <div style="position: relative; width:177px; height:{{ photo_height }}px;
+                                            border: 1px solid #9f9f9f">
+                                        <img style="position: absolute; left:50%; top:50%;
+                                        transform: translate(-50%, -50%); max-width:100%;max-height: 100%;"
+                                             src="{{ photo.url }}">
+                                    </div>
+                                {% else %}
+                                    <div style="position: relative; width:177px; height:220px">
+                                        <img style="position: absolute; left:50%; top:50%;
+                                        transform: translate(-50%, -50%); max-width:100%;max-height: 100%;"
+                                             src="{% static 'main/images/none_photo.png' %}">
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="row">

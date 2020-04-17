@@ -12,6 +12,13 @@ from .models import Profile, Company, Platforms, Position, Group, Questions, Pol
     Answers, ProfilePhoto
 
 
+def get_photo_height(width, height):
+    result = round(177 / (width / height))
+    if result > 300:
+        result = 300
+    return result
+
+
 def user_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -36,6 +43,13 @@ def user_view(request):
         'last_poll': last_poll,
         'photo': photo,
     }
+
+    ########################
+    # По образу и подобию
+    ########################
+    if photo is not None:
+        args['photo_height'] = get_photo_height(photo.width, photo.height)
+    ########################
 
     return render(request, 'main/profile.html', args)
 
@@ -333,7 +347,7 @@ def company_view(request):
         'name': company.name,
         'owner': company.owner,
         'key': company.key,
-        }
+    }
 
     return render(request, 'main/company_view.html', args)
 
@@ -498,11 +512,11 @@ def add_new_question(request):
     if request.method == "POST":
         new_question = clear_request(request.POST.get('question', '')).lower()
         try:
-           Questions.objecte.get(question=new_question)
+            Questions.objecte.get(question=new_question)
         except:
             question = Questions(question=new_question)
             question.save()
-            #TODO Перенаправлять на нужную страницу
+            # TODO Перенаправлять на нужную страницу
             return redirect('/')
         else:
             args['title'] = "Вопрос уже существует"
@@ -557,7 +571,7 @@ def poll_view(request, pool_id):
     user_init = poll.initiator
     questions = Questions.objects.filter(poll=poll)
     if user_auth.username == user_init.username:
-        #TODO
+        # TODO
         return render(request, 'main.error.html', {'error': "Вывод описания опроса"})
     else:
         return render(request, 'main.error.html', {'error': "У вас пользователя прав для редактирования опроса"})
@@ -572,7 +586,7 @@ def create_pool(request):
     poll.initiator = user
     poll.save()
     id = str(poll.id)
-    #Должна будет перенаправляться на страницу выбора списка вопросов
+    # Должна будет перенаправляться на страницу выбора списка вопросов
     return redirect('/{}/add_question'.format(id))
 
 
@@ -584,14 +598,14 @@ def add_questions_in_poll(request, pool_id):
         try:
             poll = Poll.objects.get(id=pool_id)
         except:
-            #return render(request, 'main/error.html', {'error': 'Данного опроса не существует'})
+            # return render(request, 'main/error.html', {'error': 'Данного опроса не существует'})
             return redirect('/')
         question_id = request.POST.get('question', '')
         try:
             question = Questions.objects.get(id=question_id)
         except:
             args['error'] = 'Данного вопроса не существует'
-            #return render(request, 'main/error.html', {'error': 'Данного вопроса не существует'})
+            # return render(request, 'main/error.html', {'error': 'Данного вопроса не существует'})
             return render(request, 'main/add_question_in_poll.html', args)
         question.poll_set.add(poll)
         return redirect('/')
@@ -621,7 +635,7 @@ def add_answer(request, poll_id, question_id):
             args['error'] = "Ответ должен быть числом"
             return render(request, 'main/add_answer.html', args)
 
-        #При оценке по 10-ти бальной шкале
+        # При оценке по 10-ти бальной шкале
         if answer_user > 10 or answer_user < 0:
             args['error'] = "Ответ должен быть числом от 0 до 10"
             return render(request, 'main/add_answer.html', args)
@@ -637,7 +651,7 @@ def add_answer(request, poll_id, question_id):
         profile.count_answers += 1
         profile.save()
 
-        #Временно, не знаю куда отправлять
+        # Временно, не знаю куда отправлять
         return redirect('/')
     return render(request, 'main/add_answer.html', args)
 
