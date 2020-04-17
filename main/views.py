@@ -79,18 +79,6 @@ def upload_profile_photo(request):
     return render(request, "main/upload_photo.html", args)
 
 
-def get_photo_test(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    profile = get_user_profile(request)
-    photo = profile.profilephoto.photo
-    print("####")
-    print(photo)
-    print('###')
-    return render(request, 'main/test_view_profile_photo.html', {'photo': photo})
-
-
 def other_user_view(request, profile_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -132,9 +120,12 @@ def edit_profile(request):
     args = {}
     profile = get_user_profile(request)
     try:
-        args['photo'] = profile.profilephoto.photo
+        photo = profile.profilephoto.photo
+        args['photo'] = photo
+        args['photo_height'] = get_photo_height(photo.width, photo.height)
     except:
         args['photo'] = None
+
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
@@ -474,19 +465,30 @@ def teams_view(request):
         return redirect('/')
     profile = get_user_profile(request)
     teams = profile.groups.all()
+
     ### для отладки
     for i in teams:
-        print(i)
+        #print(i)
         users = i.profile_set.all()
-        for j in users:
-            print('    ' + j.__str__())
+        #for j in users:
+            #print('    ' + j.__str__())
     ####
-    return render(request, 'main/communications.html', {
+
+    args = {
         'title': "Группы",
         'teams': teams,
         'profile': profile,
-        'photo': profile.profilephoto.photo
-    })
+    }
+
+    try:
+        photo = profile.profilephoto.photo
+        args['photo'] = photo
+        print(photo)
+        args['photo_height'] = get_photo_height(photo.width, photo.height)
+    except:
+        args['photo'] = None
+
+    return render(request, 'main/communications.html', args)
 
 
 def team_user_view(request, group_id):

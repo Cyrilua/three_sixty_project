@@ -18,8 +18,6 @@ urlpatterns = [
     path('company_view/', views.company_view, name='company_view'),
     path('upload_photo/', views.upload_profile_photo, name='upload_photo'),
 
-    path('test_view_photo/', views.get_photo_test, name='test'),
-
     path('other_user/<int:profile_id>/', views.other_user_view, name='other_user_view'),
     path('add_company/', views.add_company, name='add_company'),
     path('connect_to_company/', views.connect_to_company, name='connect_to_company'),
