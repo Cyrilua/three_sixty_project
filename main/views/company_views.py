@@ -229,7 +229,7 @@ def choose_position(request):
             args['error'] = 'Данной должности не существует'
             return render(request, 'main/position_choice.html', args)
 
-        if position not in  args['list_positions']:
+        if position not in args['list_positions']:
             args['error'] = "Выбранная должность отсутствует в списке"
             return render(request, 'main/position_choice.html', args)
 
@@ -251,13 +251,22 @@ def choose_platform(request):
         'profile': profile,
         'company': company
     }
-    platform = Position.objects.get(id=platform_id)
-    list_platform = [i.platform for i in company.platformcompany_set.all()]
-    if platform not in list_platform:
-        args['list_positions'] = list_platform
-        args['error'] = 'Данной должности не существует'
-        return render(request, 'main/all_position_company.html', args)
+    if company is None:
+        args['list_positions'] = Platforms.objects.all()
+    else:
+        args['list_positions'] = [i.platform for i in company.platformcompany_set.all()]
+    if request.method == "POST":
+        platform_id = request.POST.get('platform', '')
+        try:
+            platform = Platforms.objects.get(id=platform_id)
+        except:
+            args['error'] = 'Данной платформы не существует'
+            return render(request, 'main/platform_choice.html', args)
+        if platform not in args['list_positions']:
+            args['error'] = "Выбранная платформа отсутствует в списке"
+            return render(request, 'main/platform_choice.html', args)
 
-    profile.platform = platform
-    profile.save()
-    return redirect('/communications/')
+        profile.platform = platform
+        profile.save()
+        return redirect('/communications/')
+    return render(request, 'main/platform_choice.html', args)
