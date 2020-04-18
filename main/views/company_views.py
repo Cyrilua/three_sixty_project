@@ -91,6 +91,12 @@ def connect_to_company(request):
         except:
             return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
         else:
+            list_positions = [i.position for i in company.positioncompany_set.all()]
+            list_platforms = [i.platform for i in company.platformcompany_set.all()]
+            if profile.platform is not None and profile.platform not in list_platforms:
+                profile.platform = None
+            if profile.position is not None and profile.position not in list_positions:
+                profile.position = None
             profile.company = company
             profile.save()
             return redirect('/communications/')
