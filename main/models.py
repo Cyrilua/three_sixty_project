@@ -37,10 +37,17 @@ class ProfilePhoto (models.Model):
     def __str__(self):
         return "Profile: {}".format(self.profile)
 
-    #@property
-    def photo_url(self):
-        if self.photo and hasattr(self.photo, 'url'):
-            return self.photo.url
+
+class Notifications (models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    redirect = models.TextField(default='')
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Notifications"
+
+    def __str__(self):
+        return self.redirect
 
 
 class Company(models.Model):

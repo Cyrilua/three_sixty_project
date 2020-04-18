@@ -229,7 +229,10 @@ def choose_position(request):
         args['list_positions'] = [i.position for i in company.positioncompany_set.all()]
     if request.method == "POST":
         position_id = request.POST.get('id_position', '')
-        if position_id == 1:
+        if int(position_id) == -1:
+            profile.position = None
+            profile.save()
+            print(profile.position)
             return redirect('/communications/')
         try:
             position = Position.objects.get(id=position_id)

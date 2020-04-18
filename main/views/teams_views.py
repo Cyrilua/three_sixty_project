@@ -64,15 +64,6 @@ def teams_view(request):
         return redirect('/')
     profile = get_user_profile(request)
     teams = profile.groups.all()
-
-    ### для отладки
-    for i in teams:
-        #print(i)
-        users = i.profile_set.all()
-        #for j in users:
-            #print('    ' + j.__str__())
-    ####
-
     args = {
         'title': "Группы",
         'teams': teams,
@@ -82,7 +73,6 @@ def teams_view(request):
     try:
         photo = profile.profilephoto.photo
         args['photo'] = photo
-        print(photo)
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     except:
         args['photo'] = None
