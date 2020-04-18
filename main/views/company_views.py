@@ -44,7 +44,7 @@ def add_new_position(request):
     return render(request, 'main/add_new_position.html', args)
 
 
-def add_company(request):
+def create_company(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     user = auth.get_user(request)
@@ -263,8 +263,8 @@ def all_platfom_in_company_views(request):
         'company': company
     }
     list_platform = company.platformcompany_set.all()
-    args['list_positions'] = list_platform
-    return render(request, 'main/all_position_company.html', args)
+    args['list_platform'] = list_platform
+    return render(request, 'main/all_platform_company.html', args)
 
 
 def choose_platform(request, platform_id):
