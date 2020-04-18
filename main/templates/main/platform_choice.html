@@ -10,7 +10,31 @@
 
 {% block profile-content %}
 
-
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <h1 style="text-align: center">Выбор платформы</h1>
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_platform">Выберите платформу</label>
+                        <select class="form-control" name="id_platform">
+                            <option value="-1">---</option>>
+                            {% for platform in list_platforms %}
+                                <option value="{{ platform.id }}">{{ platform.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+                    <div style="text-align: right">
+                        <input class="btn btn-primary" type="submit" value="Выбрать"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
 
 {% endblock %}
 

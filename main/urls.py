@@ -53,9 +53,9 @@ urlpatterns = [
                        name="add_new_platform_in_company"),
                   # Сохраняет конкретную должность для пользователя
                   path('choose_position/', company_views.choose_position,
-                       name='choose_position_in_company'),
+                       name='position_choice'),
                   # Сохраняет конкретную платформу для пользователя
-                  path('choose_platform/', company_views.choose_platform, name=""),
+                  path('choose_platform/', company_views.choose_platform, name="platform_choice"),
 
                   # Поиск вопроса среди имеющихся
                   path('questions_search/', questions_views.find_question, name='questions_search'),
