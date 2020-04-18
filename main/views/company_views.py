@@ -228,7 +228,7 @@ def choose_position(request):
     else:
         args['list_positions'] = [i.position for i in company.positioncompany_set.all()]
     if request.method == "POST":
-        position_id = request.POST.get('position', '')
+        position_id = request.POST.get('id_position', '')
         if position_id == 1:
             return redirect('/communications/')
         try:
@@ -264,7 +264,7 @@ def choose_platform(request):
     else:
         args['list_positions'] = [i.platform for i in company.platformcompany_set.all()]
     if request.method == "POST":
-        platform_id = request.POST.get('platform', '')
+        platform_id = request.POST.get('id_platform', '')
         if platform_id == -1:
             return redirect('/communications/')
         try:
