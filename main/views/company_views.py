@@ -91,6 +91,12 @@ def connect_to_company(request):
         except:
             return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
         else:
+            list_positions = [i.position for i in company.positioncompany_set.all()]
+            list_platforms = [i.platform for i in company.platformcompany_set.all()]
+            if profile.platform is not None and profile.platform not in list_platforms:
+                profile.platform = None
+            if profile.position is not None and profile.position not in list_positions:
+                profile.position = None
             profile.company = company
             profile.save()
             return redirect('/communications/')
@@ -206,26 +212,43 @@ def company_view(request):
     return render(request, 'main/company_view.html', args)
 
 
-def all_positions_in_company_views(request):
+def choose_position(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     profile = get_user_profile(request)
     company = profile.company
+    args = {
+        'title': "Список всех должностей в компании",
+        'profile': profile,
+        'company': company
+    }
     if company is None:
+        args['list_positions'] = Position.objects.all()
+    else:
+        args['list_positions'] = [i.position for i in company.positioncompany_set.all()]
+    if request.method == "POST":
+        position_id = request.POST.get('id_position', '')
+        if position_id == 1:
+            return redirect('/communications/')
+        try:
+            position = Position.objects.get(id=position_id)
+        except:
+            args['error'] = 'Данной должности не существует'
+            return render(request, 'main/position_choice.html', args)
+
+        if position not in args['list_positions']:
+            args['error'] = "Выбранная должность отсутствует в списке"
+            return render(request, 'main/position_choice.html', args)
+
+        profile.position = position
+        profile.save()
         return redirect('/communications/')
 
-    args = {
-        'title': "Список всех должностей в компании",
-        'profile': profile,
-        'company': company
-    }
-    list_positions = company.positioncompany_set.all()
-    args['list_positions'] = list_positions
-    return render(request, 'main/all_position_company.html', args)
+    return render(request, 'main/position_choice.html', args)
 
 
-def choose_position(request, position_id):
+def choose_platform(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
@@ -236,55 +259,24 @@ def choose_position(request, position_id):
         'profile': profile,
         'company': company
     }
-    position = Position.objects.get(id=position_id)
-    list_positions = [i.position for i in company.positioncompany_set.all()]
-    if position not in list_positions:
-        args['list_positions'] = list_positions
-        args['error'] = 'Данной должности не существует'
-        return render(request, 'main/all_position_company.html', args)
-
-    profile.position = position
-    profile.save()
-    return redirect('/communications/')
-
-
-def all_platfom_in_company_views(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    profile = get_user_profile(request)
-    company = profile.company
     if company is None:
+        args['list_positions'] = Platforms.objects.all()
+    else:
+        args['list_positions'] = [i.platform for i in company.platformcompany_set.all()]
+    if request.method == "POST":
+        platform_id = request.POST.get('id_platform', '')
+        if platform_id == -1:
+            return redirect('/communications/')
+        try:
+            platform = Platforms.objects.get(id=platform_id)
+        except:
+            args['error'] = 'Данной платформы не существует'
+            return render(request, 'main/platform_choice.html', args)
+        if platform not in args['list_positions']:
+            args['error'] = "Выбранная платформа отсутствует в списке"
+            return render(request, 'main/platform_choice.html', args)
+
+        profile.platform = platform
+        profile.save()
         return redirect('/communications/')
-
-    args = {
-        'title': "Список всех платформ в компании",
-        'profile': profile,
-        'company': company
-    }
-    list_platform = company.platformcompany_set.all()
-    args['list_platform'] = list_platform
-    return render(request, 'main/all_platform_company.html', args)
-
-
-def choose_platform(request, platform_id):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    profile = get_user_profile(request)
-    company = profile.company
-    args = {
-        'title': "Список всех должностей в компании",
-        'profile': profile,
-        'company': company
-    }
-    platform = Position.objects.get(id=platform_id)
-    list_platform = [i.platform for i in company.platformcompany_set.all()]
-    if platform not in list_platform:
-        args['list_positions'] = list_platform
-        args['error'] = 'Данной должности не существует'
-        return render(request, 'main/all_position_company.html', args)
-
-    profile.platform = platform
-    profile.save()
-    return redirect('/communications/')
+    return render(request, 'main/platform_choice.html', args)
