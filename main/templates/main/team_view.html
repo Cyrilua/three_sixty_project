@@ -1,0 +1,65 @@
+{% extends 'main/profile.html' %}
+
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' %}
+{% endblock %}
+
+{% block profile-content %}
+
+    <div class="row">
+        <div class="col-md-2">
+            {% if error %}
+                <div>
+                    <h3 style="color: red">Ошибки:</h3>
+                    <br>
+                    <a style="color: red">{{ error }}</a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8 rounded-block">
+            <h1 style="text-align: center">Команда "{{ team_name }}"</h1>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <h4>Создатель</h4>
+                        <a href="{% url 'main:other_user_view' owner.pk %}">{{ owner.surname }} {{ owner.name }}</a>
+                    </div>
+                    <hr>
+                    <div>
+                        {% if key_to_enter %}
+                            <h4>Ключ регистрации</h4>
+                            <div>
+                                {{ key_to_enter }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div>
+                        <h4>Опросы</h4>
+                        <a href="{% url 'main:create_pool' %}">Созадать опрос для команды</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <h3 style="text-align: center">Участники</h3>
+                        <ol>
+                            {% for user in users %}
+                                <li>
+                                    <a href="{% url 'main:other_user_view' user.pk %}">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+{% endblock %}
+
+{% block right-sidebar-nav %}
+{% endblock %}

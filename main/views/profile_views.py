@@ -80,6 +80,7 @@ def upload_profile_photo(request):
 def other_profile_view(request, profile_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
     profile = Profile.objects.get(id=profile_id)
     args = {
         'title': "Профиль просматриваемого пользователя",
@@ -87,12 +88,24 @@ def other_profile_view(request, profile_id):
         'surname': profile.surname,
         'patronymic': profile.patronymic,
         'groups': profile.groups.all(),
-        'position': profile.position.name,
-        'company': profile.company.name,
-        'platform': profile.platform.name
     }
 
-    return render(request, "main/other_profile_view.html", args)
+    try:
+        args['position'] = profile.position.name
+    except:
+        args['position'] = None
+
+    try:
+        args['company'] = profile.company.name
+    except:
+        args['company'] = None
+
+    try:
+        args['platform'] = profile.platform.name
+    except:
+        args['platform'] = None
+
+    return render(request, "main/alien_profile.html", args)
 
 
 def edit_profile(request):
