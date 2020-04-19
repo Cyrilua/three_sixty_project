@@ -40,7 +40,7 @@ class ProfilePhoto (models.Model):
 
 class Notifications (models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    redirect = models.TextField(default='')
+    redirect = models.CharField(max_length=100, default='')
     objects = models.Manager()
 
     class Meta:

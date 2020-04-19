@@ -110,6 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Yekaterinburg'

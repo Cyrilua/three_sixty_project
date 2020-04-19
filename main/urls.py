@@ -1,17 +1,19 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 
 from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views
 
 app_name = "main"
 urlpatterns = [
+                  path('accounts/', include('django.contrib.auth.urls')),
                   # Регистрация
                   path('register/', user_views.user_register, name='register'),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
                   path('logout/', user_views.user_logout, name='logout'),
+                  #path('password_reset/', user_views.user_register, name='password_reset'),
 
                   # Просмотр профиля
                   path('profile/', profile_views.user_view, name='profile'),
