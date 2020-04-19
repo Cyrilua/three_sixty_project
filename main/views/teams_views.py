@@ -89,7 +89,13 @@ def team_user_view(request, group_id):
         group = Group.objects.get(id=group_id)
     except:
         args['error'] = "Данной группы не существует"
-        return render(request, 'main/group_user.html', args)
+        return render(request, 'main/team_view.html', args)
 
     args['users'] = group.profile_set.all()
-    return render(request, 'main/group_user.html', args)
+
+    args['key_to_enter'] = group.key
+    args['owner'] = {'pk': group.owner.profile.pk,
+                     'name': group.owner.profile.name,
+                     'surname': group.owner.profile.surname}
+    args['team_name'] = group.name
+    return render(request, 'main/team_view.html', args)

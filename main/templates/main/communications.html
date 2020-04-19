@@ -129,8 +129,8 @@
                      style="height: 100px; margin-bottom: 10px">
                     <h4>Команды</h4>
                     <p>
-                        {% for e in teams %}
-                            {{ e }}<br>
+                        {% for team in teams %}
+                            <a href="{% url 'main:group_user_view' team.pk %}">{{ team.name }}</a> <br>
                         {% endfor %}
                     </p>
                 </div>
