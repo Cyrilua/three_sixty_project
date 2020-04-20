@@ -28,15 +28,15 @@
                         <a href="{% url 'main:other_user_view' owner.pk %}">{{ owner.surname }} {{ owner.name }}</a>
                     </div>
                     <hr>
-                    <div>
-                        {% if key_to_enter %}
+                    {% if key_to_enter %}
+                        <div>
                             <h4>Ключ регистрации</h4>
                             <div>
                                 {{ key_to_enter }}
                             </div>
-                        {% endif %}
-                    </div>
-                    <hr>
+                        </div>
+                        <hr>
+                    {% endif %}
                     <div>
                         <h4>Опросы</h4>
                         <a href="{% url 'main:create_pool' %}">Созадать опрос для команды</a>
