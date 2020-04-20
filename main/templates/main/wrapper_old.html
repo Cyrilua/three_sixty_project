@@ -63,40 +63,15 @@
 
 <div class="container-fluid"
      style="background: white; padding-top:104px; padding-bottom: 5%; min-height: 100vh; max-width: 1366px">
-    <div class="row">
-        {% if user.is_authenticated %}
-            <div class="col-md-2" style="padding-left: 25px;">
-                {% block sidebar-nav %}
-                    {% include 'main/includes/menu.html' %}
-                {% endblock sidebar-nav %}
-                {% block sidebar-footer %}
-                    {% include 'main/includes/profile_footer.html' %}
-                {% endblock %}
-            </div>
-            <div class="col-md-8">
-                {% block content-user %}
-                {% endblock content-user %}
-            </div>
-            <div class="col-md-2" style="padding-right: 25px;">
-                {% block right-sidebar-nav %}
-                {% endblock right-sidebar-nav %}
-            </div>
-        {% else %}
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-                {% block content %}
-                {% endblock content %}
-            </div>
-            <div class="col-md-2"></div>
-        {% endif %}
-    </div>
+    {% block content %}
+    {% endblock %}
 </div>
 
-{#<footer>#}
-{#    {% block footer %}#}
-{#        {% include 'main/includes/fullsize_footer.html' %}#}
-{#    {% endblock %}#}
-{#</footer>#}
+<footer>
+    {% block footer %}
+        {% include 'main/includes/fullsize_footer.html' %}
+    {% endblock %}
+</footer>
 
 </body>
 </html>

@@ -14,9 +14,9 @@ def poll_view(request, pool_id):
     questions = Questions.objects.filter(poll=poll)
     if user_auth.username == user_init.username:
         # TODO
-        return render(request, 'main.error.html', {'error': "Вывод описания опроса"})
+        return render(request, 'main.error_old.html', {'error': "Вывод описания опроса"})
     else:
-        return render(request, 'main.error.html', {'error': "У вас пользователя прав для редактирования опроса"})
+        return render(request, 'main.error_old.html', {'error': "У вас пользователя прав для редактирования опроса"})
 
 
 def create_pool(request):
@@ -40,14 +40,14 @@ def add_questions_in_poll(request, pool_id):
         try:
             poll = Poll.objects.get(id=pool_id)
         except:
-            # return render(request, 'main/error.html', {'error': 'Данного опроса не существует'})
+            # return render(request, 'main/error_old.html', {'error': 'Данного опроса не существует'})
             return redirect('/')
         question_id = request.POST.get('question', '')
         try:
             question = Questions.objects.get(id=question_id)
         except:
             args['error'] = 'Данного вопроса не существует'
-            # return render(request, 'main/error.html', {'error': 'Данного вопроса не существует'})
+            # return render(request, 'main/error_old.html', {'error': 'Данного вопроса не существует'})
             return render(request, 'main/add_question_in_poll.html', args)
         question.poll_set.add(poll)
         return redirect('/')
