@@ -18,10 +18,10 @@ def get_photo_height(width, height):
     return result
 
 
-def profile_view(request, profile_id):
+def profile_view(request, profile_id=-1):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    if profile_id == get_user_profile(request).id:
+    if profile_id == get_user_profile(request).id or profile_id == -1:
         return get_render_user_profile(request)
     return get_other_profile_render(request, profile_id)
 
