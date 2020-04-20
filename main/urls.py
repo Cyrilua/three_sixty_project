@@ -16,13 +16,13 @@ urlpatterns = [
                   #path('password_reset/', user_views.user_register, name='password_reset'),
 
                   # Просмотр профиля
-                  path('profile/', profile_views.user_view, name='profile'),
+                  path('<int:profile_id/>', profile_views.profile_view, name='profile'),
                   # Редактирование профиля
                   path('edit/', profile_views.edit_profile, name='edit'),
                   # Загрузка аватарки
                   path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
                   # Просмотр других пользователей
-                  path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
+                  #path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
 
                   # Обзор коммуникаций юзера
                   path('communications/', teams_views.teams_view, name='communications'),
