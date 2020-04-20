@@ -5,12 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
 
+from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm
 
 
 def user_register(request):
     if auth.get_user(request).is_authenticated:
-        return redirect('/profile')
+        return redirect('/{}/'.format(get_user_profile(request).id))
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
@@ -41,7 +42,8 @@ def user_register(request):
 
 def user_login(request):
     if auth.get_user(request).is_authenticated:
-        return redirect('/profile')
+        profile = get_user_profile(request)
+        return redirect('/{}/'.format(profile.id))
 
     args = {'title': "Вход"}
 
@@ -52,7 +54,7 @@ def user_login(request):
 
         if user is not None:
             auth.login(request, user)
-            return redirect('/profile')
+            return redirect('/{}/'.format(get_user_profile(request).id))
         else:
             args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
