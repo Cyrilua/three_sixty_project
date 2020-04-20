@@ -18,10 +18,15 @@ def get_photo_height(width, height):
     return result
 
 
-def user_view(request):
+def profile_view(request, profile_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+    if profile_id == get_user_profile(request).id:
+        return get_render_user_profile(request)
+    return get_other_profile_render(request, profile_id)
 
+
+def get_render_user_profile(request):
     profile = get_user_profile(request)
 
     rating = 0
@@ -42,15 +47,49 @@ def user_view(request):
         'last_poll': last_poll,
         'photo': photo,
     }
-
-    ########################
-    # По образу и подобию
-    ########################
     if photo is not None:
         args['photo_height'] = get_photo_height(photo.width, photo.height)
-    ########################
 
     return render(request, 'main/profile.html', args)
+
+
+def get_other_profile_render(request, profile_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = Profile.objects.get(id=profile_id)
+    args = {
+        'title': "Профиль просматриваемого пользователя",
+        'name': profile.name,
+        'surname': profile.surname,
+        'patronymic': profile.patronymic,
+        'groups': profile.groups.all(),
+    }
+
+    try:
+        args['photo'] = profile.profilephoto.photo
+    except:
+        args['photo'] = None
+
+    if args['photo'] is not None:
+        args['photo_height'] = get_photo_height(args['photo'].width, args['photo'].height)
+
+    try:
+        args['position'] = profile.position.name
+    except:
+        args['position'] = None
+
+    try:
+        args['company'] = profile.company.name
+    except:
+        args['company'] = None
+
+    try:
+        args['platform'] = profile.platform.name
+    except:
+        args['platform'] = None
+
+    return render(request, "main/alien_profile.html", args)
 
 
 def upload_profile_photo(request):
@@ -77,35 +116,7 @@ def upload_profile_photo(request):
     return render(request, "main/upload_photo.html", args)
 
 
-def other_profile_view(request, profile_id):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
 
-    profile = Profile.objects.get(id=profile_id)
-    args = {
-        'title': "Профиль просматриваемого пользователя",
-        'name': profile.name,
-        'surname': profile.surname,
-        'patronymic': profile.patronymic,
-        'groups': profile.groups.all(),
-    }
-
-    try:
-        args['position'] = profile.position.name
-    except:
-        args['position'] = None
-
-    try:
-        args['company'] = profile.company.name
-    except:
-        args['company'] = None
-
-    try:
-        args['platform'] = profile.platform.name
-    except:
-        args['platform'] = None
-
-    return render(request, "main/alien_profile.html", args)
 
 
 def edit_profile(request):
