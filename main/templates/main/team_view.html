@@ -31,8 +31,11 @@
                     {% if key_to_enter %}
                         <div>
                             <h4>Ключ регистрации</h4>
-                            <div>
+                            <div id="keyToEnter">
                                 {{ key_to_enter }}
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" onclick="copyText('#keyToEnter')">Скопировать</button>
                             </div>
                         </div>
                         <hr>
