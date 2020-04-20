@@ -2,7 +2,7 @@
     <ul class="navbar-nav bd-navbar-nav flex-row">
         {% if user.is_authenticated %}
             <li class="nav-item, active">
-                <a class="nav-link" href="{% url 'main:profile' profile.pk %}">
+                <a class="nav-link" href="{% url 'main:login' %}">
                     {% if profile %}
                         {{ profile.name }} {{ profile.surname }}
                     {% else %}
