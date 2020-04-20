@@ -25,7 +25,7 @@
                 <div class="col-md-6">
                     <div>
                         <h4>Создатель</h4>
-                        <a href="{% url 'main:other_user_view' owner.pk %}">{{ owner.surname }} {{ owner.name }}</a>
+                        <a href="{% url 'main:profile' owner.pk %}">{{ owner.surname }} {{ owner.name }}</a>
                     </div>
                     <hr>
                     {% if key_to_enter %}
@@ -51,7 +51,7 @@
                         <ol>
                             {% for user in users %}
                                 <li>
-                                    <a href="{% url 'main:other_user_view' user.pk %}">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                                    <a href="{% url 'main:profile' user.pk %}">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
                                 </li>
                             {% endfor %}
                         </ol>
