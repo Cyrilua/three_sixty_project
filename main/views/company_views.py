@@ -73,7 +73,7 @@ def create_company(request):
     return render(request, 'main/add_new_company.html', args)
 
 
-def connect_to_company(request):
+def connect_to_company_to_key(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
@@ -101,6 +101,32 @@ def connect_to_company(request):
             profile.save()
             return redirect('/communications/')
     return render(request, 'main/connect_to_company.html', args)
+
+
+def connect_to_company_to_link(request, key):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    args = {'title': "Добавление участников"}
+
+    if profile.company is not None:
+        return redirect('/communications/')
+
+    try:
+        company = Company.objects.get(key=key)
+    except:
+        return render(request, 'main/error_old.html', {'error': "Ссылка не существует или введена неверно"})
+    else:
+        list_positions = [i.position for i in company.positioncompany_set.all()]
+        list_platforms = [i.platform for i in company.platformcompany_set.all()]
+        if profile.platform is not None and profile.platform not in list_platforms:
+            profile.platform = None
+        if profile.position is not None and profile.position not in list_positions:
+            profile.position = None
+        profile.company = company
+        profile.save()
+        return redirect('/communications/')
 
 
 def get_all_users_in_company(request):

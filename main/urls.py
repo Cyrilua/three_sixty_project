@@ -32,6 +32,7 @@ urlpatterns = [
                   path('create_group/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
                   path('connect_to_group/', teams_views.connect_to_team_to_key, name='connect_to_group'),
+                  # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
 
                   # Создание компании (для ясности стоит изменить url)
@@ -40,7 +41,10 @@ urlpatterns = [
                   #     ее владелец и ключ для присоединения)
                   path('company_view/', company_views.company_view, name='company_view'),
                   # Присоединение к компании (по ключу)
-                  path('connect_to_company/', company_views.connect_to_company, name='connect_to_company'),
+                  path('connect_to_company/', company_views.connect_to_company_to_key, name='connect_to_company'),
+                  # Присоеддинение к компании (по ссылке)
+                  path('invite/c/<str:key>/', company_views.connect_to_company_to_link,
+                       name="connect_to_company_to_link"),
                   # Возвращает список пользователей в компани
                   path('get_all_companies_users/', company_views.get_all_users_in_company,
                        name='get_all_companies_users'),
