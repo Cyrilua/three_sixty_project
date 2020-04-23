@@ -35,7 +35,7 @@ def create_team(request):
     return render(request, 'main/add_new_team.html', args)
 
 
-def connect_to_team(request):
+def connect_to_team_to_key(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
@@ -57,6 +57,27 @@ def connect_to_team(request):
             profile.save()
             return redirect('/communications/')
     return render(request, 'main/connect_to_team.html', args)
+
+
+def connect_to_team_to_link(request, key):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    args = {'title': 'Присоединиться к комманде'}
+    profile = get_user_profile(request)
+
+    try:
+        group = Group.objects.get(key=key)
+        if group in profile.groups.all():
+            return redirect("/groups/{}/".format(group.id))
+    except:
+        return render(request, 'main/error_old.html', {
+            'error': "Этой группы не существует или ссылка введена неправильно"
+        })
+    else:
+        profile.groups.add(group)
+        profile.save()
+        return redirect("/groups/{}/".format(group.id))
 
 
 def teams_view(request):

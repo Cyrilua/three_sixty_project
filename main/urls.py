@@ -31,7 +31,8 @@ urlpatterns = [
                   # Создание группы команды
                   path('create_group/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
-                  path('connect_to_group/', teams_views.connect_to_team, name='connect_to_group'),
+                  path('connect_to_group/', teams_views.connect_to_team_to_key, name='connect_to_group'),
+                  path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
