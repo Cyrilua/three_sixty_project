@@ -25,3 +25,9 @@ class PhotoProfileForm(ModelForm):
     class Meta:
         model = ProfilePhoto
         fields = ('photo',)
+
+
+class UserChangeEmailForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)

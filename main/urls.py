@@ -1,19 +1,49 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
-
+from django.urls import path, include, reverse
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views
 
 app_name = "main"
 urlpatterns = [
-                  path('accounts/', include('django.contrib.auth.urls')),
                   # Регистрация
                   path('register/', user_views.user_register, name='register'),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
                   path('logout/', user_views.user_logout, name='logout'),
-                  #path('password_reset/', user_views.user_register, name='password_reset'),
+
+                  # Сообщение об успешной смене пароля
+                  path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
+                      template_name='main/registration/password_change_done.html'),
+                       name='password_change_done'),
+                  # Изменение пароля
+                  path('password_change/',
+                       auth_views.PasswordChangeView.as_view(template_name='main/registration/password_change.html',
+                                                             success_url=reverse_lazy('main:password_change_done')),
+                       name='password_change'),
+                  # Сообщение об отправке сообщения на почту
+                  path('password_reset/done/', auth_views.PasswordResetCompleteView.as_view(
+                      template_name='main/registration/password_reset_done.html'),
+                       name='password_reset_done'),
+                  # Неведомая и странно работающая часть
+                  path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+                      template_name='main/registration/password_reset_confirm.html',
+                      success_url='reset/done/'
+                      ),
+                       name='password_reset_confirm'),
+                  # Сброс пароля
+                  path('password_reset/', auth_views.PasswordResetView.as_view(
+                      template_name='main/registration/password_reset_form.html',
+                      subject_template_name='main/registration/password_reset_subject.txt',
+                      email_template_name='main/registration/password_reset_email.html',
+                      success_url=reverse_lazy('main:password_reset_done')),
+                       name='password_reset'),
+                  # Сообщение об успешном сбросе пароля
+                  path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
+                      template_name='main/registration/password_reset_complete.html'),
+                       name='password_reset_complete'),
 
                   # Просмотр профиля
                   path('<int:profile_id>/', profile_views.profile_view, name='profile'),
@@ -22,7 +52,7 @@ urlpatterns = [
                   # Загрузка аватарки
                   path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
                   # Просмотр других пользователей
-                  #path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
+                  # path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
 
                   # Обзор коммуникаций юзера
                   path('communications/', teams_views.teams_view, name='communications'),

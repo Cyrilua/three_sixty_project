@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from main.forms import ProfileForm, PhotoProfileForm
+from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
 from main.models import ProfilePhoto
 from main.views.auxiliary_general_methods import *
 
@@ -116,14 +116,24 @@ def upload_profile_photo(request):
     return render(request, "main/upload_photo.html", args)
 
 
-
-
-
 def edit_profile(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    args = {}
+
+    user = auth.get_user(request)
     profile = get_user_profile(request)
+    args = {
+        'title': "Редактирование профия",
+        'profile_form': ProfileForm({
+            'name': profile.name,
+            'surname': profile.surname,
+            'patronymic': profile.patronymic,
+            'city': profile.city}),
+        'user_email': UserChangeEmailForm({'email': user.email}),
+        'profile': profile,
+        'user': user
+    }
+
     try:
         photo = profile.profilephoto.photo
         args['photo'] = photo
@@ -139,14 +149,6 @@ def edit_profile(request):
             profile.surname = request.POST.get('surname', '')
             profile.city = request.POST.get('city', '')
             profile.save()
-    args['profile_form'] = ProfileForm({
-        'name': profile.name,
-        'surname': profile.surname,
-        'patronymic': profile.patronymic,
-        'city': profile.city,
-    })
-    args['title'] = "Редактирование профия"
-    args['profile'] = profile
     return render(request, 'main/edit_profile.html', args)
 
 
