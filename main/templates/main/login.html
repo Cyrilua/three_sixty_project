@@ -21,8 +21,10 @@
 
 
                 {% if login_error %}
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger" style="text-align: center" role="alert">
                         <b>{{ login_error }}</b>
+                        <br>
+                        <b><a href="{% url 'main:password_reset' %}">Восстановить пароль</a></b>
                     </div>
                 {% endif %}
 
@@ -46,6 +48,9 @@
                         <div style="text-align: center">
                             <p style="color: #6c757d">
                                 Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>
+                            </p>
+                            <p>
+                                <a href="{% url 'main:password_reset' %}">Забыли пароль?</a>
                             </p>
                         </div>
                         <hr>
