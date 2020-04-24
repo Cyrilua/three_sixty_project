@@ -129,7 +129,7 @@ def edit_profile(request):
             'surname': profile.surname,
             'patronymic': profile.patronymic,
             'city': profile.city}),
-        'user_email': UserChangeEmailForm({'email': user.email}),
+        'email_form': UserChangeEmailForm({'email': user.email}),
         'profile': profile,
         'user': user
     }

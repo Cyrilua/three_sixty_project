@@ -67,6 +67,11 @@
                         {{ profile_form.city|attr:"placeholder:Ваш город"|add_class:"form-control" }}
                     </div>
                     <hr>
+                    <div class="form-group">
+                        <label for="{{ email_form.email.id_for_label }}">E-mail</label>
+                        {{ email_form.email|attr:"placeholder:Ваш e-mail"|add_class:"form-control" }}
+                    </div>
+                    <hr>
                     <div style="text-align: right">
                         <input class="btn btn-primary" type="submit" value="Сохранить изменения"/>
                     </div>
