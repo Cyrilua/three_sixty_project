@@ -1,0 +1,77 @@
+{% extends 'main/wrapper.html' %}
+
+{% load static %}
+
+{% block content-user %}
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11 rounded-block">
+            <div>
+                <h2 style="text-align: center">Компания "{{ company_name }}"</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <h4>Создатель</h4>
+                            <a href="{% url 'main:profile' owner.pk %}">{{ owner.name }} {{ owner.surname }}</a>
+                        </div>
+                        <hr>
+                        <div>
+                            <h4>Опросы</h4>
+                            <a href="#">Созадать опрос для компании</a>
+                        </div>
+                        <hr>
+                        {% if link_to_enter %}
+                            <div>
+                                <h4>Ссылка для регистрации</h4>
+                                <div>
+                                    <label id="linkToEnter" hidden>{{ link_to_enter }}</label>
+                                    <button class="btn btn-secondary" onclick="copyText('#linkToEnter')">Скопировать
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <a href="{% url 'main:add_new_platform_in_company' %}">Добавить платформу для
+                                    компании</a>
+                                <br>
+                                <a href="{% url 'main:add_new_position_in_company' %}">Добавить должность для
+                                    компании</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div style="text-align: center">
+                            {% if positions %}
+                                <h4>Платформы</h4>
+                                <ol>
+                                    {% for position in positions %}
+                                        <li>
+                                            {{ position }}
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% endif %}
+                        </div>
+                        <div style="text-align: center">
+                            <h4 style="text-align: center">Должности</h4>
+                            {% if positions %}
+                                <ol>
+                                    {% for position in positions %}
+                                        <li>
+                                            {{ position }}
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% else %}
+                                <i><a href="{% url 'main:add_new_position_in_company' %}">Необходимо добавить должности</a></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

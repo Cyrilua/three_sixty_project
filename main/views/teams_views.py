@@ -86,7 +86,7 @@ def teams_view(request):
     profile = get_user_profile(request)
     teams = profile.groups.all()
     args = {
-        'title': "Группы",
+        'title': "Круги общения",
         'teams': teams,
         'profile': profile,
     }
@@ -102,7 +102,7 @@ def teams_view(request):
 
 
 def team_user_view(request, group_id):
-    args = {'title': "Просмотр пользователей группы"}
+    args = {}
 
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -115,9 +115,10 @@ def team_user_view(request, group_id):
     args['users'] = group.profile_set.all()
 
     if auth.get_user(request).id == group.owner.id:
-        args['key_to_enter'] = group.key
+        args['link_to_enter'] = request.scheme + "://" + request.get_host() + "/invite/t/" + group.key
     args['owner'] = {'pk': group.owner.profile.pk,
                      'name': group.owner.profile.name,
                      'surname': group.owner.profile.surname}
     args['team_name'] = group.name
+    args['title'] = group.name
     return render(request, 'main/team_view.html', args)

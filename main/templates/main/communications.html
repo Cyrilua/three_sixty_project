@@ -81,25 +81,22 @@
                 </div>
             </div>
         </div>
+        <!--Основная информация-->
         <div class="col-md-9">
             <div class="row">
-                <!-- Инфо -->
                 <div class="col-12 rounded-block"
-                     style="margin-bottom: 10px; height: 200px">
+                     style="margin-bottom: 10px; height: auto">
                     <h3>{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</h3>
                     <hr>
                     <h4>Компания</h4>
-                    <p>
                         {% if profile.company %}
-                            {{ profile.company }}
+                            <a href="{% url 'main:company_view' %}">{{ profile.company.name }}</a>
                         {% else %}
                             Компания отсутствует
                         {% endif %}
-                    </p>
                 </div>
             </div>
             <div class="row">
-                <!-- Рейтинг -->
                 <div class="col-12 rounded-block"
                      style="margin-bottom: 10px; height: 100px">
                     <h4>Платформа</h4>
