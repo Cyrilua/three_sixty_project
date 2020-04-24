@@ -30,7 +30,7 @@ urlpatterns = [
                   # Неведомая и странно работающая часть
                   path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
                       template_name='main/registration/password_reset_confirm.html',
-                      success_url='reset/done/'
+                      success_url=reverse_lazy('main:password_reset_complete')
                       ),
                        name='password_reset_confirm'),
                   # Сброс пароля
