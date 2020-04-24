@@ -196,14 +196,14 @@ def add_platform_in_company(request):
     if request.method == "POST":
         platform_name = request.POST.get('platform', '')
         try:
-            platform = Position.objects.get(name=platform_name)
+            platform = Platforms.objects.get(name=platform_name)
         except:
             platform = Platforms(name=platform_name)
             platform.save()
 
         platforms_in_company = PlatformCompany.objects.filter(company=company)
         for i in platforms_in_company:
-            if i.position.id == platform.id:
+            if i.platform.id == platform.id:
                 args['error'] = "Эта платформа уже выбрана для этой компании"
                 return render(request, 'main/add_new_platform.html', args)
 
@@ -289,9 +289,9 @@ def choose_platform(request):
         'company': company
     }
     if company is None:
-        args['list_positions'] = Platforms.objects.all()
+        args['list_platforms'] = Platforms.objects.all()
     else:
-        args['list_positions'] = [i.platform for i in company.platformcompany_set.all()]
+        args['list_platforms'] = [i.platform for i in company.platformcompany_set.all()]
     if request.method == "POST":
         platform_id = request.POST.get('id_platform', '')
         if platform_id == -1:
@@ -301,11 +301,11 @@ def choose_platform(request):
         except:
             args['error'] = 'Данной платформы не существует'
             return render(request, 'main/platform_choice.html', args)
-        if platform not in args['list_positions']:
+        platform_company = PlatformCompany.objects.get(platform=platform)
+        if platform_company is None:
             args['error'] = "Выбранная платформа отсутствует в списке"
             return render(request, 'main/platform_choice.html', args)
-
-        profile.platform = platform
+        profile.platform = platform_company
         profile.save()
         return redirect('/communications/')
     return render(request, 'main/platform_choice.html', args)
