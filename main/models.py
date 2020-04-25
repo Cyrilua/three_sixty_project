@@ -6,6 +6,13 @@ from django.contrib.auth.models import User
 
 
 class Profile (models.Model):
+    ACCESS_CHOICES = [
+        (0, 'user'),
+        (1, 'hr'),
+        (2, 'admin'),
+    ]
+
+    access = models.IntegerField(choices=ACCESS_CHOICES, default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
@@ -124,14 +131,27 @@ class Group(models.Model):
 
 
 class Poll(models.Model):
+    TEMPLATE_TYPE_CHOICES = [
+        (0, 'default'),
+        (1, 'company'),
+        (2, 'team')
+    ]
+
+    template_type = models.IntegerField(choices=TEMPLATE_TYPE_CHOICES, default=2)
     initiator = models.ForeignKey(User, on_delete=models.CASCADE)
     name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')
     count_answers = models.IntegerField(default=0)
     objects = models.Manager()
-    #answers = models.ManyToManyField('Answers')
     #start_date = models.DateField()
     #end_date = models.DateField()
+
+    class Meta:
+        db_table = "Poll"
+
+    def __str__(self):
+        return self.name_poll
+
 
 
 class Questions(models.Model):

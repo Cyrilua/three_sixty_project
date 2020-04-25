@@ -5,6 +5,16 @@ from main.models import Questions, Poll, Answers
 from main.views.auxiliary_general_methods import *
 
 
+def default_poll_template_view(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    polls = Poll.objects.filter(template_type=0)
+    polls = filter(lambda x: x.name_poll == "Test poll", polls)
+    for i in polls:
+        print(i)
+    return redirect('/')
+
+
 def poll_view(request, pool_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')

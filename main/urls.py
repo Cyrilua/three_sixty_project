@@ -3,7 +3,8 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views
+from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views, \
+    auxiliary_general_methods
 
 app_name = "main"
 urlpatterns = [
@@ -53,6 +54,8 @@ urlpatterns = [
                   path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
                   # Просмотр других пользователей
                   # path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
+                  # Поиск пользователей
+                  path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
 
                   # Обзор коммуникаций юзера
                   path('communications/', teams_views.teams_view, name='communications'),
@@ -110,6 +113,8 @@ urlpatterns = [
                   # Возвращает список вопросов
                   path('<int:poll_id>/poll_questions/', poll_views.questions_in_pool_view,
                        name='view_questions_in_poll'),
+                  #
+                  path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
