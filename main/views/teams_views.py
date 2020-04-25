@@ -108,9 +108,12 @@ def team_user_view(request, group_id):
         return redirect('/')
     try:
         group = Group.objects.get(id=group_id)
+        profile = get_user_profile(request)
+        if profile not in group.profile_set.all():
+            raise Exception()
     except:
-        args['error'] = "Данной группы не существует"
-        return render(request, 'main/team_view.html', args)
+        #args['error'] = "Данной группы не существует"
+        return redirect('/communications/')
 
     args['users'] = group.profile_set.all()
 
