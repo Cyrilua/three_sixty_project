@@ -129,7 +129,7 @@ def edit_profile(request):
             'surname': profile.surname,
             'patronymic': profile.patronymic,
             'city': profile.city}),
-        'user_email': UserChangeEmailForm({'email': user.email}),
+        'email_form': UserChangeEmailForm({'email': user.email}),
         'profile': profile,
         'user': user
     }
@@ -149,6 +149,12 @@ def edit_profile(request):
             profile.surname = request.POST.get('surname', '')
             profile.city = request.POST.get('city', '')
             profile.save()
+        email_form = UserChangeEmailForm(request.POST)
+        if email_form.is_valid():
+            new_email = request.POST.get('email', '')
+            user.email = new_email
+            user.save()
+        return redirect('/edit/')
     return render(request, 'main/edit_profile.html', args)
 
 

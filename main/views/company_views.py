@@ -227,12 +227,14 @@ def company_view(request):
         return redirect('/communications/')
 
     args = {
-        'title': "Просмотр компании",
+        'title': company.name,
         'positions': PositionCompany.objects.filter(company=company),
         'platform': PlatformCompany.objects.filter(company=company),
-        'name': company.name,
-        'owner': company.owner,
-        'key': company.key,
+        'company_name': company.name,
+        'owner': {'pk': company.owner.profile.pk,
+                  'name': company.owner.profile.name,
+                  'surname': company.owner.profile.surname},
+        'link_to_enter': request.scheme + "://" + request.get_host() + "/invite/c/" + company.key,
     }
 
     return render(request, 'main/company_view.html', args)

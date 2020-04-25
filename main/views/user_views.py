@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from main.views.profile_views import get_user_profile
-from main.forms import ProfileForm
+from main.forms import ProfileForm, UserChangeEmailForm
 
 
 def user_register(request):
@@ -15,6 +15,7 @@ def user_register(request):
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
+            'email_form': UserChangeEmailForm(),
             'title': "Регистрация"}
 
     if request.method == 'POST':
@@ -22,12 +23,13 @@ def user_register(request):
         post['username'] = post['username'].lower()
         user_form = UserCreationForm(post)
         profile_form = ProfileForm(post)
+        email_form = UserChangeEmailForm(post)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            print(request.POST.get('username', ''))
+        if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
             user = user_form.save(commit=False)
             profile = profile_form.save(commit=False)
             profile.user = user
+            user.email = request.POST.get('email', '')
             user.save()
             profile.save()
 
