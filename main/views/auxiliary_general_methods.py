@@ -46,6 +46,11 @@ def find_user(request,
         if valid_input(platform):
             profiles = filter_profile(lambda x: x.platform == platform, profiles)
         args['profiles'] = profiles
+        args['name'] = name
+        args['surname'] = surname
+        args['patronymic'] = patronymic
+        args['position'] = position
+        args['platform'] = platform
         return render(request, html_file, args)
 
     return render(request, html_file, args)

@@ -6,43 +6,37 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <h1>Поиск профиля</h1>
-
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Имя пользователя"
-                               type="text"
-                               name="name" value="" id="name">
+                        <input class="form-control" placeholder="Имя пользователя" type="text"
+                               name="name" value="{{ name }}" id="name">
                     </div>
 
                     <div class="form-group">
                         <label for="surname">Фамилия</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Фамилия пользователя"
-                               type="text"
-                               name="surname" value="" id="surname">
+                        <input class="form-control" placeholder="Фамилия пользователя" type="text"
+                               name="surname" value="{{ surname }}" id="surname">
                     </div>
 
                     <div class="form-group">
                         <label for="patronymic">Отчество</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Отчество пользователя"
-                               type="text"
-                               name="patronymic" value="" id="patronymic">
+                        <input class="form-control" placeholder="Отчество пользователя" type="text"
+                               name="patronymic" value="{{ patronymic }}" id="patronymic">
                     </div>
 
                     <div class="form-group">
                         <label for="position">Позиция в компании</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Позиция"
-                               type="text"
-                               name="position" value="" id="position">
+                        <input class="form-control" placeholder="Позиция" type="text"
+                               name="position" value="{{ position }}" id="position">
                     </div>
 
                     <div class="form-group">
                         <label for="platform">Платформа в компании</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Платформа"
-                               type="text"
-                               name="platform" value="" id="platform">
+                        <input class="form-control" placeholder="Платформа" type="text"
+                               name="platform" value="{{ platform }}" id="platform">
                     </div>
 
                     <div style="text-align: right">
@@ -50,15 +44,14 @@
                     </div>
 
                     <div class="col-12 rounded-block"
-                     style="height: 100px; margin-bottom: 10px">
-                    <h4>Пользователи</h4>
-                    <p>
-                        {% for profile in profiles %}
-                            <label id="redirect_url" hidden>{{ redirect }}</label>
-                            <a href="copyText('#redirect_url')">{{ profile }}</a>
-                        {% endfor %}
-                    </p>
-                </div>
+                         style="height: 100px; margin-bottom: 10px">
+                        <h4>Пользователи</h4>
+                        <p>
+                            {% for profile in profiles %}
+                                <a href="{% url redirect profile.pk %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
+                            {% endfor %}
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>

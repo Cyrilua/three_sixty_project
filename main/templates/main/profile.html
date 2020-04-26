@@ -57,20 +57,24 @@
                     <h3>Рейтинг????</h3>
                 </div>
             </div>
-{#            <div class="row">#}
-{#                <!-- Последние оценки -->#}
-{#                <div class="col-12 rounded-block"#}
-{#                     style="height: 100px; margin-bottom: 10px">#}
-{#                    <b>Последние оценки</b>#}
-{#                </div>#}
-{#            </div>#}
+            {#            <div class="row">#}
+            {#                <!-- Последние оценки -->#}
+            {#                <div class="col-12 rounded-block"#}
+            {#                     style="height: 100px; margin-bottom: 10px">#}
+            {#                    <b>Последние оценки</b>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
     </div>
 {% endblock %}
 
-{% block right-sidebar-nav %}
+{% block sidebar-nav-right %}
     <h3 style="color: #b21f2d">Для отладки</h3>
-    <div><a class="btn btn-success" href="{% url 'main:questions_search' %}">Поиск вопросов</a></div>
+    <div>
+        <a class="btn btn-success" href="{% url 'main:questions_search' %}">Поиск вопросов</a>
+        <hr>
+        <a class="btn btn-success" href="{% url 'main:search_profile' %}">Поиск профилей</a>
+    </div>
 {% endblock %}
 
 
