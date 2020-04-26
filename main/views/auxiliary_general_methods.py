@@ -17,11 +17,14 @@ def get_photo_height(width, height):
     return result
 
 
-def find_user(request, action_with_selected_user='main:profile'):
+def find_user(request,
+              action_with_selected_user='main:profile',
+              html_file='main/search_profile.html',
+              title="Поиск пользователей"):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {
-        'title': "Поиск пользователей",
+        'title': title,
         'redirect': action_with_selected_user,
     }
     if request.method == "POST":
@@ -43,12 +46,9 @@ def find_user(request, action_with_selected_user='main:profile'):
         if valid_input(platform):
             profiles = filter_profile(lambda x: x.platform == platform, profiles)
         args['profiles'] = profiles
-        print(1)
-        for i in profiles:
-            print(i)
-        return render(request, 'main/search_profile.html', args)
+        return render(request, html_file, args)
 
-    return render(request, 'main/search_profile.html', args)
+    return render(request, html_file, args)
 
 
 def valid_input(user_input: str):

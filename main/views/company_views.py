@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from main.forms import CompanyForm
-from main.models import Company, Platforms, Position, PositionCompany, PlatformCompany
+from main.models import Company, Platforms, Position, PositionCompany, PlatformCompany, CompanyAdmins, CompanyHR
 from main.views.auxiliary_general_methods import *
 
 
@@ -311,3 +311,31 @@ def choose_platform(request):
         profile.save()
         return redirect('/communications/')
     return render(request, 'main/platform_choice.html', args)
+
+
+def search_admins(request):
+    result = find_user(request, action_with_selected_user='main:add_admin_method profile.id')
+    return result
+
+
+def add_admins(request, profile_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = get_user_profile(request).company
+    user_is_owner_current_company = auth.get_user(request) == company.owner
+    try:
+        user_is_admin_in_current_company = CompanyAdmins.objects.get(profile=profile).company == profile.company
+    except:
+        user_is_admin_in_current_company = False
+
+    if not user_is_admin_in_current_company or not user_is_owner_current_company:
+        return redirect('/')
+
+    profile_new_admin = Profile.objects.get(id=profile_id)
+    new_admin = CompanyAdmins()
+    new_admin.company = company
+    new_admin.profile = profile_new_admin
+    new_admin.save()
+    return redirect('/')
