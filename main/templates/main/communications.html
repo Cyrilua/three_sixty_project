@@ -40,14 +40,18 @@
                 <div class="col-12 rounded-block">
                     <h3>Конопочки</h3>
                     <p>
-                        <a href="{% url 'main:connect_to_company' %}">Присоединиться к компании</a><br>
+                        {% if not profile.company %}
+                            <a href="{% url 'main:connect_to_company' %}">Присоединиться к компании</a><br>
+                        {% endif %}
                         <a href="{% url 'main:connect_to_group' %}">Присоединиться к команде</a><br>
                         <a href="{% url 'main:platform_choice' %}">Выбрать платформу</a><br>
                         <a href="{% url 'main:position_choice' %}">Выбрать должность</a>
                     </p>
                     <hr>
                     <p>
-                        <a href="{% url 'main:add_company' %}">Создать компанию</a><br>
+                        {% if not profile.company %}
+                            <a href="{% url 'main:add_company' %}">Создать компанию</a><br>
+                        {% endif %}
                         <a href="{% url 'main:create_group' %}">Создать команду</a><br>
                     </p>
                     <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -89,11 +93,11 @@
                     <h3>{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</h3>
                     <hr>
                     <h4>Компания</h4>
-                        {% if profile.company %}
-                            <a href="{% url 'main:company_view' %}">{{ profile.company.name }}</a>
-                        {% else %}
-                            Компания отсутствует
-                        {% endif %}
+                    {% if profile.company %}
+                        <a href="{% url 'main:company_view' %}">{{ profile.company.name }}</a>
+                    {% else %}
+                        Компания отсутствует
+                    {% endif %}
                 </div>
             </div>
             <div class="row">
