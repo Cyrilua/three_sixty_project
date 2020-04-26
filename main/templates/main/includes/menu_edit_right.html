@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-12 navbar-light position-fixed">
+        <ul class="navbar-nav flex-column">
+            <li class="{{ menu_edit_basic_information }} user-sidebar-item">
+                <a class="nav-link" href="{% url 'main:edit' %}">Общее</a>
+            </li>
+            <li class="{{ menu_edit_additional_information }} user-sidebar-item">
+                <a class="nav-link" href="#">Дополнительное</a>
+            </li>
+            <li class="{{ menu_edit_password_change }} user-sidebar-item">
+                <a class="nav-link" href="{% url 'main:password_change' %}">Смена пароля</a>
+            </li>
+        </ul>
+    </div>
+</div>
