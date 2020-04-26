@@ -54,8 +54,7 @@
                     <h4>Пользователи</h4>
                     <p>
                         {% for profile in profiles %}
-                            <label id="redirect_url" hidden>{{ redirect }}</label>
-                            <a href="copyText('#redirect_url')">{{ profile }}</a>
+                            <a href="{% url 'main:profile' profile.id %}">{{ profile }}</a>
                         {% endfor %}
                     </p>
                 </div>

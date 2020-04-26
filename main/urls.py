@@ -97,6 +97,10 @@ urlpatterns = [
                   # Сохраняет конкретную платформу для пользователя
                   path('choose_platform/', company_views.choose_platform,
                        name="platform_choice"),
+                  # Поиск пользователя для назначения его админом
+                  path('search_admin/', company_views.search_admins, name='search_and_redirect_to_add_method'),
+                  # Контроллер, на который ссылается поиск админа
+                  path('add_admin/', company_views.add_admins, name='add_admin_method'),
 
                   # Поиск вопроса среди имеющихся
                   path('questions_search/', questions_views.find_question, name='questions_search'),

@@ -10,6 +10,7 @@ class Profile (models.Model):
         (0, 'user'),
         (1, 'hr'),
         (2, 'admin'),
+        (3, 'company_owner')
     ]
 
     access = models.IntegerField(choices=ACCESS_CHOICES, default=0)
@@ -32,6 +33,30 @@ class Profile (models.Model):
 
     def __str__(self):
         return 'Profile for user {} {}'.format(self.name, self.surname)
+
+
+class CompanyAdmins(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = 'Admins'
+
+    def __str__(self):
+        return '{} in company \"{}\"'.format(self.profile, self.company)
+
+
+class CompanyHR(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = 'HR'
+
+    def __str__(self):
+        return '{} in company \"{}\"'.format(self.profile, self.company)
 
 
 class ProfilePhoto (models.Model):
