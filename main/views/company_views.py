@@ -314,7 +314,7 @@ def choose_platform(request):
 
 
 def search_admins(request):
-    result = find_user(request, action_with_selected_user='main:add_admin_method profile.id')
+    result = find_user(request, action_with_selected_user='main:add_admin_method')
     return result
 
 
@@ -323,19 +323,19 @@ def add_admins(request, profile_id):
         return redirect('/')
 
     profile = get_user_profile(request)
+    print(profile)
     company = get_user_profile(request).company
     user_is_owner_current_company = auth.get_user(request) == company.owner
     try:
         user_is_admin_in_current_company = CompanyAdmins.objects.get(profile=profile).company == profile.company
     except:
         user_is_admin_in_current_company = False
-
-    if not user_is_admin_in_current_company or not user_is_owner_current_company:
+    if user_is_admin_in_current_company or not user_is_owner_current_company:
         return redirect('/')
-
     profile_new_admin = Profile.objects.get(id=profile_id)
     new_admin = CompanyAdmins()
     new_admin.company = company
     new_admin.profile = profile_new_admin
     new_admin.save()
     return redirect('/')
+
