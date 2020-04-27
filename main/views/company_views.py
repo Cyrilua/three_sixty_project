@@ -158,6 +158,10 @@ def add_position_in_company(request):
         args['error'] = "Пользователь не состоит в компании"
         return render(request, 'main/add_new_position.html', args)
 
+    if company.owner != auth.get_user(request) and profile.access != 2:
+        args['error'] = 'У пользователя нет достаточного доступа для этой операции'
+        return render(request, 'main/add_new_position.html', args)
+
     if request.method == "POST":
         position_name = request.POST.get('position', '')
         try:
@@ -186,11 +190,16 @@ def add_platform_in_company(request):
         return redirect('/')
 
     args = {'title': "Добавление платформы в компанию"}
+    user =  auth.get_user(request)
     profile = get_user_profile(request)
     company = profile.company
 
     if company is None:
         args['error'] = "Пользователь не состоит в компании"
+        return render(request, 'main/add_new_platform.html', args)
+
+    if company.owner.id != user.id and profile.access != 2:
+        args['error'] = 'У пользователя нет достаточного доступа для этой операции'
         return render(request, 'main/add_new_platform.html', args)
 
     if request.method == "POST":

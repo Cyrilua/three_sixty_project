@@ -10,6 +10,11 @@
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="position">Логин</label>
                         <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите название новой должности"
