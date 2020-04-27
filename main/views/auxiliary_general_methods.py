@@ -20,13 +20,20 @@ def get_photo_height(width, height):
 def find_user(request,
               action_with_selected_user='main:profile',
               html_file='main/search_profile.html',
-              title="Поиск пользователей"):
+              title="Поиск пользователей",
+              limited_access=False,
+              function_determining_access=None):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {
         'title': title,
         'redirect': action_with_selected_user,
     }
+    if limited_access:
+        if not function_determining_access(request):
+            args['error'] = "У пользователя нет доступа для этой операции"
+            return render(request, html_file, args)
+
     if request.method == "POST":
         name = request.POST.get('name', '')
         surname = request.POST.get('surname', '')

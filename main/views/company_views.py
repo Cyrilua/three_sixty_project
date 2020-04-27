@@ -153,12 +153,11 @@ def add_position_in_company(request):
     profile = get_user_profile(request)
     company = profile.company
     args = {'title': "Добавление должности в компанию"}
-
     if company is None:
         args['error'] = "Пользователь не состоит в компании"
         return render(request, 'main/add_new_position.html', args)
 
-    if company.owner != auth.get_user(request) and profile.access != 2:
+    if company.owner != auth.get_user(request) and not user_is_admin_in_current_company(request):
         args['error'] = 'У пользователя нет достаточного доступа для этой операции'
         return render(request, 'main/add_new_position.html', args)
 
@@ -198,9 +197,9 @@ def add_platform_in_company(request):
         args['error'] = "Пользователь не состоит в компании"
         return render(request, 'main/add_new_platform.html', args)
 
-    if company.owner.id != user.id and profile.access != 2:
+    if company.owner != auth.get_user(request) and not user_is_admin_in_current_company(request):
         args['error'] = 'У пользователя нет достаточного доступа для этой операции'
-        return render(request, 'main/add_new_platform.html', args)
+        return render(request, 'main/add_new_position.html', args)
 
     if request.method == "POST":
         platform_name = request.POST.get('platform', '')
@@ -323,23 +322,28 @@ def choose_platform(request):
 
 
 def search_admins(request):
-    result = find_user(request, action_with_selected_user='main:add_admin_method')
+    result = find_user(request,
+                       action_with_selected_user='main:add_admin_method',
+                       limited_access=True,
+                       function_determining_access=determine_access)
     return result
+
+
+def determine_access(request):
+    user = auth.get_user(request)
+    company = get_user_profile(request).company
+    user_is_admin = user_is_admin_in_current_company(request)
+    user_is_owner = user == company.owner
+    return user_is_admin or user_is_owner
 
 
 def add_admins(request, profile_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    profile = get_user_profile(request)
-    print(profile)
     company = get_user_profile(request).company
     user_is_owner_current_company = auth.get_user(request) == company.owner
-    try:
-        user_is_admin_in_current_company = CompanyAdmins.objects.get(profile=profile).company == profile.company
-    except:
-        user_is_admin_in_current_company = False
-    if user_is_admin_in_current_company or not user_is_owner_current_company:
+    if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
         return redirect('/')
     profile_new_admin = Profile.objects.get(id=profile_id)
     new_admin = CompanyAdmins()
@@ -348,3 +352,34 @@ def add_admins(request, profile_id):
     new_admin.save()
     return redirect('/')
 
+
+def user_is_admin_in_current_company(request):
+    profile = get_user_profile(request)
+    try:
+        result = CompanyAdmins.objects.get(profile=profile).company == profile.company
+    except:
+        result = False
+    return result
+
+
+def search_hr(request):
+    result = find_user(request, action_with_selected_user='main:add_hr_method',
+                       limited_access=True,
+                       function_determining_access=determine_access)
+    return result
+
+
+def add_hr(request, profile_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    company = get_user_profile(request).company
+    user_is_owner_current_company = auth.get_user(request) == company.owner
+    if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
+        return redirect('/')
+    profile_new_hr = Profile.objects.get(id=profile_id)
+    new_hr = CompanyHR()
+    new_hr.profile = profile_new_hr
+    new_hr.company = company
+    new_hr.save()
+    return redirect('/')

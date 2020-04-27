@@ -9,6 +9,11 @@
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
+                    {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="name">Имя</label>
                         <input class="form-control" placeholder="Имя пользователя" type="text"

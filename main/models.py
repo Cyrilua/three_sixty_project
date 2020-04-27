@@ -6,14 +6,6 @@ from django.contrib.auth.models import User
 
 
 class Profile (models.Model):
-    ACCESS_CHOICES = [
-        (0, 'user'),
-        (1, 'hr'),
-        (2, 'admin'),
-        (3, 'company_owner')
-    ]
-
-    access = models.IntegerField(choices=ACCESS_CHOICES, default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
