@@ -32,7 +32,7 @@ urlpatterns = [
                   path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
                       template_name='main/registration/password_reset_confirm.html',
                       success_url=reverse_lazy('main:password_reset_complete')
-                      ),
+                  ),
                        name='password_reset_confirm'),
                   # Сброс пароля
                   path('password_reset/', auth_views.PasswordResetView.as_view(
@@ -120,7 +120,11 @@ urlpatterns = [
                   path('<int:poll_id>/poll_questions/', poll_views.questions_in_pool_view,
                        name='view_questions_in_poll'),
                   #
-                  path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view')
+                  path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
+
+                  # Ответ на опрос
+                  path('poll', poll_views.answer_the_poll, name='answer_the_poll'),
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
