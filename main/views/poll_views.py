@@ -133,7 +133,7 @@ def add_answer(request, poll_id, question_id):
 
         answer = Answers()
         answer.question = question
-        answer.answer = answer_user
+        answer.sum_answer = answer_user
         answer.poll = poll
         answer.save()
 
@@ -175,24 +175,34 @@ def answer_the_poll(request, poll_id):
     args = {'title': 'Прохождение опроса',
             'questions': poll.questions.all()}
 
+    # Закомментированно на время разработки
     if not user_is_respondent(request, poll):
-        # Если текущий пользователь прошел опрос или его нет в списке опрашиваемых
-        return redirect('/')
+        # TODO Если текущий пользователь прошел опрос или его нет в списке опрашиваемых
+        #return redirect('/')
+        pass
 
     if request.method == "POST":
         for question in args['questions']:
             # Создание объекта ответа
-            user_answer = request.POST.get('answer-{}'.format(question.id))
-            new_answer = Answers()
-            new_answer.question = question
-            new_answer.poll = poll
-            new_answer.answer = user_answer
-            new_answer.save()
+            user_answer = int(request.POST.get('answer-{}'.format(question.id)))
+            try:
+                change_answer = Answers.objects.get(question=question)
+            except:
+                # TODO создавать ответы во время создания опроса
+                change_answer = Answers()
+                change_answer.poll = poll
+                change_answer.question = question
+            change_answer.sum_answer += user_answer
+            change_answer.count_answers += 1
+            change_answer.save()
 
-        # Удаление прошедшего опрос пользователя, увеличение счетчика пользователей прошедших опрос
+        # Удаление прошедшего опрос пользователя
         poll.respondents.remove(auth.get_user(request))
-        poll.count_completed_polls += 1
         poll.save()
+
+        if len(poll.respondents.all()) == 0:
+            # TODO
+            print("Обработка результата, когда все опрашиваемые прошли опрос")
         return redirect('/')
 
     return render(request, 'main/answer_the_poll.html', args)
@@ -203,3 +213,33 @@ def user_is_respondent(request, poll):
     user = auth.get_user(request)
     count_users = len(list(filter(lambda x: x.id == user.id, respondents)))
     return count_users == 1
+
+
+def result_view(request, poll_id):
+    # Использоется как для вывода конечного результата опроса
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        poll = Poll.objects.get(id=poll_id)
+    except:
+        return redirect('/')
+
+    if poll.initiator.id != auth.get_user(request).id:
+        return redirect('/')
+
+    # Словарь (ключ - вопрос, значение - средний ответ)
+    question_by_answer_result = calculate_result_questions(poll.questions.all())
+    args = {
+        'title': 'Получение результатов опроса',
+        'results': question_by_answer_result
+    }
+    return render(request, 'main/result_poll.html', args)
+
+
+def calculate_result_questions(questions):
+    question_by_answer_result = {}
+    for question in questions:
+        answer = Answers.objects.get(question=question)
+        question_by_answer_result[question] = answer.sum_answer / answer.count_answers
+    return question_by_answer_result

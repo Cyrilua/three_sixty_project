@@ -645,7 +645,7 @@ def add_answer(request, poll_id, question_id):
 
         answer = Answers()
         answer.question = question
-        answer.answer = answer_user
+        answer.sum_answer = answer_user
         answer.poll = poll
         answer.save()
 

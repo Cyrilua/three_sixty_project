@@ -168,7 +168,6 @@ class Poll(models.Model):
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')
-    count_completed_polls = models.IntegerField(default=0)
     respondents = models.ManyToManyField(User)
     objects = models.Manager()
     #start_date = models.DateField()
@@ -200,8 +199,9 @@ class Questions(models.Model):
 
 
 class Answers(models.Model):
-    question = models.ForeignKey(Questions, on_delete=models.CASCADE)
-    answer = models.IntegerField()
+    question = models.OneToOneField(Questions, on_delete=models.CASCADE)
+    sum_answer = models.IntegerField(default=0)
+    count_answers = models.IntegerField(default=0)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
@@ -209,7 +209,7 @@ class Answers(models.Model):
         db_table = "Answer"
 
     def __str__(self):
-        return "{}: {}".format(self.question, self.answer)
+        return "{}: {}".format(self.question, self.sum_answer)
 
 
 class OpenQuestions(models.Model):
