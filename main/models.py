@@ -147,18 +147,29 @@ class Group(models.Model):
         return "Group \"{}\" with owner \"{}\"".format(self.name, self.owner)
 
 
-class Poll(models.Model):
-    TEMPLATE_TYPE_CHOICES = [
-        (0, 'default'),
-        (1, 'company'),
-        (2, 'team')
+class TemplatesPoll(models.Model):
+    TYPE_CHOICES = [
+        ('default', 0),
+        ('company', 1),
+        ('team', 2)
     ]
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='default')
+    name_poll = models.CharField(max_length=50)
+    questions = models.ManyToManyField('Questions')
 
-    template_type = models.IntegerField(choices=TEMPLATE_TYPE_CHOICES, default=2)
-    initiator = models.ForeignKey(User, on_delete=models.CASCADE)
+    class Meta:
+        db_table = 'Template'
+
+    def __str__(self):
+        return self.name_poll
+
+
+class Poll(models.Model):
+    initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')
-    count_answers = models.IntegerField(default=0)
+    count_completed_polls = models.IntegerField(default=0)
+    respondents = models.ManyToManyField(User)
     objects = models.Manager()
     #start_date = models.DateField()
     #end_date = models.DateField()

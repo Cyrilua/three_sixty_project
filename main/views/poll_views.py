@@ -164,21 +164,42 @@ def questions_in_pool_view(request, poll_id):
     return render(request, 'main/poll_questions.html', args)
 
 
-def answer_the_poll(request):
+def answer_the_poll(request, poll_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    args = {'title': 'Прохождение опроса'}
-    default_poll = Poll.objects.get(template_type=0)
-    questions = default_poll.questions.all()
-    args['questions'] = questions
+    try:
+        poll = Poll.objects.get(id=poll_id)
+    except:
+        return redirect('/')
+    args = {'title': 'Прохождение опроса',
+            'questions': poll.questions.all()}
+
+    if not user_is_respondent(request, poll):
+        # Если текущий пользователь прошел опрос или его нет в списке опрашиваемых
+        return redirect('/')
 
     if request.method == "POST":
-        question_answer = []
-        for i in questions:
-            answer = request.POST.get('answer-{}'.format(i.id))
-            question_answer.append((i.id, answer))
+        for question in args['questions']:
+            # Создание объекта ответа
+            user_answer = request.POST.get('answer-{}'.format(question.id))
+            new_answer = Answers()
+            new_answer.question = question
+            new_answer.poll = poll
+            new_answer.answer = user_answer
+            new_answer.save()
 
-        for i in question_answer:
-            print(i)
+        # Удаление прошедшего опрос пользователя, увеличение счетчика пользователей прошедших опрос
+        poll.respondents.remove(auth.get_user(request))
+        poll.count_completed_polls += 1
+        poll.save()
+        return redirect('/')
+
     return render(request, 'main/answer_the_poll.html', args)
+
+
+def user_is_respondent(request, poll):
+    respondents = poll.respondents.all()
+    user = auth.get_user(request)
+    count_users = len(list(filter(lambda x: x.id == user.id, respondents)))
+    return count_users == 1

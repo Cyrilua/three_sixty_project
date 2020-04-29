@@ -134,7 +134,7 @@ urlpatterns = [
                   path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
 
                   # Ответ на опрос
-                  path('poll', poll_views.answer_the_poll, name='answer_the_poll'),
+                  path('answer_poll/<poll_id>', poll_views.answer_the_poll, name='answer_the_poll'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
