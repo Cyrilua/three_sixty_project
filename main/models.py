@@ -170,22 +170,16 @@ class Poll(models.Model):
         return self.name_poll
 
 
-class Questions(models.Model):
-    TYPE_CHOICES = [
-        ('text', 0),
-        ('radio', 1),
-        ('range', 2),
-    ]
 
-    type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
-    text = models.CharField(max_length=100)
+class Questions(models.Model):
+    question = models.CharField(max_length=100)
     objects = models.Manager()
 
     class Meta:
         db_table = "Questions"
 
     def __str__(self):
-        return self.text
+        return self.question
 
 
 class Answers(models.Model):
