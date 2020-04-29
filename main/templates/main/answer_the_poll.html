@@ -7,76 +7,104 @@
             <h1 style="text-align: center">Опрос</h1>
             <hr>
             <div class="alert">
-                <b>Описание опроса:</b> 1{{ about_poll }}
+                <b>Описание:</b> {{ about_poll }}
             </div>
             <hr>
             <div>
-                <form>
+                <form method="post" action="">
                     {% for question in questions %}
-                        <div class="form-group" id="questionContent">
-                            <h6><b>0{{ question.id }}. Содержание вопроса{{ question.text }}</b></h6>
+                        <div class="form-group" id="questionContent-{{ question.id }}">
+                            <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}> 0{{ question.id }}.
+                                Содержание вопроса{{ question.text }}</label>
                             {% if question.type == "checkbox" %}
                                 <div class="form-check">
-                                    <input type="hidden" name="questionNumber{{ question.id }}"
-                                           value="{{ question.id }}">
                                     {% for answer in question.answers %}
-                                        <input class="form-check-input" type="checkbox" name="answer{{ question.id }}"
-                                               value="answer{{ answer.id }}" id="answer{{ answer.id }}">
+                                        <input class="form-check-input" type="checkbox" name="answer-{{ question.id }}"
+                                               value="option-{{ answer.id }}"
+                                               id="checkbox-{{ question.id }}-{{ answer.id }}">
                                         <label class="form-check-label"
-                                               for="answer{{ answer.id }}">{{ answer.value }}</label>
+                                               for="checkbox-{{ question.id }}-{{ answer.id }}">{{ answer.value }}</label>
                                         <br>
                                     {% endfor %}
                                 </div>
                             {% elif question.type == "radio" %}
                                 <div class="form-check">
-                                    <input type="hidden" name="questionNumber{{ question.id }}"
-                                           value="{{ question.id }}">
                                     {% for answer in question.answers %}
-                                        <input class="form-check-input" type="radio" name="answer{{ question.id }}"
-                                               value="answer{{ answer.id }}" id="answer{{ answer.id }}">
+                                        <input class="form-check-input" type="radio" name="answer-{{ question.id }}"
+                                               value="option-{{ answer.id }}"
+                                               id="radio-{{ question.id }}-{{ answer.id }}"
+                                               {% if answer.id == 1 %}checked{% endif %}>
                                         <label class="form-check-label"
-                                               for="answer{{ answer.id }}">{{ answer.value }}</label>
+                                               for="radio-{{ question.id }}-{{ answer.id }}">{{ answer.value }}</label>
                                         <br>
                                     {% endfor %}
                                 </div>
                             {% elif question.type == "range" %}
+                                <div class="">
+                                    <input type="range" min="{{ question.min }}" max="{{ question.max }}"
+                                           name="answer-{{ question.id }}" id="range-{{ question.id }}"
+                                           value="1">
+                                </div>
+                            {% elif question.type == "text" %}
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="answer-{{ question.id }}"
+                                           id="text-{{ question.id }}"
+                                           placeholder="Введите свой ответ (до 300 символов)" maxlength="300">
+                                </div>
                             {% else %}
+                                <div class="">
+                                    <label style="color: #959092">Что-то пошло не так</label>
+                                </div>
                             {% endif %}
                         </div>
                     {% endfor %}
+
                     <div class="form-group" id="questionContent">
 
                         <div class="form-check">
-                            <input type="hidden" name="questionNumber{{ question.question_number }}">
-                            <input class="form-check-input" type="checkbox" name="answer" value="answer1" id="answer1">
-                            <label class="form-check-label" for="answer1">Вариант 1</label><br>
-                            <input class="form-check-input" type="checkbox" name="answer" value="answer2" id="answer2">
-                            <label class="form-check-label" for="answer2">Вариант 2</label><br>
-                            <input class="form-check-input" type="checkbox" name="answer" value="answer3" id="answer3">
+                            {#                            <input type="hidden" name="questionNumber{{ question.question_number }}">#}
+                            <input class="form-check-input" type="checkbox" name="answer1" value="option1"
+                                   id="checkbox-1-1">
+                            <label class="form-check-label" for="checkbox-1-1">Вариант 1</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer1" value="option2"
+                                   id="checkbox-1-2">
+                            <label class="form-check-label" for="checkbox-1-2">Вариант 2</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer1" value="option3" id="answer3">
                             <label class="form-check-label" for="answer3">Вариант 3</label><br>
-                            <input class="form-check-input" type="checkbox" name="answer" value="answer4" id="answer4">
+                            <input class="form-check-input" type="checkbox" name="answer1" value="option4" id="answer4">
                             <label class="form-check-label" for="answer4">Вариант 4</label><br>
-                            <input class="form-check-input" type="checkbox" name="answer" value="answer5" id="answer5">
+                            <input class="form-check-input" type="checkbox" name="answer1" value="option5" id="answer5">
                             <label class="form-check-label" for="answer5">Вариант 5</label><br>
                         </div>
                         <hr>
                         <div class="form-check">
-                            <input type="hidden" name="questionNumber{{ question.question_number }}">
-                            <input class="form-check-input" type="radio" name="answer" value="answer1" id="answer1">
-                            <label class="form-check-label" for="answer1">Вариант 1</label><br>
-                            <input class="form-check-input" type="radio" name="answer" value="answer2" id="answer2">
+                            {#                            <input type="hidden" name="questionNumber{{ question.question_number }}">#}
+                            <input class="form-check-input" type="radio" name="answer2" value="option1" id="radio-2-1"
+                                   checked>
+                            <label class="form-check-label" for="radio-2-1">Вариант 1</label><br>
+                            <input class="form-check-input" type="radio" name="answer2" value="option2" id="answer2">
                             <label class="form-check-label" for="answer2">Вариант 2</label><br>
-                            <input class="form-check-input" type="radio" name="answer" value="answer3" id="answer3">
+                            <input class="form-check-input" type="radio" name="answer2" value="option3" id="answer3">
                             <label class="form-check-label" for="answer3">Вариант 3</label><br>
-                            <input class="form-check-input" type="radio" name="answer" value="answer4" id="answer4">
+                            <input class="form-check-input" type="radio" name="answer2" value="option4" id="answer4">
                             <label class="form-check-label" for="answer4">Вариант 4</label><br>
-                            <input class="form-check-input" type="radio" name="answer" value="answer5" id="answer5">
+                            <input class="form-check-input" type="radio" name="answer2" value="option5" id="answer5">
                             <label class="form-check-label" for="answer5">Вариант 5</label>
                         </div>
                     </div>
                     <hr>
                     <div>
-                        <input type="range" min="1" max="10" id="size" value="1">
+                        <input type="range" min="1" max="10" id="range-3" value="1">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="text-4">0. Ведите свой ответ</label>
+                        <input type="text" class="form-control" id="text-4"
+                               placeholder="Введите свой ответ (до 300 символов)" maxlength="300">
+                    </div>
+                    <hr>
+                    <div class="">
+                        <label style="color: #959092">Что-то пошло не так</label>
                     </div>
                     <hr>
                     <div style="text-align: right">
