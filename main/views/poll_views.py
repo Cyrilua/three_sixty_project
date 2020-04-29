@@ -165,5 +165,14 @@ def questions_in_pool_view(request, poll_id):
 
 
 def answer_the_poll(request):
-    args = {}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    args = {'title': 'Прохождение опроса'}
+    default_poll = Poll.objects.get(template_type=0)
+    questions = default_poll.questions.all()
+    for i in questions:
+        print(i)
+    args['questions'] = questions
+
     return render(request, 'main/answer_the_poll.html', args)
