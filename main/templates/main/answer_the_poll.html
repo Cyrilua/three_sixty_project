@@ -12,6 +12,7 @@
             <hr>
             <div>
                 <form method="post" action="">
+                    {% csrf_token %}
                     {% for question in questions %}
                         <div class="form-group" id="questionContent-{{ question.id }}">
                             <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}>

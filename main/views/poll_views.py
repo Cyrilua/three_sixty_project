@@ -171,8 +171,14 @@ def answer_the_poll(request):
     args = {'title': 'Прохождение опроса'}
     default_poll = Poll.objects.get(template_type=0)
     questions = default_poll.questions.all()
-    for i in questions:
-        print(i)
     args['questions'] = questions
 
+    if request.method == "POST":
+        question_answer = []
+        for i in questions:
+            answer = request.POST.get('answer-{}'.format(i.id))
+            question_answer.append((i.id, answer))
+
+        for i in question_answer:
+            print(i)
     return render(request, 'main/answer_the_poll.html', args)
