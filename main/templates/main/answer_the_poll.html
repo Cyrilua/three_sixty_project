@@ -15,8 +15,7 @@
                     {% for question in questions %}
                         <div class="form-group" id="questionContent-{{ question.id }}">
                             <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}>
-                                0{{ question.id }}.
-                                Содержание вопроса{{ question.text }}</label>
+                                {{ question.id }}. {{ question.text }}</label>
                             {% if question.type == "checkbox" %}
                                 <div class="form-check">
                                     {% for answer in question.answers %}
