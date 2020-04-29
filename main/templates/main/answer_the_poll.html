@@ -1,0 +1,90 @@
+{% extends 'main/wrapper.html' %}
+
+{% block content-user %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 rounded-block">
+            <h1 style="text-align: center">Опрос</h1>
+            <hr>
+            <div class="alert">
+                <b>Описание опроса:</b> 1{{ about_poll }}
+            </div>
+            <hr>
+            <div>
+                <form>
+                    {% for question in questions %}
+                        <div class="form-group" id="questionContent">
+                            <h6><b>0{{ question.id }}. Содержание вопроса{{ question.text }}</b></h6>
+                            {% if question.type == "checkbox" %}
+                                <div class="form-check">
+                                    <input type="hidden" name="questionNumber{{ question.id }}"
+                                           value="{{ question.id }}">
+                                    {% for answer in question.answers %}
+                                        <input class="form-check-input" type="checkbox" name="answer{{ question.id }}"
+                                               value="answer{{ answer.id }}" id="answer{{ answer.id }}">
+                                        <label class="form-check-label"
+                                               for="answer{{ answer.id }}">{{ answer.value }}</label>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% elif question.type == "radio" %}
+                                <div class="form-check">
+                                    <input type="hidden" name="questionNumber{{ question.id }}"
+                                           value="{{ question.id }}">
+                                    {% for answer in question.answers %}
+                                        <input class="form-check-input" type="radio" name="answer{{ question.id }}"
+                                               value="answer{{ answer.id }}" id="answer{{ answer.id }}">
+                                        <label class="form-check-label"
+                                               for="answer{{ answer.id }}">{{ answer.value }}</label>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% elif question.type == "range" %}
+                            {% else %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="form-group" id="questionContent">
+
+                        <div class="form-check">
+                            <input type="hidden" name="questionNumber{{ question.question_number }}">
+                            <input class="form-check-input" type="checkbox" name="answer" value="answer1" id="answer1">
+                            <label class="form-check-label" for="answer1">Вариант 1</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer" value="answer2" id="answer2">
+                            <label class="form-check-label" for="answer2">Вариант 2</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer" value="answer3" id="answer3">
+                            <label class="form-check-label" for="answer3">Вариант 3</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer" value="answer4" id="answer4">
+                            <label class="form-check-label" for="answer4">Вариант 4</label><br>
+                            <input class="form-check-input" type="checkbox" name="answer" value="answer5" id="answer5">
+                            <label class="form-check-label" for="answer5">Вариант 5</label><br>
+                        </div>
+                        <hr>
+                        <div class="form-check">
+                            <input type="hidden" name="questionNumber{{ question.question_number }}">
+                            <input class="form-check-input" type="radio" name="answer" value="answer1" id="answer1">
+                            <label class="form-check-label" for="answer1">Вариант 1</label><br>
+                            <input class="form-check-input" type="radio" name="answer" value="answer2" id="answer2">
+                            <label class="form-check-label" for="answer2">Вариант 2</label><br>
+                            <input class="form-check-input" type="radio" name="answer" value="answer3" id="answer3">
+                            <label class="form-check-label" for="answer3">Вариант 3</label><br>
+                            <input class="form-check-input" type="radio" name="answer" value="answer4" id="answer4">
+                            <label class="form-check-label" for="answer4">Вариант 4</label><br>
+                            <input class="form-check-input" type="radio" name="answer" value="answer5" id="answer5">
+                            <label class="form-check-label" for="answer5">Вариант 5</label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <input type="range" min="1" max="10" id="size" value="1">
+                    </div>
+                    <hr>
+                    <div style="text-align: right">
+                        <input type="submit" class="btn btn-primary" value="Завершить">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

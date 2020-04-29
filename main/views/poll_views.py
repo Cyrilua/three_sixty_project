@@ -162,3 +162,8 @@ def questions_in_pool_view(request, poll_id):
     for i in questions:
         print(i)
     return render(request, 'main/poll_questions.html', args)
+
+
+def answer_the_poll(request):
+    args = {}
+    return render(request, 'main/answer_the_poll.html', args)
