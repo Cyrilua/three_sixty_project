@@ -101,7 +101,9 @@ urlpatterns = [
                   path('search_admin/', company_views.search_admins, name='search_admins_and_redirect_to_add_method'),
                   # Контроллер, на который ссылается поиск админа
                   path('add_admin/<int:profile_id>', company_views.add_admins, name='add_admin_method'),
+                  # Поиск пользователя для назначения его HR
                   path('search_hr/', company_views.search_hr, name='search_hr_and_redirect_to_add_method'),
+                  # Контроллер, на который ссылается поиск HR
                   path('add_hr/<int:profile_id', company_views.add_hr, name='add_hr_method'),
 
                   # Поиск вопроса среди имеющихся
@@ -119,6 +121,15 @@ urlpatterns = [
                   # Возвращает список вопросов
                   path('<int:poll_id>/poll_questions/', poll_views.questions_in_pool_view,
                        name='view_questions_in_poll'),
+                  # Выбор типа опроса
+                  path('type_poll/', poll_views.type_poll, name='choose_type_poll'),
+                  # Список стандартных опросов
+                  path('default_poll_list/', poll_views.default_poll_template_view, name='list_default_poll'),
+                  # Выбор цели опроса (только для HR)
+                  path('default_poll/<int:poll>', poll_views.search_target_poll, name='select_respondents'),
+                  # Выбор области опрашиваемых
+                  path('default_poll/<int:poll>/select_survey_area/', poll_views.select_survey_area,
+                       name='select_survey_area'),
                   #
                   path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
 

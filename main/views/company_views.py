@@ -189,7 +189,7 @@ def add_platform_in_company(request):
         return redirect('/')
 
     args = {'title': "Добавление платформы в компанию"}
-    user =  auth.get_user(request)
+    user = auth.get_user(request)
     profile = get_user_profile(request)
     company = profile.company
 

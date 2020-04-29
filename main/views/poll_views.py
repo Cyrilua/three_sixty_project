@@ -1,17 +1,56 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from main.models import Questions, Poll, Answers
+from main.models import Questions, Poll, Answers, CompanyHR
 from main.views.auxiliary_general_methods import *
+
+
+def type_poll(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    return render(request, 'main/type_poll.html', {'title': 'Выбор типа опроса'})
 
 
 def default_poll_template_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     polls = Poll.objects.filter(template_type=0)
-    polls = filter(lambda x: x.name_poll == "Test poll", polls)
-    for i in polls:
-        print(i)
+    try:
+        is_hr = CompanyHR.objects.get(profile=get_user_profile(request)) is not None
+    except:
+        is_hr = False
+    args = {
+        'title': 'Список опросов',
+        'polls': polls,
+        'access': is_hr
+    }
+    return render(request, 'main/default_polls.html', args)
+
+
+def search_target_poll(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    result = find_user(request,
+                       action_with_selected_user='main:select_survey_area',
+                       limited_access=True,
+                       function_determining_access=user_is_hr_or_owner)
+    return result
+
+
+def user_is_hr_or_owner(request):
+    user = auth.get_user(request)
+    profile = get_user_profile(request)
+    try:
+        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
+    except:
+        user_is_hr = False
+    user_is_owner = profile.company.owner.id == user.id
+    return user_is_owner or user_is_hr
+
+
+def select_survey_area(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
     return redirect('/')
 
 
@@ -126,5 +165,14 @@ def questions_in_pool_view(request, poll_id):
 
 
 def answer_the_poll(request):
-    args = {}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    args = {'title': 'Прохождение опроса'}
+    default_poll = Poll.objects.get(template_type=0)
+    questions = default_poll.questions.all()
+    for i in questions:
+        print(i)
+    args['questions'] = questions
+
     return render(request, 'main/answer_the_poll.html', args)
