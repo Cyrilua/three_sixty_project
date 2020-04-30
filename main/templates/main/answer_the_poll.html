@@ -14,8 +14,9 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     {% for question in questions %}
-                        <div class="form-group" id="questionContent-{{ question.id }}">
-                            <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}>
+                        <div class="form-group" id="questionContent-{{ question.id }}" style="margin-bottom: 20px">
+                            <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}
+                                   style="font-weight: bold">
                                 {{ question.id }}. {{ question.text }}</label>
                             {% if question.type == "checkbox" %}
                                 <div class="form-check">
@@ -44,7 +45,11 @@
                                 <div class="">
                                     <input type="range" step="{{ answer.step }}" min="{{ answer.min }}"
                                            max="{{ answer.max }}" name="answer-{{ question.id }}"
-                                           id="range-{{ question.id }}" value="1">
+                                           id="range-{{ question.id }}" value="{{ answer.min }}"
+                                           oninput="updateTextForRange('range-{{ question.id }}', 'textForRange-{{ question.id }}')">
+                                    <br>
+                                    <label for="range-{{ question.id }}">Текущее заничение: <span
+                                            id="textForRange-0"></span></label>
                                 </div>
                             {% elif question.type == "text" %}
                                 <div class="form-group">
@@ -55,7 +60,7 @@
                                 </div>
                             {% else %}
                                 <div class="">
-                                    <label style="color: #959092">Что-то пошло не так</label>
+                                    <label style="color: #959092">Что-то пошло не так :-(</label>
                                 </div>
                             {% endif %}
                         </div>
