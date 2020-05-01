@@ -50,9 +50,9 @@
                                 </div>
                             {% elif question.type == "range" %}
                                 <div class="">
-                                    <input type="range" step="{{ question.answer.step }}" min="{{ question.answer.min }}"
-                                           max="{{ question.answer.max }}" name="answer-{{ question.id }}"
-                                           id="range-{{ question.id }}" value="{{ answer.min }}"
+                                    <input type="range" step="{{ question.settings.step }}" min="{{ question.settings.min }}"
+                                           max="{{ question.settings.max }}" name="answer-{{ question.id }}"
+                                           id="range-{{ question.id }}" value="{{ question.settings.min }}"
                                            oninput="updateTextForRange('range-{{ question.id }}', 'textForRange-{{ question.id }}')">
                                     <br>
                                     <span>Текущее заничение: <span id="textForRange-0"></span></span>

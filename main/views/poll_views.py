@@ -182,6 +182,9 @@ def answer_the_poll(request, poll_id):
         #return redirect('/')
         pass
 
+    for i in args['questions']:
+        print(i)
+
     if request.method == "POST":
         for question in args['questions']:
             # Создание объекта ответа

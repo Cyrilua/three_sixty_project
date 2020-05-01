@@ -188,6 +188,7 @@ class Questions(models.Model):
     ]
 
     type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
+    settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     objects = models.Manager()
 
@@ -196,6 +197,26 @@ class Questions(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Settings(models.Model):
+    min = models.IntegerField(default=0)
+    max = models.IntegerField(default=100)
+    step = models.IntegerField(default=10)
+    answer_choice = models.ManyToManyField('AnswerChoice')
+
+    class Meta:
+        db_table = "Questions settings"
+
+
+class AnswerChoice(models.Model):
+    answer = models.CharField(max_length=30, default='')
+
+    class Meta:
+        db_table = "Answer choice"
+
+    def __str__(self):
+        return self.answer
 
 
 class Answers(models.Model):
