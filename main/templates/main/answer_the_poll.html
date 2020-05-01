@@ -55,7 +55,7 @@
                                            id="range-{{ question.id }}" value="{{ question.settings.min }}"
                                            oninput="updateTextForRange('range-{{ question.id }}', 'textForRange-{{ question.id }}')">
                                     <br>
-                                    <span>Текущее заничение: <span id="textForRange-0"></span></span>
+                                    <span>Текущее заничение: <span id="textForRange-{{ question.id }}"></span></span>
                                 </div>
                             {% elif question.type == "text" %}
                                 <div class="form-group">
@@ -65,7 +65,7 @@
                                               style="resize: none"
                                               maxlength="500"
                                               oninput="getCounterSymbols('text-{{ question.id }}', 'counterForText-{{ question.id }}')"></textarea>
-                                    <span>Осталось <span id="counterForText-0">500</span> символов из 500</span>
+                                    <span>Осталось <span id="counterForText-{{ question.id }}">500</span> символов из 500</span>
                                 </div>
                             {% else %}
                                 <div class="">
