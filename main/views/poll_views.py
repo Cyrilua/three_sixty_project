@@ -172,6 +172,7 @@ def answer_the_poll(request, poll_id):
         poll = Poll.objects.get(id=poll_id)
     except:
         return redirect('/')
+
     args = {'title': 'Прохождение опроса',
             'questions': poll.questions.all()}
 
