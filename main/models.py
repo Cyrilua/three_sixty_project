@@ -210,13 +210,13 @@ class Settings(models.Model):
 
 
 class AnswerChoice(models.Model):
-    answer = models.CharField(max_length=30, default='')
+    value = models.CharField(max_length=30, default='')
 
     class Meta:
         db_table = "Answer choice"
 
     def __str__(self):
-        return self.answer
+        return self.value
 
 
 class Answers(models.Model):
