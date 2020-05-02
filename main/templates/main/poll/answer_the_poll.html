@@ -4,16 +4,9 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 rounded-block">
-            <h1 style="text-align: center">Опрос</h1>
+            <h1 style="text-align: center">{% if poll_name %}{{ poll_name }}{% else %}Опрос{% endif %}</h1>
             <hr>
             <div class="alert">
-                <div class="form-group">
-                    <textarea class="form-control" name="answer-0"
-                              id="text-0"
-                              placeholder="Введите свой ответ (до 500 символов)" rows="5" style="resize: none"
-                              maxlength="500" oninput="getCounterSymbols('text-0', 'counterForText-0')"></textarea>
-                    <span>Осталось <span id="counterForText-0">500</span> символов из 500</span>
-                </div>
                 <b>Описание:</b> {{ about_poll }}
             </div>
             <hr>
@@ -22,8 +15,8 @@
                     {% csrf_token %}
                     {% for question in questions %}
                         <div class="form-group" id="questionContent-{{ question.id }}" style="margin-bottom: 20px">
-                            <label {% if question.type == "text" %}for="text-{{ question.id }}"{% endif %}
-                                   style="font-weight: bold">
+                            <label {% if question.type == "small_text" or question.type == "big_text" or question.type == "range" %}
+                                for="text-{{ question.id }}"{% endif %} style="font-weight: bold">
                                 {{ question.id }}. {{ question.text }}</label>
                             {% if question.type == "checkbox" %}
                                 <div class="form-check">
@@ -50,22 +43,29 @@
                                 </div>
                             {% elif question.type == "range" %}
                                 <div class="">
-                                    <input type="range" step="{{ question.settings.step }}" min="{{ question.settings.min }}"
+                                    <input type="range" step="{{ question.settings.step }}"
+                                           min="{{ question.settings.min }}"
                                            max="{{ question.settings.max }}" name="answer-{{ question.id }}"
                                            id="range-{{ question.id }}" value="{{ question.settings.min }}"
                                            oninput="updateTextForRange('range-{{ question.id }}', 'textForRange-{{ question.id }}')">
                                     <br>
                                     <span>Текущее заничение: <span id="textForRange-{{ question.id }}"></span></span>
                                 </div>
-                            {% elif question.type == "text" %}
+                            {% elif question.type == "small_text" %}
                                 <div class="form-group">
                                     <textarea class="form-control" name="answer-{{ question.id }}"
-                                              id="text-{{ question.id }}"
+                                              id="bigText-{{ question.id }}"
                                               placeholder="Введите свой ответ (до 500 символов)" rows="5"
                                               style="resize: none"
                                               maxlength="500"
-                                              oninput="getCounterSymbols('text-{{ question.id }}', 'counterForText-{{ question.id }}')"></textarea>
-                                    <span>Осталось <span id="counterForText-{{ question.id }}">500</span> символов из 500</span>
+                                              oninput="getCounterSymbols('bigText-{{ question.id }}', 'counterForBigText-{{ question.id }}')"></textarea>
+                                    <span>Осталось <span id="counterForBigText-{{ question.id }}">500</span> символов из 500</span>
+                                </div>
+                            {% elif question.type == "big_text" %}
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="answer-{{ question.id }}"
+                                           id="smallText-{{ question.id }}" maxlength="50"
+                                           placeholder="Введите свой ответ (до 50 символов)">
                                 </div>
                             {% else %}
                                 <div class="">

@@ -50,7 +50,7 @@ def get_render_user_profile(request):
     if photo is not None:
         args['photo_height'] = get_photo_height(photo.width, photo.height)
 
-    return render(request, 'main/profile.html', args)
+    return render(request, 'main/user/profile.html', args)
 
 
 def get_other_profile_render(request, profile_id):
@@ -113,7 +113,7 @@ def upload_profile_photo(request):
             photo_profile.profile = profile
             photo_profile.save()
         return redirect('/')
-    return render(request, "main/upload_photo.html", args)
+    return render(request, "main/user/upload_photo.html", args)
 
 
 def edit_profile(request):
@@ -155,7 +155,7 @@ def edit_profile(request):
             user.email = new_email
             user.save()
         return redirect('/edit/')
-    return render(request, 'main/edit_profile.html', args)
+    return render(request, 'main/user/edit_profile.html', args)
 
 
 

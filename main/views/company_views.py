@@ -70,7 +70,7 @@ def create_company(request):
             return redirect('/communications/')
         else:
             args['company_form'] = company_form
-    return render(request, 'main/add_new_company.html', args)
+    return render(request, 'main/companies/add_new_company.html', args)
 
 
 def connect_to_company_to_key(request):
@@ -89,7 +89,7 @@ def connect_to_company_to_key(request):
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
         except:
-            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/companies/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
         else:
             list_positions = [i.position for i in company.positioncompany_set.all()]
             list_platforms = [i.platform for i in company.platformcompany_set.all()]
@@ -100,7 +100,7 @@ def connect_to_company_to_key(request):
             profile.company = company
             profile.save()
             return redirect('/communications/')
-    return render(request, 'main/connect_to_company.html', args)
+    return render(request, 'main/companies/connect_to_company.html', args)
 
 
 def connect_to_company_to_link(request, key):
@@ -116,7 +116,7 @@ def connect_to_company_to_link(request, key):
     try:
         company = Company.objects.get(key=key)
     except:
-        return render(request, 'main/error_old.html', {'error': "Ссылка не существует или введена неверно"})
+        return render(request, 'main/old/error_old.html', {'error': "Ссылка не существует или введена неверно"})
     else:
         list_positions = [i.position for i in company.positioncompany_set.all()]
         list_platforms = [i.platform for i in company.platformcompany_set.all()]
@@ -245,7 +245,7 @@ def company_view(request):
         'link_to_enter': request.scheme + "://" + request.get_host() + "/invite/c/" + company.key,
     }
 
-    return render(request, 'main/company_view.html', args)
+    return render(request, 'main/companies/company_view.html', args)
 
 
 def choose_position(request):

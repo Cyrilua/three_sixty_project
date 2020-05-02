@@ -209,7 +209,7 @@ def answer_the_poll(request, poll_id):
             print("Обработка результата, когда все опрашиваемые прошли опрос")
         return redirect('/')
 
-    return render(request, 'main/answer_the_poll.html', args)
+    return render(request, 'main/poll/answer_the_poll.html', args)
 
 
 def user_is_respondent(request, poll):
@@ -251,4 +251,4 @@ def calculate_result_questions(questions):
 
 def new_poll(request):
     args = {}
-    return render(request, 'main/new_poll.html', args)
+    return render(request, 'main/poll/new_poll.html', args)
