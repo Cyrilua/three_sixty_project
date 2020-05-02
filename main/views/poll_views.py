@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from main.models import Questions, Poll, Answers, CompanyHR
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice
 from main.views.auxiliary_general_methods import *
 
 
@@ -174,7 +174,7 @@ def answer_the_poll(request, poll_id):
         return redirect('/')
 
     args = {'title': 'Прохождение опроса',
-            'questions': poll.questions.all()}
+            'questions': build_questions(poll)}
 
     # Закомментированно на время разработки
     if not user_is_respondent(request, poll):
@@ -182,13 +182,17 @@ def answer_the_poll(request, poll_id):
         # return redirect('/')
         pass
 
-    for i in args['questions']:
-        print(i)
-
     if request.method == "POST":
-        for question in args['questions']:
-            # Создание объекта ответа
-            user_answer = int(request.POST.get('answer-{}'.format(question.id)))
+        questions_list = poll.questions.all()
+        for question in questions_list:
+            if question.type == 'checkbox' or question.type == 'radio':
+                user_answers_list = [AnswerChoice.objects.get(id=int(i)) for i in request.POST.getlist('answer-{}'.format(question.id))]
+                user_answer = 0
+                for i in user_answers_list:
+                    user_answer += i.weight
+            else:
+                user_answer = int(request.POST.get('answer-{}'.format(question.id)))
+
             try:
                 change_answer = Answers.objects.get(question=question)
             except:
@@ -196,6 +200,7 @@ def answer_the_poll(request, poll_id):
                 change_answer = Answers()
                 change_answer.poll = poll
                 change_answer.question = question
+
             change_answer.sum_answer += user_answer
             change_answer.count_answers += 1
             change_answer.save()
@@ -210,6 +215,23 @@ def answer_the_poll(request, poll_id):
         return redirect('/')
 
     return render(request, 'main/poll/answer_the_poll.html', args)
+
+
+def build_questions(poll):
+    questions_list = poll.questions.all()
+    result_questions = []
+    for question in questions_list:
+        settings = question.settings
+        answers_choices = settings.answer_choice.all()
+        question = {
+            'id': question.id,
+            'type': question.type,
+            'text': question.text,
+            'settings': settings,
+            'answers': answers_choices
+        }
+        result_questions.append(question)
+    return result_questions
 
 
 def user_is_respondent(request, poll):

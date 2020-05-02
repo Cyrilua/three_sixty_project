@@ -204,19 +204,22 @@ class Settings(models.Model):
     max = models.IntegerField(default=100)
     step = models.IntegerField(default=10)
     answer_choice = models.ManyToManyField('AnswerChoice')
+    objects = models.Manager()
 
     class Meta:
         db_table = "Questions settings"
 
 
 class AnswerChoice(models.Model):
-    answer = models.CharField(max_length=30, default='')
+    value = models.CharField(max_length=30, default='')
+    weight = models.IntegerField(default=10)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Answer choice"
 
     def __str__(self):
-        return self.answer
+        return self.value
 
 
 class Answers(models.Model):
