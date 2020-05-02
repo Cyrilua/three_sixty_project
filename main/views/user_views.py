@@ -39,7 +39,7 @@ def user_register(request):
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
-    return render(request, 'main/register.html', args)
+    return render(request, 'main/no_login/register.html', args)
 
 
 def user_login(request):
@@ -60,8 +60,8 @@ def user_login(request):
         else:
             args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
-            return render(request, 'main/login.html', args)
-    return render(request, 'main/login.html', args)
+            return render(request, 'main/no_login/login.html', args)
+    return render(request, 'main/no_login/login.html', args)
 
 
 def user_logout(request):

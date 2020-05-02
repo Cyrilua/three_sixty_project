@@ -51,7 +51,7 @@ def user_view(request):
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     ########################
 
-    return render(request, 'main/profile.html', args)
+    return render(request, 'main/user/profile.html', args)
 
 
 def upload_profile_photo(request):
@@ -76,7 +76,7 @@ def upload_profile_photo(request):
             photo_profile.profile = profile
             photo_profile.save()
         return redirect('/')
-    return render(request, "main/upload_photo.html", args)
+    return render(request, "main/user/upload_photo.html", args)
 
 
 def other_user_view(request, profile_id):
@@ -99,13 +99,13 @@ def other_user_view(request, profile_id):
 
 def exception_if_user_not_autinficated(request):
     if not auth.get_user(request).is_authenticated:
-        return render(request, 'main/error_old.html', {'error': "Пользователь еще не авторизирован",
+        return render(request, 'main/old/error_old.html', {'error': "Пользователь еще не авторизирован",
                                                    'title': "Ошибка"})
 
 
 def exception_if_user_autinficated(request):
     if auth.get_user(request).is_authenticated:
-        return render(request, 'main/error_old.html', {'error': "Пользователь уже авторизирован",
+        return render(request, 'main/old/error_old.html', {'error': "Пользователь уже авторизирован",
                                                    'title': "Ошибка"})
 
 
@@ -142,7 +142,7 @@ def edit_profile(request):
     })
     args['title'] = "Редактирование профия"
     args['profile'] = profile
-    return render(request, 'main/edit_profile.html', args)
+    return render(request, 'main/user/edit_profile.html', args)
 
 
 def add_new_platform(request):
@@ -207,7 +207,7 @@ def add_company(request):
             return redirect('/communications/')
         else:
             args['company_form'] = company_form
-    return render(request, 'main/add_new_company.html', args)
+    return render(request, 'main/companies/add_new_company.html', args)
 
 
 def connect_to_company(request):
@@ -226,12 +226,12 @@ def connect_to_company(request):
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
         except:
-            return render(request, 'main/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
+            return render(request, 'main/companies/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
         else:
             profile.company = company
             profile.save()
             return redirect('/communications/')
-    return render(request, 'main/connect_to_company.html', args)
+    return render(request, 'main/companies/connect_to_company.html', args)
 
 
 def get_all_users_in_company(request):
@@ -340,7 +340,7 @@ def company_view(request):
         'key': company.key,
     }
 
-    return render(request, 'main/company_view.html', args)
+    return render(request, 'main/companies/company_view.html', args)
 
 
 # def index_view(request):
@@ -378,7 +378,7 @@ def user_register(request):
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
-    return render(request, 'main/register.html', args)
+    return render(request, 'main/no_login/register.html', args)
 
 
 def user_login(request):
@@ -398,8 +398,8 @@ def user_login(request):
         else:
             args['login_error'] = "Неверный логин или пароль"
             args['username'] = username
-            return render(request, 'main/login.html', args)
-    return render(request, 'main/login.html', args)
+            return render(request, 'main/no_login/login.html', args)
+    return render(request, 'main/no_login/login.html', args)
 
 
 def user_logout(request):
@@ -433,7 +433,7 @@ def create_team(request):
             profile.groups.add(new_team)
             profile.groups.add()
         return redirect('/communications/')
-    return render(request, 'main/add_new_team.html', args)
+    return render(request, 'main/teams/add_new_team.html', args)
 
 
 def connect_to_team(request):
@@ -449,15 +449,15 @@ def connect_to_team(request):
             group = Group.objects.get(key=key_group)
             if group in profile.groups.all():
                 args['error'] = "Пользователь уже состоит в этой команде"
-                return render(request, 'main/connect_to_team.html', args)
+                return render(request, 'main/teams/connect_to_team.html', args)
         except:
             args['error'] = "Ключ не существует или введен неверно"
-            return render(request, 'main/connect_to_team.html', args)
+            return render(request, 'main/teams/connect_to_team.html', args)
         else:
             profile.groups.add(group)
             profile.save()
             return redirect('/communications/')
-    return render(request, 'main/connect_to_team.html', args)
+    return render(request, 'main/teams/connect_to_team.html', args)
 
 
 def teams_view(request):
@@ -488,7 +488,7 @@ def teams_view(request):
     except:
         args['photo'] = None
 
-    return render(request, 'main/communications.html', args)
+    return render(request, 'main/user/communications.html', args)
 
 
 def team_user_view(request, group_id):

@@ -1,0 +1,30 @@
+{% extends 'main/wrapper.html' %}
+
+{% block content-user %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 rounded-block">
+            <h1 style="text-align: center">Создание опроса</h1>
+            <hr>
+            <div>
+                <div class="form-group">
+                    <label for="questionName">Название опроса</label>
+                    <input id="questionName" type="text" class="form-control" placeholder="Введите название опроса">
+                </div>
+                <div class="form-group">
+                    <label for="questionAbout">Описание опроса</label>
+                    <textarea id="questionAbout" class="form-control" placeholder="Введите подробности об этом опросе"
+                              maxlength="500" rows="5" style="resize: none"
+                              oninput="getCounterSymbols('questionAbout', 'counterQuestionAbout')"></textarea>
+                    <span>Осталось <span id="counterQuestionAbout">500</span> символов из 500.</span>
+                </div>
+                <hr>
+                <h5>Вопрос 1</h5>
+                <div class="form-group">
+                    <input id="question-1" type="text" class="form-control" placeholder="Вопрос">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+{% endblock %}

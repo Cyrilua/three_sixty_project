@@ -179,7 +179,7 @@ def answer_the_poll(request, poll_id):
     # Закомментированно на время разработки
     if not user_is_respondent(request, poll):
         # TODO Если текущий пользователь прошел опрос или его нет в списке опрашиваемых
-        #return redirect('/')
+        # return redirect('/')
         pass
 
     if request.method == "POST":
@@ -211,7 +211,7 @@ def answer_the_poll(request, poll_id):
             print("Обработка результата, когда все опрашиваемые прошли опрос")
         return redirect('/')
 
-    return render(request, 'main/answer_the_poll.html', args)
+    return render(request, 'main/poll/answer_the_poll.html', args)
 
 
 def build_questions(poll):
@@ -266,3 +266,8 @@ def calculate_result_questions(questions):
         answer = Answers.objects.get(question=question)
         question_by_answer_result[question] = answer.sum_answer / answer.count_answers
     return question_by_answer_result
+
+
+def new_poll(request):
+    args = {}
+    return render(request, 'main/poll/new_poll.html', args)
