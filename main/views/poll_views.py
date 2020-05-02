@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 
-from main.models import Questions, Poll, Answers, CompanyHR
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice
 from main.views.auxiliary_general_methods import *
 
 
@@ -185,12 +185,14 @@ def answer_the_poll(request, poll_id):
     if request.method == "POST":
         questions_list = poll.questions.all()
         for question in questions_list:
-            # Создание объекта ответа
             if question.type == 'checkbox' or question.type == 'radio':
-                user_answer = request.POST.getlist('answer-{}'.format(question.id))
+                user_answers_list = [AnswerChoice.objects.get(id=int(i)) for i in request.POST.getlist('answer-{}'.format(question.id))]
+                user_answer = 0
+                for i in user_answers_list:
+                    user_answer += i.weight
+            else:
+                user_answer = int(request.POST.get('answer-{}'.format(question.id)))
 
-            user_answer = request.POST.getlist('answer-{}'.format(question.id))
-            print(user_answer)
             try:
                 change_answer = Answers.objects.get(question=question)
             except:
@@ -198,7 +200,8 @@ def answer_the_poll(request, poll_id):
                 change_answer = Answers()
                 change_answer.poll = poll
                 change_answer.question = question
-            #change_answer.sum_answer += int(user_answer)
+
+            change_answer.sum_answer += user_answer
             change_answer.count_answers += 1
             change_answer.save()
 
