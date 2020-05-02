@@ -6,25 +6,83 @@
         <div class="col-md-10 rounded-block">
             <h1 style="text-align: center">Создание опроса</h1>
             <hr>
-            <div>
-                <div class="form-group">
-                    <label for="questionName">Название опроса</label>
-                    <input id="questionName" type="text" class="form-control" placeholder="Введите название опроса">
-                </div>
-                <div class="form-group">
-                    <label for="questionAbout">Описание опроса</label>
-                    <textarea id="questionAbout" class="form-control" placeholder="Введите подробности об этом опросе"
-                              maxlength="500" rows="5" style="resize: none"
-                              oninput="getCounterSymbols('questionAbout', 'counterQuestionAbout')"></textarea>
-                    <span>Осталось <span id="counterQuestionAbout">500</span> символов из 500.</span>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div>
+                    <div class="form-group">
+                        <label for="pollName">Название опроса</label>
+                        <input id="pollName" type="text" class="form-control" name="pollName"
+                               placeholder="Введите название опроса (до 50 символов)" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pollAbout">Описание опроса</label>
+                        <textarea id="pollAbout" class="form-control" name="pollAbout"
+                                  placeholder="Введите подробности об этом опросе при необходимости (до 500 символов)"
+                                  maxlength="500" rows="5" style="resize: none"
+                                  oninput="getCounterSymbols('questionAbout', 'counterQuestionAbout')"></textarea>
+                        <span>Осталось <span id="counterQuestionAbout">500</span> символов из 500.</span>
+                    </div>
+                    <hr>
+                    <h5>Вопрос 1</h5>
+                    <div class="form-group" id="newQuestion-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input id="question-1" name="questionName-1" type="text" class="form-control"
+                                       placeholder="Вопрос">
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control" id="selectType-1" name="questionType-1"
+                                        onchange="viewOptionsAnswers('optionsAnswers-1', 'selectType-1')">
+                                    <option value="radio">Один из списка</option>
+                                    <option value="checkbox">Несколько из списка</option>
+                                    <option value="range">Шкала</option>
+                                    <option value="small_text">Короткий текст</option>
+                                    <option value="big_text">Длинный текст</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12" id="optionsAnswers-1">
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-md-1">
+                                        <div class="form-check">
+                                            <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                   type="radio" class="form-check-input" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <input type="text" class="form-control" name="option-1-1" id="radio-1-1"
+                                               placeholder="Вариант 1">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <div class="form-check">
+                                            <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                   type="radio" class="form-check-input" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <button class="btn" form="" onclick="">Добавить другой вариант</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr>
-                <h5>Вопрос 1</h5>
-                <div class="form-group">
-                    <input id="question-1" type="text" class="form-control" placeholder="Вопрос">
+                <div style="text-align: right">
+                    <input type="submit" class="btn btn-primary" value="Готово">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-dark" onclick="addNewQuestion()">+</button>
                 </div>
             </div>
         </div>
-        <div class="col-md-1"></div>
     </div>
 {% endblock %}

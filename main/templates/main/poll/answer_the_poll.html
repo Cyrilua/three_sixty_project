@@ -15,8 +15,9 @@
                     {% csrf_token %}
                     {% for question in questions %}
                         <div class="form-group" id="questionContent-{{ question.id }}" style="margin-bottom: 20px">
-                            <label {% if question.type == "small_text" or question.type == "big_text" or question.type == "range" %}
-                                for="text-{{ question.id }}"{% endif %} style="font-weight: bold">
+                            <label
+                                    {% if question.type == "small_text" or question.type == "big_text" or question.type == "range" %}
+                                        for="text-{{ question.id }}"{% endif %} style="font-weight: bold">
                                 {{ question.id }}. {{ question.text }}</label>
                             {% if question.type == "checkbox" %}
                                 <div class="form-check">
