@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice
 from main.views.auxiliary_general_methods import *
+from main.views.notifications_views import add_notification
 
 
 def type_poll(request):
@@ -273,4 +274,5 @@ def calculate_result_questions(questions):
 
 def new_poll(request):
     args = {}
+    add_notification(get_user_profile(request), "Пройти опрос", 'main:answer_the_poll', key=9)
     return render(request, 'main/poll/new_poll.html', args)

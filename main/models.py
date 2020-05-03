@@ -64,8 +64,10 @@ class ProfilePhoto (models.Model):
 
 
 class Notifications (models.Model):
+    name = models.CharField(max_length=50, default='')
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     redirect = models.CharField(max_length=100, default='')
+    key = models.CharField(max_length=36, null=True)
     objects = models.Manager()
 
     class Meta:
@@ -166,6 +168,7 @@ class TemplatesPoll(models.Model):
 
 
 class Poll(models.Model):
+    key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
     name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')

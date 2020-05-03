@@ -4,7 +4,7 @@ from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views, \
-    auxiliary_general_methods
+    auxiliary_general_methods, notifications_views
 
 app_name = "main"
 urlpatterns = [
@@ -132,12 +132,14 @@ urlpatterns = [
                        name='select_survey_area'),
                   #
                   path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
-
                   # Ответ на опрос
                   path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
                   path('new_poll/', poll_views.new_poll, name='new_poll'),
+
+                  #Уведомления
+                  path('notifications/', notifications_views.redirect_from_notifications, name='notifications')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

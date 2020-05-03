@@ -4,7 +4,7 @@
             <a class="nav-link" href="{% url 'main:login'  %}">Профиль</a>
         </li>
         <li class="{{ menu_notifications }} user-sidebar-item">
-            <a class="nav-link" href="#">Уведомления</a>
+            <a class="nav-link" href="{% url 'main:notifications' %}">Уведомления</a>
         </li>
         <li class="{{ menu_communications }} user-sidebar-item">
             <a class="nav-link" href="{% url 'main:communications' %}">Круги общения</a>
