@@ -1,21 +1,6 @@
-from django.shortcuts import redirect
-from django.shortcuts import render
-
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
 from main.models import ProfilePhoto
 from main.views.auxiliary_general_methods import *
-
-
-def get_user_profile(request):
-    user = auth.get_user(request)
-    return Profile.objects.get(user=user)
-
-
-def get_photo_height(width, height):
-    result = round(177 / (width / height))
-    if result > 300:
-        result = 300
-    return result
 
 
 def profile_view(request, profile_id=-1):
@@ -66,28 +51,27 @@ def get_other_profile_render(request, profile_id):
         'groups': profile.groups.all(),
     }
 
-    try:
-        args['photo'] = profile.profilephoto.photo
-    except:
+    profile_photo = ProfilePhoto.objects.filter(profile=profile)
+    if len(profile_photo) != 0:
+        args['photo'] = profile_photo[0].photo
+        args['photo_height'] = get_photo_height(args['photo'].width, args['photo'].height)
+    else:
         args['photo'] = None
 
-    if args['photo'] is not None:
-        args['photo_height'] = get_photo_height(args['photo'].width, args['photo'].height)
-
-    try:
+    if profile.position is not None:
         args['position'] = profile.position.name
-    except:
-        args['position'] = None
+    else:
+        args['position'] = 'не указано'
 
-    try:
+    if profile.company is not None:
         args['company'] = profile.company.name
-    except:
-        args['company'] = None
+    else:
+        args['company'] = 'не указано'
 
-    try:
-        args['platform'] = profile.platform.name
-    except:
-        args['platform'] = None
+    if profile.platform is not None:
+        args['platform'] = profile.platform.platform.name
+    else:
+        args['platform'] = 'не указано'
 
     return render(request, "main/alien_profile.html", args)
 

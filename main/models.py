@@ -54,6 +54,7 @@ class CompanyHR(models.Model):
 class ProfilePhoto (models.Model):
     photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    objects = models.Manager()
 
     class Meta:
         db_table = "Profile photo"
