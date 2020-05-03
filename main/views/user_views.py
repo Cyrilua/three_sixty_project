@@ -39,6 +39,7 @@ def user_register(request):
         else:
             args['user_form'] = user_form
             args['profile_form'] = profile_form
+            args['email_form'] = email_form
     return render(request, 'main/no_login/register.html', args)
 
 
