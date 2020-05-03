@@ -1,14 +1,12 @@
 import uuid
 
-from django.shortcuts import redirect
-from django.shortcuts import render
-
 from main.forms import CompanyForm
 from main.models import Company, Platforms, Position, PositionCompany, PlatformCompany, CompanyAdmins, CompanyHR
 from main.views.auxiliary_general_methods import *
 
 
 def add_new_platform(request):
+    # Не используется
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {'title': 'Добавление новой платформы'}
@@ -27,6 +25,7 @@ def add_new_platform(request):
 
 
 def add_new_position(request):
+    # Не используется
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {'title': 'Добавление новой должности'}
@@ -48,7 +47,7 @@ def create_company(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     user = auth.get_user(request)
-    profile = Profile.objects.get(user=user)
+    profile = get_user_profile(request)
 
     args = {'title': "Создание компании",
             'company_form': CompanyForm()}
@@ -89,18 +88,26 @@ def connect_to_company_to_key(request):
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
         except:
-            return render(request, 'main/companies/connect_to_company.html', {'error': "Ключ не существует или введен неверно"})
-        else:
-            list_positions = [i.position for i in company.positioncompany_set.all()]
-            list_platforms = [i.platform for i in company.platformcompany_set.all()]
-            if profile.platform is not None and profile.platform not in list_platforms:
-                profile.platform = None
-            if profile.position is not None and profile.position not in list_positions:
-                profile.position = None
-            profile.company = company
-            profile.save()
             return redirect('/communications/')
+        else:
+            add_user_to_company(profile, company)
+            return redirect('/communications/')
+
     return render(request, 'main/companies/connect_to_company.html', args)
+
+
+def add_user_to_company(profile, company):
+    right_position = list(filter(lambda x: x.position == profile.position, company.positioncompany_set.all()))
+    right_platform = list(filter(lambda x: x.platform == profile.platform, company.platformcompany_set.all()))
+
+    if len(right_position) != 0:
+        profile.position = None
+
+    if len(right_platform) != 0:
+        profile.platform = None
+
+    profile.company = company
+    profile.save()
 
 
 def connect_to_company_to_link(request, key):
@@ -108,24 +115,15 @@ def connect_to_company_to_link(request, key):
         return redirect('/')
 
     profile = get_user_profile(request)
-    args = {'title': "Добавление участников"}
-
     if profile.company is not None:
         return redirect('/communications/')
 
     try:
         company = Company.objects.get(key=key)
     except:
-        return render(request, 'main/old/error_old.html', {'error': "Ссылка не существует или введена неверно"})
+        return redirect('/communications/')
     else:
-        list_positions = [i.position for i in company.positioncompany_set.all()]
-        list_platforms = [i.platform for i in company.platformcompany_set.all()]
-        if profile.platform is not None and profile.platform not in list_platforms:
-            profile.platform = None
-        if profile.position is not None and profile.position not in list_positions:
-            profile.position = None
-        profile.company = company
-        profile.save()
+        add_user_to_company(profile, company)
         return redirect('/communications/')
 
 
@@ -185,11 +183,11 @@ def add_position_in_company(request):
 
 
 def add_platform_in_company(request):
+    # Не используется
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     args = {'title': "Добавление платформы в компанию"}
-    user = auth.get_user(request)
     profile = get_user_profile(request)
     company = profile.company
 
@@ -220,7 +218,7 @@ def add_platform_in_company(request):
         platform_in_company.company = company
         platform_in_company.save()
 
-        return redirect('/')
+        return redirect('/company_view/')
     return render(request, 'main/add_new_platform.html', args)
 
 
@@ -237,7 +235,7 @@ def company_view(request):
     args = {
         'title': company.name,
         'positions': PositionCompany.objects.filter(company=company),
-        'platform': PlatformCompany.objects.filter(company=company),
+        'platforms': PlatformCompany.objects.filter(company=company),
         'company_name': company.name,
         'owner': {'pk': company.owner.profile.pk,
                   'name': company.owner.profile.name,
@@ -263,12 +261,12 @@ def choose_position(request):
         args['list_positions'] = Position.objects.all()
     else:
         args['list_positions'] = [i.position for i in company.positioncompany_set.all()]
+
     if request.method == "POST":
         position_id = request.POST.get('id_position', '')
         if int(position_id) == -1:
             profile.position = None
             profile.save()
-            print(profile.position)
             return redirect('/communications/')
         try:
             position = Position.objects.get(id=position_id)
@@ -311,10 +309,12 @@ def choose_platform(request):
         except:
             args['error'] = 'Данной платформы не существует'
             return render(request, 'main/platform_choice.html', args)
+
         platform_company = PlatformCompany.objects.get(platform=platform)
         if platform_company is None:
             args['error'] = "Выбранная платформа отсутствует в списке"
             return render(request, 'main/platform_choice.html', args)
+
         profile.platform = platform_company
         profile.save()
         return redirect('/communications/')
@@ -345,6 +345,7 @@ def add_admins(request, profile_id):
     user_is_owner_current_company = auth.get_user(request) == company.owner
     if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
         return redirect('/')
+
     profile_new_admin = Profile.objects.get(id=profile_id)
     new_admin = CompanyAdmins()
     new_admin.company = company
@@ -377,6 +378,7 @@ def add_hr(request, profile_id):
     user_is_owner_current_company = auth.get_user(request) == company.owner
     if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
         return redirect('/')
+
     profile_new_hr = Profile.objects.get(id=profile_id)
     new_hr = CompanyHR()
     new_hr.profile = profile_new_hr
