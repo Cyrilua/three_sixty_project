@@ -19,14 +19,63 @@ function getCounterSymbols(el1, el2) {
 }
 
 function addNewQuestion() {
+    let countQuestion = document.getElementById("countQuestion").value;
+    let newDiv = document.createElement("div");
+    let currentQuestion = Number(countQuestion) + 1;
+    newDiv.setAttribute("class", "form-group");
+    newDiv.setAttribute("id", "newQuestion-" + currentQuestion);
+    newDiv.innerHTML = "<h5>Вопрос " + currentQuestion + "</h5>" +
+        "<input type='number' id='countOption-" + currentQuestion + "' name='countOption-" + currentQuestion + "' value='1' hidden>" +
+        "<div class='row'>" +
+        "<div class='col-md-6'>" +
+        "<input id='question-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос'>" +
+        "</div>" +
+        "<div class='col-md-6'>" +
+        "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswers-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
+        "<option value='radio'>Один из списка</option>" +
+        "<option value='checkbox'>Несколько из списка</option>" +
+        "<option value='range'>Шкала</option>" +
+        "<option value='small_text'>Короткий текст</option>" +
+        "<option value='big_text'>Длинный текст</option>" +
+        "</select>" +
+        "</div>" +
+        "</div>" +
+        "<br>" +
+        "<div class='row'>" +
+        "<div class='col-md-12' id='optionsAnswers-" + currentQuestion + "'>" +
+        "<div class='row' style='margin-bottom: 10px'>" +
+        "<div class='col-md-1'>" +
+        "<div class='form-check'>" +
+        "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
+        "</div>" +
+        "</div>" +
+        "<div class='col-md-11'>" +
+        "<input type='text' class='form-control' name='option-" + currentQuestion + "-1' id='radio-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+        "</div>" +
+        "</div>" +
+        "<div class='row'>" +
+        "<div class='col-md-1'>" +
+        "<div class='form-check'>" +
+        "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
+        "</div>" +
+        "</div>" +
+        "<div class='col-md-11'>" +
+        "<button class='btn' form='' onclick=''>Добавить другой вариант</button>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "</div>" +
+        "<hr>";
 
+    document.getElementById("newPoll").insertAdjacentElement("beforeend", newDiv);
+    document.getElementById("countQuestion").value = currentQuestion.toString();
 }
 
-function viewOptionsAnswers(idDiv, idSelected) {
+function changeTypeQuestion(idDiv, idSelected) {
     let oldDiv = document.getElementById(idDiv);
     let typeQuestion = document.getElementById(idSelected).value;
-    // alert(typeQuestion);
     let newDiv = document.createElement("div");
+    let currentQuestion = idDiv.toString().split("-")[1];
     newDiv.setAttribute("id", idDiv);
     newDiv.setAttribute("class", "col-md-12");
     // if (typeQuestion === "radio" || typeQuestion === "checkbox") {
@@ -64,7 +113,7 @@ function viewOptionsAnswers(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-1-1' id='radio-1-1' placeholder='Вариант 1'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='radio-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
             "</div>" +
             "</div>" +
             "<div class='row'>" +
@@ -85,7 +134,7 @@ function viewOptionsAnswers(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-1-1' id='checkbox-1-1' placeholder='Вариант 1'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='checkbox-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
             "</div>" +
             "</div>" +
             "<div class='row'>" +
@@ -99,33 +148,30 @@ function viewOptionsAnswers(idDiv, idSelected) {
             "</div>" +
             "</div>";
     } else if (typeQuestion === "range") {
-        // alert("range");
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-4'>" +
             "<label for='min'>Минимальное значение</label>" +
-            "<input type='number' class='form-control' name='min' id='min' value='1'>" +
+            "<input type='number' class='form-control' name='min-" + currentQuestion + "' id='min-" + currentQuestion + "' value='1'>" +
             "</div>" +
             "<div class='col-md-4'>" +
             "<label for='max'>Максимальное значение</label>" +
-            "<input type='number' class='form-control' name='max' id='max' value='10'>" +
+            "<input type='number' class='form-control' name='max-" + currentQuestion + "' id='max-" + currentQuestion + "' value='10'>" +
             "</div>" +
             "<div class='col-md-4'>" +
             "<label for='step'>Шаг</label>" +
-            "<input type='number' class='form-control' name='step' id='step' min='0' value='1'>" +
+            "<input type='number' class='form-control' name='step-" + currentQuestion + "' id='step-" + currentQuestion + "' min='0' value='1'>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "small_text") {
-        // alert("small_text");
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-6'>" +
-            "<input type='text' class='form-control' placeholder='Короткий ответ (50 символов)' disabled>" +
+            "<input type='text' class='form-control' name='smallText-" + currentQuestion + "' id='smallText-" + currentQuestion + "' placeholder='Короткий ответ (50 символов)' disabled>" +
             "</div>" +
             "</div> ";
     } else if (typeQuestion === "big_text") {
-        // alert("big_text");
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-10'>" +
-            "<input type='text' class='form-control' placeholder='Длинный ответ (500 символов)' disabled>" +
+            "<input type='text' class='form-control' name='bigText-" + currentQuestion + "' id='bigText-" + currentQuestion + "' placeholder='Длинный ответ (500 символов)' disabled>" +
             "</div>" +
             "</div> ";
     }
