@@ -26,10 +26,10 @@
                     <hr>
                     <div class="form-group" id="newQuestion-1">
                         <h5>Вопрос 1</h5>
-                        <input type="number" id="countOption-1" name="countOption-1" value="1" hidden>
+                        <input type="hidden" id="countOption-1" name="countOption-1" value="1">
                         <div class="row">
                             <div class="col-md-6">
-                                <input id="question-1" name="questionName-1" type="text" class="form-control"
+                                <input id="questionName-1" name="questionName-1" type="text" class="form-control"
                                        placeholder="Вопрос">
                             </div>
                             <div class="col-md-6">
@@ -54,11 +54,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-11">
-                                        <input type="text" class="form-control" name="option-1-1" id="radio-1-1"
+                                        <input type="text" class="form-control" name="option-1-1" id="option-1-1"
                                                placeholder="Вариант 1">
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" id="addNewOption-1">
                                     <div class="col-md-1">
                                         <div class="form-check">
                                             <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-11">
-                                        <button class="btn" form="" onclick="">Добавить другой вариант</button>
+                                        <button class="btn" form="" onclick="addNewOption('newQuestion-1')">Добавить другой вариант</button>
                                     </div>
                                 </div>
                             </div>

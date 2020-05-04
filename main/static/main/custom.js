@@ -18,6 +18,34 @@ function getCounterSymbols(el1, el2) {
     counter.innerText = (500 - text.value.length).toString();
 }
 
+function addNewOption(idQuestion) {
+    let currentQuestion = Number(idQuestion.toString().split('-')[1]);
+    let countOption = Number(document.getElementById("countOption-" + currentQuestion).value);
+    let currentOption = countOption + 1;
+    let currentTypeQuestion = document.getElementById("questionType-" + currentQuestion).value;
+    let newDiv = document.createElement("div");
+    newDiv.setAttribute("class", "row");
+    newDiv.setAttribute("style", "margin-bottom: 10px");
+    let htmlCode = "<div class='col-md-1'>" +
+        "<div class='form-check'>";
+    if (currentTypeQuestion === "radio"){
+        htmlCode += "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>";
+    }else if (currentTypeQuestion === "checkbox"){
+        htmlCode += "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='checkbox' class='form-check-input' disabled>"
+    }else{
+        alert("Error!");
+    }
+    newDiv.innerHTML = htmlCode +
+        "</div>" +
+        "</div>" +
+        "<div class='col-md-11'>" +
+        "<input type='text' class='form-control' name='option-" + currentQuestion + "-" + currentOption + "' id='option-" + currentQuestion + "-" + currentOption + "' placeholder='Вариант " + currentOption + "'>" +
+        "</div>";
+
+    document.getElementById("addNewOption-" + currentQuestion).insertAdjacentElement("beforebegin", newDiv);
+    document.getElementById("countOption-" + currentQuestion).value = currentOption.toString();
+}
+
 function addNewQuestion() {
     let countQuestion = document.getElementById("countQuestion").value;
     let newDiv = document.createElement("div");
@@ -25,10 +53,10 @@ function addNewQuestion() {
     newDiv.setAttribute("class", "form-group");
     newDiv.setAttribute("id", "newQuestion-" + currentQuestion);
     newDiv.innerHTML = "<h5>Вопрос " + currentQuestion + "</h5>" +
-        "<input type='number' id='countOption-" + currentQuestion + "' name='countOption-" + currentQuestion + "' value='1' hidden>" +
+        "<input type='hidden' id='countOption-" + currentQuestion + "' name='countOption-" + currentQuestion + "' value='1'>" +
         "<div class='row'>" +
         "<div class='col-md-6'>" +
-        "<input id='question-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос'>" +
+        "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос'>" +
         "</div>" +
         "<div class='col-md-6'>" +
         "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswers-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
@@ -50,17 +78,17 @@ function addNewQuestion() {
         "</div>" +
         "</div>" +
         "<div class='col-md-11'>" +
-        "<input type='text' class='form-control' name='option-" + currentQuestion + "-1' id='radio-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+        "<input type='text' class='form-control' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
         "</div>" +
         "</div>" +
-        "<div class='row'>" +
+        "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
         "<div class='col-md-1'>" +
         "<div class='form-check'>" +
         "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
         "</div>" +
         "</div>" +
         "<div class='col-md-11'>" +
-        "<button class='btn' form='' onclick=''>Добавить другой вариант</button>" +
+        "<button class='btn' form='' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -113,17 +141,17 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='radio-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
             "</div>" +
             "</div>" +
-            "<div class='row'>" +
+            "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
             "<div class='col-md-1'>" +
             "<div class='form-check'>" +
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='radio' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick=''>Добавить другой вариант</button>" +
+            "<button form='' class='btn' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "checkbox") {
@@ -134,17 +162,17 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='checkbox-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
             "</div>" +
             "</div>" +
-            "<div class='row'>" +
+            "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
             "<div class='col-md-1'>" +
             "<div class='form-check'>" +
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='checkbox' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick=''>Добавить другой вариант</button>" +
+            "<button form='' class='btn' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "range") {
@@ -175,7 +203,11 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div> ";
     }
+    else{
+        alert("Error!");
+    }
 
     let parentDiv = oldDiv.parentNode;
     parentDiv.replaceChild(newDiv, oldDiv);
+    document.getElementById("countOption-" + currentQuestion).value = "1";
 }
