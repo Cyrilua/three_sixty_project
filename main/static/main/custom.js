@@ -28,18 +28,23 @@ function addNewOption(idQuestion) {
     newDiv.setAttribute("style", "margin-bottom: 10px");
     let htmlCode = "<div class='col-md-1'>" +
         "<div class='form-check'>";
-    if (currentTypeQuestion === "radio"){
+    if (currentTypeQuestion === "radio") {
         htmlCode += "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>";
-    }else if (currentTypeQuestion === "checkbox"){
+    } else if (currentTypeQuestion === "checkbox") {
         htmlCode += "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='checkbox' class='form-check-input' disabled>"
-    }else{
+    } else {
         alert("Error!");
     }
     newDiv.innerHTML = htmlCode +
         "</div>" +
         "</div>" +
-        "<div class='col-md-11'>" +
-        "<input type='text' class='form-control' name='option-" + currentQuestion + "-" + currentOption + "' id='option-" + currentQuestion + "-" + currentOption + "' placeholder='Вариант " + currentOption + "'>" +
+        "<div class='col-md-10'>" +
+        "<input type='text' class='form-control' name='option-" + currentQuestion + "-" + currentOption + "' id='option-" + currentQuestion + "-" + currentOption + "' placeholder='Вариант " + currentOption + "' required>" +
+        "</div>" +
+        "<div class='col-md-1' style='left: -10px'>" +
+        "<div>" +
+        "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "</div>" +
         "</div>";
 
     document.getElementById("addNewOption-" + currentQuestion).insertAdjacentElement("beforebegin", newDiv);
@@ -56,7 +61,7 @@ function addNewQuestion() {
         "<input type='hidden' id='countOption-" + currentQuestion + "' name='countOption-" + currentQuestion + "' value='1'>" +
         "<div class='row'>" +
         "<div class='col-md-6'>" +
-        "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос'>" +
+        "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос' required>" +
         "</div>" +
         "<div class='col-md-6'>" +
         "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswer-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
@@ -77,8 +82,13 @@ function addNewQuestion() {
         "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
         "</div>" +
         "</div>" +
-        "<div class='col-md-11'>" +
-        "<input type='text' class='form-control' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+        "<div class='col-md-10'>" +
+        "<input type='text' class='form-control' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1' required>" +
+        "</div>" +
+        "<div class='col-md-1' style='left: -10px'>" +
+        "<div>" +
+        "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "</div>" +
         "</div>" +
         "</div>" +
         "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
@@ -140,8 +150,13 @@ function changeTypeQuestion(idDiv, idSelected) {
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='radio' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+            "<div class='col-md-10'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1' required>" +
+            "</div>" +
+            "<div class='col-md-1' style='left: -10px'>" +
+            "<div>" +
+            "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "</div>" +
             "</div>" +
             "</div>" +
             "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
@@ -161,8 +176,13 @@ function changeTypeQuestion(idDiv, idSelected) {
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='checkbox' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-11'>" +
-            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1'>" +
+            "<div class='col-md-10'>" +
+            "<input class='form-control' type='text' name='option-" + currentQuestion + "-1' id='option-" + currentQuestion + "-1' placeholder='Вариант 1' required>" +
+            "</div>" +
+            "<div class='col-md-1' style='left: -10px'>" +
+            "<div>" +
+            "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "</div>" +
             "</div>" +
             "</div>" +
             "<div class='row' id='addNewOption-" + currentQuestion + "'>" +
@@ -179,15 +199,15 @@ function changeTypeQuestion(idDiv, idSelected) {
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-4'>" +
             "<label for='min'>Минимальное значение</label>" +
-            "<input type='number' class='form-control' name='min-" + currentQuestion + "' id='min-" + currentQuestion + "' value='1'>" +
+            "<input type='number' class='form-control' name='min-" + currentQuestion + "' id='min-" + currentQuestion + "' min='0' max='1' value='0'>" +
             "</div>" +
             "<div class='col-md-4'>" +
             "<label for='max'>Максимальное значение</label>" +
-            "<input type='number' class='form-control' name='max-" + currentQuestion + "' id='max-" + currentQuestion + "' value='10'>" +
+            "<input type='number' class='form-control' name='max-" + currentQuestion + "' id='max-" + currentQuestion + "' min='2' max='100' value='10'>" +
             "</div>" +
             "<div class='col-md-4'>" +
             "<label for='step'>Шаг</label>" +
-            "<input type='number' class='form-control' name='step-" + currentQuestion + "' id='step-" + currentQuestion + "' min='0' value='1'>" +
+            "<input type='number' class='form-control' name='step-" + currentQuestion + "' id='step-" + currentQuestion + "' min='1' max='10' value='1'>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "small_text") {
@@ -202,8 +222,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "<input type='text' class='form-control' name='bigText-" + currentQuestion + "' id='bigText-" + currentQuestion + "' placeholder='Длинный ответ (500 символов)' disabled>" +
             "</div>" +
             "</div> ";
-    }
-    else{
+    } else {
         alert("Error!");
     }
 
