@@ -59,7 +59,7 @@ function addNewQuestion() {
         "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос'>" +
         "</div>" +
         "<div class='col-md-6'>" +
-        "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswers-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
+        "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswer-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
         "<option value='radio'>Один из списка</option>" +
         "<option value='checkbox'>Несколько из списка</option>" +
         "<option value='range'>Шкала</option>" +
@@ -70,7 +70,7 @@ function addNewQuestion() {
         "</div>" +
         "<br>" +
         "<div class='row'>" +
-        "<div class='col-md-12' id='optionsAnswers-" + currentQuestion + "'>" +
+        "<div class='col-md-12' id='optionsAnswer-" + currentQuestion + "'>" +
         "<div class='row' style='margin-bottom: 10px'>" +
         "<div class='col-md-1'>" +
         "<div class='form-check'>" +
