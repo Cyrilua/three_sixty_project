@@ -18,6 +18,20 @@ function getCounterSymbols(el1, el2) {
     counter.innerText = (500 - text.value.length).toString();
 }
 
+function removeOption(idOption) {
+    let currentOption = Number(idOption.toString().split("-")[2]);
+    let currentQuestion = Number(idOption.toString().split("-")[1]);
+    let countOption = Number(document.getElementById("countOption-" + currentQuestion).value);
+
+    for (let i = currentQuestion; i <= countOption; i++){
+        if(countOption === i){
+            document.getElementById(idOption).remove();
+        }else{
+
+        }
+    }
+}
+
 function addNewOption(idQuestion) {
     let currentQuestion = Number(idQuestion.toString().split('-')[1]);
     let countOption = Number(document.getElementById("countOption-" + currentQuestion).value);
@@ -26,6 +40,7 @@ function addNewOption(idQuestion) {
     let newDiv = document.createElement("div");
     newDiv.setAttribute("class", "row");
     newDiv.setAttribute("style", "margin-bottom: 10px");
+    newDiv.setAttribute("id", "options-" + currentQuestion);
     let htmlCode = "<div class='col-md-1'>" +
         "<div class='form-check'>";
     if (currentTypeQuestion === "radio") {
@@ -43,7 +58,7 @@ function addNewOption(idQuestion) {
         "</div>" +
         "<div class='col-md-1' style='left: -10px'>" +
         "<div>" +
-        "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-" + currentOption + "\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
         "</div>" +
         "</div>";
 
@@ -76,7 +91,7 @@ function addNewQuestion() {
         "<br>" +
         "<div class='row'>" +
         "<div class='col-md-12' id='optionsAnswer-" + currentQuestion + "'>" +
-        "<div class='row' style='margin-bottom: 10px'>" +
+        "<div class='row' style='margin-bottom: 10px' id='options-" + currentQuestion + "'>" +
         "<div class='col-md-1'>" +
         "<div class='form-check'>" +
         "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
@@ -87,7 +102,7 @@ function addNewQuestion() {
         "</div>" +
         "<div class='col-md-1' style='left: -10px'>" +
         "<div>" +
-        "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-1\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -144,7 +159,7 @@ function changeTypeQuestion(idDiv, idSelected) {
     //     newDiv.appendChild(newInput);
     //     newDiv.appendChild(buttonAddOption);
     if (typeQuestion === "radio") {
-        newDiv.innerHTML = "<div class='row' style='margin-bottom: 10px'>" +
+        newDiv.innerHTML = "<div class='row' style='margin-bottom: 10px' id='options-" + currentQuestion + "'>" +
             "<div class='col-md-1'>" +
             "<div class='form-check'>" +
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='radio' class='form-check-input' disabled>" +
@@ -155,7 +170,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "<div class='col-md-1' style='left: -10px'>" +
             "<div>" +
-            "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-1\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
             "</div>" +
             "</div>" +
             "</div>" +
@@ -170,7 +185,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div>";
     } else if (typeQuestion === "checkbox") {
-        newDiv.innerHTML = "<div class='row' style='margin-bottom: 10px'>" +
+        newDiv.innerHTML = "<div class='row' style='margin-bottom: 10px' id='options-" + currentQuestion + "'>" +
             "<div class='col-md-1'>" +
             "<div class='form-check'>" +
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='checkbox' class='form-check-input' disabled>" +
@@ -181,7 +196,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "<div class='col-md-1' style='left: -10px'>" +
             "<div>" +
-            "<button class='btn' form='' onclick='' style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-1\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
             "</div>" +
             "</div>" +
             "</div>" +
