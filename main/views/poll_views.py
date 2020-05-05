@@ -1,9 +1,7 @@
-from django.shortcuts import redirect
-from django.shortcuts import render
+import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings
 from main.views.auxiliary_general_methods import *
-from main.views.notifications_views import add_notification
 
 
 def type_poll(request):
@@ -175,6 +173,7 @@ def answer_the_poll(request, poll_id):
         return redirect('/')
 
     args = {'title': 'Прохождение опроса',
+            'about_poll': poll.description,
             'questions': build_questions(poll)}
 
     # Закомментированно на время разработки
@@ -273,6 +272,71 @@ def calculate_result_questions(questions):
 
 
 def new_poll(request):
-    args = {}
-    add_notification(get_user_profile(request), "Пройти опрос", 'main:answer_the_poll', key=9)
+    args = {'title': "Создание опроса"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    if request.method == "POST":
+        poll = create_new_poll(request)
+        count_questions = int(request.POST.get('countQuestion', ''))
+        if count_questions > 0:
+            create_polls_questions(request, poll)
     return render(request, 'main/poll/new_poll.html', args)
+
+
+def create_new_poll(request):
+    result = Poll()
+    result.key = uuid.uuid4().__str__()
+
+    name_poll = request.POST.get('pollName', '')
+    if name_poll is not None and name_poll != '':
+        result.name_poll = name_poll
+    else:
+        result.name_poll = 'Опрос'
+
+    description_poll = request.POST.get('pollAbout', '')
+    if description_poll is not None and description_poll != '':
+        result.description = description_poll
+    else:
+        result.description = None
+    result.initiator = auth.get_user(request)
+    result.save()
+    return result
+
+
+def create_polls_questions(request, poll):
+    count_questions = int(request.POST.get('countQuestion', ''))
+    for i in range(1, count_questions + 1):
+        question = create_question(request, i)
+        count_answer_choice = int(request.POST.get('countOption-{}'.format(i), ''))
+        if count_answer_choice > 0:
+            create_answers_choices(request, question, i)
+        poll.questions.add(question)
+
+
+def create_question(request, number_question):
+    question = Questions()
+    type_question = request.POST.get('questionType-{}'.format(number_question), '')
+    question.type = type_question
+    question.text = request.POST.get('questionName-{}'.format(number_question), '')
+    settings = Settings()
+    if type_question.lower() == 'range':
+        settings.min = request.POST.get('min-{}'.format(number_question), '')
+        settings.max = request.POST.get('max-{}'.format(number_question), '')
+        settings.step = request.POST.get('step-{}'.format(number_question), '')
+    settings.save()
+    question.settings = settings
+    question.save()
+    return question
+
+
+def create_answers_choices(request, question, number_question):
+    count_answer_choice = int(request.POST.get('countOption-{}'.format(number_question), ''))
+    settings = question.settings
+    for j in range(1, count_answer_choice + 1):
+        answer_choice = request.POST.get('option-{}-{}'.format(number_question, j), '')
+        answer = AnswerChoice()
+        answer.value = answer_choice
+        # TODO Добавить веса
+        answer.save()
+        settings.answer_choice.add(answer)

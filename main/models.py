@@ -173,6 +173,7 @@ class Poll(models.Model):
     name_poll = models.CharField(max_length=50, default='')
     questions = models.ManyToManyField('Questions')
     respondents = models.ManyToManyField(User)
+    description = models.CharField(max_length=500, null=True)
     objects = models.Manager()
     #start_date = models.DateField()
     #end_date = models.DateField()
