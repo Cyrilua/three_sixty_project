@@ -52,7 +52,7 @@
                                     <br>
                                     <span>Текущее заничение: <span id="textForRange-{{ question.id }}"></span></span>
                                 </div>
-                            {% elif question.type == "small_text" %}
+                            {% elif question.type == "big_text" %}
                                 <div class="form-group">
                                     <textarea class="form-control" name="answer-{{ question.id }}"
                                               id="bigText-{{ question.id }}"
@@ -62,7 +62,7 @@
                                               oninput="getCounterSymbols('bigText-{{ question.id }}', 'counterForBigText-{{ question.id }}')"></textarea>
                                     <span>Осталось <span id="counterForBigText-{{ question.id }}">500</span> символов из 500</span>
                                 </div>
-                            {% elif question.type == "big_text" %}
+                            {% elif question.type == "small_text" %}
                                 <div class="form-group">
                                     <input class="form-control" type="text" name="answer-{{ question.id }}"
                                            id="smallText-{{ question.id }}" maxlength="50"
