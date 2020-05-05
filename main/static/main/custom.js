@@ -41,6 +41,7 @@ function removeOption(idOption) {
         document.getElementById("removeIconFromFirstOption-" + currentQuestion).remove();
     }
 
+
     document.getElementById("countOption-" + currentQuestion).value = (countOption - 1).toString();
 }
 
@@ -72,7 +73,7 @@ function addNewOption(idQuestion) {
         "</div>" +
         "<div class='col-md-1' style='left: -10px;'>" +
         "<div>" +
-        "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-" + currentOption + "\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "<button class='btn' form='' onclick='this.blur(); removeOption(\"option-" + currentQuestion + "-" + currentOption + "\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
         "</div>" +
         "</div>";
 
@@ -85,7 +86,7 @@ function addNewOption(idQuestion) {
         removeDiv.setAttribute("style", "left: -10px;");
         removeDiv.setAttribute("id", "removeIconFromFirstOption-" + currentQuestion);
         removeDiv.innerHTML = "<div>" +
-            "<button class='btn' form='' onclick='removeOption(\"option-" + currentQuestion + "-1\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "<button class='btn' form='' onclick='this.blur(); removeOption(\"option-" + currentQuestion + "-1\")' style='size: 10px'><i class='fas fa-times'></i></button>" +
             "</div>";
         document.getElementById("firstOptionFromQuestion-" + currentQuestion).insertAdjacentElement("afterend", removeDiv);
     }
@@ -136,7 +137,7 @@ function addNewQuestion() {
         "</div>" +
         "</div>" +
         "<div class='col-md-11'>" +
-        "<button class='btn' form='' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
+        "<button class='btn' form='' onclick='this.blur(); addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
         "</div>" +
         "</div>" +
         "</div>" +
@@ -144,6 +145,7 @@ function addNewQuestion() {
         "<hr>";
 
     document.getElementById("newPoll").insertAdjacentElement("beforeend", newDiv);
+    document.getElementById("questionName-" + currentQuestion).focus();
     document.getElementById("countQuestion").value = currentQuestion.toString();
 }
 
@@ -173,7 +175,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
+            "<button form='' class='btn' onclick='this.blur(); addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "checkbox") {
@@ -194,7 +196,7 @@ function changeTypeQuestion(idDiv, idSelected) {
             "</div>" +
             "</div>" +
             "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick='addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
+            "<button form='' class='btn' onclick='this.blur(); addNewOption(\"newQuestion-" + currentQuestion + "\")'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "range") {
