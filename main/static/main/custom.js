@@ -90,6 +90,7 @@ function addNewOption(idQuestion) {
         document.getElementById("firstOptionFromQuestion-" + currentQuestion).insertAdjacentElement("afterend", removeDiv);
     }
 
+    document.getElementById("option-" + currentQuestion + "-" + currentOption).focus();
     document.getElementById("countOption-" + currentQuestion).value = currentOption.toString();
 }
 
