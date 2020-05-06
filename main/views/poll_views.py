@@ -257,7 +257,6 @@ def result_view(request, poll_id):
     if poll.initiator.id != auth.get_user(request).id:
         return redirect('/')
 
-    # Словарь (ключ - вопрос, значение - средний ответ)
     question_by_answer_result = calculate_result_questions(poll.questions.all())
     args = {
         'title': 'Получение результатов опроса',
@@ -267,11 +266,15 @@ def result_view(request, poll_id):
 
 
 def calculate_result_questions(questions):
-    question_by_answer_result = {}
+    result = []
     for question in questions:
         answer = Answers.objects.get(question=question)
-        question_by_answer_result[question] = answer.sum_answer / answer.count_answers
-    return question_by_answer_result
+        result_answer = answer.sum_answer / answer.count_answers
+        result.append({
+            'answer': result_answer,
+            'question': question
+        })
+    return result
 
 
 def new_poll(request):
