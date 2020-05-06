@@ -173,6 +173,7 @@ def answer_the_poll(request, poll_id):
         return redirect('/')
 
     args = {'title': 'Прохождение опроса',
+            'poll_name': poll.name_poll,
             'about_poll': poll.description,
             'questions': build_questions(poll)}
 
