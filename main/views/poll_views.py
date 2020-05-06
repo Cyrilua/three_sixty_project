@@ -174,8 +174,10 @@ def answer_the_poll(request, poll_id):
 
     args = {'title': 'Прохождение опроса',
             'poll_name': poll.name_poll,
-            'about_poll': poll.description,
             'questions': build_questions(poll)}
+
+    if poll.description is not None:
+        args['about_poll'] = poll.description
 
     # Закомментированно на время разработки
     if not user_is_respondent(request, poll):
