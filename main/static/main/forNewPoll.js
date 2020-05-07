@@ -1,17 +1,6 @@
 let allQuestionNumbers = [1];
 
 
-function done() {
-    $.ajax({
-        type: "POST",
-        data: {
-            "allQuestionNumbers":allQuestionNumbers,
-            // "csrfmiddlewaretoken": $('#csrfmiddlewaretoken').val(),
-        },
-        url: "/new_poll/"
-    })
-}
-
 function removeQuestion(idQuestion) {
     let currentQuestion = Number(idQuestion.toString().split('-')[1]);
     // let countQuestion = Number(document.getElementById('countQuestion').value);
@@ -35,6 +24,8 @@ function removeQuestion(idQuestion) {
     if (allQuestionNumbers.length === 0) {
         document.getElementById("done").setAttribute("disabled", "disabled");
     }
+
+    document.getElementById("allQuestionNumbers").value = allQuestionNumbers.toString();
 
 
     // let re1 = /id="([a-zA-Z]+)-(\d+)-(\d+)"/g; // ++
@@ -232,6 +223,7 @@ function addNewQuestion() {
     if (allQuestionNumbers.length !== 0) {
         document.getElementById("done").removeAttribute("disabled");
     }
+    document.getElementById("allQuestionNumbers").value = allQuestionNumbers.toString();
 }
 
 function changeTypeQuestion(idDiv, idSelected) {
