@@ -3,82 +3,19 @@ let allQuestionNumbers = [1];
 
 function removeQuestion(idQuestion) {
     let currentQuestion = Number(idQuestion.toString().split('-')[1]);
-    // let countQuestion = Number(document.getElementById('countQuestion').value);
-
-    // if (countQuestion === 1) {
-    //     alert(" Error 'removeQuestion()' !!!");
-    //     return;
-    // }
 
     document.getElementById(idQuestion).remove();
     let index = allQuestionNumbers.indexOf(currentQuestion);
-
     if (index > -1) {
         allQuestionNumbers.splice(index, 1);
-        // document.getElementById("countQuestion").value = allQuestionNumbers.length.toString();
     } else {
         alert("Error index in 'removeQuestion()' !!!");
         return;
     }
-
     if (allQuestionNumbers.length === 0) {
         document.getElementById("done").setAttribute("disabled", "disabled");
     }
-
     document.getElementById("allQuestionNumbers").value = allQuestionNumbers.toString();
-
-
-    // let re1 = /id="([a-zA-Z]+)-(\d+)-(\d+)"/g; // ++
-    // let re2 = /id="([a-zA-Z]+)-(\d+)"/g; // ++
-    // let re3 = /name="([a-zA-Z]+)-(\d+)-(\d+)"/g; // ++
-    // let re4 = /name="([a-zA-Z]+)-(\d+)"/g; // ++
-    // let re5 = /removeOption\('([a-zA-Z]+)-(\d+)-(\d+)'\);/g; // ++
-    // let re6 = /addNewOption\('([a-zA-Z]+)-(\d+)'\);/g; // ++
-    // let re7 = /removeQuestion\('([a-zA-Z]+)-(\d+)'\);/g; // ++
-
-    // for (let i = currentQuestion; i <= countQuestion; i++) {
-    //     if (i === currentQuestion) {
-    //         document.getElementById(idQuestion).remove();
-    //     } else {
-    //         // let divQuestion = document.getElementById("newQuestion-" + i);
-    //         // divQuestion.setAttribute('name', 'newQuestion-' + (i - 1));
-    //         // divQuestion.setAttribute('id', 'newQuestion-' + (i - 1));
-    //         //
-    //         // let html = divQuestion.outerHTML;
-    //         // alert('test');
-    //         // let attrs1 = html.match(re1);
-    //         // let attrs2 = html.match(re2);
-    //         // let attrs3 = html.match(re3);
-    //         // let attrs4 = html.match(re4);
-    //         // let attrs5 = html.match(re5);
-    //         // let attrs6 = html.match(re6);
-    //         // let attrs7 = html.match(re7);
-    //         //
-    //         // if (attrs1 !== null || attrs3 !== null){
-    //         //     attrs1.concat(attrs3).forEach(e => html.replace(e, e.split('"')[0] + '"' +
-    //         //     e.split('"')[1].split('-')[0] + '-' + (i - 1) + '-' +
-    //         //     e.split('"')[1].split('-')[2] + '"'));
-    //         // }
-    //         // if (attrs2 !== null || attrs4 !== null){
-    //         //     attrs2.concat(attrs4).forEach(e => html.replace(e, e.split('"')[0] + '"' +
-    //         //     e.split('"')[1].split('-')[0] + '-' + (i - 1) + '"'));
-    //         // }
-    //         // if (attrs5 !== null){
-    //         //     attrs5.forEach(e => html.replace(e, e.split("'")[0] + "'" +
-    //         //     e.split("'")[1].split('-')[0] + '-' + (i - 1) + '-' +
-    //         //     e.split("'")[1].split('-')[2] + "');"));
-    //         // }
-    //         // if (attrs6 !== null || attrs7 !== null){
-    //         //     attrs6.concat(attrs7).forEach(e => html.replace(e, e.split("'")[0] + "'" +
-    //         //     e.split("'")[1].split('-')[0] + '-' + (i - 1) + "');"));
-    //         // }
-    //         //
-    //         //
-    //         // divQuestion.innerText = html.substr(1, html.length - 1);
-    //     }
-    // }
-
-    // document.getElementById("countQuestion").value = (countQuestion - 1).toString();
 }
 
 function removeOption(idOption) {
@@ -103,8 +40,7 @@ function removeOption(idOption) {
             .setAttribute("class", "col-md-11");
         document.getElementById("removeIconFromFirstOption-" + currentQuestion).remove();
     }
-
-
+    
     document.getElementById("countOption-" + currentQuestion).value = (countOption - 1).toString();
 }
 
