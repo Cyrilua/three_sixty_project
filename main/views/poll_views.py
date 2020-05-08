@@ -262,7 +262,7 @@ def result_view(request, poll_id):
         'title': 'Получение результатов опроса',
         'results': question_by_answer_result
     }
-    return render(request, 'main/result_poll.html', args)
+    return render(request, 'main/poll/poll_results.html', args)
 
 
 def calculate_result_questions(questions):
