@@ -95,8 +95,11 @@
         <div class="col-md-1">
             <div class="row position-fixed">
                 <div class="col-md-12">
-                    <button class="btn btn-dark" onclick="addNewQuestion()">+</button><br><br>
-                    <button class="btn btn-dark" onclick="alert(allQuestionNumbers);">T</button>
+                    <button  class="btn" onclick="this.blur(); addNewQuestion()">
+                        <i class="fas fa-plus" style="transform: scale(1.3)"></i>
+                    </button>
+{#                    <br><br>#}
+{#                    <button class="btn btn-dark" onclick="alert(allQuestionNumbers);">T</button>#}
                 </div>
             </div>
         </div>

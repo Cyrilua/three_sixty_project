@@ -1,0 +1,88 @@
+{% extends 'main/wrapper.html' %}
+
+{% block content-user %}
+    <script>
+        let a = {{ results }};
+        let aa = 1;
+    </script>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row rounded-block">
+                <div class="col-md-12">
+                    <h1 style="text-align: center">Результаты опроса "{{ name_poll }}"</h1>
+                    <hr>
+                    {% for result in results %}
+                        <div class="form-group">
+                            <b>{{ result.question.text }}</b>
+                            <br>
+                            {% if result.question.type == "radio" %}
+                                <div class="row">
+                                    {% for answer in result.answers %}
+                                        <div class="col-md-1">
+                                            <div class="form-check">
+                                                <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                       type="radio" class="form-check-input" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-11">
+                                            <label>{{ answer.text }}</label>
+                                        </div>
+                                        <br>
+                                        <div class=" col-md-12 progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 25%;"
+                                                 aria-valuenow="25" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ answer.value.percent }}%
+                                                ({{ answer.value.quantity }})
+                                            </div>
+                                        </div>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% elif result.question.type == "checkbox" %}
+                                <div class="row">
+                                    {% for answer in result.answers %}
+                                        <div class="col-md-1">
+                                            <div class="form-check">
+                                                <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                       type="checkbox" class="form-check-input" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-11">
+                                            <label>{{ answer.text }}</label>
+                                        </div>
+                                        <br>
+                                        <div class=" col-md-12 progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 25%;"
+                                                 aria-valuenow="25" aria-valuemin="0"
+                                                 aria-valuemax="100">{{ answer.value.percent }}%
+                                                ({{ answer.value.quantity }})
+                                            </div>
+                                        </div>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% elif result.question.type == "range" %}
+                                <div>
+                                    {{ result }}
+                                </div>
+                            {% elif result.question.type == "small_text" %}
+                                <div>
+                                    {{ result }}
+                                </div>
+                            {% elif result.question.type == "big_text" %}
+                                <div>
+                                    {{ result }}
+                                </div>
+                            {% else %}
+                                <b style="color: red">Error !!!</b>
+                            {% endif %}
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+{% endblock %}
