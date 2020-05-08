@@ -12,7 +12,7 @@
                 {% csrf_token %}
                 <div class="form-group" id="newPoll">
                     <input id="lastQuestionNumber" type="hidden" value="1">
-                    <input id="allQuestionNumbers" type="hidden" value="1">
+                    <input id="allQuestionNumbers" type="hidden" name="allQuestionNumbers" value="1">
                     <div class="form-group">
                         <label for="pollName">Название опроса</label>
                         <input id="pollName" type="text" class="form-control" name="pollName"
