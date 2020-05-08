@@ -283,10 +283,10 @@ def new_poll(request):
         return redirect('/')
 
     if request.method == "POST":
+        numbers_questions = [int(i) for i in request.POST.get('allQuestionNumbers', '').split(',')]
         poll = create_new_poll(request)
-        count_questions = int(request.POST.get('countQuestion', ''))
-        if count_questions > 0:
-            create_polls_questions(request, poll)
+        if len(numbers_questions) > 0:
+            create_polls_questions(request, poll, numbers_questions)
     return render(request, 'main/poll/new_poll.html', args)
 
 
@@ -310,9 +310,8 @@ def create_new_poll(request):
     return result
 
 
-def create_polls_questions(request, poll):
-    count_questions = int(request.POST.get('countQuestion', ''))
-    for i in range(1, count_questions + 1):
+def create_polls_questions(request, poll, numbers_questions):
+    for i in numbers_questions:
         question = create_question(request, i)
         count_answer_choice = int(request.POST.get('countOption-{}'.format(i), ''))
         if count_answer_choice > 0:
