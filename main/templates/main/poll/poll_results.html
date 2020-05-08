@@ -1,0 +1,21 @@
+{% extends 'main/wrapper.html' %}
+
+{% block content-user %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row rounded-block">
+                <div class="col-md-12">
+                    <h1 style="text-align: center">Результаты опроса "{{ name_poll }}"</h1>
+                    <hr>
+                    {% for result in results %}
+                        <div>
+                            {{ result }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+{% endblock %}
