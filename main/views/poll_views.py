@@ -254,8 +254,9 @@ def result_view(request, poll_id):
     except:
         return redirect('/')
 
-    if poll.initiator.id != auth.get_user(request).id:
-        return redirect('/')
+    # Закомментированно на время разработки
+    #if poll.initiator.id != auth.get_user(request).id:
+        #return redirect('/')
 
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
@@ -291,7 +292,7 @@ def build_result_questions_answers(questions):
                     'text': choice.value,
                     'value': {
                         'percent': (choice.count / sum_votes) * 100,
-                        'quantity': sum_votes
+                        'quantity': choice.count
                     }
                 })
         elif question.type == 'range':
