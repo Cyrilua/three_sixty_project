@@ -260,6 +260,7 @@ def result_view(request, poll_id):
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
         'title': 'Получение результатов опроса',
+        'name_poll': poll.name_poll,
         'results': question_answer_result
     }
     return render(request, 'main/poll/poll_results.html', args)
@@ -294,12 +295,15 @@ def build_result_questions_answers(questions):
                     }
                 })
         elif question.type == 'range':
-            result_answers.append({
-                'value': {
-                    'averaged': answer.sum_answer / answer.count_answers,
-                    'quantity': answer.count_answers
+            result_answers = {
+                'first': {
+                    'value': {
+                        'averaged': answer.sum_answer / answer.count_answers,
+                        'quantity': answer.count_answers
+                    }
                 }
-            })
+            }
+            print(result_answers)
         elif question.type == 'small_text':
             for text_answer in answer.textanswer_set.all():
                 result_answers.append({
