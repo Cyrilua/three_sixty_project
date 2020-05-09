@@ -61,11 +61,11 @@
                             {% elif result.question.type == "range" %}
                                 <div class="row">
                                     <div class="col-md-6">Средний ответ: {{ result.answers.first.value.averaged }}</div>
-                                    <div class="col-md-6">{{ result.answers.first.value.quantity}}</div>
-                                    Средний ответ
+                                    <div class="col-md-6">Количество
+                                        ответов: {{ result.answers.first.value.quantity }}</div>
                                 </div>
                             {% elif result.question.type == "small_text" %}
-                                <div id="accordion">
+                                <div id="accordion-{{ result.question.id }}">
                                     {% for answer in result.answers %}
                                         <div class="card">
                                             <div class="card-header"
@@ -80,9 +80,9 @@
                                                 </h5>
                                             </div>
                                             <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                 class="collapse show"
+                                                 class="collapse"
                                                  aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
-                                                 data-parent="#accordion">
+                                                 data-parent="#accordion-{{ result.question.id }}">
                                                 <div class="card-body">
                                                     {{ answer.text }}
                                                 </div>
@@ -91,32 +91,34 @@
                                     {% endfor %}
                                 </div>
                             {% elif result.question.type == "big_text" %}
-                                <div>
-                                    <div id="accordion">
-                                        {% for answer in result.answers %}
-                                            <div class="card">
-                                                <div class="card-header"
-                                                     id="heading-{{ result.question.id }}-{{ answer.id }}">
-                                                    <h5 class="mb-0">
-                                                        <button class="btn btn-link" data-toggle="collapse"
-                                                                data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                                aria-expanded="true"
-                                                                aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
-                                                            Ответ {{ answer.id }}
-                                                        </button>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                     class="collapse show"
-                                                     aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
-                                                     data-parent="#accordion">
-                                                    <div class="card-body">
-                                                        {{ answer.text }}
-                                                    </div>
+                                <div id="accordion-{{ result.question.id }}">
+                                    {% for answer in result.answers %}
+                                        <div class="card">
+                                            <div class="card-header"
+                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
+                                                        Ответ {{ answer.id }}
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                 class="collapse"
+                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
+                                                 data-parent="#accordion-{{ result.question.id }}">
+                                                <div class="card-body">
+                                                    <textarea class="form-control" id="ta-{{ result.question.id }}-{{ answer.id }}"
+                                                              style="resize: none"
+                                                              rows="5"
+                                                              maxlength="500"
+                                                              disabled>{{ answer.text }}</textarea>
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             {% else %}
                                 <b style="color: red">Error !!!</b>
