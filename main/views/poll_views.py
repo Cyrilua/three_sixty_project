@@ -263,23 +263,17 @@ def result_view(request, poll_id):
 
 def calculate_result_questions(questions):
     results = []
+    id = 0
     for question in questions:
         result_question = {
             'type': question.type,
             'text': question.text,
-            'id': question.id
+            'id': id
         }
+        id += 1
         result_answers = []
-        for choice in question.settings.answer_choice.all():
-            result_choice = {
-                'text': choice.value,
-                'id': choice.id,
-                'value': {
-                    'percent': 0,
-                    'quantity': choice.count
-                }
-            }
-            result_answers.append(result_choice)
+        answer = question.answers
+
 
         result = {
             'question': result_question,
