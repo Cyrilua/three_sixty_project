@@ -291,7 +291,7 @@ def build_result_questions_answers(questions):
                 result_answers.append({
                     'text': choice.value,
                     'value': {
-                        'percent': (choice.count / sum_votes) * 100,
+                        'percent': choice.count * 100 // sum_votes,
                         'quantity': choice.count
                     }
                 })
@@ -299,7 +299,7 @@ def build_result_questions_answers(questions):
             result_answers = {
                 'first': {
                     'value': {
-                        'averaged': answer.sum_answer / answer.count_answers,
+                        'averaged': answer.sum_answer // answer.count_answers,
                         'quantity': answer.count_answers
                     }
                 }
