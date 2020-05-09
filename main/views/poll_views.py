@@ -188,24 +188,20 @@ def answer_the_poll(request, poll_id):
     if request.method == "POST":
         questions_list = poll.questions.all()
         for question in questions_list:
+            change_answer = Answers.objects.get(question=question)
             if question.type == 'checkbox' or question.type == 'radio':
-                user_answers_list = [AnswerChoice.objects.get(id=int(i)) for i in request.POST.getlist('answer-{}'.format(question.id))]
-                user_answer = 0
-                for i in user_answers_list:
-                    user_answer += i.weight
-            else:
+                user_choices_list = [AnswerChoice.objects.get(id=int(i)) for i in
+                                     request.POST.getlist('answer-{}'.format(question.id))]
+                for choice in user_choices_list:
+                    choice.count += 1
+                    choice.save()
+            elif question.type == 'range':
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
-
-            try:
-                change_answer = Answers.objects.get(question=question)
-            except:
-                # TODO создавать ответы во время создания опроса
-                change_answer = Answers()
-                change_answer.poll = poll
-                change_answer.question = question
-
-            change_answer.sum_answer += user_answer
-            change_answer.count_answers += 1
+                change_answer.sum_answer += user_answer
+                change_answer.count_answers += 1
+            else:
+                user_answer = request.POST.get('answer-{}'.format(question.id))
+                change_answer.text_answer = user_answer
             change_answer.save()
 
         # Удаление прошедшего опрос пользователя
@@ -266,15 +262,30 @@ def result_view(request, poll_id):
 
 
 def calculate_result_questions(questions):
-    result = []
+    results = []
     for question in questions:
-        answer = Answers.objects.get(question=question)
-        result_answer = answer.sum_answer / answer.count_answers
-        result.append({
-            'answer': result_answer,
-            'question': question
-        })
-    return result
+        result_question = {
+            'type': question.type,
+            'text': question.text,
+            'id': question.id
+        }
+        result_answers = []
+        for choice in question.settings.answer_choice.all():
+            result_choice = {
+                'text': choice.value,
+                'id': choice.id,
+                'value': {
+                    'percent': 0,
+                    'quantity': choice.count
+                }
+            }
+            result_answers.append(result_choice)
+
+        result = {
+            'question': result_question,
+            'answers': result_answers
+        }
+    return results
 
 
 def new_poll(request):
@@ -311,11 +322,12 @@ def create_new_poll(request):
 
 
 def create_polls_questions(request, poll, numbers_questions):
-    for i in numbers_questions:
-        question = create_question(request, i)
-        count_answer_choice = int(request.POST.get('countOption-{}'.format(i), ''))
+    for number in numbers_questions:
+        question = create_question(request, number)
+        count_answer_choice = int(request.POST.get('countOption-{}'.format(number), ''))
         if count_answer_choice > 0:
-            create_answers_choices(request, question, i)
+            create_answers_choices(request, question, number)
+        create_answer(question, poll)
         poll.questions.add(question)
 
 
@@ -342,6 +354,17 @@ def create_answers_choices(request, question, number_question):
         answer_choice = request.POST.get('option-{}-{}'.format(number_question, j), '')
         answer = AnswerChoice()
         answer.value = answer_choice
-        # TODO Добавить веса
         answer.save()
         settings.answer_choice.add(answer)
+
+
+def create_answer(question, poll):
+    new_answer = Answers()
+    new_answer.question = question
+    new_answer.poll = poll
+    new_answer.sum_answer = 0
+    new_answer.count_answers = 0
+    new_answer.save()
+    for i in question.settings.answer_choice.all():
+        new_answer.choices.add(i)
+    new_answer.save()

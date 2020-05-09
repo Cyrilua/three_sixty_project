@@ -187,9 +187,11 @@ class Poll(models.Model):
 
 class Questions(models.Model):
     TYPE_CHOICES = [
-        ('text', 0),
+        ('small_text', 0),
         ('radio', 1),
         ('range', 2),
+        ('checkbox', 3),
+        ('big_text', 4)
     ]
 
     type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
@@ -218,6 +220,7 @@ class Settings(models.Model):
 class AnswerChoice(models.Model):
     value = models.CharField(max_length=30, default='')
     weight = models.IntegerField(default=10)
+    count = models.IntegerField(default=0)
     objects = models.Manager()
 
     class Meta:
@@ -229,9 +232,11 @@ class AnswerChoice(models.Model):
 
 class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
+    text_answer = models.CharField(max_length=500, null=True)
     sum_answer = models.IntegerField(default=0)
     count_answers = models.IntegerField(default=0)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
+    choices = models.ManyToManyField(AnswerChoice)
     objects = models.Manager()
 
     class Meta:
