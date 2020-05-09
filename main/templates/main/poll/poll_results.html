@@ -1,10 +1,6 @@
 2{% extends 'main/wrapper.html' %}
 
 {% block content-user %}
-    <script>
-        let a = {{ results }};
-        let aa = 1;
-    </script>
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -63,16 +59,64 @@
                                     {% endfor %}
                                 </div>
                             {% elif result.question.type == "range" %}
-                                <div>
-                                    {{ result }}
+                                <div class="row">
+                                    <div class="col-md-6">Средний ответ: {{ result.answers.first.value.averaged }}</div>
+                                    <div class="col-md-6">{{ result.answers.first.value.quantity}}</div>
+                                    Средний ответ
                                 </div>
                             {% elif result.question.type == "small_text" %}
-                                <div>
-                                    {{ result }}
+                                <div id="accordion">
+                                    {% for answer in result.answers %}
+                                        <div class="card">
+                                            <div class="card-header"
+                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
+                                                        Ответ {{ answer.id }}
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                 class="collapse show"
+                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
+                                                 data-parent="#accordion">
+                                                <div class="card-body">
+                                                    {{ answer.text }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             {% elif result.question.type == "big_text" %}
                                 <div>
-                                    {{ result }}
+                                    <div id="accordion">
+                                        {% for answer in result.answers %}
+                                            <div class="card">
+                                                <div class="card-header"
+                                                     id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                                    <h5 class="mb-0">
+                                                        <button class="btn btn-link" data-toggle="collapse"
+                                                                data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                                aria-expanded="true"
+                                                                aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
+                                                            Ответ {{ answer.id }}
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                     class="collapse show"
+                                                     aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
+                                                     data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        {{ answer.text }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% else %}
                                 <b style="color: red">Error !!!</b>
