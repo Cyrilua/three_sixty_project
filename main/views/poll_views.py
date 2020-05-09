@@ -1,6 +1,6 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer
 from main.views.auxiliary_general_methods import *
 
 
@@ -201,7 +201,11 @@ def answer_the_poll(request, poll_id):
                 change_answer.count_answers += 1
             else:
                 user_answer = request.POST.get('answer-{}'.format(question.id))
-                change_answer.text_answer = user_answer
+                new_text_answer = TextAnswer()
+                new_text_answer.answer = change_answer
+                new_text_answer.text_answer = user_answer
+                new_text_answer.save()
+                change_answer.count_answers += 1
             change_answer.save()
 
         # Удаление прошедшего опрос пользователя
@@ -253,32 +257,69 @@ def result_view(request, poll_id):
     if poll.initiator.id != auth.get_user(request).id:
         return redirect('/')
 
-    question_by_answer_result = calculate_result_questions(poll.questions.all())
+    question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
         'title': 'Получение результатов опроса',
-        'results': question_by_answer_result
+        'results': question_answer_result
     }
     return render(request, 'main/poll/poll_results.html', args)
 
 
-def calculate_result_questions(questions):
+def build_result_questions_answers(questions):
     results = []
-    id = 0
+    id_question = 1
+    id_answer_short_text = 1
+    id_answer_long_text = 1
     for question in questions:
         result_question = {
             'type': question.type,
             'text': question.text,
-            'id': id
+            'id': id_question
         }
-        id += 1
+        id_question += 1
         result_answers = []
+
         answer = question.answers
+        if question.type == 'checkbox' or question.type == 'radio':
+            all_choices = answer.choices.all()
+            sum_votes = 0
+            for choice in all_choices:
+                sum_votes += choice.count
+            for choice in all_choices:
+                result_answers.append({
+                    'text': choice.value,
+                    'value': {
+                        'percent': (choice.count / sum_votes) * 100,
+                        'quantity': sum_votes
+                    }
+                })
+        elif question.type == 'range':
+            result_answers.append({
+                'value': {
+                    'averaged': answer.sum_answer / answer.count_answers,
+                    'quantity': answer.count_answers
+                }
+            })
+        elif question.type == 'small_text':
+            for text_answer in answer.textanswer_set.all():
+                result_answers.append({
+                    'id': id_answer_short_text,
+                    'text': text_answer.text_answer
+                })
+                id_answer_short_text += 1
+        else:
+            for text_answer in answer.textanswer_set.all():
+                result_answers.append({
+                    'id': id_answer_long_text,
+                    'text': text_answer.text_answer
+                })
+                id_answer_long_text += 1
 
-
-        result = {
+        results.append({
             'question': result_question,
             'answers': result_answers
-        }
+        })
+
     return results
 
 

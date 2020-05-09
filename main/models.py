@@ -232,7 +232,6 @@ class AnswerChoice(models.Model):
 
 class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
-    text_answer = models.CharField(max_length=500, null=True)
     sum_answer = models.IntegerField(default=0)
     count_answers = models.IntegerField(default=0)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
@@ -244,6 +243,17 @@ class Answers(models.Model):
 
     def __str__(self):
         return "{}: {}".format(self.question, self.sum_answer)
+
+
+class TextAnswer(models.Model):
+    answer = models.ForeignKey(Answers, on_delete=models.CASCADE)
+    text_answer = models.CharField(max_length=500, default='')
+
+    class Meta:
+        db_table = "Text answer"
+
+    def __str__(self):
+        return self.text_answer
 
 
 class OpenQuestions(models.Model):
