@@ -254,8 +254,9 @@ def result_view(request, poll_id):
     except:
         return redirect('/')
 
-    if poll.initiator.id != auth.get_user(request).id:
-        return redirect('/')
+    # Закомментированно на время разработки
+    #if poll.initiator.id != auth.get_user(request).id:
+        #return redirect('/')
 
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
