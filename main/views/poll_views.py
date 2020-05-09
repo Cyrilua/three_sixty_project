@@ -292,7 +292,7 @@ def build_result_questions_answers(questions):
                     'text': choice.value,
                     'value': {
                         'percent': (choice.count / sum_votes) * 100,
-                        'quantity': sum_votes
+                        'quantity': choice.count
                     }
                 })
         elif question.type == 'range':
