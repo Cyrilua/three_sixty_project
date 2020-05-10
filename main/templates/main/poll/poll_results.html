@@ -1,4 +1,4 @@
-2{% extends 'main/wrapper.html' %}
+{% extends 'main/wrapper.html' %}
 
 {% block content-user %}
     <div class="row">
@@ -10,119 +10,195 @@
                     <hr>
                     {% for result in results %}
                         <div class="form-group">
-                            <b>{{ result.question.text }}</b>
+                            <label><b>{{ result.question.text }}</b></label>
                             <br>
-                            {% if result.question.type == "radio" %}
-                                <div class="row">
-                                    {% for answer in result.answers %}
-                                        <div class="col-md-1">
-                                            <div class="form-check">
-                                                <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
-                                                       type="radio" class="form-check-input" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-11">
-                                            <label>{{ answer.text }}</label>
-                                        </div>
-                                        <br>
-                                        <div class=" col-md-12 progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 25%;"
-                                                 aria-valuenow="25" aria-valuemin="0"
-                                                 aria-valuemax="100">{{ answer.value.percent }}%
-                                                ({{ answer.value.quantity }})
-                                            </div>
-                                        </div>
-                                        <br>
-                                    {% endfor %}
-                                </div>
-                            {% elif result.question.type == "checkbox" %}
-                                <div class="row">
-                                    {% for answer in result.answers %}
-                                        <div class="col-md-1">
-                                            <div class="form-check">
-                                                <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
-                                                       type="checkbox" class="form-check-input" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-11">
-                                            <label>{{ answer.text }}</label>
-                                        </div>
-                                        <br>
-                                        <div class=" col-md-12 progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 25%;"
-                                                 aria-valuenow="25" aria-valuemin="0"
-                                                 aria-valuemax="100">{{ answer.value.percent }}%
-                                                ({{ answer.value.quantity }})
-                                            </div>
-                                        </div>
-                                        <br>
-                                    {% endfor %}
-                                </div>
-                            {% elif result.question.type == "range" %}
-                                <div class="row">
-                                    <div class="col-md-6">Средний ответ: {{ result.answers.first.value.averaged }}</div>
-                                    <div class="col-md-6">Количество
-                                        ответов: {{ result.answers.first.value.quantity }}</div>
-                                </div>
-                            {% elif result.question.type == "small_text" %}
-                                <div id="accordion-{{ result.question.id }}">
-                                    {% for answer in result.answers %}
-                                        <div class="card">
-                                            <div class="card-header"
-                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" data-toggle="collapse"
-                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                            aria-expanded="true"
-                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
-                                                        Ответ {{ answer.id }}
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                 class="collapse"
-                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
-                                                 data-parent="#accordion-{{ result.question.id }}">
-                                                <div class="card-body">
-                                                    {{ answer.text }}
+                            <div id="accordion-{{ result.question.id }}">
+                                <div class="card">
+                                    <div class="card-header"
+                                         id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse"
+                                                    data-target="#collapse-{{ result.question.id }}"
+                                                    aria-expanded="true"
+                                                    aria-controls="collapse-{{ result.question.id }}">
+                                                Результаты на вопрос № {{ result.question.id }}
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse-{{ result.question.id }}"
+                                         class="collapse"
+                                         aria-labelledby="heading-{{ result.question.id }}"
+                                         data-parent="#accordion-{{ result.question.id }}">
+                                        <div class="card-body">
+                                            {% if result.question.type == "radio" %}
+                                                {% for answer in result.answers %}
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="form-check">
+                                                                <input style="right: -10px; bottom: -20px; transform: scale(1.7); opacity: 0.9;"
+                                                                       type="radio" class="form-check-input" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-11">
+                                                            <label>{{ answer.text }}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-11" style="">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ answer.value.percent }}%">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <span>
+                                                                        {{ answer.value.percent }}% ({{ answer.value.quantity }})
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% elif result.question.type == "checkbox" %}
+                                                {% for answer in result.answers %}
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="form-check">
+                                                                <input style="right: -10px; bottom: -20px; transform: scale(1.7); opacity: 0.9;"
+                                                                       type="checkbox" class="form-check-input"
+                                                                       disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-11">
+                                                            <label>{{ answer.text }}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-1"></div>
+                                                        <div class="col-md-11" style="">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                             style="width: {{ answer.value.percent }}%">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <span>
+                                                                        {{ answer.value.percent }}% ({{ answer.value.quantity }})
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% elif result.question.type == "range" %}
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-2" style="text-align: right">
+                                                                <span>
+                                                                    {{ result.question.min }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="progress">
+                                                                            <div class="progress-bar" role="progressbar"
+                                                                                 style="width: {{ result.answers.first.value.percent }}%">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12" style="text-align: center">
+                                                                        <span>
+                                                                            <b>
+                                                                                Результат: {{ result.answers.first.value.averaged }}
+                                                                            </b>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2" style="text-align: left">
+                                                                <span>
+                                                                    {{ result.question.max }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% elif result.question.type == "big_text" %}
-                                <div id="accordion-{{ result.question.id }}">
-                                    {% for answer in result.answers %}
-                                        <div class="card">
-                                            <div class="card-header"
-                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" data-toggle="collapse"
-                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                            aria-expanded="true"
-                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
-                                                        Ответ {{ answer.id }}
-                                                    </button>
-                                                </h5>
-                                            </div>
-                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
-                                                 class="collapse"
-                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
-                                                 data-parent="#accordion-{{ result.question.id }}">
-                                                <div class="card-body">
-                                                    <textarea class="form-control" id="ta-{{ result.question.id }}-{{ answer.id }}"
-                                                              style="resize: none"
-                                                              rows="5"
-                                                              maxlength="500"
-                                                              disabled>{{ answer.text }}</textarea>
+                                            {% elif result.question.type == "small_text" %}
+                                                <div id="accordion-{{ result.question.id }}-{{ result.question.id }}">
+                                                    {% for answer in result.answers %}
+                                                        <div class="card">
+                                                            <div class="card-header"
+                                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                                                <h5 class="mb-0">
+                                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                                            aria-expanded="true"
+                                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
+                                                                        Ответ {{ answer.id }}
+                                                                    </button>
+                                                                </h5>
+                                                            </div>
+                                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                                 class="collapse"
+                                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
+                                                                 data-parent="#accordion-{{ result.question.id }}-{{ result.question.id }}">
+                                                                <div class="card-body">
+                                                                    <input class="form-control" max="50"
+                                                                           value="{{ answer.text }}" disabled>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
                                                 </div>
-                                            </div>
+                                            {% elif result.question.type == "big_text" %}
+                                                <div id="accordion-{{ result.question.id }}-{{ result.question.id }}">
+                                                    {% for answer in result.answers %}
+                                                        <div class="card">
+                                                            <div class="card-header"
+                                                                 id="heading-{{ result.question.id }}-{{ answer.id }}">
+                                                                <h5 class="mb-0">
+                                                                    <button class="btn btn-link" data-toggle="collapse"
+                                                                            data-target="#collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                                            aria-expanded="true"
+                                                                            aria-controls="collapse-{{ result.question.id }}-{{ answer.id }}">
+                                                                        Ответ {{ answer.id }}
+                                                                    </button>
+                                                                </h5>
+                                                            </div>
+                                                            <div id="collapse-{{ result.question.id }}-{{ answer.id }}"
+                                                                 class="collapse"
+                                                                 aria-labelledby="heading-{{ result.question.id }}-{{ answer.id }}"
+                                                                 data-parent="#accordion-{{ result.question.id }}-{{ result.question.id }}">
+                                                                <div class="card-body">
+                                                                    <textarea class="form-control"
+                                                                              id="ta-{{ result.question.id }}-{{ answer.id }}"
+                                                                              style="resize: none"
+                                                                              rows="5"
+                                                                              maxlength="500"
+                                                                              disabled>{{ answer.text }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                <b style="color: red">Error !!!</b>
+                                            {% endif %}
                                         </div>
-                                    {% endfor %}
+                                    </div>
                                 </div>
-                            {% else %}
-                                <b style="color: red">Error !!!</b>
-                            {% endif %}
+                            </div>
                         </div>
                         <hr>
                     {% endfor %}
