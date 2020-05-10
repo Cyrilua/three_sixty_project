@@ -303,12 +303,10 @@ def build_result_questions_answers(questions):
             settings = question.settings
             averaged = answer.sum_answer // answer.count_answers
             result_answers = {
-                'first': {
-                    'value': {
-                        'percent': averaged * 100 // settings.max,
-                        'averaged': averaged,
-                        'quantity': answer.count_answers
-                    }
+                'value': {
+                    'percent': averaged * 100 // settings.max,
+                    'averaged': averaged,
+                    'quantity': answer.count_answers
                 }
             }
             result_question['min'] = settings.min
