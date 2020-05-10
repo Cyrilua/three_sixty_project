@@ -40,7 +40,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-11">
-                                                            <label>{{ answer.text }}</label>
+                                                            <label>{{ answer.text.preview }}</label>
+                                                            {% if answer.text.full %}
+                                                                <button style="border-width: 0; background: white; outline: none;"
+                                                                        data-toggle="tooltip" data-placement="right"
+                                                                        title="{{ answer.text.full }}">
+                                                                    <i class="fas fa-ellipsis-h"
+                                                                       style="transform: scale(0.9)"></i>
+                                                                </button>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -74,7 +82,15 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-11">
-                                                            <label>{{ answer.text }}</label>
+                                                            <label>{{ answer.text.preview }}</label>
+                                                            {% if answer.text.full %}
+                                                                <button style="border-width: 0; background: white; outline: none;"
+                                                                        data-toggle="tooltip" data-placement="right"
+                                                                        title="{{ answer.text.full }}">
+                                                                    <i class="fas fa-ellipsis-h"
+                                                                       style="transform: scale(0.9)"></i>
+                                                                </button>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                     <div class="row">

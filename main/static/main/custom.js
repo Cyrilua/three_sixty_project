@@ -18,3 +18,6 @@ function getCounterSymbols(el1, el2) {
     counter.innerText = (500 - text.value.length).toString();
 }
 
+$(document).ready(function() {
+   $('[data-toggle="tooltip"]').tooltip()
+});
