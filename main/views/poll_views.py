@@ -288,23 +288,31 @@ def build_result_questions_answers(questions):
             for choice in all_choices:
                 sum_votes += choice.count
             for choice in all_choices:
-                result_answers.append({
-                    'text': choice.value,
+                temp_answer = {
                     'value': {
                         'percent': choice.count * 100 // sum_votes,
                         'quantity': choice.count
                     }
-                })
+                }
+                temp_text = {'preview': choice.value[0:50:1]}
+                if len(choice.value) > 50:
+                    temp_text['full'] = choice.value
+                temp_answer['text'] = temp_text
+                result_answers.append(temp_answer)
         elif question.type == 'range':
+            settings = question.settings
+            averaged = answer.sum_answer // answer.count_answers
             result_answers = {
                 'first': {
                     'value': {
-                        'averaged': answer.sum_answer // answer.count_answers,
+                        'percent': averaged * 100 // settings.max,
+                        'averaged': averaged,
                         'quantity': answer.count_answers
                     }
                 }
             }
-            print(result_answers)
+            result_question['min'] = settings.min
+            result_question['max'] = settings.max
         elif question.type == 'small_text':
             for text_answer in answer.textanswer_set.all():
                 result_answers.append({
