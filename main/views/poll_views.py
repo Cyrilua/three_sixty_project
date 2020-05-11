@@ -1,6 +1,6 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll
 from main.views.auxiliary_general_methods import *
 
 
@@ -344,6 +344,7 @@ def new_poll(request):
         poll = create_new_poll(request)
         if len(numbers_questions) > 0:
             create_polls_questions(request, poll, numbers_questions)
+        # TODO сделать redirect на нужную страницу
     return render(request, 'main/poll/new_poll.html', args)
 
 
@@ -414,3 +415,44 @@ def create_answer(question, poll):
     for i in question.settings.answer_choice.all():
         new_answer.choices.add(i)
     new_answer.save()
+
+
+def new_poll_from_template(request, template_id):
+    args = {'title': "Создание опроса через шаблон"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        template = TemplatesPoll.objects.get(id=template_id)
+    except:
+        return redirect('/new_poll/')
+
+    if request.method == "POST":
+        pass
+        # закомментировано на время разработки
+        #new_poll(request)
+    else:
+        args['questions'] = build_questions_template(template)
+    return render(request, 'main/poll/new_poll_from_template.html', args)
+
+
+def build_questions_template(template):
+    result = []
+    questions = template.questions.all()
+    id_question = 1
+    for question in questions:
+        result_question = {
+            'type': question.type,
+            'text': question.text,
+            'id': id_question
+        }
+        id_question += 1
+
+        settings = question.settings
+        choices = settings.answer_choice.all()
+        answers_result = []
+        for choice in choices:
+            answers_result.append(choice.value)
+        result_question['answers'] = answers_result
+        result.append(result_question)
+    return result

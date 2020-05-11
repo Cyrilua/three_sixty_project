@@ -136,9 +136,12 @@ urlpatterns = [
                   path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
+                  # Создание опроса
                   path('new_poll/', poll_views.new_poll, name='new_poll'),
+                  # Создание опроса из шаблона
+                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template, name='new_poll_from_template'),
 
-                  #Уведомления
+                  # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
