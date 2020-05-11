@@ -467,9 +467,10 @@ def build_poll(template):
             })
             id_option += 1
         result_question['options'] = result_options
-        result_question['option_count'] = len(result_options)
+        result_question['optionCount'] = len(result_options)
         list_results_questions.append(result_question)
     result['questions'] = list_results_questions
+    result['questionCount'] = len(list_results_questions)
 
     for i in result:
         print(i)
