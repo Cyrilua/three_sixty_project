@@ -28,7 +28,7 @@
                     </div>
                     <hr>
                     <div class="form-group" id="newQuestion-1">
-{#                        <h5>Вопрос 1</h5>#}
+                        {#                        <h5>Вопрос 1</h5>#}
                         <input type="hidden" id="countOption-1" name="countOption-1" value="1">
                         <div class="row">
                             <div class="col-md-6">
@@ -68,9 +68,10 @@
                                                    type="radio" class="form-check-input" disabled>
                                         </div>
                                     </div>
-                                    <div class="col-md-11">
-                                        <button class="btn" form="" onclick="this.blur(); addNewOption('newQuestion-1');">Добавить
-                                            другой вариант
+                                    <div class="col-md-11" style="margin-top: 5px">
+                                        <button form="" onclick="addNewOption('newQuestion-1');"
+                                                style="border-width: 0; background: #fafafa; outline: none;">
+                                            Добавить другой вариант
                                         </button>
                                     </div>
                                 </div>
@@ -78,9 +79,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-8"></div>
-                            <div class="col-md-4">
-                                <button id="removeQuestion-1" form="" onclick="this.blur(); removeQuestion('newQuestion-1');" class="btn">
-                                    <i class="far fa-trash-alt" style="transform: scale(1.3)"></i>
+                            <div class="col-md-4" style="margin-top: 7px">
+                                <button id="removeQuestion-1" form="" onclick="removeQuestion('newQuestion-1');"
+                                        style="border-width: 0; background: #fafafa; outline: none">
+                                    <i class="far fa-trash-alt" style="transform: scale(1.3)" data-toggle="tooltip"
+                                       data-placement="right" data-trigger="hover" title="Удалить вопрос"></i>
                                 </button>
                             </div>
                         </div>
@@ -95,11 +98,11 @@
         <div class="col-md-1">
             <div class="row position-fixed">
                 <div class="col-md-12">
-                    <button  class="btn" onclick="this.blur(); addNewQuestion()">
-                        <i class="fas fa-plus" style="transform: scale(1.3)"></i>
+                    <button style="border-width: 0; background: white; outline: none" onclick="addNewQuestion()">
+                        <i class="fas fa-plus" style="transform: scale(1.3)" data-toggle="tooltip"
+                           data-placement="right" data-trigger="hover"
+                           title="Добавить новый вопрос"></i>
                     </button>
-{#                    <br><br>#}
-{#                    <button class="btn btn-dark" onclick="alert(allQuestionNumbers);">T</button>#}
                 </div>
             </div>
         </div>
