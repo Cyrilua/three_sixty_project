@@ -40,7 +40,7 @@ function removeOption(idOption) {
             .setAttribute("class", "col-md-11");
         document.getElementById("removeIconFromFirstOption-" + currentQuestion).remove();
     }
-    
+
     document.getElementById("countOption-" + currentQuestion).value = (countOption - 1).toString();
 }
 
@@ -70,9 +70,9 @@ function addNewOption(idQuestion) {
         "<div class='col-md-10'>" +
         "<input type='text' class='form-control' name='option-" + currentQuestion + "-" + currentOption + "' id='option-" + currentQuestion + "-" + currentOption + "' placeholder='Вариант " + currentOption + "' required>" +
         "</div>" +
-        "<div class='col-md-1' style='left: -10px;'>" +
+        "<div class='col-md-1' style='margin-top: 6px; margin-left: -15px'>" +
         "<div>" +
-        "<button class='btn' form='' onclick=\"this.blur(); removeOption('option-" + currentQuestion + "-" + currentOption + "');\" style='size: 10px'><i class='fas fa-times'></i></button>" +
+        "<button form='' onclick=\"removeOption('option-" + currentQuestion + "-" + currentOption + "');\" style='border-width: 0; background: #fafafa; outline: none'><i class='fas fa-times'></i></button>" +
         "</div>" +
         "</div>";
 
@@ -82,10 +82,10 @@ function addNewOption(idQuestion) {
         document.getElementById("firstOptionFromQuestion-" + currentQuestion).setAttribute("class", "col-md-10");
         let removeDiv = document.createElement("div");
         removeDiv.setAttribute("class", "col-md-1");
-        removeDiv.setAttribute("style", "left: -10px;");
+        removeDiv.setAttribute("style", "margin-top: 6px; margin-left: -15px");
         removeDiv.setAttribute("id", "removeIconFromFirstOption-" + currentQuestion);
         removeDiv.innerHTML = "<div>" +
-            "<button class='btn' form='' onclick=\"this.blur(); removeOption('option-" + currentQuestion + "-1');\" style='size: 10px'><i class='fas fa-times'></i></button>" +
+            "<button form='' onclick=\"removeOption('option-" + currentQuestion + "-1');\" style='border-width: 0; background: #fafafa; outline: none'><i class='fas fa-times'></i></button>" +
             "</div>";
         document.getElementById("firstOptionFromQuestion-" + currentQuestion).insertAdjacentElement("afterend", removeDiv);
     }
@@ -136,17 +136,17 @@ function addNewQuestion() {
         "<input style='right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;' type='radio' class='form-check-input' disabled>" +
         "</div>" +
         "</div>" +
-        "<div class='col-md-11'>" +
-        "<button class='btn' form='' onclick=\"this.blur(); addNewOption('newQuestion-" + currentQuestion + "');\">Добавить другой вариант</button>" +
+        "<div class='col-md-11' style='margin-top: 5px'>" +
+        "<button form='' onclick=\"addNewOption('newQuestion-" + currentQuestion + "');\"  style='border-width: 0; background: #fafafa; outline: none'>Добавить другой вариант</button>" +
         "</div>" +
         "</div>" +
         "</div>" +
         "</div>" +
         "<div class='row'>" +
         "<div class='col-md-8'></div>" +
-        "<div class='col-md-4'>" +
-        "<button id='removeQuestion-1' form='' onclick=\"this.blur(); removeQuestion('newQuestion-" + currentQuestion + "');\" class='btn'>" +
-        "<i class='far fa-trash-alt' style='transform: scale(1.3)'></i>" +
+        "<div class='col-md-4' style='margin-top: 7px'>" +
+        "<button id='removeQuestion-" + currentQuestion + "' form='' onclick=\"removeQuestion('newQuestion-" + currentQuestion + "');\" style='border-width: 0; background: #fafafa; outline: none'>" +
+        "<i class='far fa-trash-alt' style='transform: scale(1.3)' data-toggle='tooltip' data-placement='right' data-trigger='hover' title='Удалить вопрос'></i>" +
         "</button>" +
         "</div>" +
         "</div>" +
@@ -187,8 +187,8 @@ function changeTypeQuestion(idDiv, idSelected) {
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='radio' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick=\"this.blur(); addNewOption('newQuestion-" + currentQuestion + "');\">Добавить другой вариант</button>" +
+            "<div class='col-md-11' style='margin-top: 5px'>" +
+            "<button form='' onclick=\"addNewOption('newQuestion-" + currentQuestion + "');\" style='border-width: 0; background: #fafafa; outline: none'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "checkbox") {
@@ -208,18 +208,18 @@ function changeTypeQuestion(idDiv, idSelected) {
             "<input style='right: -10px; bottom: -25px; transform: scale(1.7);' type='checkbox' class='form-check-input' disabled>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-11'>" +
-            "<button form='' class='btn' onclick=\"this.blur(); addNewOption('newQuestion-" + currentQuestion + "');\">Добавить другой вариант</button>" +
+            "<div class='col-md-11' style='margin-top: 5px'>" +
+            "<button form='' onclick=\" addNewOption('newQuestion-" + currentQuestion + "');\" style='border-width: 0; background: #fafafa; outline: none'>Добавить другой вариант</button>" +
             "</div>" +
             "</div>";
     } else if (typeQuestion === "range") {
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-4'>" +
-            "<label for='min'>Минимальное значение</label>" +
+            "<label for='min'>Мин. значение</label>" +
             "<input type='number' class='form-control' name='min-" + currentQuestion + "' id='min-" + currentQuestion + "' min='0' max='1' value='0'>" +
             "</div>" +
             "<div class='col-md-4'>" +
-            "<label for='max'>Максимальное значение</label>" +
+            "<label for='max'>Макс. значение</label>" +
             "<input type='number' class='form-control' name='max-" + currentQuestion + "' id='max-" + currentQuestion + "' min='2' max='100' value='10'>" +
             "</div>" +
             "<div class='col-md-4'>" +
