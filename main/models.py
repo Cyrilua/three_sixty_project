@@ -158,7 +158,9 @@ class TemplatesPoll(models.Model):
     ]
     type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='default')
     name_poll = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, null=True)
     questions = models.ManyToManyField('Questions')
+    objects = models.Manager()
 
     class Meta:
         db_table = 'Template'
