@@ -453,6 +453,11 @@ def build_poll(template):
         id_question += 1
 
         settings = question.settings
+        result_question['settings'] = {
+            'min': settings.min,
+            'max': settings.max,
+            'step': settings.step
+        }
         result_options = []
         id_option = 1
         for choice in settings.answer_choice.all():
