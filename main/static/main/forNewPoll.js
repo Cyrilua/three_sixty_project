@@ -215,15 +215,15 @@ function changeTypeQuestion(idDiv, idSelected) {
     } else if (typeQuestion === "range") {
         newDiv.innerHTML = "<div class='row'>" +
             "<div class='col-md-4'>" +
-            "<label for='min'>Мин. значение</label>" +
+            "<label for='min-" + currentQuestion + "'>Мин. значение</label>" +
             "<input type='number' class='form-control' name='min-" + currentQuestion + "' id='min-" + currentQuestion + "' min='0' max='1' value='0'>" +
             "</div>" +
             "<div class='col-md-4'>" +
-            "<label for='max'>Макс. значение</label>" +
+            "<label for='max-" + currentQuestion + "'>Макс. значение</label>" +
             "<input type='number' class='form-control' name='max-" + currentQuestion + "' id='max-" + currentQuestion + "' min='2' max='100' value='10'>" +
             "</div>" +
             "<div class='col-md-4'>" +
-            "<label for='step'>Шаг</label>" +
+            "<label for='step-" + currentQuestion + "'>Шаг</label>" +
             "<input type='number' class='form-control' name='step-" + currentQuestion + "' id='step-" + currentQuestion + "' min='1' max='10' value='1'>" +
             "</div>" +
             "</div>";

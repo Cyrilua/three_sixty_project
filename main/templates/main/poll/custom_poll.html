@@ -1,0 +1,235 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block content-user %}
+    <script type="text/javascript" src={% static 'main/forNewPoll.js' %}></script>
+    <div class="row">
+        <div class="col-md-1">{{ messege }}<br>{{ a }}</div>
+        <div class="col-md-10 rounded-block">
+            <h1 style="text-align: center">Создание опроса</h1>
+            <hr>
+            <form id="test" action="" method="post">
+                {% csrf_token %}
+                <div class="form-group" id="newPoll">
+                    <input id="lastQuestionNumber" type="hidden" value="{{ poll.question_count }}">
+                    <input id="allQuestionNumbers" type="hidden" name="allQuestionNumbers"
+                           value="{{ poll.question_count }}">
+                    <div class="form-group">
+                        <label for="pollName">Название опроса</label>
+                        <input id="pollName" type="text" class="form-control" name="pollName"
+                               placeholder="Введите название опроса (до 50 символов)" maxlength="50"
+                               value="{{ poll.name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pollAbout">Описание опроса</label>
+                        <textarea id="pollAbout" class="form-control" name="pollAbout"
+                                  placeholder="Введите подробности об этом опросе при необходимости (до 500 символов)"
+                                  maxlength="500" rows="5" style="resize: none"
+                                  oninput="getCounterSymbols('pollAbout', 'counterPollAbout')">{{ poll.about }}</textarea>
+                        <span>Осталось <span id="counterPollAbout"
+                                             onload="getCounterSymbols('pollAbout', 'counterPollAbout')">500</span> символов из 500.</span>
+                    </div>
+                    <hr>
+                    {% for question in poll.questions %}
+                        <div class="form-group" id="newQuestion-{{ question.id }}">
+                            {% if question.type == "radio" or question.type == "checkbox" %}
+                                <input type="hidden" id="countOption-{{ question.id }}"
+                                       name="countOption-{{ question.id }}" value="{{ question.optionCount }}">
+                            {% elif question.type == "range" or question.type == "small_text" or question.type == "big_text" %}
+                                <input type="hidden" id="countOption-{{ question.id }}"
+                                       name="countOption-{{ question.id }}" value="1">
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input id="questionName-{{ question.id }}" name="questionName-{{ question.id }}"
+                                           type="text" class="form-control"
+                                           placeholder="Вопрос" value="{{ question.name }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-control" id="questionType-{{ question.id }}"
+                                            name="questionType-{{ question.id }}"
+                                            onchange="changeTypeQuestion('optionsAnswer-{{ question.id }}', 'questionType-{{ question.id }}')">
+                                        <option {% if question.type == "radio" %} selected {% endif %} value="radio">
+                                            Один из списка
+                                        </option>
+                                        <option {% if question.type == "checkbox" %} selected {% endif %}
+                                                                                     value="checkbox">
+                                            Несколько изсписка
+                                        </option>
+                                        <option {% if question.type == "range" %} selected {% endif %} value="range">
+                                            Шкала
+                                        </option>
+                                        <option {% if question.type == "small_text" %} selected {% endif %}
+                                                                                       value="small_text">
+                                            Короткий текст
+                                        </option>
+                                        <option {% if question.type == "big_text" %} selected {% endif %}
+                                                                                     value="big_text">
+                                            Длинный текст
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12" id="optionsAnswer-{{ question.id }}">
+                                    {% if question.type == "radio" or question.type == "checkbox" %}
+                                        {% for option in question.options %}
+                                            <div class="row" style="margin-bottom: 10px"
+                                                 id="forOption-{{ question.id }}-{{ option.id }}">
+                                                <div class="col-md-1">
+                                                    <div class="form-check">
+                                                        <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                               {% if question.type == "radio" %}type="radio"
+                                                               {% elif question.type == "checkbox" %}type="checkbox"{% endif %}
+                                                               class="form-check-input" disabled>
+                                                    </div>
+                                                </div>
+                                                {% if option.id == 1 %}
+                                                    {% if question.optionCount == 1 %}
+                                                        <div class="col-md-11"
+                                                             id="firstOptionFromQuestion-{{ question.id }}">
+                                                            <input type="text" class="form-control"
+                                                                   name="option-{{ question.id }}-1"
+                                                                   id="option-{{ question.id }}-1"
+                                                                   placeholder="Вариант 1"
+                                                                   value="{{ option.name }}" required>
+                                                        </div>
+                                                    {% elif question.optionCount > 1 %}
+                                                        <div class="col-md-10"
+                                                             id="firstOptionFromQuestion-{{ question.id }}">
+                                                            <input type="text" class="form-control"
+                                                                   name="option-{{ question.id }}-1"
+                                                                   id="option-{{ question.id }}-1"
+                                                                   placeholder="Вариант 1"
+                                                                   value="{{ option.name }}" required>
+                                                        </div>
+                                                        <div class="col-md-1"
+                                                             id="removeIconFromFirstOption-{{ question.id }}"
+                                                             style="margin-top: 6px; margin-left: -15px">
+                                                            <div>
+                                                                <button form=""
+                                                                        onclick="removeOption('option-{{ question.id }}-1');"
+                                                                        style='border-width: 0; background: #fafafa; outline: none'>
+                                                                    <i class='fas fa-times'></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% elif option.id > 1 %}
+                                                    <div class="col-md-10">
+                                                        <input type="text" class="form-control"
+                                                               name="option-{{ question.id }}-{{ option.id }}"
+                                                               id="option-{{ question.id }}-{{ option.id }}"
+                                                               placeholder="Вариант {{ option.id }}"
+                                                               value="{{ option.name }}" required>
+                                                    </div>
+                                                    <div class="col-md-1" style="margin-top: 6px; margin-left: -15px">
+                                                        <div>
+                                                            <button form=""
+                                                                    onclick="removeOption('option-{{ question.id }}-{{ option.id }}');"
+                                                                    style='border-width: 0; background: #fafafa; outline: none'>
+                                                                <i class='fas fa-times'></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                        <div class="row" id="addNewOption-{{ question.id }}">
+                                            <div class="col-md-1">
+                                                <div class="form-check">
+                                                    <input style="right: -10px; bottom: -25px; transform: scale(1.7); opacity: 0.9;"
+                                                           {% if question.type == "radio" %}type="radio"
+                                                           {% elif question.type == "checkbox" %}type="checkbox"{% endif %}
+                                                           class="form-check-input" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-11" style="margin-top: 5px">
+                                                <button form="" onclick="addNewOption('newQuestion-{{ question.id }}');"
+                                                        style="border-width: 0; background: #fafafa; outline: none;">
+                                                    Добавить другой вариант
+                                                </button>
+                                            </div>
+                                        </div>
+                                    {% elif question.type == "range" %}
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="min-{{ question.id }}">Мин. значение</label>
+                                                <input type="number" class="form-control" name="min-{{ question.id }}"
+                                                       id="min-{{ question.id }}" min="0" max="0"
+                                                       value="{{ question.settings.min }}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="max-{{ question.id }}">Макс. значение</label>
+                                                <input type="number" class="form-control" name="max-{{ question.id }}"
+                                                       id="max-{{ question.id }}" min="2" max="100"
+                                                       value="{{ question.settings.max }}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="step-{{ question.id }}">Шаг</label>
+                                                <input type="number" class="form-control" name="step-{{ question.id }}"
+                                                       id="step-{{ question.id }}" min="1" max="10"
+                                                       value="{{ question.settings.step }}">
+                                            </div>
+                                        </div>
+                                    {% elif question.type == "small_text" %}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control"
+                                                       name="smallText-{{ question.id }}"
+                                                       id="smallText-{{ question.id }}"
+                                                       placeholder="Короткий ответ (50 символов)" disabled>
+                                            </div>
+                                        </div>
+                                    {% elif question.type == "big_text" %}
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control"
+                                                       name="bigText-{{ question.id }}"
+                                                       id="bigText-{{ question.id }}"
+                                                       placeholder="Короткий ответ (500 символов)" disabled>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <b style="color: red">Error !!!</b>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-4" style="margin-top: 7px">
+                                    <button id="removeQuestion-{{ question.id }}" form=""
+                                            onclick="removeQuestion('newQuestion-{{ question.id }}');"
+                                            style="border-width: 0; background: #fafafa; outline: none">
+                                        <i class="far fa-trash-alt" style="transform: scale(1.3)" data-toggle="tooltip"
+                                           data-placement="right" data-trigger="hover" title="Удалить вопрос"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="text-align: right">
+                    <input id="done" type="submit" class="btn btn-primary" value="Готово">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <div class="row position-fixed">
+                <div class="col-md-12">
+                    <button style="border-width: 0; background: white; outline: none" onclick="addNewQuestion()">
+                        <i class="fas fa-plus" style="transform: scale(1.3)" data-toggle="tooltip"
+                           data-placement="right" data-trigger="hover"
+                           title="Добавить новый вопрос"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_create_modified_poll.html' %}
+{% endblock %}
