@@ -4,15 +4,16 @@
 {% block content-user %}
     <script type="text/javascript" src={% static 'main/forNewPoll.js' %}></script>
     <div class="row">
+        <div class="col-md-1"></div>
         <div class="col-md-10 rounded-block">
             <h1 style="text-align: center">Создание (кастомного) опроса</h1>
             <hr>
             <form id="test" action="" method="post">
                 {% csrf_token %}
                 <div class="form-group" id="newPoll">
-                    <input id="lastQuestionNumber" type="hidden" value="{{ poll.question_count }}">
+                    <input id="lastQuestionNumber" type="hidden" value="{{ poll.questionCount }}">
                     <input id="allQuestionNumbers" type="hidden" name="allQuestionNumbers"
-                           value="{{ poll.question_count }}">
+                           value="{{ poll.allQuestionNumbers }}">
                     <div class="form-group">
                         <label for="pollName">Название опроса</label>
                         <input id="pollName" type="text" class="form-control" name="pollName"
