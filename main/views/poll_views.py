@@ -426,33 +426,46 @@ def new_poll_from_template(request, template_id):
         template = TemplatesPoll.objects.get(id=template_id)
     except:
         return redirect('/new_poll/')
-
+    args['poll'] = build_poll(template)
     if request.method == "POST":
         pass
         # закомментировано на время разработки
         #new_poll(request)
-    else:
-        args['questions'] = build_questions_template(template)
-    return render(request, 'main/poll/new_poll_from_template.html', args)
+    #else:
+        #args['poll'] = build_poll(template)
+    return render(request, 'main/poll/custom_poll.html', args)
 
 
-def build_questions_template(template):
-    result = []
+def build_poll(template):
+    result = {
+        'name': template.name_poll,
+        'about': template.description
+    }
     questions = template.questions.all()
+    list_results_questions = []
     id_question = 1
     for question in questions:
         result_question = {
+            'id': id_question,
             'type': question.type,
-            'text': question.text,
-            'id': id_question
+            'name': question.text
         }
         id_question += 1
 
         settings = question.settings
-        choices = settings.answer_choice.all()
-        answers_result = []
-        for choice in choices:
-            answers_result.append(choice.value)
-        result_question['answers'] = answers_result
-        result.append(result_question)
+        result_options = []
+        id_option = 1
+        for choice in settings.answer_choice.all():
+            result_options.append({
+                'id': id_option,
+                'name': choice.value
+            })
+            id_option += 1
+        result_question['options'] = result_options
+        result_question['option_count'] = len(result_options)
+        list_results_questions.append(result_question)
+    result['questions'] = list_results_questions
+
+    for i in result:
+        print(i)
     return result
