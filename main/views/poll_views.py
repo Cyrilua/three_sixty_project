@@ -471,7 +471,13 @@ def build_poll(template):
         list_results_questions.append(result_question)
     result['questions'] = list_results_questions
     result['questionCount'] = len(list_results_questions)
+    result['allQuestionNumbers '] = get_all_question_number(len(list_results_questions))
 
-    for i in result:
-        print(i)
+    return result
+
+
+def get_all_question_number(count):
+    result = ''
+    for i in range(1, count + 1):
+        result += str(i)
     return result
