@@ -1,0 +1,84 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block content-user %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Выбор опрашиваемых</h1>
+                    <hr>
+                    <div class="row" id="filter">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="filter-position" class="">Должность</label>
+                                <select id="filter-position" class="form-control" onchange="filter('filter-position')">
+                                    <option value="position">Все</option>
+                                    <option value="position-1">Директор</option>
+                                    <option value="position-2">Front-end</option>
+                                    <option value="position-3">Back-end</option>
+                                    <option value="position-4">Дизайнер</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="filter-platform">Платформа</label>
+                                <select id="filter-platform" class="form-control">
+                                    <option value="platform">Все</option>
+                                    <option value="platform-1">Платформа 1</option>
+                                    <option value="platform-2">Платформа 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12" id="result">
+                            <div class="" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
+                                <div class="form-check position position-1 platform">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">Директор</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-2 platform platform-1">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">1 front</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-3 platform platform-1">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">1 back</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-2 platform platform-1">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">1 front</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-4 platform platform-2">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">2 дизайнер</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-4 platform platform-1">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">1 дизайнер</label>
+                                        <br>
+                                </div>
+                                <div class="form-check position position-2 platform platform-2">
+                                        <input class="form-check-input" type="checkbox" name="" value="">
+                                        <label class="form-check-label" for="">2 front</label>
+                                        <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <script type="text/javascript" src={% static 'main/filterForRespondentChoice.js' %}></script>
+{% endblock %}

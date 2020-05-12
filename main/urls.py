@@ -142,7 +142,12 @@ urlpatterns = [
                   path('new_poll/<int:template_id>/', poll_views.new_poll_from_template, name='new_poll_from_template'),
 
                   # Уведомления
-                  path('notifications/', notifications_views.redirect_from_notifications, name='notifications')
+                  path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
+
+
+#########################
+                  path('choice/', poll_views.test, name="choice"),
+    ###################################
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

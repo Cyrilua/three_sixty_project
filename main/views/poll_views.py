@@ -481,3 +481,7 @@ def get_all_question_number(count):
     for i in range(1, count + 1):
         result += str(i)
     return result
+
+
+def test(request):
+    return render(request, 'main/poll/respondent_choice.html', {})
