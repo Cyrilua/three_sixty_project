@@ -6,76 +6,149 @@
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <div class="row">
-                <div class="col-md-12">
-                    <h1>Выбор опрашиваемых</h1>
+                <div class="col-md-12 rounded-block">
+                    <h1 style="text-align: center">Выбор опрашиваемых</h1>
                     <hr>
                     <div class="row" id="filter">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="filter-position" class="">Должность</label>
-                                <select id="filter-position" class="form-control" onchange="filter('filter-position')">
+                                <select id="filter-position" class="form-control" onchange="filter();">
                                     <option value="position">Все</option>
-                                    <option value="position-1">Директор</option>
-                                    <option value="position-2">Front-end</option>
-                                    <option value="position-3">Back-end</option>
-                                    <option value="position-4">Дизайнер</option>
+                                    {% for position in positions %}
+                                        <option value="position-{{ position.id }}">{{ position.name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="filter-platform">Платформа</label>
-                                <select id="filter-platform" class="form-control">
+                                <select id="filter-platform" class="form-control" onchange="filter();">
                                     <option value="platform">Все</option>
-                                    <option value="platform-1">Платформа 1</option>
-                                    <option value="platform-2">Платформа 2</option>
+                                    {% for platform in platforms %}
+                                        <option value="position-{{ platform.id }}">{{ platform.name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center">
+                            <button class="" style="border-width: 0; background: #fafafa; outline: none"
+                                    form="" onclick="resetFilter();" value="">
+                                <i class="fas fa-sync-alt"></i> Очистить
+                            </button>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-md-12" id="result">
-                            <div class="" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
-                                <div class="form-check position position-1 platform">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">Директор</label>
-                                        <br>
+                            <form method="post" action="">
+                                {% csrf_token %}
+                                <div class="card"
+                                     style="height: auto; min-height: 50px; max-height: 400px; overflow-y: scroll;">
+                                    {% for user in users %}
+                                        <div class="form-check result position position-{{ user.positionId }} platform platform-{{ user.positionId }}">
+                                            <input class="form-check-input" type="checkbox" name="selectedUsers" id="user-{{ user.id }}" value="{{ user.id }}">
+                                            <label class="form-check-label" for="user-{{ user.id }}">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</label>
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                <div class="form-check position position-2 platform platform-1">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">1 front</label>
-                                        <br>
+                                <hr>
+                                <div style="text-align: right">
+                                    <button type="submit" form="" class="btn btn-primary">Далее</button>
                                 </div>
-                                <div class="form-check position position-3 platform platform-1">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">1 back</label>
-                                        <br>
-                                </div>
-                                <div class="form-check position position-2 platform platform-1">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">1 front</label>
-                                        <br>
-                                </div>
-                                <div class="form-check position position-4 platform platform-2">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">2 дизайнер</label>
-                                        <br>
-                                </div>
-                                <div class="form-check position position-4 platform platform-1">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">1 дизайнер</label>
-                                        <br>
-                                </div>
-                                <div class="form-check position position-2 platform platform-2">
-                                        <input class="form-check-input" type="checkbox" name="" value="">
-                                        <label class="form-check-label" for="">2 front</label>
-                                        <br>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+                {#                <div class="col-md-12 rounded-block">#}
+                {#                    <h1 style="text-align: center">Выбор опрашиваемых</h1>#}
+                {#                    <hr>#}
+                {#                    <div class="row" id="filter">#}
+                {#                        <div class="col-md-6">#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="filter-position" class="">Должность</label>#}
+                {#                                <select id="filter-position" class="form-control" onchange="filter();">#}
+                {#                                    <option value="position">Все</option>#}
+                {#                                    <option value="position-1">Директор</option>#}
+                {#                                    <option value="position-2">Front-end</option>#}
+                {#                                    <option value="position-3">Back-end</option>#}
+                {#                                    <option value="position-4">Дизайнер</option>#}
+                {#                                </select>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <div class="col-md-6">#}
+                {#                            <div class="form-group">#}
+                {#                                <label for="filter-platform">Платформа</label>#}
+                {#                                <select id="filter-platform" class="form-control" onchange="filter();">#}
+                {#                                    <option value="platform">Все</option>#}
+                {#                                    <option value="platform-1">Платформа 1</option>#}
+                {#                                    <option value="platform-2">Платформа 2</option>#}
+                {#                                </select>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <div class="row">#}
+                {#                        <div class="col-md-12" style="text-align: center">#}
+                {#                            <button class="" style="border-width: 0; background: #fafafa; outline: none"#}
+                {#                                    form="" onclick="resetFilter();" value="">#}
+                {#                                <i class="fas fa-sync-alt"></i> Очистить#}
+                {#                            </button>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <hr>#}
+                {#                    <div class="row">#}
+                {#                        <div class="col-md-12" id="result">#}
+                {#                            <form method="post" action="">#}
+                {#                                {% csrf_token %}#}
+                {#                                <div class="card"#}
+                {#                                     style="height: auto; min-height: 50px; max-height: 400px; overflow-y: scroll;">#}
+                {#                                    <div class="form-check result position position-1 platform">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">Директор</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-2 platform platform-1">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">1 front</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-3 platform platform-1">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">1 back</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-2 platform platform-1">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">1 front</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-4 platform platform-2">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">2 дизайнер</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-4 platform platform-1">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">1 дизайнер</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                    <div class="form-check result position position-2 platform platform-2">#}
+                {#                                        <input class="form-check-input" type="checkbox" name="" id="" value="">#}
+                {#                                        <label class="form-check-label" for="">2 front</label>#}
+                {#                                        <br>#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {#                                <hr>#}
+                {#                                <div style="text-align: right">#}
+                {#                                    <button type="submit" form="" class="btn btn-primary">Далее</button>#}
+                {#                                </div>#}
+                {#                            </form>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
         <div class="col-md-1"></div>
