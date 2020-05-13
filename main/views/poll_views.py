@@ -1,6 +1,6 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group
 from main.views.auxiliary_general_methods import *
 
 
@@ -483,5 +483,63 @@ def get_all_question_number(count):
     return result
 
 
-def test(request):
-    return render(request, 'main/poll/respondent_choice.html', {})
+def respondent_choice_group(request, group_id):
+    args = {'title': "Выбор списка опрашиваемых cреди комманды"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        group = Group.objects.get(id=group_id)
+    except:
+        args['error'] = "Данной комманды не существует"
+
+
+def respondent_choice(request):
+    args = {'title': "Выбор списка опрашиваемых"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    profile = get_user_profile(request)
+    company = profile.company
+    if company is not None:
+        add_platform_and_positions_from_company(company, args)
+    else:
+        args['error'] = "Пользователь не состоит в компании"
+    args['users'] = company.profile_set.all()
+    print(args['users'])
+    return render(request, 'main/poll/respondent_choice.html', args)
+
+
+def add_platform_and_positions_from_company(company, args):
+    id = 1
+    platform_result = []
+    for platform in company.platformcompany_set.all():
+        platform_result.append({
+            'id': id,
+            'name': platform.platform.name
+        })
+        id += 1
+    args['platforms'] = platform_result
+    id = 1
+    position_result = []
+    for position in company.positioncompany_set.all():
+        position_result.append(
+            {
+                'id': id,
+                'name': position.position.name
+            }
+        )
+        print(position.position.name)
+        id += 1
+    args['positions'] = position_result
+
+
+def build_users(users):
+    results_user = []
+    for user in users:
+        results_user.append({
+            'id': user.id,
+            'name': user.name,
+            'surname': user.surname,
+            'patronymic': user.patronymic
+        })
+    return results_user

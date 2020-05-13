@@ -27,7 +27,7 @@
                                 <select id="filter-platform" class="form-control" onchange="filter();">
                                     <option value="platform">Все</option>
                                     {% for platform in platforms %}
-                                        <option value="position-{{ platform.id }}">{{ platform.name }}</option>
+                                        <option value="platform-{{ platform.id }}">{{ platform.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
