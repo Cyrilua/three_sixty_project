@@ -500,41 +500,53 @@ def respondent_choice(request):
         return redirect('/')
     profile = get_user_profile(request)
     company = profile.company
-    #if company is not None:
-    add_platform_and_positions_from_company(company, args)
-    #else:
-        #args['error'] = "Пользователь не состоит в компании"
-    #args['users'] = company.profile_set.all()
-    args['users'] = build_users()
-    print(args['users'])
+    if company is not None:
+        add_platform_and_positions_from_company(company, args)
+    else:
+        args['error'] = "Пользователь не состоит в компании"
+    args['users'] = build_users(company.profile_set.all())
+   # for i in args:
+       # print("{} : {}".format(i, args[i]))
     return render(request, 'main/poll/respondent_choice.html', args)
 
 
 def add_platform_and_positions_from_company(company, args):
-    id = 1
     platform_result = []
     for platform in company.platformcompany_set.all():
         platform_result.append({
-            'id': id,
+            'id': platform.platform.id,
             'name': platform.platform.name
         })
-        id += 1
     args['platforms'] = platform_result
-    id = 1
     position_result = []
     for position in company.positioncompany_set.all():
         position_result.append(
             {
-                'id': id,
+                'id': position.position.id,
                 'name': position.position.name
             }
         )
-        id += 1
     args['positions'] = position_result
 
 
-def build_users():
+def build_users(users):
     results_user = []
-    for i in range(71, 76):
-        results_user.append(Profile.objects.get(id=i))
+    for user in users:
+        user_temp = {
+            'id': user.id,
+            'name': user.name,
+            'surname': user.surname,
+            'patronymic': user.patronymic,
+        }
+        if user.position is None:
+            user_temp['positionId'] = -1
+        else:
+            user_temp['positionId'] = user.position.id
+
+        if user.platform is None:
+            user_temp['platformId'] = -1
+        else:
+            user_temp['platformId'] = user.platform.platform.id
+        results_user.append(user_temp)
+
     return results_user

@@ -49,7 +49,7 @@
                                 <div class="card"
                                      style="height: auto; min-height: 50px; max-height: 400px; overflow-y: scroll;">
                                     {% for user in users %}
-                                        <div class="form-check result position position-{{ user.positionId }} platform platform-{{ user.positionId }}">
+                                        <div class="form-check result position position-{{ user.positionId }} platform platform-{{ user.platformId }}">
                                             <input class="form-check-input" type="checkbox" name="selectedUsers" id="user-{{ user.id }}" value="{{ user.id }}">
                                             <label class="form-check-label" for="user-{{ user.id }}">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</label>
                                         </div>
