@@ -500,11 +500,12 @@ def respondent_choice(request):
         return redirect('/')
     profile = get_user_profile(request)
     company = profile.company
-    if company is not None:
-        add_platform_and_positions_from_company(company, args)
-    else:
-        args['error'] = "Пользователь не состоит в компании"
-    args['users'] = company.profile_set.all()
+    #if company is not None:
+    add_platform_and_positions_from_company(company, args)
+    #else:
+        #args['error'] = "Пользователь не состоит в компании"
+    #args['users'] = company.profile_set.all()
+    args['users'] = build_users()
     print(args['users'])
     return render(request, 'main/poll/respondent_choice.html', args)
 
@@ -528,18 +529,12 @@ def add_platform_and_positions_from_company(company, args):
                 'name': position.position.name
             }
         )
-        print(position.position.name)
         id += 1
     args['positions'] = position_result
 
 
-def build_users(users):
+def build_users():
     results_user = []
-    for user in users:
-        results_user.append({
-            'id': user.id,
-            'name': user.name,
-            'surname': user.surname,
-            'patronymic': user.patronymic
-        })
+    for i in range(71, 76):
+        results_user.append(Profile.objects.get(id=i))
     return results_user
