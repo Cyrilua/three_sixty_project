@@ -483,7 +483,7 @@ def get_all_question_number(count):
     return result
 
 
-def respondent_choice_group(request, group_id):
+def respondent_choice_group(request, group_id, poll_id):
     args = {'title': "Выбор списка опрашиваемых cреди комманды"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -492,38 +492,55 @@ def respondent_choice_group(request, group_id):
         group = Group.objects.get(id=group_id)
     except:
         args['error'] = "Данной комманды не существует"
+        return render(request, 'main/poll/respondent_choice.html', args)
 
+    add_positions_and_platform_from_group(group, args)
+    args['users'] = build_users(group.profile_set.all())
 
-def respondent_choice(request):
-    args = {'title': "Выбор списка опрашиваемых"}
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    profile = get_user_profile(request)
-    company = profile.company
-    if company is not None:
-        add_platform_and_positions_from_company(company, args)
-    else:
-        args['error'] = "Пользователь не состоит в компании"
-    args['users'] = build_users(company.profile_set.all())
-   # for i in args:
-       # print("{} : {}".format(i, args[i]))
+    if request.method == "POST":
+        try:
+            poll = Poll.objects.get(id=poll_id)
+        except:
+            args['error'] = 'Данного опроса не существует'
+            return render(request, 'main/poll/respondent_choice.html', args)
+
+        if poll.initiator is not auth.get_user(request):
+            args['error'] = 'Пользователь не является организатором опроса'
+            return render(request, 'main/poll/respondent_choice.html', args)
+
+        profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
+        for profile in profiles:
+            poll.respondents.add(profile.user)
+        poll.save()
+
     return render(request, 'main/poll/respondent_choice.html', args)
 
 
-def add_platform_and_positions_from_company(company, args):
+def add_positions_and_platform_from_group(group, args):
+    platforms = []
+    positions = []
+    for profile in group.profile_set.all():
+        if profile.platform is not None:
+            platforms.append(profile.platform.platform)
+        if profile.position is not None:
+            positions.append(profile.position)
+    add_platform_and_positions(platforms, positions, args)
+
+
+def add_platform_and_positions(platforms, positions, args):
     platform_result = []
-    for platform in company.platformcompany_set.all():
+    for platform in platforms:
         platform_result.append({
-            'id': platform.platform.id,
-            'name': platform.platform.name
+            'id': platform.id,
+            'name': platform.name
         })
     args['platforms'] = platform_result
     position_result = []
-    for position in company.positioncompany_set.all():
+    for position in positions:
         position_result.append(
             {
-                'id': position.position.id,
-                'name': position.position.name
+                'id': position.id,
+                'name': position.name
             }
         )
     args['positions'] = position_result
@@ -550,3 +567,40 @@ def build_users(users):
         results_user.append(user_temp)
 
     return results_user
+
+
+def respondent_choice_from_company(request, poll_id):
+    args = {'title': "Выбор списка опрашиваемых"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    company = profile.company
+    if company is not None:
+        add_platform_and_positions([i.platform for i in company.platformcompany_set.all()],
+                                   [i.position for i in company.positioncompany_set.all()], args)
+    else:
+        args['error'] = "Пользователь не состоит в компании"
+        return render(request, 'main/poll/respondent_choice.html', args)
+
+    args['users'] = build_users(company.profile_set.all())
+
+    if request.method == "POST":
+        try:
+            poll = Poll.objects.get(id=poll_id)
+        except:
+            args['error'] = 'Этого опроса не существует'
+            return render(request, 'main/poll/respondent_choice.html', args)
+
+        if poll.initiator != auth.get_user(request):
+            args['error'] = 'Пользователь не является организатором опроса'
+            return render(request, 'main/poll/respondent_choice.html', args)
+
+        profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
+        for profile in profiles:
+            poll.respondents.add(profile.user)
+        poll.save()
+    return render(request, 'main/poll/respondent_choice.html', args)
+
+
+

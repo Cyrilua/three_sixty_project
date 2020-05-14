@@ -143,8 +143,12 @@ urlpatterns = [
 
                   # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
-                  # Выбор участников опроса
-                  path('respondent_choice/', poll_views.respondent_choice, name="respondent_choice"),
+                  # Выбор участников опроса для компании
+                  path('respondent_choice_c/<int:poll_id>', poll_views.respondent_choice_from_company,
+                       name="respondent_choice_company"),
+                  # Выбор участников опроса для команды
+                  path('respondent_choice_t/<int:group_id>/<int:poll_id>/', poll_views.respondent_choice_group,
+                       name='respondent_choice_group')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
