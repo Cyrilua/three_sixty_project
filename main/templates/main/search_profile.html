@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h1>Поиск профиля</h1>
+            <h1>{{ title }}</h1>
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
@@ -51,11 +51,27 @@
                     <div class="col-12 rounded-block"
                          style="height: 100px; margin-bottom: 10px">
                         <h4>Пользователи</h4>
-                        <p>
-                            {% for profile in profiles %}
-                                <a href="{% url redirect profile.pk %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
-                            {% endfor %}
-                        </p>
+                        {% if poll_id %}
+                            {% if group_id %}
+                                <p>
+                                    {% for profile in profiles %}
+                                        <a href="{% url redirect profile.pk poll_id group_id %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
+                                    {% endfor %}
+                                </p>
+                            {% else %}
+                                <p>
+                                    {% for profile in profiles %}
+                                        <a href="{% url redirect profile.pk poll_id %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% else %}
+                            <p>
+                                {% for profile in profiles %}
+                                    <a href="{% url redirect profile.pk %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
+                                {% endfor %}
+                            </p>
+                        {% endif %}
                     </div>
                 </form>
             </div>

@@ -104,7 +104,7 @@ urlpatterns = [
                   # Поиск пользователя для назначения его HR
                   path('search_hr/', company_views.search_hr, name='search_hr_and_redirect_to_add_method'),
                   # Контроллер, на который ссылается поиск HR
-                  path('add_hr/<int:profile_id', company_views.add_hr, name='add_hr_method'),
+                  path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
 
                   # Поиск вопроса среди имеющихся
                   path('questions_search/', questions_views.find_question, name='questions_search'),
@@ -132,23 +132,34 @@ urlpatterns = [
                        name='select_survey_area'),
                   #
                   path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
-                  # Ответ на опрос
-                  path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
-                  # Результаты опроса
-                  path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
-                  # Создание опроса
-                  path('new_poll/', poll_views.new_poll, name='new_poll'),
-                  # Создание опроса из шаблона
-                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template, name='new_poll_from_template'),
+
+
 
                   # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
+
                   # Выбор участников опроса для компании
                   path('respondent_choice_c/<int:poll_id>', poll_views.respondent_choice_from_company,
                        name="respondent_choice_company"),
                   # Выбор участников опроса для команды
                   path('respondent_choice_t/<int:group_id>/<int:poll_id>/', poll_views.respondent_choice_group,
-                       name='respondent_choice_group')
+                       name='respondent_choice_group'),
+                  # Создание опроса
+                  path('new_poll/', poll_views.new_poll, name='new_poll'),
+                  # Создание опроса из шаблона
+                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template, name='new_poll_from_template'),
+                  # Ответ на опрос
+                  path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
+                  # Результаты опроса
+                  path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
+
+                  # Создание опроса для компании
+                  path('new_poll/c/', poll_views.new_poll_from_company, name='new_poll_company'),
+                  # Выбор цели опроса для компании
+                  path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
+                       name='select_target_poll_company'),
+                  path('target_poll/<int:profile_id>/<int:poll_id>/<int:group_id>', poll_views.select_target,
+                       name='select_target_poll_group'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

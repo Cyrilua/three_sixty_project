@@ -36,15 +36,7 @@ def search_target_poll(request):
     return result
 
 
-def user_is_hr_or_owner(request):
-    user = auth.get_user(request)
-    profile = get_user_profile(request)
-    try:
-        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
-    except:
-        user_is_hr = False
-    user_is_owner = profile.company.owner.id == user.id
-    return user_is_owner or user_is_hr
+
 
 
 def select_survey_area(request):
@@ -334,18 +326,76 @@ def build_result_questions_answers(questions):
     return results
 
 
-def new_poll(request):
+def new_poll_from_company(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    redirect_link = 'main:respondent_choice_company'
+    result = new_poll(request, redirect_link)
+    return result
+
+
+def new_poll_from_group(request, group_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        group = Group.objects.get(id=group_id)
+    except:
+        return redirect('/')
+
+    redirect_link = 'main:respondent_choice_group'
+
+
+def new_poll(request, redirect_link='', group_id=-1, redirect_link_hr=''):
     args = {'title': "Создание опроса"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     if request.method == "POST":
-        numbers_questions = [int(i) for i in request.POST.get('allQuestionNumbers', '').split(',')]
         poll = create_new_poll(request)
+        if user_is_hr_or_owner(request):
+            #TODO переписать название страницы
+            result = find_user(request,
+                               action_with_selected_user='main:select_target_poll_company',
+                               poll_id=poll.id,
+                               title='Выбор цели опроса')
+            return result
+
+        numbers_questions = [int(i) for i in request.POST.get('allQuestionNumbers', '').split(',')]
         if len(numbers_questions) > 0:
             create_polls_questions(request, poll, numbers_questions)
-        # TODO сделать redirect на нужную страницу
+        if group_id != -1:
+            return redirect(redirect_link, group_id, poll.id)
+        return redirect(redirect_link, poll.id)
     return render(request, 'main/poll/new_poll.html', args)
+
+
+def user_is_hr_or_owner(request):
+    user = auth.get_user(request)
+    profile = get_user_profile(request)
+    try:
+        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
+    except:
+        user_is_hr = False
+    user_is_owner = profile.company.owner.id == user.id
+    return user_is_owner or user_is_hr
+
+
+def select_target(request, profile_id, poll_id, group_id=-1):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        poll = Poll.objects.get(id=poll_id)
+    except:
+        return redirect('/')
+    poll.target = Profile.objects.get(id=profile_id)
+    poll.save()
+    if group_id != -1:
+        #TODO
+        pass
+    return redirect('/respondent_choice_c/{}'.format(poll_id))
 
 
 def create_new_poll(request):
@@ -512,6 +562,7 @@ def respondent_choice_group(request, group_id, poll_id):
         for profile in profiles:
             poll.respondents.add(profile.user)
         poll.save()
+        return redirect('/communications/')
 
     return render(request, 'main/poll/respondent_choice.html', args)
 
@@ -600,6 +651,8 @@ def respondent_choice_from_company(request, poll_id):
         for profile in profiles:
             poll.respondents.add(profile.user)
         poll.save()
+        return redirect('/communications/')
+
     return render(request, 'main/poll/respondent_choice.html', args)
 
 

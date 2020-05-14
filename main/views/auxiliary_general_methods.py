@@ -19,6 +19,8 @@ def get_photo_height(width, height):
 
 def find_user(request,
               action_with_selected_user='main:profile',
+              poll_id=-1,
+              group_id=-1,
               html_file='main/search_profile.html',
               title="Поиск пользователей",
               limited_access=False,
@@ -29,6 +31,10 @@ def find_user(request,
         'title': title,
         'redirect': action_with_selected_user,
     }
+    if poll_id != -1:
+        args['poll_id'] = poll_id
+        if group_id != -1:
+            args['group_id'] = group_id
     if limited_access:
         if not function_determining_access(request):
             args['error'] = "У пользователя нет доступа для этой операции"
