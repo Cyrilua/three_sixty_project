@@ -331,7 +331,8 @@ def new_poll_from_company(request):
         return redirect('/')
 
     redirect_link = 'main:respondent_choice_company'
-    result = new_poll(request, redirect_link)
+    redirect_link_hr = 'main:select_target_poll_company'
+    result = new_poll(request, redirect_link, redirect_link_hr)
     return result
 
 
@@ -345,11 +346,12 @@ def new_poll_from_group(request, group_id):
         return redirect('/')
 
     redirect_link = 'main:respondent_choice_group'
-    result = new_poll(request, redirect_link, group_id)
+    redirect_link_hr = 'main:select_target_poll_group'
+    result = new_poll(request, redirect_link, redirect_link_hr, group_id)
     return result
 
 
-def new_poll(request, redirect_link='', group_id=-1):
+def new_poll(request, redirect_link='', redirect_link_hr='', group_id=-1):
     args = {'title': "Создание опроса"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -357,11 +359,18 @@ def new_poll(request, redirect_link='', group_id=-1):
     if request.method == "POST":
         poll = create_new_poll(request)
         if user_is_hr_or_owner(request):
-            #TODO переписать название страницы
-            result = find_user(request,
-                               action_with_selected_user='main:select_target_poll_company',
-                               poll_id=poll.id,
-                               title='Выбор цели опроса')
+            if group_id != -1:
+                result = find_user(request,
+                                   action_with_selected_user=redirect_link_hr,
+                                   poll_id=poll.id,
+                                   group_id=group_id,
+                                   title='Выбор цели опроса')
+            else:
+                #TODO переписать название страницы
+                result = find_user(request,
+                                   action_with_selected_user=redirect_link_hr,
+                                   poll_id=poll.id,
+                                   title='Выбор цели опроса')
             return result
 
         numbers_questions = [int(i) for i in request.POST.get('allQuestionNumbers', '').split(',')]
@@ -397,8 +406,7 @@ def select_target(request, profile_id, poll_id, group_id=-1):
     poll.target = Profile.objects.get(id=profile_id)
     poll.save()
     if group_id != -1:
-        #TODO
-        pass
+        return redirect('/respondent_choice_t/{}/{}/'.format(poll_id, group_id))
     return redirect('/respondent_choice_c/{}'.format(poll_id))
 
 

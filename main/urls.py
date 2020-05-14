@@ -142,7 +142,7 @@ urlpatterns = [
                   path('respondent_choice_c/<int:poll_id>', poll_views.respondent_choice_from_company,
                        name="respondent_choice_company"),
                   # Выбор участников опроса для команды
-                  path('respondent_choice_t/<int:group_id>/<int:poll_id>/', poll_views.respondent_choice_group,
+                  path('respondent_choice_t/<int:poll_id>/<int:group_id>/', poll_views.respondent_choice_group,
                        name='respondent_choice_group'),
                   # Создание опроса
                   path('new_poll/', poll_views.new_poll, name='new_poll'),
