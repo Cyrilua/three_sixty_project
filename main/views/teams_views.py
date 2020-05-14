@@ -124,4 +124,5 @@ def team_user_view(request, group_id):
                      'surname': group.owner.profile.surname}
     args['team_name'] = group.name
     args['title'] = group.name
+    args['group_id'] = group_id
     return render(request, 'main/teams/team_view.html', args)

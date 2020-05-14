@@ -155,6 +155,8 @@ urlpatterns = [
 
                   # Создание опроса для компании
                   path('new_poll/c/', poll_views.new_poll_from_company, name='new_poll_company'),
+                  # Создание опроса для команды
+                  path('new_poll/t/<int:group_id>', poll_views.new_poll_from_group, name='new_poll_group'),
                   # Выбор цели опроса для компании
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
                        name='select_target_poll_company'),

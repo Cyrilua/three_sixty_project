@@ -345,9 +345,11 @@ def new_poll_from_group(request, group_id):
         return redirect('/')
 
     redirect_link = 'main:respondent_choice_group'
+    result = new_poll(request, redirect_link, group_id)
+    return result
 
 
-def new_poll(request, redirect_link='', group_id=-1, redirect_link_hr=''):
+def new_poll(request, redirect_link='', group_id=-1):
     args = {'title': "Создание опроса"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -367,7 +369,9 @@ def new_poll(request, redirect_link='', group_id=-1, redirect_link_hr=''):
             create_polls_questions(request, poll, numbers_questions)
         if group_id != -1:
             return redirect(redirect_link, group_id, poll.id)
+
         return redirect(redirect_link, poll.id)
+
     return render(request, 'main/poll/new_poll.html', args)
 
 
