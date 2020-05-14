@@ -160,6 +160,7 @@ urlpatterns = [
                   # Выбор цели опроса для компании
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
                        name='select_target_poll_company'),
+                  # Выбор цели опроса для группы
                   path('target_poll/<int:profile_id>/<int:poll_id>/<int:group_id>', poll_views.select_target,
                        name='select_target_poll_group'),
 

@@ -2,6 +2,7 @@ import uuid
 
 from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group
 from main.views.auxiliary_general_methods import *
+from main.views.notifications_views import add_notification
 
 
 def type_poll(request):
@@ -552,25 +553,31 @@ def respondent_choice_group(request, group_id, poll_id ):
         print(group_id)
         args['error'] = "Данной комманды не существует"
         return render(request, 'main/poll/respondent_choice.html', args)
-
     add_positions_and_platform_from_group(group, args)
     users = filter(lambda profile: profile != get_user_profile(request), group.profile_set.all())
     args['users'] = build_users(users)
 
     if request.method == "POST":
+        print(1)
         try:
             poll = Poll.objects.get(id=poll_id)
         except:
             args['error'] = 'Данного опроса не существует'
+            print('error 1')
             return render(request, 'main/poll/respondent_choice.html', args)
 
-        if poll.initiator is not auth.get_user(request):
+        if poll.initiator != auth.get_user(request):
+            print('error 2')
             args['error'] = 'Пользователь не является организатором опроса'
             return render(request, 'main/poll/respondent_choice.html', args)
 
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
+            add_notification(profile,
+                             "Вас внесли в список для прохождения опроса",
+                             'main:answer_the_poll',
+                             poll_id)
         poll.save()
         return redirect('/communications/')
 
@@ -661,6 +668,10 @@ def respondent_choice_from_company(request, poll_id):
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
+            add_notification(profile,
+                             "Вас внесли в список для прохождения опроса",
+                             'main:answer_the_poll',
+                             poll_id)
         poll.save()
         return redirect('/communications/')
 
