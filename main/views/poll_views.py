@@ -36,9 +36,6 @@ def search_target_poll(request):
     return result
 
 
-
-
-
 def select_survey_area(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -247,8 +244,8 @@ def result_view(request, poll_id):
         return redirect('/')
 
     # Закомментированно на время разработки
-    #if poll.initiator.id != auth.get_user(request).id:
-        #return redirect('/')
+    # if poll.initiator.id != auth.get_user(request).id:
+    # return redirect('/')
 
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
@@ -366,7 +363,7 @@ def new_poll(request, redirect_link='', redirect_link_hr='', group_id=-1):
                                    group_id=group_id,
                                    title='Выбор цели опроса')
             else:
-                #TODO переписать название страницы
+                # TODO переписать название страницы
                 result = find_user(request,
                                    action_with_selected_user=redirect_link_hr,
                                    poll_id=poll.id,
@@ -377,7 +374,7 @@ def new_poll(request, redirect_link='', redirect_link_hr='', group_id=-1):
         if len(numbers_questions) > 0:
             create_polls_questions(request, poll, numbers_questions)
         if group_id != -1:
-            return redirect(redirect_link, group_id, poll.id)
+            return redirect(redirect_link, group_id=group_id, poll_id=poll.id)
 
         return redirect(redirect_link, poll.id)
 
@@ -490,11 +487,9 @@ def new_poll_from_template(request, template_id):
         return redirect('/new_poll/')
     args['poll'] = build_poll(template)
     if request.method == "POST":
-        pass
-        # закомментировано на время разработки
-        #new_poll(request)
-    #else:
-        #args['poll'] = build_poll(template)
+        new_poll(request)
+    else:
+        args['poll'] = build_poll(template)
     return render(request, 'main/poll/custom_poll.html', args)
 
 
@@ -545,7 +540,7 @@ def get_all_question_number(count):
     return result
 
 
-def respondent_choice_group(request, group_id, poll_id):
+def respondent_choice_group(request, group_id, poll_id ):
     args = {'title': "Выбор списка опрашиваемых cреди комманды"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -553,11 +548,14 @@ def respondent_choice_group(request, group_id, poll_id):
     try:
         group = Group.objects.get(id=group_id)
     except:
+        print('error')
+        print(group_id)
         args['error'] = "Данной комманды не существует"
         return render(request, 'main/poll/respondent_choice.html', args)
 
     add_positions_and_platform_from_group(group, args)
-    args['users'] = build_users(group.profile_set.all())
+    users = filter(lambda profile: profile != get_user_profile(request), group.profile_set.all())
+    args['users'] = build_users(users)
 
     if request.method == "POST":
         try:
@@ -646,7 +644,8 @@ def respondent_choice_from_company(request, poll_id):
         args['error'] = "Пользователь не состоит в компании"
         return render(request, 'main/poll/respondent_choice.html', args)
 
-    args['users'] = build_users(company.profile_set.all())
+    users = filter(lambda profile: profile != get_user_profile(request), company.profile_set.all())
+    args['users'] = build_users(users)
 
     if request.method == "POST":
         try:
@@ -666,6 +665,3 @@ def respondent_choice_from_company(request, poll_id):
         return redirect('/communications/')
 
     return render(request, 'main/poll/respondent_choice.html', args)
-
-
-

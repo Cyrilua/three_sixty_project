@@ -71,16 +71,12 @@
 {% block sidebar-nav-right %}
     <h3 style="color: #b21f2d">Для отладки</h3>
     <div>
-        <a class="btn btn-success" href="{% url 'main:questions_search' %}">Поиск вопросов</a>
-        <hr>
         <a class="btn btn-success" href="{% url 'main:search_profile' %}">Поиск профилей</a>
         <hr>
         <a class="btn btn-success" href="{% url 'main:search_admins_and_redirect_to_add_method' %}">Добавление
             админов</a>
         <hr>
         <a class="btn btn-success" href="{% url 'main:search_hr_and_redirect_to_add_method' %}">Добавление HR</a>
-        <hr>
-        <a class="btn btn-success" href="{% url 'main:choose_type_poll' %}">Пробный вид опросника</a>
         <hr>
         <a class="btn btn-success" href="{% url 'main:answer_the_poll' 27 %}">Прохождение опроса</a>
         <hr>
@@ -92,7 +88,7 @@
         <hr>
         <a class="btn btn-success" href="{% url 'main:respondent_choice_company' 27 %}">Выбор опрашиваемых</a>
         <hr>
-        <a class="btn btn-success" href="{% url 'main:respondent_choice_group' 8 27 %}">Выбор опрашиваемых из группы</a>
+        <a class="btn btn-success" href="{% url 'main:respondent_choice_group' 27 8 %}">Выбор опрашиваемых из группы</a>
     </div>
 {% endblock %}
 
