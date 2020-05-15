@@ -546,10 +546,42 @@ def build_new_poll_from_template(request, template):
     poll.description = template.description
     poll.key = uuid.uuid4().__str__()
     poll.save()
-    for question in template.questions.all():
+    questions = recreate_questions_from_template(template.questions.all(), poll)
+    for question in questions:
         poll.questions.add(question)
     poll.save()
     return poll
+
+
+def recreate_questions_from_template(questions, poll):
+    result = []
+    for question in questions:
+        temp_question = Questions()
+        temp_question.text = question.text
+        temp_question.type = question.type
+
+        temp_settings = Settings()
+        temp_settings.step = question.settings.step
+        temp_settings.min = question.settings.min
+        temp_settings.max = question.settings.max
+        temp_settings.save()
+
+        temp_question.settings = temp_settings
+        temp_question.save()
+
+        for choice in question.settings.answer_choice.all():
+            temp_choice = AnswerChoice()
+            temp_choice.value = choice.value
+            temp_choice.save()
+            temp_settings.answer_choice.add(temp_choice)
+        temp_settings.save()
+
+        temp_answer = Answers()
+        temp_answer.poll = poll
+        temp_answer.question = temp_question
+        temp_answer.save()
+        result.append(temp_question)
+    return result
 
 
 def new_poll_from_template_from_group(request, template_id, group_id):
