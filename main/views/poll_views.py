@@ -327,7 +327,6 @@ def build_result_questions_answers(questions):
 def new_poll_from_company(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-
     redirect_link = 'main:respondent_choice_company'
     redirect_link_hr = 'main:select_target_poll_company'
     result = new_poll(request, redirect_link, redirect_link_hr)
@@ -353,6 +352,8 @@ def new_poll(request, redirect_link='', redirect_link_hr='', group_id=-1):
     args = {'title': "Создание опроса"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    args['polls'] = build_template()
 
     if request.method == "POST":
         poll = create_new_poll(request)
@@ -380,6 +381,16 @@ def new_poll(request, redirect_link='', redirect_link_hr='', group_id=-1):
         return redirect(redirect_link, poll.id)
 
     return render(request, 'main/poll/new_poll.html', args)
+
+
+def build_template():
+    result = []
+    for template in TemplatesPoll.objects.all():
+        result.append({
+            'name': template.name_poll,
+            'id': template.id
+        })
+    return result
 
 
 def user_is_hr_or_owner(request):
@@ -477,7 +488,7 @@ def create_answer(question, poll):
     new_answer.save()
 
 
-def new_poll_from_template(request, template_id):
+def new_poll_from_template_from_company(request, template_id):
     args = {'title': "Создание опроса через шаблон"}
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -488,7 +499,71 @@ def new_poll_from_template(request, template_id):
         return redirect('/new_poll/')
     args['poll'] = build_poll(template)
     if request.method == "POST":
-        new_poll(request)
+        redirect_link = 'main:respondent_choice_company'
+        redirect_link_hr = 'main:select_target_poll_company'
+        result = create_poll_from_template(request, template, redirect_link, redirect_link_hr)
+        return result
+    else:
+        args['poll'] = build_poll(template)
+        args['polls'] = build_template()
+    return render(request, 'main/poll/custom_poll.html', args)
+
+
+def create_poll_from_template(request, template, redirect_link='', redirect_link_hr='', group_id=-1):
+    args = {'title': "Создание опроса из шаблона"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    if request.method == "POST":
+        poll = build_new_poll_from_template(request, template)
+        if user_is_hr_or_owner(request):
+            if group_id != -1:
+                result = find_user(request,
+                                   action_with_selected_user=redirect_link_hr,
+                                   poll_id=poll.id,
+                                   group_id=group_id,
+                                   title='Выбор цели опроса')
+            else:
+                result = find_user(request,
+                                   action_with_selected_user=redirect_link_hr,
+                                   poll_id=poll.id,
+                                   title='Выбор цели опроса')
+            return result
+
+        if group_id != -1:
+            return redirect(redirect_link, group_id=group_id, poll_id=poll.id)
+
+        return redirect(redirect_link, poll.id)
+
+    return render(request, 'main/poll/new_poll.html', args)
+
+
+def build_new_poll_from_template(request, template):
+    poll = Poll()
+    poll.target = get_user_profile(request)
+    poll.initiator = auth.get_user(request)
+    poll.name_poll = template.name_poll
+    poll.description = template.description
+    poll.key = uuid.uuid4().__str__()
+    poll.save()
+    for question in template.questions.all():
+        poll.questions.add(question)
+    poll.save()
+    return poll
+
+
+def new_poll_from_template_from_group(request, template_id, group_id):
+    args = {'title': "Создание опроса через шаблон"}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        template = TemplatesPoll.objects.get(id=template_id)
+    except:
+        return redirect('/new_poll/')
+    args['poll'] = build_poll(template)
+    if request.method == "POST":
+        new_poll_from_group(request, group_id)
     else:
         args['poll'] = build_poll(template)
     return render(request, 'main/poll/custom_poll.html', args)
@@ -558,16 +633,13 @@ def respondent_choice_group(request, group_id, poll_id ):
     args['users'] = build_users(users)
 
     if request.method == "POST":
-        print(1)
         try:
             poll = Poll.objects.get(id=poll_id)
         except:
             args['error'] = 'Данного опроса не существует'
-            print('error 1')
             return render(request, 'main/poll/respondent_choice.html', args)
 
         if poll.initiator != auth.get_user(request):
-            print('error 2')
             args['error'] = 'Пользователь не является организатором опроса'
             return render(request, 'main/poll/respondent_choice.html', args)
 

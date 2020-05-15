@@ -4,7 +4,7 @@
         <ul class="navbar-nav flex-column">
             {% for poll in polls %}
                 <li class="user-sidebar-item">
-                    <a class="nav-link" href="{% url 'main:new_poll' poll.id %}">{{ poll.name }}</a>
+                    <a class="nav-link" href="{% url 'main:new_poll_from_template' poll.id %}">{{ poll.name }}</a>
                 </li>
             {% endfor %}
 {#            <li class="{{ menu_edit_basic_information }} user-sidebar-item">#}

@@ -146,8 +146,12 @@ urlpatterns = [
                        name='respondent_choice_group'),
                   # Создание опроса
                   path('new_poll/', poll_views.new_poll, name='new_poll'),
-                  # Создание опроса из шаблона
-                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template, name='new_poll_from_template'),
+                  # Создание опроса из шаблона для компании
+                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template_from_company,
+                       name='new_poll_from_template'),
+                  # Создание опроса из шаблона для команды
+                  path('new_poll/<int:template_id>/<int:group_id>/', poll_views.new_poll_from_template_from_group,
+                       name='new_poll_from_template_from_group'),
                   # Ответ на опрос
                   path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
