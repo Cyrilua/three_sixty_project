@@ -1,0 +1,38 @@
+{% extends 'main/wrapper.html' %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_polls="active" only %}
+{% endblock %}
+
+{% block content-user %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-12 rounded-block">
+                    <h1 style="text-align: center">Опросы для прохождения</h1>
+                    <hr>
+                    <div>
+                        {% if polls %}
+                            <div class="list-group">
+                                {% for poll in polls %}
+                                    <a href="{{ poll.url }}"
+                                       class="list-group-item list-group-item-action">{{ poll.name }}</a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div style="text-align: center">
+                                <i style="color: grey">Сейчас опросов для прохождения нет</i>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_polls_view_right.html' with menu_walkthrough_polls_view="active" %}
+{% endblock %}

@@ -748,3 +748,20 @@ def respondent_choice_from_company(request, poll_id):
         return redirect('/communications/')
 
     return render(request, 'main/poll/respondent_choice.html', args)
+
+
+#################################
+
+def walkthrough_polls_view(request):
+    return render(request, 'main/poll/walkthrough_polls_view.html', {})
+
+
+def results_polls_view(request):
+    return render(request, 'main/poll/results_polls_view.html', {})
+
+
+def new_poll_view(request):
+    return render(request, 'main/poll/new_poll_view.html', {})
+
+
+####################################

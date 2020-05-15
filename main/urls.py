@@ -133,8 +133,6 @@ urlpatterns = [
                   #
                   path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
 
-
-
                   # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
 
@@ -167,6 +165,14 @@ urlpatterns = [
                   # Выбор цели опроса для группы
                   path('target_poll/<int:profile_id>/<int:poll_id>/<int:group_id>', poll_views.select_target,
                        name='select_target_poll_group'),
+
+                  ##########################################
+
+                  path('walkthrough_polls_view/', poll_views.walkthrough_polls_view, name='walkthrough_polls_view'),
+                  path('results_polls_view/', poll_views.results_polls_view, name='results_polls_view'),
+                  path('new_poll_view/', poll_views.new_poll_view, name='new_poll_view'),
+
+                  ##########################################
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
