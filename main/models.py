@@ -27,6 +27,24 @@ class Profile (models.Model):
         return 'Profile for user {} {}'.format(self.name, self.surname)
 
 
+class CreatedPoll(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Created polls"
+
+
+class NeedPassPoll(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "NeedPassPolls"
+
+
 class CompanyAdmins(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)

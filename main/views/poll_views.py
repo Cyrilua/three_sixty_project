@@ -1,6 +1,7 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group, \
+    NeedPassPoll, CreatedPoll
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import add_notification
 
@@ -169,11 +170,8 @@ def answer_the_poll(request, poll_id):
     if poll.description is not None:
         args['about_poll'] = poll.description
 
-    # Закомментированно на время разработки
     if not user_is_respondent(request, poll):
-        # TODO Если текущий пользователь прошел опрос или его нет в списке опрашиваемых
-        # return redirect('/')
-        pass
+        return redirect('/')
 
     if request.method == "POST":
         questions_list = poll.questions.all()
@@ -202,9 +200,12 @@ def answer_the_poll(request, poll_id):
         poll.respondents.remove(auth.get_user(request))
         poll.save()
 
-        if len(poll.respondents.all()) == 0:
-            # TODO
-            print("Обработка результата, когда все опрашиваемые прошли опрос")
+        profile = get_user_profile(request)
+        polls = filter(lambda need_pass: need_pass.profile == profile and need_pass.poll == poll,
+                                    NeedPassPoll.objects.all())
+        for i in polls:
+            i.delete()
+
         return redirect('/')
 
     return render(request, 'main/poll/answer_the_poll.html', args)
@@ -598,6 +599,12 @@ def respondent_choice_group(request, group_id):
     if request.method == "POST":
         poll = Poll()
         poll.save()
+
+        created_poll_user = CreatedPoll()
+        created_poll_user.profile = get_user_profile(request)
+        created_poll_user.poll = poll
+        created_poll_user.save()
+
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
@@ -605,6 +612,12 @@ def respondent_choice_group(request, group_id):
                              "Вас внесли в список для прохождения опроса",
                              'main:answer_the_poll',
                              poll.id)
+
+            need_pass_poll = NeedPassPoll()
+            need_pass_poll.poll = poll
+            need_pass_poll.profile = profile
+            need_pass_poll.save()
+
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -683,6 +696,12 @@ def respondent_choice_from_company(request):
     if request.method == "POST":
         poll = Poll()
         poll.save()
+
+        created_poll_user = CreatedPoll()
+        created_poll_user.profile = get_user_profile(request)
+        created_poll_user.poll = poll
+        created_poll_user.save()
+
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
@@ -690,6 +709,10 @@ def respondent_choice_from_company(request):
                              "Вас внесли в список для прохождения опроса",
                              'main:answer_the_poll',
                              poll.id)
+            need_pass_poll = NeedPassPoll()
+            need_pass_poll.poll = poll
+            need_pass_poll.profile = profile
+            need_pass_poll.save()
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -697,11 +720,50 @@ def respondent_choice_from_company(request):
 
 
 def walkthrough_polls_view(request):
-    return render(request, 'main/poll/walkthrough_polls_view.html', {})
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    args = {
+        'title': "Вопросы для прохождения",
+        'polls': build_need_pass_poll(request)
+    }
+    return render(request, 'main/poll/walkthrough_polls_view.html', args)
+
+
+def build_need_pass_poll(request):
+    result = []
+    profile = get_user_profile(request)
+    polls = [i.poll for i in NeedPassPoll.objects.filter(profile=profile)]
+    for poll in polls:
+        result.append({
+            'name': poll.name_poll,
+            'url': '/answer_poll/{}/'.format(poll.id)
+        })
+    return result
 
 
 def results_polls_view(request):
-    return render(request, 'main/poll/results_polls_view.html', {})
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    args = {
+        'title': 'Просмотр результата опросов',
+        'results': build_list_results_polls(request)
+    }
+
+    return render(request, 'main/poll/results_polls_view.html', args)
+
+
+def build_list_results_polls(request):
+    result = []
+    profile = get_user_profile(request)
+    results_polls = CreatedPoll.objects.filter(profile=profile)
+    for result_poll in results_polls:
+        result.append({
+            'name': result_poll.poll.name_poll,
+            'url': '/result_poll/{}/'.format(result_poll.poll.id)
+        })
+
+    return result
 
 
 def new_poll_view(request):
