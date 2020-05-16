@@ -52,19 +52,11 @@
                          style="height: 100px; margin-bottom: 10px">
                         <h4>Пользователи</h4>
                         {% if poll_id %}
-                            {% if group_id %}
-                                <p>
-                                    {% for profile in profiles %}
-                                        <a href="{% url redirect profile.pk poll_id group_id %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
-                                    {% endfor %}
-                                </p>
-                            {% else %}
-                                <p>
-                                    {% for profile in profiles %}
-                                        <a href="{% url redirect profile.pk poll_id %}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
-                                    {% endfor %}
-                                </p>
-                            {% endif %}
+                            <p>
+                                {% for profile in profiles %}
+                                    <a href="{{ profile.url }}">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</a>
+                                {% endfor %}
+                            </p>
                         {% else %}
                             <p>
                                 {% for profile in profiles %}

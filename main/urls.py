@@ -146,7 +146,9 @@ urlpatterns = [
                   path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
-
+                  # Поик цели опроса
+                  path('search_target_poll/<int:poll_id>/', auxiliary_general_methods.find_target,
+                       name='search_target'),
                   # Выбор цели опроса
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
                        name='select_target_poll'),

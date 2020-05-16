@@ -175,16 +175,22 @@ def answer_the_poll(request, poll_id):
         #return redirect('/')
 
     if request.method == "POST":
+        print('i am here 1')
         questions_list = poll.questions.all()
         for question in questions_list:
+            print('i am here 2')
             change_answer = Answers.objects.get(question=question)
             if question.type == 'checkbox' or question.type == 'radio':
+                print('i am here 3')
                 user_choices_list = [AnswerChoice.objects.get(id=int(i)) for i in
                                      request.POST.getlist('answer-{}'.format(question.id))]
                 for choice in user_choices_list:
+                    print('i am here 4')
                     choice.count += 1
                     choice.save()
+                print('i am here 5')
                 change_answer.count_answers += 1
+                print(change_answer.count_answers)
             elif question.type == 'range':
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
                 change_answer.sum_answer += user_answer
@@ -250,8 +256,8 @@ def result_view(request, poll_id):
     if poll.initiator.id != auth.get_user(request).id:
         return redirect('/')
 
-    if poll.questions.all().first().answers.count_answers < 3:
-        return redirect('/')
+    #if poll.questions.all().first().answers.count_answers < 3:
+        #return redirect('/')
 
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
@@ -343,17 +349,13 @@ def new_poll(request, poll_id):
 
     if request.method == "POST":
         poll = create_new_poll(request, poll)
-        if user_is_hr_or_owner(request):
-            redirect_link_hr = 'main:select_target_poll'
-            result = find_user(request,
-                               action_with_selected_user=redirect_link_hr,
-                               poll_id=poll.id,
-                               title='Выбор цели опроса')
-            return result
-
         numbers_questions = [int(i) for i in request.POST.get('allQuestionNumbers', '').split(',')]
+        print(numbers_questions)
         if len(numbers_questions) > 0:
             create_polls_questions(request, poll, numbers_questions)
+
+        if user_is_hr_or_owner(request):
+            return redirect('/search_target_poll/{}/'.format(poll_id))
         return redirect('/communications/')
 
     return render(request, 'main/poll/new_poll.html', args)
@@ -767,8 +769,9 @@ def build_list_results_polls(request):
         }
         count_answer = result_poll.poll.questions.all().first().answers.count_answers
         print(count_answer)
-        if count_answer >= 3:
-            result_temp['url'] = '/result_poll/{}/'.format(result_poll.poll.id)
+        print(result_poll.poll.id)
+        #if count_answer >= 3:
+        result_temp['url'] = '/result_poll/{}/'.format(result_poll.poll.id)
         result.append(result_temp)
     return result
 
