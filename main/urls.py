@@ -130,41 +130,29 @@ urlpatterns = [
                   # Выбор области опрашиваемых
                   path('default_poll/<int:poll>/select_survey_area/', poll_views.select_survey_area,
                        name='select_survey_area'),
-                  #
-                  path('default_poll_view/', poll_views.default_poll_template_view, name='default_poll_view'),
 
                   # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
 
                   # Выбор участников опроса для компании
-                  path('respondent_choice_c/<int:poll_id>', poll_views.respondent_choice_from_company,
+                  path('respondent_choice_c/', poll_views.respondent_choice_from_company,
                        name="respondent_choice_company"),
                   # Выбор участников опроса для команды
-                  path('respondent_choice_t/<int:poll_id>/<int:group_id>/', poll_views.respondent_choice_group,
+                  path('respondent_choice_t/<int:group_id>/', poll_views.respondent_choice_group,
                        name='respondent_choice_group'),
                   # Создание опроса
-                  path('new_poll/', poll_views.new_poll, name='new_poll'),
-                  # Создание опроса из шаблона для компании
-                  path('new_poll/<int:template_id>/', poll_views.new_poll_from_template_from_company,
-                       name='new_poll_from_template'),
-                  # Создание опроса из шаблона для команды
-                  path('new_poll/<int:template_id>/<int:group_id>/', poll_views.new_poll_from_template_from_group,
-                       name='new_poll_from_template_from_group'),
+                  path('new_poll/<int:poll_id>/', poll_views.new_poll, name='new_poll'),
                   # Ответ на опрос
                   path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
 
-                  # Создание опроса для компании
-                  path('new_poll/c/', poll_views.new_poll_from_company, name='new_poll_company'),
-                  # Создание опроса для команды
-                  path('new_poll/t/<int:group_id>', poll_views.new_poll_from_group, name='new_poll_group'),
-                  # Выбор цели опроса для компании
+                  # Выбор цели опроса
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
-                       name='select_target_poll_company'),
-                  # Выбор цели опроса для группы
-                  path('target_poll/<int:profile_id>/<int:poll_id>/<int:group_id>', poll_views.select_target,
-                       name='select_target_poll_group'),
+                       name='select_target_poll'),
+                  # Создание опроса через шаблон
+                  path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views.create_poll_from_template,
+                       name='new_poll_from_template'),
 
                   ##########################################
 
