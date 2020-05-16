@@ -596,16 +596,8 @@ def respondent_choice_group(request, group_id):
     args['users'] = build_users(users)
 
     if request.method == "POST":
-        try:
-            poll = Poll()
-        except:
-            args['error'] = 'Данного опроса не существует'
-            return render(request, 'main/poll/respondent_choice.html', args)
-
-        if poll.initiator != auth.get_user(request):
-            args['error'] = 'Пользователь не является организатором опроса'
-            return render(request, 'main/poll/respondent_choice.html', args)
-
+        poll = Poll()
+        poll.save()
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
@@ -614,7 +606,7 @@ def respondent_choice_group(request, group_id):
                              'main:answer_the_poll',
                              poll.id)
         poll.save()
-        return redirect('/communications/')
+        return redirect('/new_poll/{}/'.format(poll.id))
 
     return render(request, 'main/poll/respondent_choice.html', args)
 
@@ -688,7 +680,6 @@ def respondent_choice_from_company(request):
 
     users = filter(lambda profile: profile != get_user_profile(request), company.profile_set.all())
     args['users'] = build_users(users)
-    print(20)
     if request.method == "POST":
         poll = Poll()
         poll.save()
