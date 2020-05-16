@@ -179,13 +179,12 @@ def answer_the_poll(request, poll_id):
         for question in questions_list:
             change_answer = Answers.objects.get(question=question)
             if question.type == 'checkbox' or question.type == 'radio':
-                print('is here')
                 user_choices_list = [AnswerChoice.objects.get(id=int(i)) for i in
                                      request.POST.getlist('answer-{}'.format(question.id))]
-                print(user_choices_list)
                 for choice in user_choices_list:
                     choice.count += 1
                     choice.save()
+                change_answer.count_answers += 1
             elif question.type == 'range':
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
                 change_answer.sum_answer += user_answer
@@ -248,9 +247,11 @@ def result_view(request, poll_id):
     except:
         return redirect('/')
 
-    # Закомментированно на время разработки
-    # if poll.initiator.id != auth.get_user(request).id:
-    # return redirect('/')
+    if poll.initiator.id != auth.get_user(request).id:
+        return redirect('/')
+
+    if poll.questions.all().first().answers.count_answers < 3:
+        return redirect('/')
 
     question_answer_result = build_result_questions_answers(poll.questions.all())
     args = {
@@ -761,11 +762,14 @@ def build_list_results_polls(request):
     profile = get_user_profile(request)
     results_polls = CreatedPoll.objects.filter(profile=profile)
     for result_poll in results_polls:
-        result.append({
-            'name': result_poll.poll.name_poll,
-            'url': '/result_poll/{}/'.format(result_poll.poll.id)
-        })
-
+        result_temp = {
+            'name': result_poll.poll.name_poll
+        }
+        count_answer = result_poll.poll.questions.all().first().answers.count_answers
+        print(count_answer)
+        if count_answer >= 3:
+            result_temp['url'] = '/result_poll/{}/'.format(result_poll.poll.id)
+        result.append(result_temp)
     return result
 
 
