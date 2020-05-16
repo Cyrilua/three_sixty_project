@@ -170,16 +170,19 @@ def answer_the_poll(request, poll_id):
     if poll.description is not None:
         args['about_poll'] = poll.description
 
-    if not user_is_respondent(request, poll):
-        return redirect('/')
+
+    #if not user_is_respondent(request, poll):
+        #return redirect('/')
 
     if request.method == "POST":
         questions_list = poll.questions.all()
         for question in questions_list:
             change_answer = Answers.objects.get(question=question)
             if question.type == 'checkbox' or question.type == 'radio':
+                print('is here')
                 user_choices_list = [AnswerChoice.objects.get(id=int(i)) for i in
                                      request.POST.getlist('answer-{}'.format(question.id))]
+                print(user_choices_list)
                 for choice in user_choices_list:
                     choice.count += 1
                     choice.save()
@@ -274,7 +277,7 @@ def build_result_questions_answers(questions):
 
         answer = question.answers
         if question.type == 'checkbox' or question.type == 'radio':
-            all_choices = answer.choices.all()
+            all_choices = question.settings.answer_choice.all()
             sum_votes = 0
             for choice in all_choices:
                 sum_votes += choice.count
