@@ -175,22 +175,16 @@ def answer_the_poll(request, poll_id):
         #return redirect('/')
 
     if request.method == "POST":
-        print('i am here 1')
         questions_list = poll.questions.all()
         for question in questions_list:
-            print('i am here 2')
             change_answer = Answers.objects.get(question=question)
             if question.type == 'checkbox' or question.type == 'radio':
-                print('i am here 3')
                 user_choices_list = [AnswerChoice.objects.get(id=int(i)) for i in
                                      request.POST.getlist('answer-{}'.format(question.id))]
                 for choice in user_choices_list:
-                    print('i am here 4')
                     choice.count += 1
                     choice.save()
-                print('i am here 5')
                 change_answer.count_answers += 1
-                print(change_answer.count_answers)
             elif question.type == 'range':
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
                 change_answer.sum_answer += user_answer
@@ -214,7 +208,7 @@ def answer_the_poll(request, poll_id):
         for i in polls:
             i.delete()
 
-        return redirect('/')
+        return redirect('/walkthrough_polls_view/')
 
     return render(request, 'main/poll/answer_the_poll.html', args)
 
@@ -288,6 +282,8 @@ def build_result_questions_answers(questions):
             sum_votes = 0
             for choice in all_choices:
                 sum_votes += choice.count
+            if sum_votes == 0:
+                sum_votes += 1
             for choice in all_choices:
                 temp_answer = {
                     'value': {
@@ -484,12 +480,7 @@ def create_poll_from_template(request, poll_id, template_id):
     if request.method == "POST":
         poll = create_new_poll_from_template(request, poll, template)
         if user_is_hr_or_owner(request):
-            redirect_link_hr = 'main:select_target_poll'
-            result = find_user(request,
-                               action_with_selected_user=redirect_link_hr,
-                               poll_id=poll.id,
-                               title='Выбор цели опроса')
-            return result
+            return redirect('/search_target_poll/{}/'.format(poll_id))
 
         return redirect('/communications/')
 
@@ -764,15 +755,19 @@ def build_list_results_polls(request):
     profile = get_user_profile(request)
     results_polls = CreatedPoll.objects.filter(profile=profile)
     for result_poll in results_polls:
-        result_temp = {
-            'name': result_poll.poll.name_poll
-        }
-        count_answer = result_poll.poll.questions.all().first().answers.count_answers
-        print(count_answer)
-        print(result_poll.poll.id)
-        #if count_answer >= 3:
-        result_temp['url'] = '/result_poll/{}/'.format(result_poll.poll.id)
-        result.append(result_temp)
+        try:
+            print(result_poll)
+            result_temp = {
+                'name': result_poll.poll.name_poll
+            }
+            count_answer = result_poll.poll.questions.all().first().answers.count_answers
+            print(count_answer)
+            print(result_poll.poll.id)
+            #if count_answer >= 3:
+            result_temp['url'] = '/result_poll/{}/'.format(result_poll.poll.id)
+            result.append(result_temp)
+        except:
+            continue
     return result
 
 
