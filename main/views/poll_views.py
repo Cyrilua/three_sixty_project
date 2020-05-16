@@ -696,8 +696,6 @@ def respondent_choice_from_company(request):
     return render(request, 'main/poll/respondent_choice.html', args)
 
 
-#################################
-
 def walkthrough_polls_view(request):
     return render(request, 'main/poll/walkthrough_polls_view.html', {})
 
@@ -707,7 +705,32 @@ def results_polls_view(request):
 
 
 def new_poll_view(request):
-    return render(request, 'main/poll/new_poll_view.html', {})
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    args = {
+        'title': "Быстрый доступ к созданию опросов",
+        'companys': build_company(request),
+        'teams': build_teams(request)
+    }
+
+    return render(request, 'main/poll/new_poll_view.html', args)
 
 
-####################################
+def build_company(request):
+    company = get_user_profile(request).company
+    result = [{
+        'name': company.name,
+        'url': '/respondent_choice_c/',
+    }]
+    return result
+
+
+def build_teams(request):
+    profile = get_user_profile(request)
+    result = []
+    for group in profile.groups.all():
+        result.append({
+            'name': group.name,
+            'url': '/respondent_choice_t/{}/'.format(group.id),
+        })
+    return result
