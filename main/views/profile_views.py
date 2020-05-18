@@ -34,6 +34,7 @@ def get_render_user_profile(request):
     }
     if photo is not None:
         args['photo_height'] = get_photo_height(photo.width, photo.height)
+    args['teams'] = profile.groups.all()
 
     return render(request, 'main/user/profile.html', args)
 

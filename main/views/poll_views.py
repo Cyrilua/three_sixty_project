@@ -700,7 +700,9 @@ def respondent_choice_from_company(request):
         created_poll_user.save()
 
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
+        print(profiles)
         for profile in profiles:
+            print(profile)
             poll.respondents.add(profile.user)
             add_notification(profile,
                              "Вас внесли в список для прохождения опроса",
