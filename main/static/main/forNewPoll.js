@@ -105,7 +105,8 @@ function addNewQuestion() {
         "<input type='hidden' id='countOption-" + currentQuestion + "' name='countOption-" + currentQuestion + "' value='1'>" +
         "<div class='row'>" +
         "<div class='col-md-6'>" +
-        "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос' required>" +
+        // "<input id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' type='text' class='form-control' placeholder='Вопрос' required>" +
+        "<textarea id='questionName-" + currentQuestion + "' name='questionName-" + currentQuestion + "' class='form-control' rows='1' style='resize: none; overflow-y: hidden' oninput='countLines(this);' placeholder='Вопрос'></textarea>" +
         "</div>" +
         "<div class='col-md-6'>" +
         "<select class='form-control' id='questionType-" + currentQuestion + "' name='questionType-" + currentQuestion + "' onchange='changeTypeQuestion(\"optionsAnswer-" + currentQuestion + "\", \"questionType-" + currentQuestion + "\")'>" +
@@ -247,4 +248,9 @@ function changeTypeQuestion(idDiv, idSelected) {
     let parentDiv = oldDiv.parentNode;
     parentDiv.replaceChild(newDiv, oldDiv);
     document.getElementById("countOption-" + currentQuestion).value = "1";
+}
+
+function countLines(el) {
+    el.style.height = '1px';
+    el.style.height = (el.scrollHeight) + 'px';
 }
