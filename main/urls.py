@@ -57,8 +57,6 @@ urlpatterns = [
                   # Поиск пользователей
                   path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
 
-                  # Обзор коммуникаций юзера
-                  path('communications/', teams_views.teams_view, name='communications'),  # <------ Old page
                   # Промотр конкретной команды
                   path('groups/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
                   # Создание группы команды
