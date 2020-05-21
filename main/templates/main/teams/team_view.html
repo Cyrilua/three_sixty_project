@@ -5,16 +5,11 @@
 {% block content-user %}
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-1">
             {% if error %}
-                <div>
-                    <h3 style="color: red">Ошибки:</h3>
-                    <br>
-                    <a style="color: red">{{ error }}</a>
-                </div>
             {% endif %}
         </div>
-        <div class="col-md-8 rounded-block">
+        <div class="col-md-10 rounded-block">
             <h2 style="text-align: center">Команда "{{ team_name }}"</h2>
             <hr>
             <div class="row">
@@ -54,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
     </div>
 
 {% endblock %}
