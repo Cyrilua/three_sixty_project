@@ -109,3 +109,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-link:hover {
 }
+
+.my-btn {
+    display: block;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.first {
+    background-color: yellow;
+}
+
+.second {
+    background-color: lightblue;
+}
+
+.first,
+.second {
+    width: 100%;
+    height: auto;
+}
