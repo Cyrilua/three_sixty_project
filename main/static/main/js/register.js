@@ -110,6 +110,21 @@ $(function () {
         }
         checkBtnRegister(required);
     });
+
+    $('#btn-register').click(function () {
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this).id,
+                username: $('#id_username').value,
+                pass1: $('#id_password1').val(),
+                pass2: $('#id_password2').val(),
+                email: $('#id_email').val(),
+                csrfmiddlewaretoken: csrf,
+            },
+        })
+    });
 });
 
 
