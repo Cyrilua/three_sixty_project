@@ -14,13 +14,13 @@ def profile_view(request, profile_id=-1):
 
 
 def get_render_user_profile(request):
-    if request.is_ajax():
-        if request.method == "GET":
-            text = request.GET.get('button_text')
-            return JsonResponse({'result_1': text}, status=200)
-        if request.method == "POST":
-            span_text = request.POST.get('text')
-            return JsonResponse({'data_result': span_text}, status=200)
+    # if request.is_ajax():
+    #     if request.method == "GET":
+    #         text = request.GET.get('button_text')
+    #         return JsonResponse({'result_1': text}, status=200)
+    #     if request.method == "POST":
+    #         span_text = request.POST.get('text')
+    #         return JsonResponse({'data_result': span_text}, status=200)
 
     profile = get_user_profile(request)
 
