@@ -352,7 +352,7 @@ def new_poll(request, poll_id):
 
         if user_is_hr_or_owner(request):
             return redirect('/search_target_poll/{}/'.format(poll_id))
-        return redirect('/communications/')
+        return redirect('/')
 
     return render(request, 'main/poll/new_poll.html', args)
 
@@ -390,7 +390,7 @@ def select_target(request, profile_id, poll_id):
         return redirect('/')
     poll.target = Profile.objects.get(id=profile_id)
     poll.save()
-    return redirect('/communications/')
+    return redirect('/')
 
 
 def create_new_poll(request, poll):
@@ -482,7 +482,7 @@ def create_poll_from_template(request, poll_id, template_id):
         if user_is_hr_or_owner(request):
             return redirect('/search_target_poll/{}/'.format(poll_id))
 
-        return redirect('/communications/')
+        return redirect('/')
 
     return render(request, 'main/poll/custom_poll.html', args)
 

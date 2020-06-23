@@ -53,7 +53,7 @@ def create_company(request):
             'company_form': CompanyForm()}
 
     if profile.company is not None:
-        return redirect('/communications/')
+        return redirect('/')
 
     if request.method == 'POST':
         company_form = CompanyForm(request.POST)
@@ -66,7 +66,7 @@ def create_company(request):
             profile.company = company
             profile.save()
 
-            return redirect('/communications/')
+            return redirect('/')
         else:
             args['company_form'] = company_form
     return render(request, 'main/companies/add_new_company.html', args)
@@ -81,17 +81,17 @@ def connect_to_company_to_key(request):
             'title': "Добавление участников"}
 
     if profile.company is not None:
-        return redirect('/communications/')
+        return redirect('/')
 
     if request.method == 'POST':
         try:
             key_company = request.POST.get("key", '')
             company = Company.objects.get(key=key_company)
         except:
-            return redirect('/communications/')
+            return redirect('/')
         else:
             add_user_to_company(profile, company)
-            return redirect('/communications/')
+            return redirect('/')
 
     return render(request, 'main/companies/connect_to_company.html', args)
 
@@ -116,15 +116,15 @@ def connect_to_company_to_link(request, key):
 
     profile = get_user_profile(request)
     if profile.company is not None:
-        return redirect('/communications/')
+        return redirect('/')
 
     try:
         company = Company.objects.get(key=key)
     except:
-        return redirect('/communications/')
+        return redirect('/')
     else:
         add_user_to_company(profile, company)
-        return redirect('/communications/')
+        return redirect('/')
 
 
 def get_all_users_in_company(request):
@@ -230,7 +230,7 @@ def company_view(request):
     company = profile.company
 
     if company is None:
-        return redirect('/communications/')
+        return redirect('/')
 
     args = {
         'title': company.name,
@@ -267,7 +267,7 @@ def choose_position(request):
         if int(position_id) == -1:
             profile.position = None
             profile.save()
-            return redirect('/communications/')
+            return redirect('/')
         try:
             position = Position.objects.get(id=position_id)
         except:
@@ -280,7 +280,7 @@ def choose_position(request):
 
         profile.position = position
         profile.save()
-        return redirect('/communications/')
+        return redirect('/')
 
     return render(request, 'main/position_choice.html', args)
 
@@ -303,7 +303,7 @@ def choose_platform(request):
     if request.method == "POST":
         platform_id = request.POST.get('id_platform', '')
         if platform_id == -1:
-            return redirect('/communications/')
+            return redirect('/')
         try:
             platform = Platforms.objects.get(id=platform_id)
         except:
@@ -317,7 +317,7 @@ def choose_platform(request):
 
         profile.platform = platform_company
         profile.save()
-        return redirect('/communications/')
+        return redirect('/')
     return render(request, 'main/platform_choice.html', args)
 
 
