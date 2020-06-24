@@ -26,22 +26,31 @@ def user_register(request):
         if request.method == "POST":
             date = request.POST
             print(date)
+
+            if is_button_method(date):
+                pass
+
             if 'username' in date:
                 if validate_login(date['username']):
+                    print(True)
                     return JsonResponse({'resultStatus': 'success'}, status=200)
+                print(False)
                 return JsonResponse({'resultStatus': 'error',
                                      'resultError': 'Ошибка о чем то'}, status=200)
 
             if 'pass2' in date:
                 errors = validate_password2(date['pass2'], date['pass1']) # list
                 if len(errors) == 0:
+                    print(True)
                     return JsonResponse({'resultStatus': 'success'}, status=200)
+                print(False)
                 return JsonResponse({'resultStatus': 'error',
                                      'resultError': errors}, status=200)
 
             if 'pass1' in date:
                 errors = validate_password1(date['pass1'])  # list
                 if len(errors) == 0:
+                    print(True)
                     return JsonResponse({'resultStatus': 'success'}, status=200)
                 return JsonResponse({'resultStatus': 'error',
                                      'resultError': errors}, status=200)
@@ -49,7 +58,9 @@ def user_register(request):
             if 'email' in date:
                 errors = validate_email(date['email'])
                 if len(errors) == 0:
+                    print(True)
                     return JsonResponse({'resultStatus': 'success'}, status=200)
+                print(False)
                 return JsonResponse({'resultStatus': 'error',
                                      'resultError': errors}, status=200)
 
@@ -58,6 +69,15 @@ def user_register(request):
             'email_form': UserChangeEmailForm(),
             'title': "Регистрация"}
     return render(request, 'main/no_login/register.html', args)
+
+
+def is_button_method(date):
+    result = ('username' in date) and ('pass2' in date) and ('pass1' in date) and ('email' in date)
+    return result
+
+
+def button_success(date):
+    pass
 
 
 def validate_login(login: str):
