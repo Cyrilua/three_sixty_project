@@ -1,7 +1,5 @@
 $(function () {
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
-    let username = '';
-    let email = '';
     let required = {
         'username': false,
         'pass1': false,
@@ -9,118 +7,111 @@ $(function () {
         'email': false,
     };
 
-    $('#id_username').focusout(function () {
-        if ($(this).val() !== username) {
-            $.ajax({
-                url: '',
-                type: 'post',
-                data: {
-                    element: $(this).id,
-                    username: $(this).val(),
-                    csrfmiddlewaretoken: csrf,
-                },
-                success: function (response) {
-                    chooseValidationColor('#id_username', response.usernameStatus);
-                    if (response.usernameStatus === 'success') {
-                        required.username = true;
-                    } else if (response.usernameStatus === 'error') {
-                        required.username = false;
-                        showMessage(response.usernameError);
-                    }
-                }
-            });
-            checkBtnRegister(required);
-            username = $(this).val();
-        }
-    });
-
-    $('#id_password1').focusout(function () {
+    $('#id_username').on('input', function () {
         $.ajax({
             url: '',
             type: 'post',
             data: {
-                element: $(this).id,
-                pass1: $(this).val(),
+                id: $(this)[0].id,
+                username: $(this)[0].value,
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_username', response.password1Status);
-                if (response.password1Status === 'success') {
+                chooseValidationColor('#id_username', response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    required.username = true;
+                } else if (response.resultStatus === 'error') {
+                    required.username = false;
+                    showMessage(response.resultError);
+                }
+                checkBtnRegister(required);
+            }
+        });
+    });
+
+    $('#id_password1').on('input', function () {
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                pass1: $(this)[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor('#id_password1', response.result1Status);
+                if (response.resultStatus === 'success') {
                     required.pass1 = true;
                     $('#id_password2').prop({
                         'disabled': false,
                     });
-                } else if (response.password1Status === 'error') {
+                } else if (response.resultStatus === 'error') {
                     required.pass1 = false;
-                    showMessage(response.password1Error);
+                    showMessage(response.resultError);
                     $('#id_password2').prop({
                         'disabled': true,
                     });
                 }
+                checkBtnRegister(required);
             }
         });
-        checkBtnRegister(required);
     });
 
-    $('#id_password2').focusout(function () {
+    $('#id_password2').on('input', function () {
         $.ajax({
             url: '',
             type: 'post',
             data: {
-                element: $(this).id,
-                pass1: $('#id_password1').val(),
-                pass2: $(this).val(),
+                id: $(this)[0].id,
+                pass1: $('#id_password1')[0].value,
+                pass2: $(this)[0].value,
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_username', response.password2Status);
-                if (response.password2Status === 'success') {
+                chooseValidationColor('#id_password2', response.resultStatus);
+                if (response.resultStatus === 'success') {
                     required.pass2 = true;
-                } else if (response.password2Status === 'error') {
+                } else if (response.resultStatus === 'error') {
                     required.pass2 = false;
-                    showMessage(response.password2Error);
+                    showMessage(response.resultError);
                 }
+                checkBtnRegister(required);
             }
         });
-        checkBtnRegister(required);
     });
 
-    $('#id_email').focusout(function () {
-        if ($(this).val() !== email) {
-            $.ajax({
-                url: '',
-                type: 'post',
-                data: {
-                    element: $(this).id,
-                    email: $(this).val(),
-                    csrfmiddlewaretoken: csrf,
-                },
-                success: function (response) {
-                    chooseValidationColor('#id_username', response.emailStatus);
-                    if (response.emailStatus === 'success') {
-                        required.email = true;
-                    } else if (response.emailStatus === 'error') {
-                        required.email = true;
-                        showMessage(response.emailError);
-                    }
+    $('#id_email').on('input', function () {
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                email: $(this)[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor('#id_email', response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    required.email = true;
+                } else if (response.resultStatus === 'error') {
+                    required.email = false;
+                    showMessage(response.resultError);
                 }
-            });
-            email = $(this).val();
-        }
-        checkBtnRegister(required);
+                checkBtnRegister(required);
+            }
+        });
     });
-
 
     $('#btn-register').click(function () {
         $.ajax({
             url: '',
             type: 'post',
             data: {
-                element: $(this).id,
-                username: $('#id_username').value,
-                pass1: $('#id_password1').val(),
-                pass2: $('#id_password2').val(),
-                email: $('#id_email').val(),
+                id: $(this)[0].id,
+                username: $('#id_username')[0].value,
+                pass1: $('#id_password1')[0].value,
+                pass2: $('#id_password2')[0].value,
+                email: $('#id_email')[0].value,
                 csrfmiddlewaretoken: csrf,
             },
         })
