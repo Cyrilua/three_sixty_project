@@ -28,41 +28,34 @@ def user_register(request):
             print(date)
 
             if is_button_method(date):
-                pass
+                button_success(date)
 
             if 'username' in date:
                 if validate_login(date['username']):
-                    print(True)
-                    return JsonResponse({'resultStatus': 'success'}, status=200)
-                print(False)
-                return JsonResponse({'resultStatus': 'error',
-                                     'resultError': 'Ошибка о чем то'}, status=200)
+                    return JsonResponse({'usernameStatus': 'success'}, status=200)
+                return JsonResponse({'usernameStatus': 'error',
+                                     'usernameError': 'Ошибка о чем то'}, status=200)
 
             if 'pass2' in date:
                 errors = validate_password2(date['pass2'], date['pass1']) # list
                 if len(errors) == 0:
-                    print(True)
-                    return JsonResponse({'resultStatus': 'success'}, status=200)
-                print(False)
-                return JsonResponse({'resultStatus': 'error',
-                                     'resultError': errors}, status=200)
+                    return JsonResponse({'password2Status': 'success'}, status=200)
+                return JsonResponse({'password2Status': 'error',
+                                     'password2Error': errors}, status=200)
 
             if 'pass1' in date:
                 errors = validate_password1(date['pass1'])  # list
                 if len(errors) == 0:
-                    print(True)
-                    return JsonResponse({'resultStatus': 'success'}, status=200)
-                return JsonResponse({'resultStatus': 'error',
-                                     'resultError': errors}, status=200)
+                    return JsonResponse({'password1Status': 'success'}, status=200)
+                return JsonResponse({'password1Status': 'error',
+                                     'password1Error': errors}, status=200)
 
             if 'email' in date:
                 errors = validate_email(date['email'])
                 if len(errors) == 0:
-                    print(True)
-                    return JsonResponse({'resultStatus': 'success'}, status=200)
-                print(False)
-                return JsonResponse({'resultStatus': 'error',
-                                     'resultError': errors}, status=200)
+                    return JsonResponse({'emailStatus': 'success'}, status=200)
+                return JsonResponse({'emailStatus': 'error',
+                                     'emailError': errors}, status=200)
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
@@ -77,13 +70,15 @@ def is_button_method(date):
 
 
 def button_success(date):
-    pass
+    user = UserCreationForm(date)
+    print(user.is_valid())
 
 
 def validate_login(login: str):
     login = login.lower()
     users = User.objects.all()
     result = list(filter(lambda x: x.username == login, users))
+    print(result)
     return len(result) == 0 and len(login) > 0
 
 

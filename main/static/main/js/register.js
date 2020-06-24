@@ -110,6 +110,7 @@ $(function () {
         checkBtnRegister(required);
     });
 
+
     $('#btn-register').click(function () {
         $.ajax({
             url: '',
