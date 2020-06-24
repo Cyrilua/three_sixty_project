@@ -14,6 +14,7 @@ from main.forms import ProfileForm, UserChangeEmailForm
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
+from django.core.validators import EmailValidator
 
 
 def user_register(request):
@@ -46,7 +47,11 @@ def user_register(request):
                                      'resultError': errors}, status=200)
 
             if 'email' in date:
-                pass
+                errors = validate_email(date['email'])
+                if len(errors) == 0:
+                    return JsonResponse({'resultStatus': 'success'}, status=200)
+                return JsonResponse({'resultStatus': 'error',
+                                     'resultError': errors}, status=200)
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
@@ -79,7 +84,13 @@ def validate_password2(password2: str, password1: str):
 
 
 def validate_email(email: str):
-    pass
+    result = []
+    try:
+        email_validator = EmailValidator()
+        email_validator(email)
+    except ValidationError as error:
+        result = error.messages
+    return result
 
 
 def user_login(request):
