@@ -1,13 +1,19 @@
 import copy
+import re
 
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm
+
+
+from django.core.exceptions import ValidationError
+from django.contrib.auth import password_validation
 
 
 def user_register(request):
@@ -24,37 +30,56 @@ def user_register(request):
                     return JsonResponse({'resultStatus': 'success'}, status=200)
                 return JsonResponse({'resultStatus': 'error',
                                      'resultError': 'Ошибка о чем то'}, status=200)
-            if 'pass1' in date:
-                if validate_password1(date['pass1']):
-                    return JsonResponse({'resultStatus': 'success'}, status=200)
-                return JsonResponse({'resultStatus': 'error',
-                                     'resultError': 'Ошибка о чем то'}, status=200)
+
             if 'pass2' in date:
-                if validate_password2(date['pass2'], date['pass1']):
+                errors = validate_password2(date['pass2'], date['pass1']) # list
+                if len(errors) == 0:
                     return JsonResponse({'resultStatus': 'success'}, status=200)
                 return JsonResponse({'resultStatus': 'error',
-                                     'resultError': 'Ошибка о чем то'}, status=200)
+                                     'resultError': errors}, status=200)
+
+            if 'pass1' in date:
+                errors = validate_password1(date['pass1'])  # list
+                if len(errors) == 0:
+                    return JsonResponse({'resultStatus': 'success'}, status=200)
+                return JsonResponse({'resultStatus': 'error',
+                                     'resultError': errors}, status=200)
+
+            if 'email' in date:
+                pass
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
             'email_form': UserChangeEmailForm(),
             'title': "Регистрация"}
-    user = UserCreationForm(request.POST)
-    user.is_valid()
-
     return render(request, 'main/no_login/register.html', args)
 
 
-def validate_login(login:str):
-    return True
+def validate_login(login: str):
+    login = login.lower()
+    users = User.objects.all()
+    result = list(filter(lambda x: x.username == login, users))
+    return len(result) == 0 and len(login) > 0
 
 
-def validate_password1(password:str):
-    return True
+def validate_password1(password: str):
+    result = []
+    try:
+        password_validation.validate_password(password)
+    except ValidationError as error:
+        result = error.messages
+    return result
 
 
-def validate_password2(password2:str, password1:str):
-    return True
+def validate_password2(password2: str, password1: str):
+    result = []
+    if password2 != password1:
+        result.append('Пароли не совпадают')
+    return result
+
+
+def validate_email(email: str):
+    pass
 
 
 def user_login(request):
