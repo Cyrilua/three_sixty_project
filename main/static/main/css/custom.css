@@ -115,25 +115,33 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
 }
 
+.reset-pass-block {
+    height: 370px;
+}
+
 .reset-pass-title {
     margin-bottom: 20px;
 }
 
 .reset-pass-subtitle {
-    font-weight: 700;
-    font-size: 15px;
-    line-height: 16px;
-    width: 350px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 14px;
+    width: 450px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 60px;
 }
 
 .reset-pass-email {
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-50%) translateY(50%);
     min-width: 200px;
     width: 200px;
     max-width: 400px;
-    margin: 0 auto 100px;
+    /*margin: 0 auto 100px;*/
 }
 
 .reset-pass-back-home-page {
@@ -150,7 +158,7 @@ h1, h2, h3, h4, h5, h6 {
     bottom: 10px;
 }
 
-.input-buffer{
+.input-buffer {
     position: absolute;
     top: -1000px;
     left: -1000px;
@@ -163,17 +171,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .reset-pass-success-subtitle {
-    font-weight: 700;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 16px;
     line-height: 16px;
-    width: 400px;
-
+    width: 450px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .reset-pass-success-subtitle-part {
     margin-bottom: 35px;
+    padding-left: 15px;
 }
 
 .reset-pass-repeat-letter {
