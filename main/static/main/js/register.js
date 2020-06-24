@@ -15,7 +15,7 @@ $(function () {
                 url: '',
                 type: 'post',
                 data: {
-                    id: $(this).id,
+                    element: $(this).id,
                     username: $(this).val(),
                     csrfmiddlewaretoken: csrf,
                 },
@@ -39,7 +39,7 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 pass1: $(this).val(),
                 csrfmiddlewaretoken: csrf,
             },
@@ -67,7 +67,7 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 pass1: $('#id_password1').val(),
                 pass2: $(this).val(),
                 csrfmiddlewaretoken: csrf,
@@ -91,7 +91,7 @@ $(function () {
                 url: '',
                 type: 'post',
                 data: {
-                    id: $(this).id,
+                    element: $(this).id,
                     email: $(this).val(),
                     csrfmiddlewaretoken: csrf,
                 },
@@ -115,7 +115,7 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 username: $('#id_username').value,
                 pass1: $('#id_password1').val(),
                 pass2: $('#id_password2').val(),
