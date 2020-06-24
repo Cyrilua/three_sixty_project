@@ -15,21 +15,20 @@ $(function () {
                 url: '',
                 type: 'post',
                 data: {
-                    id: $(this).id,
+                    element: $(this).id,
                     username: $(this).val(),
                     csrfmiddlewaretoken: csrf,
                 },
                 success: function (response) {
-                    chooseValidationColor('#id_username', response);
-                    if (response.resultStatus === 'success') {
+                    chooseValidationColor('#id_username', response.usernameStatus);
+                    if (response.usernameStatus === 'success') {
                         required.username = true;
-                    } else if (response.resultStatus === 'error') {
+                    } else if (response.usernameStatus === 'error') {
                         required.username = false;
-                        showMessage(response.resultError);
+                        showMessage(response.usernameError);
                     }
                 }
             });
-            chooseValidationColor("");
             checkBtnRegister(required);
             username = $(this).val();
         }
@@ -40,20 +39,20 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 pass1: $(this).val(),
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_username', response);
-                if (response.resultStatus === 'success') {
+                chooseValidationColor('#id_username', response.password1Status);
+                if (response.password1Status === 'success') {
                     required.pass1 = true;
                     $('#id_password2').prop({
                         'disabled': false,
                     });
-                } else if (response.resultStatus === 'error') {
+                } else if (response.password1Status === 'error') {
                     required.pass1 = false;
-                    showMessage(response.resultError);
+                    showMessage(response.password1Error);
                     $('#id_password2').prop({
                         'disabled': true,
                     });
@@ -68,18 +67,18 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 pass1: $('#id_password1').val(),
                 pass2: $(this).val(),
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_username', response);
-                if (response.resultStatus === 'success') {
+                chooseValidationColor('#id_username', response.password2Status);
+                if (response.password2Status === 'success') {
                     required.pass2 = true;
-                } else if (response.resultStatus === 'error') {
+                } else if (response.password2Status === 'error') {
                     required.pass2 = false;
-                    showMessage(response.resultError);
+                    showMessage(response.password2Error);
                 }
             }
         });
@@ -92,17 +91,17 @@ $(function () {
                 url: '',
                 type: 'post',
                 data: {
-                    id: $(this).id,
+                    element: $(this).id,
                     email: $(this).val(),
                     csrfmiddlewaretoken: csrf,
                 },
                 success: function (response) {
-                    chooseValidationColor('#id_username', response);
-                    if (response.resultStatus === 'success') {
+                    chooseValidationColor('#id_username', response.emailStatus);
+                    if (response.emailStatus === 'success') {
                         required.email = true;
-                    } else if (response.resultStatus === 'error') {
+                    } else if (response.emailStatus === 'error') {
                         required.email = true;
-                        showMessage(response.resultError);
+                        showMessage(response.emailError);
                     }
                 }
             });
@@ -116,7 +115,7 @@ $(function () {
             url: '',
             type: 'post',
             data: {
-                id: $(this).id,
+                element: $(this).id,
                 username: $('#id_username').value,
                 pass1: $('#id_password1').val(),
                 pass2: $('#id_password2').val(),
@@ -128,13 +127,13 @@ $(function () {
 });
 
 
-function chooseValidationColor(id, response) {
-    if (response.resultStatus === 'success') {
+function chooseValidationColor(id, status) {
+    if (status === 'success') {
         if ($(id)[0].classList.contains('error')) {
             $(id)[0].classList.remove('error');
         }
         $(id)[0].classList.add('success');
-    } else if (response.resultStatus === 'error') {
+    } else if (status === 'error') {
         if ($(id)[0].classList.contains('success')) {
             $(id)[0].classList.remove('success');
         }
