@@ -71,7 +71,7 @@
                         <hr>
                         <div class="form-group">
                             <label for="{{ profile_form.city.id_for_label }}">Город</label>
-                            {{ profile_form.city|attr:"placeholder:Ваш город"|attr:"pattern:[A-Z][A-Za-z -]+"|add_class:"form-control" }}
+                            {{ profile_form.city|attr:"placeholder:Ваш город"|attr:"pattern:[А-Я][А-Яа-я -]+"|add_class:"form-control" }}
                         </div>
                         <div style="text-align: right">
                             <input id="btn-register" class="btn btn-primary" type="submit" value="Зарегистрировать" disabled>
