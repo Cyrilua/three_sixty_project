@@ -27,17 +27,11 @@ def user_register(request):
             'title': "Регистрация"}
 
     if request.method == 'POST':
-        print()
-        print('in POST')
-        print()
         result_post = request_post_method_processing(request, args)
         if result_post is not None:
             return result_post
 
     if request.is_ajax():
-        print()
-        print('in ajax')
-        print()
         return request_ajax_processing(request)
 
     return render(request, 'main/no_login/register.html', args)
@@ -48,20 +42,21 @@ def request_ajax_processing(request):
         pass
     if request.method == "POST":
         date = request.POST
+        id_element = date['id']
 
-        if 'username' in date:
+        if id_element == 'id_username':
             errors = validate_login(date['username'])
             return get_result(errors)
 
-        if 'pass2' in date:
+        if id_element == 'id_password2':
             errors = validate_password2(date['pass2'], date['pass1'])  # list
             return get_result(errors)
 
-        if 'pass1' in date:
+        if id_element == 'id_password1':
             errors = validate_password1(date['pass1'])  # list
             return get_result(errors)
 
-        if 'email' in date:
+        if id_element == 'id_email':
             errors = validate_email(date['email'])
             return get_result(errors)
 
@@ -73,7 +68,6 @@ def request_post_method_processing(request, args):
     user_form = UserCreationForm(post)
     profile_form = ProfileForm(post)
     email_form = UserChangeEmailForm(post)
-    print(post)
     if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
         user = user_form.save(commit=False)
         profile = profile_form.save(commit=False)
@@ -85,7 +79,7 @@ def request_post_method_processing(request, args):
         # profile.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
-        auth.login(request, user)
+        # auth.login(request, user)
         return redirect('/')
     else:
         args['user_form'] = user_form
