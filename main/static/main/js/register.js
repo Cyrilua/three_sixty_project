@@ -14,7 +14,7 @@ $(function () {
     $('#id_username').on('input', function () {
         let el = $(this)[0];
         el.value = el.value.toLowerCase();
-        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), el.value);
+        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), 5, 20, el.value);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
             $.ajax({
@@ -115,7 +115,7 @@ $(function () {
     $('#id_name').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -130,7 +130,7 @@ $(function () {
     $('#id_surname').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20,  el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -145,7 +145,7 @@ $(function () {
     $('#id_patronymic').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20,  el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -186,8 +186,8 @@ function formatValue(element) {
     }
 }
 
-function checkFieldValidation(regexp, str) {
-    if (regexp.test(str)) {
+function checkFieldValidation(regexp, minLen, maxLen, str) {
+    if (regexp.test(str) && str.length >= minLen && str.length <= maxLen) {
         return 'success';
     }
     return 'error';
