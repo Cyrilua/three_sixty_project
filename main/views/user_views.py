@@ -20,6 +20,42 @@ from django.core.validators import EmailValidator
 def user_register(request):
     if auth.get_user(request).is_authenticated:
         return redirect('/{}/'.format(get_user_profile(request).id))
+    print(request.method)
+    print(request.is_ajax())
+
+
+    args = {'user_form': UserCreationForm(),
+            'profile_form': ProfileForm(),
+            'email_form': UserChangeEmailForm(),
+            'title': "Регистрация"}
+
+    if request.method == 'POST':
+        print('i am in here')
+        post = copy.deepcopy(request.POST)
+        post['username'] = post['username'].lower()
+        user_form = UserCreationForm(post)
+        profile_form = ProfileForm(post)
+        email_form = UserChangeEmailForm(post)
+
+        if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
+            print('all is good')
+            user = user_form.save(commit=False)
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            user.email = request.POST.get('email', '')
+
+            #    Debug
+            # user.save()
+            # profile.save()
+
+            # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            args['user_form'] = user_form
+            args['profile_form'] = profile_form
+            args['email_form'] = email_form
+
     if request.is_ajax():
         if request.method == "GET":
             pass
@@ -31,37 +67,32 @@ def user_register(request):
                 button_success(date)
 
             if 'username' in date:
-                if validate_login(date['username']):
-                    return JsonResponse({'usernameStatus': 'success'}, status=200)
-                return JsonResponse({'usernameStatus': 'error',
-                                     'usernameError': 'Ошибка о чем то'}, status=200)
+                errors = validate_login(date['username'])
+                print(errors)
+                return get_result(errors)
 
             if 'pass2' in date:
                 errors = validate_password2(date['pass2'], date['pass1']) # list
-                if len(errors) == 0:
-                    return JsonResponse({'password2Status': 'success'}, status=200)
-                return JsonResponse({'password2Status': 'error',
-                                     'password2Error': errors}, status=200)
+                print(errors)
+                return get_result(errors)
 
             if 'pass1' in date:
                 errors = validate_password1(date['pass1'])  # list
-                if len(errors) == 0:
-                    return JsonResponse({'password1Status': 'success'}, status=200)
-                return JsonResponse({'password1Status': 'error',
-                                     'password1Error': errors}, status=200)
+                print(errors)
+                return get_result(errors)
 
             if 'email' in date:
                 errors = validate_email(date['email'])
-                if len(errors) == 0:
-                    return JsonResponse({'emailStatus': 'success'}, status=200)
-                return JsonResponse({'emailStatus': 'error',
-                                     'emailError': errors}, status=200)
+                return get_result(errors)
 
-    args = {'user_form': UserCreationForm(),
-            'profile_form': ProfileForm(),
-            'email_form': UserChangeEmailForm(),
-            'title': "Регистрация"}
     return render(request, 'main/no_login/register.html', args)
+
+
+def get_result(errors: list):
+    if len(errors) == 0:
+        return JsonResponse({'resultStatus': 'success'}, status=200)
+    return JsonResponse({'resultStatus': 'error',
+                         'resultError': errors}, status=200)
 
 
 def is_button_method(date):
@@ -75,11 +106,16 @@ def button_success(date):
 
 
 def validate_login(login: str):
+    result = []
     login = login.lower()
     users = User.objects.all()
-    result = list(filter(lambda x: x.username == login, users))
-    print(result)
-    return len(result) == 0 and len(login) > 0
+    other_users = list(filter(lambda x: x.username == login, users))
+
+    if len(other_users) != 0:
+        result.append('Имя пользователя уже занято')
+    if len(login) < 1:
+        result.append('Введите имя пользователя')
+    return result
 
 
 def validate_password1(password: str):

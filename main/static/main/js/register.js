@@ -39,7 +39,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_password1', response.result1Status);
+                chooseValidationColor('#id_password1', response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.pass1 = true;
                     $('#id_password2').prop({
