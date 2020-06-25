@@ -5,28 +5,38 @@ $(function () {
         'pass1': false,
         'pass2': false,
         'email': false,
+        'name': false,
+        'surname': false,
+        'patronymic': false,
+        'city': false,
     };
 
     $('#id_username').on('input', function () {
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                username: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor('#id_username', response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.username = true;
-                } else if (response.resultStatus === 'error') {
-                    required.username = false;
-                    showMessage(response.resultError);
+        let el = $(this)[0];
+        el.value = el.value.toLowerCase();
+        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), el.value);
+        chooseValidationColor(el, checker);
+        if (checker === 'success') {
+            $.ajax({
+                url: '',
+                type: 'post',
+                data: {
+                    id: $(this)[0].id,
+                    username: $(this)[0].value,
+                    csrfmiddlewaretoken: csrf,
+                },
+                success: function (response) {
+                    chooseValidationColor($('#id_username')[0], response.resultStatus);
+                    if (response.resultStatus === 'success') {
+                        required.username = true;
+                    } else if (response.resultStatus === 'error') {
+                        required.username = false;
+                        showMessage(response.resultError);
+                    }
+                    checkBtnRegister(required);
                 }
-                checkBtnRegister(required);
-            }
-        });
+            });
+        }
     });
 
     $('#id_password1').on('input', function () {
@@ -39,7 +49,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_password1', response.resultStatus);
+                chooseValidationColor($('#id_password1')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.pass1 = true;
                     $('#id_password2').prop({
@@ -68,7 +78,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_password2', response.resultStatus);
+                chooseValidationColor($('#id_password2')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.pass2 = true;
                 } else if (response.resultStatus === 'error') {
@@ -90,7 +100,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor('#id_email', response.resultStatus);
+                chooseValidationColor($('#id_email')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.email = true;
                 } else if (response.resultStatus === 'error') {
@@ -102,38 +112,98 @@ $(function () {
         });
     });
 
-    $('#btn-register').click(function () {
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                username: $('#id_username')[0].value,
-                pass1: $('#id_password1')[0].value,
-                pass2: $('#id_password2')[0].value,
-                email: $('#id_email')[0].value,
-                name: $('#id_name')[0].value,
-                surname: $('#id_surname')[0].value,
-                patronymic: $('#id_patronymic')[0].value,
-                city: $('#id_city')[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-        });
+    $('#id_name').on('input', function () {
+        let el = $(this)[0];
+        formatValue(el);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        console.log(checker);
+        chooseValidationColor(el, checker);
+        if (checker === 'success') {
+            required.name = true;
+        } else if (checker === 'error') {
+            required.name = false;
+            showMessage("ERROR");
+        }
+        checkBtnRegister(required);
     });
+
+    $('#id_surname').on('input', function () {
+        let el = $(this)[0];
+        formatValue(el);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        console.log(checker);
+        chooseValidationColor(el, checker);
+        if (checker === 'success') {
+            required.surname = true;
+        } else if (checker === 'error') {
+            required.surname = false;
+            showMessage("ERROR");
+        }
+        checkBtnRegister(required);
+    });
+
+    $('#id_patronymic').on('input', function () {
+        let el = $(this)[0];
+        formatValue(el);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), el.value);
+        console.log(checker);
+        chooseValidationColor(el, checker);
+        if (checker === 'success') {
+            required.patronymic = true;
+        } else if (checker === 'error') {
+            required.patronymic = false;
+            showMessage("ERROR");
+        }
+        checkBtnRegister(required);
+    });
+
+    // $('#btn-register').click(function () {
+    //     $.ajax({
+    //         url: '',
+    //         type: 'post',
+    //         data: {
+    //             id: $('#btn-register')[0].id,
+    //             username: $('#id_username')[0].value,
+    //             pass1: $('#id_password1')[0].value,
+    //             pass2: $('#id_password2')[0].value,
+    //             email: $('#id_email')[0].value,
+    //             name: $('#id_name')[0].value,
+    //             surname: $('#id_surname')[0].value,
+    //             patronymic: $('#id_patronymic')[0].value,
+    //             city: $('#id_city')[0].value,
+    //             csrfmiddlewaretoken: csrf,
+    //         },
+    //     });
+    // });
 });
 
 
-function chooseValidationColor(id, status) {
+function formatValue(element) {
+    if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
+        let position = element.selectionStart;
+        element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
+        element.selectionStart = element.selectionEnd = position;
+    }
+}
+
+function checkFieldValidation(regexp, str) {
+    if (regexp.test(str)) {
+        return 'success';
+    }
+    return 'error';
+}
+
+function chooseValidationColor(element, status) {
     if (status === 'success') {
-        if ($(id)[0].classList.contains('error')) {
-            $(id)[0].classList.remove('error');
+        if (element.classList.contains('error')) {
+            element.classList.remove('error');
         }
-        $(id)[0].classList.add('success');
+        element.classList.add('success');
     } else if (status === 'error') {
-        if ($(id)[0].classList.contains('success')) {
-            $(id)[0].classList.remove('success');
+        if (element.classList.contains('success')) {
+            element.classList.remove('success');
         }
-        $(id)[0].classList.add('error');
+        element.classList.add('error');
     }
 }
 
