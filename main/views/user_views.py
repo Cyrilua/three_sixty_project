@@ -20,9 +20,6 @@ from django.core.validators import EmailValidator
 def user_register(request):
     if auth.get_user(request).is_authenticated:
         return redirect('/{}/'.format(get_user_profile(request).id))
-    print(request.method)
-    print(request.is_ajax())
-
 
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
@@ -30,62 +27,70 @@ def user_register(request):
             'title': "Регистрация"}
 
     if request.method == 'POST':
-        print('i am in here')
-        post = copy.deepcopy(request.POST)
-        post['username'] = post['username'].lower()
-        user_form = UserCreationForm(post)
-        profile_form = ProfileForm(post)
-        email_form = UserChangeEmailForm(post)
-
-        if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
-            print('all is good')
-            user = user_form.save(commit=False)
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            user.email = request.POST.get('email', '')
-
-            #    Debug
-            # user.save()
-            # profile.save()
-
-            # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
-            auth.login(request, user)
-            return redirect('/')
-        else:
-            args['user_form'] = user_form
-            args['profile_form'] = profile_form
-            args['email_form'] = email_form
+        print()
+        print('in POST')
+        print()
+        result_post = request_post_method_processing(request, args)
+        if result_post is not None:
+            return result_post
 
     if request.is_ajax():
-        if request.method == "GET":
-            pass
-        if request.method == "POST":
-            date = request.POST
-            print(date)
-
-            if is_button_method(date):
-                button_success(date)
-
-            if 'username' in date:
-                errors = validate_login(date['username'])
-                print(errors)
-                return get_result(errors)
-
-            if 'pass2' in date:
-                errors = validate_password2(date['pass2'], date['pass1']) # list
-                print(errors)
-                return get_result(errors)
-
-            if 'pass1' in date:
-                errors = validate_password1(date['pass1'])  # list
-                print(errors)
-                return get_result(errors)
-
-            if 'email' in date:
-                errors = validate_email(date['email'])
-                return get_result(errors)
+        print()
+        print('in ajax')
+        print()
+        return request_ajax_processing(request)
 
     return render(request, 'main/no_login/register.html', args)
+
+
+def request_ajax_processing(request):
+    if request.method == "GET":
+        pass
+    if request.method == "POST":
+        date = request.POST
+
+        if 'username' in date:
+            errors = validate_login(date['username'])
+            return get_result(errors)
+
+        if 'pass2' in date:
+            errors = validate_password2(date['pass2'], date['pass1'])  # list
+            return get_result(errors)
+
+        if 'pass1' in date:
+            errors = validate_password1(date['pass1'])  # list
+            return get_result(errors)
+
+        if 'email' in date:
+            errors = validate_email(date['email'])
+            return get_result(errors)
+
+
+def request_post_method_processing(request, args):
+    post = copy.deepcopy(request.POST)
+    if 'username' in post:
+        post['username'] = post['username'].lower()
+    user_form = UserCreationForm(post)
+    profile_form = ProfileForm(post)
+    email_form = UserChangeEmailForm(post)
+    print(post)
+    if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
+        user = user_form.save(commit=False)
+        profile = profile_form.save(commit=False)
+        profile.user = user
+        user.email = request.POST.get('email', '')
+        print('user has been created')
+        #    Debug
+        # user.save()
+        # profile.save()
+
+        # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
+        auth.login(request, user)
+        return redirect('/')
+    else:
+        args['user_form'] = user_form
+        args['profile_form'] = profile_form
+        args['email_form'] = email_form
 
 
 def get_result(errors: list):
@@ -93,16 +98,6 @@ def get_result(errors: list):
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
-
-
-def is_button_method(date):
-    result = ('username' in date) and ('pass2' in date) and ('pass1' in date) and ('email' in date)
-    return result
-
-
-def button_success(date):
-    user = UserCreationForm(date)
-    print(user.is_valid())
 
 
 def validate_login(login: str):
