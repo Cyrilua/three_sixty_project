@@ -102,20 +102,24 @@ $(function () {
         });
     });
 
-    // $('#btn-register').click(function () {
-    //     $.ajax({
-    //         url: '',
-    //         type: 'post',
-    //         data: {
-    //             id: $(this)[0].id,
-    //             username: $('#id_username')[0].value,
-    //             pass1: $('#id_password1')[0].value,
-    //             pass2: $('#id_password2')[0].value,
-    //             email: $('#id_email')[0].value,
-    //             csrfmiddlewaretoken: csrf,
-    //         },
-    //     })
-    // });
+    $('#btn-register').click(function () {
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                username: $('#id_username')[0].value,
+                pass1: $('#id_password1')[0].value,
+                pass2: $('#id_password2')[0].value,
+                email: $('#id_email')[0].value,
+                name: $('#id_name')[0].value,
+                surname: $('#id_surname')[0].value,
+                patronymic: $('#id_patronymic')[0].value,
+                city: $('#id_city')[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+        });
+    });
 });
 
 
