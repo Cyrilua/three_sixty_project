@@ -8,7 +8,7 @@ $(function () {
         'name': false,
         'surname': false,
         'patronymic': false,
-        'city': false,
+        //'city': false,
     };
 
     $('#id_username').on('input', function () {

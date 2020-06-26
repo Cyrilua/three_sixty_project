@@ -109,7 +109,7 @@
                             <select name="city" id="id_city" class="form-control register-select-city" required>
                                 <option value="" disabled selected hidden>Выберите город</option>
                                 {% for city in cities %}
-                                    <option value="{{ city.id }}">city.name</option>
+                                    <option value="{{ city.id }}">{{ city.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
