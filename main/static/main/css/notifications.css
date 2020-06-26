@@ -52,6 +52,9 @@
     line-height: 14px;
     color: #595757;
     padding-bottom: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .notification-buttons {
