@@ -6,6 +6,45 @@
     margin-left: 11px;
 }
 
+.notifications-scroll-top-btn {
+    padding-bottom: calc(100vh - 330px);
+    margin: 20px 0 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .4s, opacity .4s;
+}
+
+.notifications-scroll-top-btn:hover {
+    cursor: pointer;
+}
+
+.notifications-scroll-top-btn-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.notifications-scroll-top-btn-value {
+    display: flex;
+    /*padding-top: 50px;*/
+    padding-top: calc(100vh - 380px);
+    margin-left: 25px;
+    user-select: none;
+    opacity: .7;
+}
+
+.notifications-scroll-top-btn-text {
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    color: #595757;
+}
+
+.notifications-scroll-top-btn-img {
+    margin: 0 0 0 5px;
+}
+
 .notifications {
     opacity: 1;
     transition: opacity .5s;
