@@ -3,12 +3,15 @@ $(function () {
     let $input = $('.reset-pass-email'),
         $buffer = $('.input-buffer');
 
+    // Авторасширение поля для ввода
     $input.on('input', function () {
         $buffer.text($input.val());
         $input.width($buffer.width());
     });
+
     setTimeout(timeOut, 1000, $('span.reset-pass-timer'));
 
+    // Обратный таймер рестрат письма на email
     function timeOut(timer) {
         if (typeof(time) == 'undefined') {
             time = timer.text();

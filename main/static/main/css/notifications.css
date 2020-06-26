@@ -6,9 +6,19 @@
     margin-left: 11px;
 }
 
+.notifications {
+    opacity: 1;
+    transition: opacity .5s;
+}
+
 .notification {
     display: flex;
     margin-bottom: 10px;
+    opacity: 1;
+    transition: opacity .5s;
+}
+
+.notifications-date {
     opacity: 1;
     transition: opacity .5s;
 }
@@ -24,7 +34,6 @@
 .notifications-date-block {
     color: #a2a2a2;
     margin: 0;
-    /*padding: 20px 0 20px;*/
     position: sticky;
     top: 56px;
     background-color: transparent;
@@ -41,7 +50,9 @@
     border-radius: 30%;
 }
 
-.notification-remove {
+.notification-remove,
+.notifications-remove,
+.notification-date-remove {
     opacity: 0;
 }
 
