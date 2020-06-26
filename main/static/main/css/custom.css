@@ -2,6 +2,11 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
+h1 {
+    font-weight: 600;
+    font-size: 35px;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #ff4868;
