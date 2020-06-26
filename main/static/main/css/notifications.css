@@ -13,6 +13,20 @@
     transition: opacity .5s;
 }
 
+.notifications-date:last-of-type .notification:last-of-type {
+    margin-bottom: 40vh;
+}
+
+.notifications-date-value {
+    color: #595757;
+    margin: 0 0 0;
+    padding: 10px 0 10px;
+    position: sticky;
+    top: 56px;
+    background-color: #ffffff;
+    z-index: 10;
+}
+
 .notification-remove {
     opacity: 0;
 }
