@@ -111,7 +111,9 @@ h1, h2, h3, h4, h5, h6 {
 .footer-link:hover {
 }
 
-input.success {
+input.success,
+select.success
+{
     background-color: #d0ffda;
 }
 
