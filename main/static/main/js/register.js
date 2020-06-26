@@ -8,7 +8,7 @@ $(function () {
         'name': false,
         'surname': false,
         'patronymic': false,
-        'city': true,
+        'city': false,
     };
 
     $('#id_username').on('input', function () {
@@ -154,6 +154,13 @@ $(function () {
             required.patronymic = false;
             showMessage("ERROR");
         }
+        checkBtnRegister(required);
+    });
+
+    $('#id_city').on('change', function () {
+        console.log($(this)[0].value);
+        chooseValidationColor($(this)[0], 'success');
+        required.city = true;
         checkBtnRegister(required);
     });
 
