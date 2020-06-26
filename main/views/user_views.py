@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm
-
+from main.models import City
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
@@ -24,7 +24,8 @@ def user_register(request):
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
             'email_form': UserChangeEmailForm(),
-            'title': "Регистрация"}
+            'title': "Регистрация",
+            'cities': City.objects.all()}
 
     if request.method == 'POST':
         result_post = request_post_method_processing(request, args)
@@ -130,6 +131,17 @@ def validate_email(email: str):
         email_validator(email)
     except ValidationError as error:
         result = error.messages
+    return result
+
+
+def validate_name(name: str, type_name: str):
+    result = []
+    if len(name) < 2:
+        result.append('Минимальная длинна {} - 2 символа'.format(type_name))
+    if name[0].islower():
+        result.append('Первая буква {} должна быть в верхнем регистре'.format(type_name))
+    if not name[1:].islower():
+        result.append('Все, кроме верхней букв должно быть в нижнем регистре')
     return result
 
 

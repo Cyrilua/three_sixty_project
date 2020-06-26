@@ -27,6 +27,16 @@ class Profile (models.Model):
         return 'Profile for user {} {}'.format(self.name, self.surname)
 
 
+class City(models.Model):
+    name = models.CharField(max_length=20)
+
+    class Meta:
+        db_table = 'City'
+
+    def __str__(self):
+        return self.name
+
+
 class CreatedPoll(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
