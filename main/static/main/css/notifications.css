@@ -7,7 +7,6 @@
 }
 
 .notifications-scroll-top-btn {
-    /*width: 200px;*/
     background-color: transparent;
     padding-bottom: calc(100vh - 330px);
     margin: 20px 0 0;
@@ -113,7 +112,7 @@
     width: 535px;
 }
 
-.notification-without-about {
+.notification-text-only-title {
     padding-bottom: 40px;
 }
 

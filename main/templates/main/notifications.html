@@ -1,7 +1,7 @@
 {% extends "main/wrapper.html" %}
 {% load static %}
 {% block sidebar-nav %}
-    {% include 'main/includes/menu.html' with menu_notifications="active" only %}
+    {% include 'main/includes/menu.html' with menu_notifications_all="active" only %}
 {% endblock %}
 
 {% block content-user %}
@@ -9,243 +9,297 @@
     <div class="row">
         <div class="col-md-12">
             <div class="notifications">
-                <div class="notifications-date">
-                    <div class="notifications-date-block text-center">
-                        <p class="notifications-date-value">Сегодня</p>
+
+
+                {% for date in dates %}
+                    <div class="notifications-date">
+                        <div class="notifications-date-block text-center">
+                            <p class="notifications-date-value">date.value</p>
+                        </div>
+                        {% for notification in date.notifications %}
+                            <div class="notification rounded-block">
+                                <div class="notification-icon">
+                                    {% if notification.type == 'newPoll' %}
+                                        <img src="../../static/main/images/newPoll.svg" alt="новый опрос"
+                                             class="notification-icon-img">
+                                    {% elif notification.type == 'pollDone' %}
+                                        <img src="../../static/main/images/pollDone.svg" alt="результаты опроса"
+                                             class="notification-icon-img">
+                                    {% elif notification.type == 'inviteTeam' %}
+                                        <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"
+                                             class="notification-icon-img">
+                                    {% elif notification.type == 'inviteCompany' %}
+                                        <img src="../../static/main/images/inviteCompany.svg"
+                                             alt="Приглашение в компанию" class="notification-icon-img">
+                                    {% endif %}
+                                </div>
+                                <div class="notification-text {% if not notification.text.details and not notifications.text.about %} notification-text-only-title {% endif %}">
+                                    <div class="notification-title">{{ notification.text.title }}</div>
+                                    {% if notification.text.details %}
+                                        <div class="notification-details">
+                                            {{ notification.text.details.title }}: <a
+                                                href="{{ notification.text.details.redirect }}">{{ notification.text.details.subtitle }}</a>
+                                        </div>
+                                    {% endif %}
+                                    {% if notifications.text.about %}
+                                        <div class="notification-about">
+                                            {{ notifications.text.about }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <!-- /.notification-text -->
+                                <div class="notification-buttons">
+                                    <button class="notification-button-cross">
+                                        <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
+                                             class="notification-button-cross-img">
+                                    </button>
+                                    <a href="{{ notification.visit.url }}" class="notification-button btn btn-primary">{{ notification.visit.text }}</a>
+                                </div>
+                            </div>
+                            <!-- /.notification -->
+                        {% endfor %}
                     </div>
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/newPoll.svg" alt="новый опрос"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title">Вам доступен новый опрос “Опрос о чём-то”</div>
-                            <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>
-                            <div class="notification-about">Здесь можно добавить небольшую часть описания опроса...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Пройти опрос</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/newPoll.svg" alt="новый опрос"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title">Вам доступен новый опрос “Опрос о чём-то с очень очень очень
-                                очень
-                                длинным названием”
-                            </div>
-                            <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>
-                            <div class="notification-about">Здесь можно добавить небольшую чаможно добавить небольшую
-                                часть
-                                описаниястьисания опроса, вот до сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Пройти опрос</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                </div>
-                <!-- /.notifications-date -->
-                <div class="notifications-date">
-                    <div class="notifications-date-block text-center">
-                        <p class="notifications-date-value">14.06.2020</p>
-                    </div>
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/pollDone.svg" alt="результаты опроса"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text notification-without-about">
-                            <div class="notification-title">Готовы результаты по вашему опросу “Опрос о чём-то с
-                                названием
-                                вот
-                                до...”
-                            </div>
-                            {#                    <div class="notification-details"></div>#}
-                            {#                    <div class="notification-about"></div>#}
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Смотреть</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/pollDone.svg" alt="результаты опроса"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text notification-without-about">
-                            <div class="notification-title">Готовы результаты по вашему опросу “Опрос о чём-то с очень
-                                очень
-                                очень очень очень очень длинным названием”
-                            </div>
-                            {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
-                            {#                    <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до сюда...</div>#}
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Смотреть</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду
-                                “Крутая
-                                команда”
-                            </div>
-                            <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>
-                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до
-                                сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Вступить</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                </div>
-                <!-- /.notifications-date -->
-                <div class="notifications-date">
-                    <div class="notifications-date-block text-center">
-                        <p class="notifications-date-value">13.06.2020</p>
-                    </div>
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду
-                                “Крутая
-                                команда без компании”
-                            </div>
-                            {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
-                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до
-                                сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Вступить</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду
-                                “Крутая
-                                команда с длинным названием”
-                            </div>
-                            <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>
-                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до
-                                сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Вступить</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/inviteCompany.svg" alt="Приглашение в компанию"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в
-                                компанию
-                                “ООО
-                                Крутая компания”
-                            </div>
-                            {#                    <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>#}
-                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до
-                                сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Вступить</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                    <div class="notification rounded-block">
-                        <div class="notification-icon">
-                            <img src="../../static/main/images/inviteCompany.svg" alt="Приглашение в компанию"
-                                 class="notification-icon-img">
-                        </div>
-                        <div class="notification-text">
-                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в
-                                компанию “ООО Крутая компания с длинным названием”
-                            </div>
-                            {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
-                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до
-                                сюда...
-                            </div>
-                        </div>
-                        <!-- /.notification-text -->
-                        <div class="notification-buttons">
-                            <button class="notification-button-cross">
-                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"
-                                     class="notification-button-cross-img">
-                            </button>
-                            <a href="#" class="notification-button btn btn-primary">Вступить</a>
-                        </div>
-                    </div>
-                    <!-- /.notification -->
-                </div>
-                <!-- /.notifications-date -->
+                    <!-- /.notifications-date -->
+                {% endfor %}
+
+
+                {#                <div class="notifications-date">#}
+                {#                    <div class="notifications-date-block text-center">#}
+                {#                        <p class="notifications-date-value">Сегодня</p>#}
+                {#                    </div>#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/newPoll.svg" alt="новый опрос"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title">Вам доступен новый опрос “Опрос о чём-то”</div>#}
+                {#                            <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую часть описания опроса...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Пройти опрос</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/newPoll.svg" alt="новый опрос"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title">Вам доступен новый опрос “Опрос о чём-то с очень очень очень#}
+                {#                                очень#}
+                {#                                длинным названием”#}
+                {#                            </div>#}
+                {#                            <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую чаможно добавить небольшую#}
+                {#                                часть#}
+                {#                                описаниястьисания опроса, вот до сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Пройти опрос</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                </div>#}
+                {#                <!-- /.notifications-date -->#}
+                {#                <div class="notifications-date">#}
+                {#                    <div class="notifications-date-block text-center">#}
+                {#                        <p class="notifications-date-value">14.06.2020</p>#}
+                {#                    </div>#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/pollDone.svg" alt="результаты опроса"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text notification-text-only-title">#}
+                {#                            <div class="notification-title">Готовы результаты по вашему опросу “Опрос о чём-то с#}
+                {#                                названием#}
+                {#                                вот#}
+                {#                                до...”#}
+                {#                            </div>#}
+                {#                    <div class="notification-details"></div>#}
+                {#                    <div class="notification-about"></div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Смотреть</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/pollDone.svg" alt="результаты опроса"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text notification-text-only-title">#}
+                {#                            <div class="notification-title">Готовы результаты по вашему опросу “Опрос о чём-то с очень#}
+                {#                                очень#}
+                {#                                очень очень очень очень длинным названием”#}
+                {#                            </div>#}
+                {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
+                {#                    <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до сюда...</div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Смотреть</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду#}
+                {#                                “Крутая#}
+                {#                                команда”#}
+                {#                            </div>#}
+                {#                            <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до#}
+                {#                                сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Вступить</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                </div>#}
+                {#                <!-- /.notifications-date -->#}
+                {#                <div class="notifications-date">#}
+                {#                    <div class="notifications-date-block text-center">#}
+                {#                        <p class="notifications-date-value">13.06.2020</p>#}
+                {#                    </div>#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду#}
+                {#                                “Крутая#}
+                {#                                команда без компании”#}
+                {#                            </div>#}
+                {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до#}
+                {#                                сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Вступить</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/inviteTeam.svg" alt="Приглашение в команду"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в команду#}
+                {#                                “Крутая#}
+                {#                                команда с длинным названием”#}
+                {#                            </div>#}
+                {#                            <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до#}
+                {#                                сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Вступить</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/inviteCompany.svg" alt="Приглашение в компанию"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в#}
+                {#                                компанию#}
+                {#                                “ООО#}
+                {#                                Крутая компания”#}
+                {#                            </div>#}
+                {#                    <div class="notification-details">Компания: <a href="#">“ООО Крутая компания”</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до#}
+                {#                                сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Вступить</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                    <div class="notification rounded-block">#}
+                {#                        <div class="notification-icon">#}
+                {#                            <img src="../../static/main/images/inviteCompany.svg" alt="Приглашение в компанию"#}
+                {#                                 class="notification-icon-img">#}
+                {#                        </div>#}
+                {#                        <div class="notification-text">#}
+                {#                            <div class="notification-title"><a href="#">Иванов Иван Иванович</a> пригласил вас в#}
+                {#                                компанию “ООО Крутая компания с длинным названием”#}
+                {#                            </div>#}
+                {#                    <div class="notification-details">Цель опроса: <a href="#">Иванов Иван Иванович</a></div>#}
+                {#                            <div class="notification-about">Здесь можно добавить небольшую частьисания опроса, вот до#}
+                {#                                сюда...#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <!-- /.notification-text -->#}
+                {#                        <div class="notification-buttons">#}
+                {#                            <button class="notification-button-cross">#}
+                {#                                <img src="../../static/main/images/cross.svg" alt="закрыть уведомление"#}
+                {#                                     class="notification-button-cross-img">#}
+                {#                            </button>#}
+                {#                            <a href="#" class="notification-button btn btn-primary">Вступить</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                    <!-- /.notification -->#}
+                {#                </div>#}
+                {#                <!-- /.notifications-date -->#}
             </div>
             <!-- /.notifications -->
             {#            <div class="nothing"></div>#}
