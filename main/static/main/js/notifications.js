@@ -21,37 +21,38 @@ $(function () {
 
     // Удаление одного уведомления
     $('.notification-button-cross').click(function () {
-        let el = $(this)[0].parentElement.parentElement;
-        let elemsDate = el.parentElement;
-        let elemsDateChildren = cleanChildren(Array.from(elemsDate.children), 'notification-remove');
-        if (elemsDateChildren.length === 2) {
-            el.classList.add('notification-remove');
-            elemsDate.classList.add('notification-date-remove');
+        let notif = $(this)[0].parentElement.parentElement;
+        let dateNotifs = notif.parentElement;
+        let cleanDateNotifs = cleanChildren(Array.from(dateNotifs.children), 'notification-remove');
+        if (cleanDateNotifs.length === 1) {
+            let notifsDateNotifs = dateNotifs.parentElement;
+            notif.classList.add('notification-remove');
+            notifsDateNotifs.classList.add('notifications-date-remove');
             setTimeout(function () {
-                elemsDate.remove();
+                notifsDateNotifs.remove();
             }, 500);
             let notifications = $('.notifications')[0];
-            if (cleanChildren(Array.from(notifications.children), 'notification-date-remove').length === 0) {
+            if (cleanChildren(Array.from(notifications.children), 'notifications-date-remove').length === 0) {
                 setTimeout(function () {
                     notifications.remove();
                 }, 500);
             }
         } else {
-            el.classList.add('notification-remove');
+            notif.classList.add('notification-remove');
             setTimeout(function () {
-                el.remove();
+                notif.remove();
             }, 500);
         }
     });
 
-    // Удаление всех уведомлений
-    $('.notifications-delete-all').click(function () {
-        let el = $('.notifications');
-        el.addClass('notifications-remove');
-        setTimeout(function () {
-            el.remove();
-        }, 500);
-    });
+    // // Удаление всех уведомлений
+    // $('.notifications-delete-all').click(function () {
+    //     let el = $('.notifications');
+    //     el.addClass('notifications-remove');
+    //     setTimeout(function () {
+    //         el.remove();
+    //     }, 500);
+    // });
 
     // Очистка дочерних элемантов от ненужных
     function cleanChildren(old, cleanClass) {
