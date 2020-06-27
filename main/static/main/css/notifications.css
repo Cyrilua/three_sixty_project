@@ -30,7 +30,7 @@
 .notifications-scroll-top-btn-value {
     display: flex;
     /*padding-top: 50px;*/
-    padding-top: calc(100vh - 380px);
+    padding-top: calc(100vh - 320px);
     margin-left: 25px;
     user-select: none;
     opacity: .7;
