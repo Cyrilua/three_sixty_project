@@ -14,7 +14,7 @@ class Profile (models.Model):
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     groups = models.ManyToManyField('Group', null=True)
-    city = models.CharField(max_length=20)
+    city = models.ForeignKey('City', on_delete=models.CASCADE, null=True)
     objects = models.Manager()
     last_poll = models.OneToOneField('Poll', on_delete=models.CASCADE, null=True)
     answers_sum = models.IntegerField(default=0)
