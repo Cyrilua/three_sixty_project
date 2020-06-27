@@ -115,7 +115,7 @@ $(function () {
     $('#id_name').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20, el.value);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 2, 20, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -130,7 +130,7 @@ $(function () {
     $('#id_surname').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20,  el.value);
+        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 2, 20,  el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
