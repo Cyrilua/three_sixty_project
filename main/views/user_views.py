@@ -75,8 +75,6 @@ def request_post_method_processing(request, args):
         profile.user = user
         user.email = request.POST.get('email', '')
         user.save()
-        profile.save()
-
         profile.city = City.objects.get(id=int(request.POST.get('city')))
         profile.save()
 
