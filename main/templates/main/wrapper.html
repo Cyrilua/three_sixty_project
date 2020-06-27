@@ -4,6 +4,7 @@
     <!-- Подключаемые файлы, метатеги, название страницы -->
 
     {% load static %}
+{#    <link rel="stylesheet" href="{% static 'main/css/preloader.css' %}">#}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
@@ -26,6 +27,13 @@
 
 </head>
 <body>
+
+{#<div class="preloader">#}
+{#    <div class="loader"></div>#}
+{#    <!-- /.loader -->#}
+{#</div>#}
+{#<!-- /.preloader -->#}
+
 <!-- Тело сайта, отвечает за вывод на страницу-->
 <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back"
         style="padding: 8px 0px;">
@@ -94,6 +102,7 @@
     <script type="text/javascript" src={% static 'main/js/custom.js' %}></script>
     {% block scripts %}
     {% endblock scripts %}
+{#    <script type="text/javascript" src={% static 'main/js/preloader.js' %}></script>#}
 </div>
 <!-- /.scripts -->
 
