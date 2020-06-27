@@ -120,30 +120,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer-link:hover {
 }
 
-<<<<<<< HEAD
 
 .flex-center {
     justify-content: center;
-}
-
-=======
-input.success,
-select.success,
-input.success:focus,
-select.success:focus {
-    background-color: #d0ffda;
-}
-
-input.error,
-input.error:focus {
-    background-color: #ffd0d0;
-}
-
-i.required {
-    transform: scale(0.65);
-    color: #b21f2d;
-}
-
-.register-select-city:invalid {
-    color: gray;
 }

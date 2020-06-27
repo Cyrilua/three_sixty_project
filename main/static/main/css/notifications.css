@@ -7,15 +7,17 @@
 }
 
 .notifications-scroll-top-btn {
+    background-color: transparent;
     padding-bottom: calc(100vh - 330px);
     margin: 20px 0 0;
     visibility: hidden;
     opacity: 0;
-    transition: visibility .4s, opacity .4s;
+    transition: visibility .4s, opacity .4s, background-color .3s;
 }
 
 .notifications-scroll-top-btn:hover {
     cursor: pointer;
+    background-color: #fcfcfc;
 }
 
 .notifications-scroll-top-btn-visible {
@@ -73,6 +75,7 @@
 .notifications-date-block {
     color: #a2a2a2;
     margin: 0;
+    padding: 10px 0 10px;
     position: sticky;
     top: 56px;
     background-color: transparent;
@@ -82,11 +85,11 @@
 }
 
 .notifications-date-value {
-    width: 140px;
-    padding: 15px 0;
+    width: 110px;
+    padding: 10px 0;
     margin: 0;
     background-color: #ffffff;
-    border-radius: 30%;
+    border-radius: 10%;
 }
 
 .notification-remove,

@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
-    <script type="text/javascript" src={% static 'main/js/jquery.com_jquery-3.4.1.js' %}></script>
-    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script type="text/javascript" src={% static 'main/js/custom.js' %}></script>
     <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/awesome/css/all.css' %}">
     {% block css %}
@@ -92,13 +88,14 @@
 </div>
 
 <div class="scripts">
-    {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/jquery.com_jquery-3.4.1.js' %}></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script type="text/javascript" src={% static 'main/js/custom.js' %}></script>
+    {% block scripts %}
     {% endblock scripts %}
 </div>
+<!-- /.scripts -->
 
 {#<footer>#}
 {#    {% block footer %}#}
