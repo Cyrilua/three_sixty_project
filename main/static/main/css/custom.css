@@ -112,12 +112,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 input.success,
-select.success
-{
+select.success,
+input.success:focus,
+select.success:focus {
     background-color: #d0ffda;
 }
 
-input.error {
+input.error,
+input.error:focus {
     background-color: #ffd0d0;
 }
 
