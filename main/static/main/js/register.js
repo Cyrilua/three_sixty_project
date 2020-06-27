@@ -115,7 +115,7 @@ $(function () {
     $('#id_name').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 2, 20, el.value);
+        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -130,7 +130,7 @@ $(function () {
     $('#id_surname').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 2, 20,  el.value);
+        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20,  el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -145,7 +145,7 @@ $(function () {
     $('#id_patronymic').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Яа-я][а-я]+'), 5, 20,  el.value);
+        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 5, 20,  el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -185,6 +185,7 @@ $(function () {
 });
 
 
+// Первая буква заглавная, остальные строчные
 function formatValue(element) {
     if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
         let position = element.selectionStart;
@@ -193,6 +194,7 @@ function formatValue(element) {
     }
 }
 
+// Проверка полей на правильность ввода
 function checkFieldValidation(regexp, minLen, maxLen, str) {
     if (regexp.test(str) && str.length >= minLen && str.length <= maxLen) {
         return 'success';
@@ -200,6 +202,7 @@ function checkFieldValidation(regexp, minLen, maxLen, str) {
     return 'error';
 }
 
+// Выбор цвета поля (отображение валидности полей)
 function chooseValidationColor(element, status) {
     if (status === 'success') {
         if (element.classList.contains('error')) {
@@ -218,6 +221,7 @@ function showMessage(message) {
     //TODO Вывод ошибок при валидации
 }
 
+// Проверка, что все поля заполнены и кнопку "Зарегистрироваться" можно нажать
 function checkBtnRegister(required) {
     if (isTrueAllinObj(required)) {
         $('#btn-register').prop({
