@@ -7,7 +7,7 @@
 }
 
 .reset-pass-subtitle {
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
     line-height: 18px;
     width: 450px;
@@ -54,7 +54,7 @@
 }
 
 .reset-pass-success-subtitle {
-    font-weight: 600;
+    font-weight: 500;
     font-size: 16px;
     line-height: 18px;
     width: 450px;
@@ -68,7 +68,7 @@
 }
 
 .reset-pass-repeat-letter {
-    margin-bottom: 70px;
+
 }
 
 .reset-pass-back {
