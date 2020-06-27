@@ -1,6 +1,7 @@
 from django.contrib import auth
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 from main.models import Profile, CompanyHR
 

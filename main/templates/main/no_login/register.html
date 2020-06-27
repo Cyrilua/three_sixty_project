@@ -1,5 +1,5 @@
 {% extends "main/wrapper.html" %}
-
+{% load static %}
 {% load widget_tweaks %}
 
 {% block header-nav %}
@@ -17,7 +17,8 @@
                     <div class="col-md-6">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="{{ user_form.username.id_for_label }}">Логин</label>
+                            <label for="{{ user_form.username.id_for_label }}">Логин<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ user_form.username|attr:"placeholder:Придумайте логин"|add_class:"form-control" }}
                             {% if user_form.username.errors %}
                                 {% for error in user_form.username.errors %}
@@ -28,7 +29,8 @@
                             {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="{{ user_form.password1.id_for_label }}">Пароль</label>
+                            <label for="{{ user_form.password1.id_for_label }}">Пароль<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ user_form.password1|attr:"placeholder:Придумайте пароль"|add_class:"form-control" }}
                             {% if user_form.password1.errors %}
                                 {% for error in user_form.password1.errors %}
@@ -39,8 +41,9 @@
                             {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="{{ user_form.password2.id_for_label }}">Повторите пароль</label>
-                            {{ user_form.password2|attr:"placeholder:Повторите пароль"|add_class:"form-control" }}
+                            <label for="{{ user_form.password2.id_for_label }}">Повторите пароль<i
+                                    class="fas fa-asterisk required"></i></label>
+                            {{ user_form.password2|attr:"placeholder:Повторите пароль"|attr:"disabled:disabled"|add_class:"form-control" }}
                             {% if user_form.password2.errors %}
                                 {% for error in user_form.password2.errors %}
                                     <div class="alert alert-danger" role="alert">
@@ -49,32 +52,42 @@
                                 {% endfor %}
                             {% endif %}
                         </div>
-                    <hr>
+                        <hr>
                         <div class="form-group">
-                            <label for="{{ email_form.email.id_for_label }}">E-mail</label>
+                            <label for="{{ email_form.email.id_for_label }}">E-mail<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ email_form.email|attr:"placeholder:Ваш e-mail"|add_class:"form-control" }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="{{ profile_form.name.id_for_label }}">Имя</label>
+                            <label for="{{ profile_form.name.id_for_label }}">Имя<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ profile_form.name|attr:"placeholder:Ваше имя"|add_class:"form-control" }}
                         </div>
                         <div class="form-group">
-                            <label for="{{ profile_form.surname.id_for_label }}">Фамилия</label>
+                            <label for="{{ profile_form.surname.id_for_label }}">Фамилия<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ profile_form.surname|attr:"placeholder:Ваша фамилия"|add_class:"form-control" }}
                         </div>
                         <div class="form-group">
-                            <label for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>
+                            <label for="{{ profile_form.patronymic.id_for_label }}">Отчество<i
+                                    class="fas fa-asterisk required"></i></label>
                             {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|add_class:"form-control" }}
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="{{ profile_form.city.id_for_label }}">Город</label>
-                            {{ profile_form.city|attr:"placeholder:Ваш город"|add_class:"form-control" }}
+                            <label for="id_city">Город<i class="fas fa-asterisk required"></i></label>
+                            <select name="city" id="id_city" class="form-control register-select-city" required>
+                                <option value="" disabled selected hidden>Выберите город</option>
+                                {% for city in cities %}
+                                    <option value="{{ city.id }}">{{ city.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div style="text-align: right">
-                            <input class="btn btn-primary" type="submit" value="Зарегистрировать"/>
+                            <input id="btn-register" class="btn btn-primary" type="submit" value="Зарегистрировать"
+                                   disabled>
                         </div>
                     </div>
                 </div>
@@ -84,74 +97,6 @@
 
 {% endblock %}
 
-{#{% block c %}#}
-{##}
-{#    <div class="row">#}
-{#        <div class="col-md-4"></div>#}
-{#        <div class="col-md-4 rounded-block">#}
-{#            <h1 style="text-align: center">Регистрация</h1>#}
-{##}
-{#            <div>#}
-{#                <form method="post" action="">#}
-{#                    {% csrf_token %}#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ user_form.username.id_for_label }}">Логин</label>#}
-{#                        {{ user_form.username|attr:"placeholder:Придумайте логин"|add_class:"form-control" }}#}
-{#                        {% if user_form.username.errors %}#}
-{#                            {% for error in user_form.username.errors %}#}
-{#                                <div class="alert alert-danger" role="alert">#}
-{#                                    <b>{{ error }}</b>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ user_form.password1.id_for_label }}">Пароль</label>#}
-{#                        {{ user_form.password1|attr:"placeholder:Придумайте пароль"|add_class:"form-control" }}#}
-{#                        {% if user_form.password1.errors %}#}
-{#                            {% for error in user_form.password1.errors %}#}
-{#                                <div class="alert alert-danger" role="alert">#}
-{#                                    <b>{{ error }}</b>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ user_form.password2.id_for_label }}">Повторите пароль</label>#}
-{#                        {{ user_form.password2|attr:"placeholder:Повторите пароль"|add_class:"form-control" }}#}
-{#                        {% if user_form.password2.errors %}#}
-{#                            {% for error in user_form.password2.errors %}#}
-{#                                <div class="alert alert-danger" role="alert">#}
-{#                                    <b>{{ error }}</b>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                    <hr>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ profile_form.name.id_for_label }}">Имя</label>#}
-{#                        {{ profile_form.name|attr:"placeholder:Ваше имя"|add_class:"form-control" }}#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ profile_form.surname.id_for_label }}">Фамилия</label>#}
-{#                        {{ profile_form.surname|attr:"placeholder:Ваша фамилия"|add_class:"form-control" }}#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>#}
-{#                        {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|add_class:"form-control" }}#}
-{#                    </div>#}
-{#                    <div class="form-group">#}
-{#                        <label for="{{ profile_form.city.id_for_label }}">Город</label>#}
-{#                        {{ profile_form.city|attr:"placeholder:Ваш город"|add_class:"form-control" }}#}
-{#                    </div>#}
-{#                    <hr>#}
-{#                    <div style="text-align: right">#}
-{#                        <input class="btn btn-primary" type="submit" value="Зарегистрировать"/>#}
-{#                    </div>#}
-{#                </form>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-md-4"></div>#}
-{#    </div>#}
-{##}
-{#{% endblock %}#}
+{% block scripts %}
+    <script src="{% static 'main/js/register.js' %}"></script>
+{% endblock %}
