@@ -14,7 +14,7 @@ $(function () {
     $('#id_username').on('input', function () {
         let el = $(this)[0];
         el.value = el.value.toLowerCase();
-        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), 5, 20, el.value);
+        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), 3, 20, el.value);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
             $.ajax({

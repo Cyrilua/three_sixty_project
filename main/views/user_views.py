@@ -74,8 +74,6 @@ def request_post_method_processing(request, args):
         profile = profile_form.save(commit=False)
         profile.user = user
         user.email = request.POST.get('email', '')
-        print('user has been created')
-        #    Debug
         # user.save()
         # profile.save()
 
@@ -105,6 +103,13 @@ def validate_login(login: str):
         result.append('Имя пользователя уже занято')
     if len(login) < 1:
         result.append('Введите имя пользователя')
+    if len(login) < 3:
+        result.append('Минимальная длинна логина - 3 символа')
+
+    reg = re.compile('[^a-z0-9_]')
+    if len(reg.sub('', login)) != len(login):
+        result.append('Логин содержит запрещенные символы')
+
     return result
 
 
@@ -131,17 +136,6 @@ def validate_email(email: str):
         email_validator(email)
     except ValidationError as error:
         result = error.messages
-    return result
-
-
-def validate_name(name: str, type_name: str):
-    result = []
-    if len(name) < 2:
-        result.append('Минимальная длинна {} - 2 символа'.format(type_name))
-    if name[0].islower():
-        result.append('Первая буква {} должна быть в верхнем регистре'.format(type_name))
-    if not name[1:].islower():
-        result.append('Все, кроме верхней букв должно быть в нижнем регистре')
     return result
 
 
