@@ -9,11 +9,14 @@ $(function () {
         $input.width($buffer.width());
     });
 
-    setTimeout(timeOut, 1000, $('span.reset-pass-timer'));
+    // Обратный таймер - рестрат письма на email
+    let el = $('span.reset-pass-timer');
+    if (el.length) {
+        setTimeout(timeOut, 1000, el);
+    }
 
-    // Обратный таймер рестрат письма на email
     function timeOut(timer) {
-        if (typeof(time) == 'undefined') {
+        if (typeof (time) == 'undefined') {
             time = timer.text();
         }
         if (timer.text() > 0) {
