@@ -74,11 +74,14 @@ def request_post_method_processing(request, args):
         profile = profile_form.save(commit=False)
         profile.user = user
         user.email = request.POST.get('email', '')
-        # user.save()
-        # profile.save()
+        user.save()
+        profile.save()
+
+        profile.city = City.objects.get(id=int(request.POST.get('city')))
+        profile.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
-        # auth.login(request, user)
+        auth.login(request, user)
         return redirect('/')
     else:
         args['user_form'] = user_form
