@@ -29,5 +29,12 @@ $(function () {
             });
         }
     }
+
+    // Очистка памяти
+    $('#logo, #login, #logout, #register').click(function () {
+        if (sessionStorage.getItem('emailForResetPass').length){
+            sessionStorage.removeItem('emailForResetPass');
+        }
+    })
 });
 

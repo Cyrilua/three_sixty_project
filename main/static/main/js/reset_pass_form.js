@@ -8,5 +8,12 @@ $(function () {
         $input.width($buffer.width());
         sessionStorage.setItem('emailForResetPass', $input.val());
     });
+
+    // Очистка памяти
+    $('#logo, #login, #logout, #register').click(function () {
+        if (sessionStorage.getItem('emailForResetPass').length){
+            sessionStorage.removeItem('emailForResetPass');
+        }
+    })
 });
 
