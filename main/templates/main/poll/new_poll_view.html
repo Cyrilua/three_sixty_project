@@ -1,59 +1,153 @@
 {% extends 'main/wrapper.html' %}
+{% load static %}
 
 {% block sidebar-nav %}
     {% include 'main/includes/menu.html' with menu_polls="active" only %}
 {% endblock %}
 
 {% block content-user %}
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <div class="row">
-                <div class="col-md-12 rounded-block">
-                    <h1 style="text-align: center">Создание опросов</h1>
-                    <hr>
-                    <div>
-                        <div style="text-align: center">
-                            <label style="">Выберите коллектив, где вы хотите создать опрос</label>
+
+    <div class="row justify-content-center">
+        <div class="col-md-12 rounded-block ">
+            <div class="new-poll-title-block text-center">
+                <h1 class="new-poll-title">Создание опроса</h1>
+                <span class="new-poll-subtitle">Выберите коллектив, в котором вы хотите провести опрос</span>
+            </div>
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-md-8 new-poll-selection">
+                    <div class="new-poll-selection-search-block">
+                        <input id="search" type="text" class="new-poll-selection-search"
+                               placeholder="Начните вводить название..."><label
+                            for="search" class="new-poll-selection-search-label"></label>
+                    </div>
+                    <div class="new-poll-selection-list unselectable" id="">
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name new-poll-selection-list-item-company"
+                                   for="1">
+                                <input type="checkbox" class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="1"
+                                       value="ООО Крутая Компания">ООО Крутая Компания
+                            </label>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="list-group">
-                                    <li class="list-group-item"><b>Команда</b></li>
-                                    {% if teams %}
-                                        {% for team in teams %}
-                                            <a href="{{ team.url }}" class="list-group-item list-group-item-action">{{ team.name }}</a>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li class="list-group-item">
-                                            <span style="color:grey;"><i>Вы не состоите ни в одной команде</i></span>
-                                        </li>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="list-group">
-                                    <li class="list-group-item"><b>Компания</b></li>
-                                    {% if companys %}
-                                        {% for company in companys %}
-                                            <a href="{{ company.url }}" class="list-group-item list-group-item-action">{{ company.name }}</a>
-                                        {% endfor %}
-                                    {% else %}
-                                        <li class="list-group-item">
-                                            <span style="color:grey;"><i>Вы не состоите ни в одной компании</i></span>
-                                        </li>
-                                    {% endif %}
-                                </div>
-                            </div>
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="2">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="2"
+                                       value="Крутая команда">Крутая команда
+                            </label>
+                        </div>
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="3">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="3"
+                                       value="Очень крутая команда">Очень крутая команда
+                            </label>
+                        </div>
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="4">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="4"
+                                       value="Лучшая команда">Лучшая команда
+                            </label>
+                        </div>
+
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="5">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="5"
+                                       value="Крутая команда">Крутая команда
+                            </label>
+                        </div>
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="6">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="6"
+                                       value="Очень крутая команда">Очень крутая команда
+                            </label>
+                        </div>
+                        <div class="new-poll-selection-list-item">
+                            <label class="new-poll-selection-list-item-name" for="7">
+                                <input type="checkbox"
+                                       class="new-poll-selection-list-item-checkbox"
+                                       name="list" id="7"
+                                       value="Лучшая команда">Лучшая команда
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="new-poll-to-step-2">Далее</button>
         </div>
-        <div class="col-md-1"></div>
     </div>
+
+
+
+
+
+
+    {#    <div class="row">#}
+    {#        <div class="col-md-1"></div>#}
+    {#        <div class="col-md-10">#}
+    {#            <div class="row">#}
+    {#                <div class="col-md-12 rounded-block">#}
+    {#                    <h1 style="text-align: center">Создание опросов</h1>#}
+    {#                    <hr>#}
+    {#                    <div>#}
+    {#                        <div style="text-align: center">#}
+    {#                            <label style="">Выберите коллектив, где вы хотите создать опрос</label>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-md-6">#}
+    {#                                <div class="list-group">#}
+    {#                                    <li class="list-group-item"><b>Команда</b></li>#}
+    {#                                    {% if teams %}#}
+    {#                                        {% for team in teams %}#}
+    {#                                            <a href="{{ team.url }}" class="list-group-item list-group-item-action">{{ team.name }}</a>#}
+    {#                                        {% endfor %}#}
+    {#                                    {% else %}#}
+    {#                                        <li class="list-group-item">#}
+    {#                                            <span style="color:grey;"><i>Вы не состоите ни в одной команде</i></span>#}
+    {#                                        </li>#}
+    {#                                    {% endif %}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                            <div class="col-md-6">#}
+    {#                                <div class="list-group">#}
+    {#                                    <li class="list-group-item"><b>Компания</b></li>#}
+    {#                                    {% if companys %}#}
+    {#                                        {% for company in companys %}#}
+    {#                                            <a href="{{ company.url }}" class="list-group-item list-group-item-action">{{ company.name }}</a>#}
+    {#                                        {% endfor %}#}
+    {#                                    {% else %}#}
+    {#                                        <li class="list-group-item">#}
+    {#                                            <span style="color:grey;"><i>Вы не состоите ни в одной компании</i></span>#}
+    {#                                        </li>#}
+    {#                                    {% endif %}#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="col-md-1"></div>#}
+    {#    </div>#}
 {% endblock %}
 
 {% block sidebar-nav-right %}
     {% include 'main/includes/menu_polls_view_right.html' with menu_new_poll_view="active" %}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/css/new_poll_view.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src={% static 'main/js/new_poll_view.js' %}></script>
 {% endblock %}
