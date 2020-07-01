@@ -773,6 +773,11 @@ def build_list_results_polls(request):
     return result
 
 
+from django.http import JsonResponse, HttpResponse
+from django.template import Context, loader
+
+
+
 def new_poll_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -781,6 +786,15 @@ def new_poll_view(request):
         'companys': build_company(request),
         'teams': build_teams(request)
     }
+
+    if request.is_ajax():
+        template = loader.render_to_string('main/password/password_change.html')
+        print()
+        print(template)
+        print(type(template))
+        print()
+        return JsonResponse({'newHTML': template }, status=200)
+        #return HttpResponse(template.render())
 
     return render(request, 'main/poll/new_poll_view.html', args)
 
