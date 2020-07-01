@@ -15,6 +15,37 @@ from main.models import City
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
 from django.core.validators import EmailValidator
+from django.views.generic import View
+
+
+class UserRegister(View):
+    def get(self, request):
+        args = {'user_form': UserCreationForm(),
+                'profile_form': ProfileForm(),
+                'email_form': UserChangeEmailForm(),
+                'title': "Регистрация",
+                'cities': City.objects.all()}
+        return render(request, 'main/no_login/register.html', args)
+
+    def post(self, request):
+        if auth.get_user(request).is_authenticated:
+            return redirect('/{}/'.format(get_user_profile(request).id))
+
+        args = {'user_form': UserCreationForm(),
+                'profile_form': ProfileForm(),
+                'email_form': UserChangeEmailForm(),
+                'title': "Регистрация",
+                'cities': City.objects.all()}
+
+        if request.method == 'POST':
+            result_post = request_post_method_processing(request, args)
+            if result_post is not None:
+                return result_post
+
+        if request.is_ajax():
+            return request_ajax_processing(request)
+
+        return render(request, 'main/no_login/register.html', args)
 
 
 def user_register(request):

@@ -9,7 +9,8 @@ from .views import profile_views, user_views, teams_views, company_views, poll_v
 app_name = "main"
 urlpatterns = [
                   # Регистрация
-                  path('register/', user_views.user_register, name='register'),
+                  path('register/', user_views.UserRegister.as_view(), name='register'),
+                  #path('register/', user_views.user_register, name='register'),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
