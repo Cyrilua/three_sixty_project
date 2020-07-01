@@ -788,13 +788,8 @@ def new_poll_view(request):
     }
 
     if request.is_ajax():
-        template = loader.render_to_string('main/password/password_change.html')
-        print()
-        print(template)
-        print(type(template))
-        print()
-        return JsonResponse({'newHTML': template }, status=200)
-        #return HttpResponse(template.render())
+        template = loader.render_to_string('main/tets.html', {'el': ['первый', 'второй', 'третий']})
+        return JsonResponse({'newHTML': template}, status=200)
 
     return render(request, 'main/poll/new_poll_view.html', args)
 
