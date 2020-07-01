@@ -8,17 +8,19 @@
 {% block content-user %}
 
     <div class="row justify-content-center">
-        <div class="col-md-12 rounded-block ">
+        <div class="col-md-12">
             {% csrf_token %}
             <div class="new_poll-container">
-                <div class="new_poll-title">
-                    <h1 class="new_poll-title">Создание опроса</h1>
-                </div>
-                <div class="new_poll-create">
-                    <button class="new_poll-create-btn">Составить новый опрос</button>
-                </div>
-                <div class="new_poll-saved">
-                    список сохраненных
+                <div class="new_poll rounded-block">
+                    <div class="new_poll-title">
+                        <h1 class="new_poll-title">Создание опроса</h1>
+                    </div>
+                    <div class="new_poll-create">
+                        <button class="new_poll-create-btn">Составить новый опрос</button>
+                    </div>
+                    <div class="new_poll-saved">
+                        список сохраненных
+                    </div>
                 </div>
             </div>
 
