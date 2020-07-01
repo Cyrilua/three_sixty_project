@@ -9,80 +9,88 @@
 
     <div class="row justify-content-center">
         <div class="col-md-12 rounded-block ">
-            <div class="new-poll-title-block text-center">
-                <h1 class="new-poll-title">Создание опроса</h1>
-                <span class="new-poll-subtitle">Выберите коллектив, в котором вы хотите провести опрос</span>
-            </div>
-            {% csrf_token %}
-            <div class="row justify-content-center">
-                <div class="col-md-8 new-poll-selection">
-                    <div class="new-poll-selection-search-block">
-                        <input id="search" type="text" class="new-poll-selection-search"
-                               placeholder="Начните вводить название..."><label
-                            for="search" class="new-poll-selection-search-label"></label>
-                    </div>
-                    <div class="new-poll-selection-list unselectable" id="">
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name new-poll-selection-list-item-company"
-                                   for="1">
-                                <input type="checkbox" class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="1"
-                                       value="ООО Крутая Компания">ООО Крутая Компания
-                            </label>
-                        </div>
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="2">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="2"
-                                       value="Крутая команда">Крутая команда
-                            </label>
-                        </div>
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="3">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="3"
-                                       value="Очень крутая команда">Очень крутая команда
-                            </label>
-                        </div>
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="4">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="4"
-                                       value="Лучшая команда">Лучшая команда
-                            </label>
-                        </div>
 
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="5">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="5"
-                                       value="Крутая команда">Крутая команда
-                            </label>
-                        </div>
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="6">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="6"
-                                       value="Очень крутая команда">Очень крутая команда
-                            </label>
-                        </div>
-                        <div class="new-poll-selection-list-item">
-                            <label class="new-poll-selection-list-item-name" for="7">
-                                <input type="checkbox"
-                                       class="new-poll-selection-list-item-checkbox"
-                                       name="list" id="7"
-                                       value="Лучшая команда">Лучшая команда
-                            </label>
-                        </div>
-                    </div>
-                </div>
+
+            <div class="new-poll">
+                {% csrf_token %}
+                <button id="test">Click</button>
             </div>
-            <button class="new-poll-to-step-2">Далее</button>
+
+
+{#            <div class="new-poll-title-block text-center">#}
+{#                <h1 class="new-poll-title">Создание опроса</h1>#}
+{#                <span class="new-poll-subtitle">Выберите коллектив, в котором вы хотите провести опрос</span>#}
+{#            </div>#}
+{#            {% csrf_token %}#}
+{#            <div class="row justify-content-center">#}
+{#                <div class="col-md-8 new-poll-selection">#}
+{#                    <div class="new-poll-selection-search-block">#}
+{#                        <input id="search" type="text" class="new-poll-selection-search"#}
+{#                               placeholder="Начните вводить название..."><label#}
+{#                            for="search" class="new-poll-selection-search-label"></label>#}
+{#                    </div>#}
+{#                    <div class="new-poll-selection-list unselectable" id="">#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name new-poll-selection-list-item-company"#}
+{#                                   for="1">#}
+{#                                <input type="checkbox" class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="1"#}
+{#                                       value="ООО Крутая Компания">ООО Крутая Компания#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="2">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="2"#}
+{#                                       value="Крутая команда">Крутая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="3">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="3"#}
+{#                                       value="Очень крутая команда">Очень крутая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="4">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="4"#}
+{#                                       value="Лучшая команда">Лучшая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{##}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="5">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="5"#}
+{#                                       value="Крутая команда">Крутая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="6">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="6"#}
+{#                                       value="Очень крутая команда">Очень крутая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <div class="new-poll-selection-list-item">#}
+{#                            <label class="new-poll-selection-list-item-name" for="7">#}
+{#                                <input type="checkbox"#}
+{#                                       class="new-poll-selection-list-item-checkbox"#}
+{#                                       name="list" id="7"#}
+{#                                       value="Лучшая команда">Лучшая команда#}
+{#                            </label>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <button class="new-poll-to-step-2">Далее</button>#}
         </div>
     </div>
 
