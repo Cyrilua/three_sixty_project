@@ -10,6 +10,7 @@ $(function () {
             },
             success: function (response) {
                 div.innerHTML = response.newHTML;
+                console.log(response.newHTML);
             }
         })
     })
