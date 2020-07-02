@@ -1,1 +1,25 @@
-<div class="right-menu">Правая колонка</div>
+{% load static %}
+
+<div class="row">
+    <div class="col-md-12 navbar-light position-fixed">
+        <ul class="navbar-nav flex-column">
+            <li class="{{ menu_walkthrough_polls_view }} user-sidebar-item">
+                <a class="nav-link" href="{% url 'main:walkthrough_polls_view' %}">Прохождение опросов</a>
+            </li>
+            <li class="{{ menu_results_polls_view }} user-sidebar-item">
+                <a class="nav-link" href="{% url 'main:results_polls_view' %}">Результаты опросов</a>
+            </li>
+            <li class="{{ menu_new_poll_view }} user-sidebar-item">
+                <a class="nav-link" href="{% url 'main:new_poll_view' %}">Создание опроса</a>
+            </li>
+        </ul>
+
+        <div class="scroll-top-btn">
+            <div class="scroll-top-btn-value">
+                <p class="scroll-top-btn-text">Наверх</p>
+                <img src="{% static 'main/images/upArrow.svg' %}" alt="Наверх"
+                     class="scroll-top-btn-img">
+            </div>
+        </div>
+    </div>
+</div>
