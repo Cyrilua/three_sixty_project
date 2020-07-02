@@ -777,9 +777,6 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context, loader
 
 
-
-
-
 def new_poll_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
