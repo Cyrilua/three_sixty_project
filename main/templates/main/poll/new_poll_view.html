@@ -10,13 +10,13 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             {% csrf_token %}
-            <div class="new_poll-container">
+            <div class="new_poll-container" id="new_poll-container">
                 <div class="new_poll rounded-block">
                     <div class="new_poll-title">
                         <h1 class="new_poll-title">Создание опроса</h1>
                     </div>
                     <div class="new_poll-create">
-                        <button class="new_poll-create-btn">Составить новый опрос</button>
+                        <a href="{% url 'main:poll_editor' %}" class="new_poll-create-btn" target="_blankp">Составить новый опрос</a>
                     </div>
                     <div class="new_poll-saved">
                         список сохраненных
