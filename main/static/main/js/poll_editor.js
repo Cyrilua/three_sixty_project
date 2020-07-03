@@ -1,38 +1,58 @@
 $(function () {
     const poll_questions = $('.poll_questions');
+    const body = $('body');
+
+    // Настройка полей сразу после загрузки
+    $('.poll-head-name').height(function () {
+        countLines($(this)[0], 0);
+    });
+    $('.poll-head-about').height(function () {
+        countLines($(this)[0], 4);
+    });
+    $('.question-main-name').height(function () {
+        countLines($(this)[0], 2);
+    });
+    $('.question-main-answer').height(function () {
+        countLines($(this)[0], 4);
+    });
+    $('.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max').val(function () {
+        $(this)[0].value = $(this)[0].value.replace(/[^\d]/g, '');
+    });
 
     // Удаление опроса
-    $('.poll-head-navigation-cancel').click(function (event) {
+    body.on('click', '.poll-head-remove', function (event) {
         event.preventDefault();
         if (confirm('Вы действительно хотите удалить данный опрос?')) {
             alert('Удаление данного опроса');
-            close();
+            location.href = '/poll/';
         }
     });
 
-    // Настройки для полей
-    $('textarea').on('keydown', function (e) {
+    // Отмена Enter в textarea
+    body.on('keydown', 'textarea', function (e) {
         if (e.keyCode === 13)
             e.preventDefault();
     });
-    $('.poll-head-name').on('input', function () {
+
+    // Настройки для полей
+    body.on('input', '.poll-head-name',  function () {
         countLines($(this)[0], 0);
     });
-    $('.poll-head-about').on('input', function () {
+    body.on('input', '.poll-head-about', function () {
         countLines($(this)[0], 4);
     });
-    $('.question-main-name').on('input', function () {
+    body.on('input', '.question-main-name', function () {
         countLines($(this)[0], 2);
     });
-    $('.question-main-answer').on('input', function () {
+    body.on('input', '.question-main-answer', function () {
         countLines($(this)[0], 4);
     });
-    $('.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max').on('input', function () {
+    body.on('input', '.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max',  function () {
         $(this)[0].value = $(this)[0].value.replace(/[^\d]/g, '');
     });
 
     // Смена типа вопроса
-    $('body').on('input', '.question-settings-type_question', function () {
+    body.on('input', '.question-settings-type_question', function () {
         let question = $(this).parent().parent();
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
@@ -59,7 +79,7 @@ $(function () {
             if (lastType === 'question-checkbox') {
                 let answers = questionMainAnswers.children('.question-main-answers-answer');
                 answers.children('.question-checkbox-main-answer').addClass('d-none');
-                answers.children('.question-radio-main-answer-number').removeClass('d-none');
+                answers.children('.question-radio-main-answer').removeClass('d-none');
             } else {
                 questionMainAnswers.children().remove();
                 createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
@@ -68,7 +88,7 @@ $(function () {
             question.addClass('question-checkbox');
             if (lastType === 'question-radio') {
                 let answers = questionMainAnswers.children('.question-main-answers-answer');
-                answers.children('.question-radio-main-answer-number').addClass('d-none');
+                answers.children('.question-radio-main-answer').addClass('d-none');
                 answers.children('.question-checkbox-main-answer').removeClass('d-none');
             } else {
                 questionMainAnswers.children().remove();
@@ -91,8 +111,13 @@ $(function () {
         }
     });
 
+    // Добавление варианта ответа
+    body.on('click', '.question-main-add', function () {
+        let questions = $(this).
+    });
+
     // Добавление вопроса
-    $('.poll_questions-navigate-add_question').click(function () {
+    body.on('click', '.poll_questions-navigate-add_question', function () {
         createNewQuestion(poll_questions);
     });
 
@@ -110,7 +135,6 @@ function createRadioOrCheckbox(type, questionMainAnswers, questionMain) {
     let questionMainAnswersAnswer = document.createElement('div');
     questionMainAnswersAnswer.classList.add('question-main-answers-answer');
     let questionRadioMainAnswerNumber = document.createElement('span');
-    questionRadioMainAnswerNumber.textContent = '1)';
     let questionCheckboxMainAnswer = document.createElement('span');
     let questionMainAnswer = document.createElement('textarea');
     questionMainAnswer.classList.add('question-main-answer');
@@ -126,13 +150,13 @@ function createRadioOrCheckbox(type, questionMainAnswers, questionMain) {
     questionMainAnswerRemoveImg.src = '../../static/main/images/cross.svg';
     questionMainAnswerRemoveImg.alt = '';
     if (type === 'radio') {
-        questionRadioMainAnswerNumber.classList.add('question-radio-main-answer-number');
+        questionRadioMainAnswerNumber.classList.add('question-radio-main-answer');
         let questionCheckboxMainAnswerClassList = questionCheckboxMainAnswer.classList;
         questionCheckboxMainAnswerClassList.add('question-checkbox-main-answer');
         questionCheckboxMainAnswerClassList.add('d-none');
     } else if (type === 'checkbox') {
         let questionRadioMainAnswerNumberClassList = questionRadioMainAnswerNumber.classList;
-        questionRadioMainAnswerNumberClassList.add('question-radio-main-answer-number');
+        questionRadioMainAnswerNumberClassList.add('question-radio-main-answer');
         questionRadioMainAnswerNumberClassList.add('d-none');
         questionCheckboxMainAnswer.classList.add('question-checkbox-main-answer');
     } else {
@@ -258,7 +282,7 @@ function createNewQuestion(poll_questions) {
     questionNavigateRemove_question.classList.add('question-navigate-remove_question');
     let questionNavigateRemove_questionImg = document.createElement('img');
     questionNavigateRemove_questionImg.classList.add('question-navigate-remove_question-img');
-    questionNavigateRemove_questionImg.src = '../../static/main/images/remove.svg';
+    questionNavigateRemove_questionImg.src = '../../static/main/images/remove2.svg';
     questionNavigateRemove_questionImg.alt = '';
 
     questionNavigateRemove_question.append(questionNavigateRemove_questionImg);

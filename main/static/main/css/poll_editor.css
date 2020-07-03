@@ -73,7 +73,8 @@ textarea:focus {
 }
 
 .question-main {
-    width: 590px;
+    /*width: 590px;*/
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -81,8 +82,9 @@ textarea:focus {
     font-weight: normal;
     font-size: 18px;
     line-height: 21px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     height: 23px;
+    width: 580px;
 }
 
 .question-main-answers {
@@ -96,26 +98,28 @@ textarea:focus {
 
 .question-main-answers-answer {
     display: flex;
-    position: relative;
+    /*position: relative;*/
     align-items: center;
-    height: 24px;
-    margin-bottom: 15px;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
 .question-main-answer {
-    width: 575px;
-    position: relative;
+    width: 95%;
+    /*position: relative;*/
     height: 23px;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
     border-bottom: 1px solid #595757;
-    margin-left: 10px;
+    margin: 0 10px 0;
 }
 
-.question-radio-main-answer-number {
-    font-weight: normal;
-    font-size: 16px;
+.question-radio-main-answer {
+    width: 13px;
+    height: 13px;
+    border: 1px solid #000000;
+    border-radius: 50%;
     z-index: 2;
 }
 
@@ -156,6 +160,10 @@ textarea:focus {
 
 .question-main-answer-remove-img {
     width: 15px;
+}
+
+.question-main-add {
+    padding-left: 25px;
 }
 
 .question-settings {
@@ -216,7 +224,7 @@ textarea:focus {
     line-height: 19px;
     height: 20px;
     width: 50px;
-    border-bottom: 1px solid rgb(177, 177, 177);
+    /*border-bottom: 1px solid rgb(177, 177, 177);*/
 }
 
 .question-main-answers-answer-range-settings-step-box {
