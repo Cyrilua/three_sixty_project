@@ -1,8 +1,11 @@
 $(function () {
+
+    // TODO Загрузка и отображение данных с сервера
+
     const poll_questions = $('.poll_questions');
     const body = $('body');
 
-    // Настройка полей сразу после загрузки
+    // Настройка элементов сразу после загрузки
     $('.poll-head-name').height(function () {
         countLines($(this)[0], 0);
     });
@@ -17,6 +20,16 @@ $(function () {
     });
     $('.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max').val(function () {
         $(this)[0].value = $(this)[0].value.replace(/[^\d]/g, '');
+    });
+    $('.question-main-answer-remove').height(function () {
+        if ($(this).parent().parent().children('.question-main-answers-answer').length === 1) {
+            $(this).addClass('invisible');
+        }
+    });
+    $('.poll-head-navigation-next-page').height(function () {
+        if (poll_questions.children('.question').length === 0) {
+            $(this).addClass('disabled');
+        }
     });
 
     // Удаление опроса
@@ -35,7 +48,7 @@ $(function () {
     });
 
     // Настройки для полей
-    body.on('input', '.poll-head-name',  function () {
+    body.on('input', '.poll-head-name', function () {
         countLines($(this)[0], 0);
     });
     body.on('input', '.poll-head-about', function () {
@@ -47,7 +60,7 @@ $(function () {
     body.on('input', '.question-main-answer', function () {
         countLines($(this)[0], 4);
     });
-    body.on('input', '.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max',  function () {
+    body.on('input', '.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max', function () {
         $(this)[0].value = $(this)[0].value.replace(/[^\d]/g, '');
     });
 
@@ -112,17 +125,62 @@ $(function () {
     });
 
     // Добавление варианта ответа
-    body.on('click', '.question-main-add', function () {
-        let questions = $(this).
+    body.on('click', '.question-main-add', function (event) {
+        event.preventDefault();
+        let answers = $(this).prev('.question-main-answers');
+        let type;
+        let question = $(this).parent().parent();
+        if (question.hasClass('question-radio')) {
+            type = 'radio';
+        } else if (question.hasClass('question-checkbox')) {
+            type = 'checkbox';
+        } else {
+            console.log('Добавление варианта ответа ERROR!!!');
+        }
+        createNewAnswer(type, answers);
+        let otherAnswers = answers.children('.question-main-answers-answer');
+        if (otherAnswers.length === 2) {
+            otherAnswers.children('.question-main-answer-remove').first().removeClass('invisible');
+        }
+    });
+
+    // Удаление варианта ответа
+    body.on('click', '.question-main-answer-remove', function () {
+        let answer = $(this).parent();
+        let answers = answer.parent();
+        if (answers.children('.question-main-answers-answer').length > 1){
+            answer.remove();
+            let otherAnswers = answers.children('.question-main-answers-answer');
+            if (otherAnswers.length <= 1) {
+                otherAnswers.children('.question-main-answer-remove').addClass('invisible');
+            }
+        } else {
+            console.log('Удаление варианта ответа ERROR!!!')
+        }
+    });
+
+    // Удаление вопроса
+    body.on('click', '.question-navigate-remove_question', function () {
+        let question = $(this).parent().parent();
+        let questions = question.parent().children('.question');
+        question.remove();
+        if (questions.length - 1 === 0) {
+            $('.poll-head-navigation-next-page').addClass('disabled');
+        }
     });
 
     // Добавление вопроса
     body.on('click', '.poll_questions-navigate-add_question', function () {
         createNewQuestion(poll_questions);
+        if ($('.poll_questions').length === 1) {
+            $('.poll-head-navigation-next-page').removeClass('disabled');
+        }
     });
 
     // Перемещение вопросов
-    poll_questions.sortable();
+    poll_questions.sortable({
+        handle: '.question-move-platform',
+    });
 });
 
 // Автоувеличение полей ввода
@@ -132,40 +190,7 @@ function countLines(el, delta) {
 }
 
 function createRadioOrCheckbox(type, questionMainAnswers, questionMain) {
-    let questionMainAnswersAnswer = document.createElement('div');
-    questionMainAnswersAnswer.classList.add('question-main-answers-answer');
-    let questionRadioMainAnswerNumber = document.createElement('span');
-    let questionCheckboxMainAnswer = document.createElement('span');
-    let questionMainAnswer = document.createElement('textarea');
-    questionMainAnswer.classList.add('question-main-answer');
-    questionMainAnswer.name = '';
-    questionMainAnswer.id = '';
-    questionMainAnswer.rows = 1;
-    questionMainAnswer.placeholder = 'Вариант 1';
-    questionMainAnswer.setAttribute('data-number_answer', '1');
-    let questionMainAnswerRemove = document.createElement('button');
-    questionMainAnswerRemove.classList.add('question-main-answer-remove');
-    let questionMainAnswerRemoveImg = document.createElement('img');
-    questionMainAnswerRemoveImg.classList.add('question-main-answer-remove-img');
-    questionMainAnswerRemoveImg.src = '../../static/main/images/cross.svg';
-    questionMainAnswerRemoveImg.alt = '';
-    if (type === 'radio') {
-        questionRadioMainAnswerNumber.classList.add('question-radio-main-answer');
-        let questionCheckboxMainAnswerClassList = questionCheckboxMainAnswer.classList;
-        questionCheckboxMainAnswerClassList.add('question-checkbox-main-answer');
-        questionCheckboxMainAnswerClassList.add('d-none');
-    } else if (type === 'checkbox') {
-        let questionRadioMainAnswerNumberClassList = questionRadioMainAnswerNumber.classList;
-        questionRadioMainAnswerNumberClassList.add('question-radio-main-answer');
-        questionRadioMainAnswerNumberClassList.add('d-none');
-        questionCheckboxMainAnswer.classList.add('question-checkbox-main-answer');
-    } else {
-        console.log('createRadioOrCheckbox ERROR!!!');
-        return;
-    }
-    questionMainAnswerRemove.prepend(questionMainAnswerRemoveImg);
-    questionMainAnswersAnswer.append(questionRadioMainAnswerNumber, questionCheckboxMainAnswer, questionMainAnswer, questionMainAnswerRemove);
-    questionMainAnswers.append(questionMainAnswersAnswer);
+    createNewAnswer(type, questionMainAnswers);
     createBtnAddAnswer(questionMain);
 }
 
@@ -258,17 +283,14 @@ function createNewQuestion(poll_questions) {
     let questionSettingsType_questionOption2 = document.createElement('option');
     questionSettingsType_questionOption2.value = 'checkbox';
     questionSettingsType_questionOption2.classList.add('question-settings-type_question-option');
-    // questionSettingsType_questionOption2.selected=false;
     questionSettingsType_questionOption2.text = 'Несколько из списка';
     let questionSettingsType_questionOption3 = document.createElement('option');
     questionSettingsType_questionOption3.value = 'range';
     questionSettingsType_questionOption3.classList.add('question-settings-type_question-option');
-    // questionSettingsType_questionOption3.selected=false;
     questionSettingsType_questionOption3.text = 'Шкала';
     let questionSettingsType_questionOption4 = document.createElement('option');
     questionSettingsType_questionOption4.value = 'open_question';
     questionSettingsType_questionOption4.classList.add('question-settings-type_question-option');
-    // questionSettingsType_questionOption4.selected=false;
     questionSettingsType_questionOption4.text = 'Открытый вопрос';
 
     questionSettingsType_question.append(questionSettingsType_questionOption1, questionSettingsType_questionOption2, questionSettingsType_questionOption3, questionSettingsType_questionOption4);
@@ -290,4 +312,44 @@ function createNewQuestion(poll_questions) {
 
     question.append(questionMain, questionSettings, questionNavigate);
     poll_questions.append(question);
+}
+
+function createNewAnswer(type, questionMainAnswers) {
+    let questionMainAnswersAnswer = document.createElement('div');
+    questionMainAnswersAnswer.classList.add('question-main-answers-answer');
+    let questionRadioMainAnswer = document.createElement('span');
+    let questionCheckboxMainAnswer = document.createElement('span');
+    let questionMainAnswer = document.createElement('textarea');
+    questionMainAnswer.classList.add('question-main-answer');
+    questionMainAnswer.name = '';
+    questionMainAnswer.id = '';
+    questionMainAnswer.rows = 1;
+    questionMainAnswer.placeholder = 'Вариант 1';
+    questionMainAnswer.setAttribute('data-number_answer', '1');
+    let questionMainAnswerRemove = document.createElement('button');
+    questionMainAnswerRemove.classList.add('question-main-answer-remove');
+    if ($(questionMainAnswers).children('.question-main-answers-answer').length === 0) {
+        questionMainAnswerRemove.classList.add('invisible');
+    }
+    let questionMainAnswerRemoveImg = document.createElement('img');
+    questionMainAnswerRemoveImg.classList.add('question-main-answer-remove-img');
+    questionMainAnswerRemoveImg.src = '../../static/main/images/cross.svg';
+    questionMainAnswerRemoveImg.alt = '';
+    if (type === 'radio') {
+        questionRadioMainAnswer.classList.add('question-radio-main-answer');
+        let questionCheckboxMainAnswerClassList = questionCheckboxMainAnswer.classList;
+        questionCheckboxMainAnswerClassList.add('question-checkbox-main-answer');
+        questionCheckboxMainAnswerClassList.add('d-none');
+    } else if (type === 'checkbox') {
+        let questionRadioMainAnswerClassList = questionRadioMainAnswer.classList;
+        questionRadioMainAnswerClassList.add('question-radio-main-answer');
+        questionRadioMainAnswerClassList.add('d-none');
+        questionCheckboxMainAnswer.classList.add('question-checkbox-main-answer');
+    } else {
+        console.log('createRadioOrCheckbox ERROR!!!');
+        return;
+    }
+    questionMainAnswerRemove.prepend(questionMainAnswerRemoveImg);
+    questionMainAnswersAnswer.append(questionRadioMainAnswer, questionCheckboxMainAnswer, questionMainAnswer, questionMainAnswerRemove);
+    questionMainAnswers.append(questionMainAnswersAnswer);
 }

@@ -72,6 +72,36 @@ textarea:focus {
     position: relative;
 }
 
+.question-move {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.question-move-platform {
+    width: 22px;
+    height: 11px;
+    margin: 0 auto 0;
+    padding: 0;
+    position: relative;
+    top: -20px;
+}
+
+.question-move-platform:hover {
+    cursor: move;
+}
+
+.question-move-platform-img {
+    width: 22px;
+    height: 11px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .question-main {
     /*width: 590px;*/
     width: 100%;
@@ -168,7 +198,7 @@ textarea:focus {
 
 .question-settings {
     position: absolute;
-    top: 15px;
+    top: 25px;
     right: 15px;
 }
 
