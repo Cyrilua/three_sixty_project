@@ -32,7 +32,7 @@ $(function () {
     });
 
     // Смена типа вопроса
-    $('.question-settings-type_question').on('input', function () {
+    $('body').on('input', '.question-settings-type_question', function () {
         let question = $(this).parent().parent();
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
@@ -98,13 +98,13 @@ $(function () {
 
     // Перемещение вопросов
     poll_questions.sortable();
-
-    // Автоувеличение полей ввода
-    function countLines(el, delta) {
-        el.style.height = '1px';
-        el.style.height = (el.scrollHeight + delta) + 'px';
-    }
 });
+
+// Автоувеличение полей ввода
+function countLines(el, delta) {
+    el.style.height = '1px';
+    el.style.height = (el.scrollHeight + delta) + 'px';
+}
 
 function createRadioOrCheckbox(type, questionMainAnswers, questionMain) {
     let questionMainAnswersAnswer = document.createElement('div');

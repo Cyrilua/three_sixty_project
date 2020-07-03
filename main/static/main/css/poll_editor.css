@@ -260,3 +260,8 @@ textarea:focus {
 .question-main-answers-answer-range-settings-min:-moz-placeholder {
     text-indent: 13px;
 }
+
+.question-settings-type_question {
+    border: none;
+    background-color: transparent;
+}
