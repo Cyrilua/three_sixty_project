@@ -66,6 +66,7 @@ $(function () {
 
     // Смена типа вопроса
     body.on('input', '.question-settings-type_question', function () {
+        console.log('click')
         let question = $(this).parent().parent();
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
@@ -148,7 +149,7 @@ $(function () {
     body.on('click', '.question-main-answer-remove', function () {
         let answer = $(this).parent();
         let answers = answer.parent();
-        if (answers.children('.question-main-answers-answer').length > 1){
+        if (answers.children('.question-main-answers-answer').length > 1) {
             answer.remove();
             let otherAnswers = answers.children('.question-main-answers-answer');
             if (otherAnswers.length <= 1) {
@@ -255,6 +256,19 @@ function createNewQuestion(poll_questions) {
     questionClassList.add('question');
     questionClassList.add('question-radio');
     questionClassList.add('rounded-block');
+
+    let questionMove = document.createElement('div');
+    questionMove.classList.add('question-move');
+    let questionMovePlatform = document.createElement('div');
+    questionMovePlatform.classList.add('question-move-platform');
+    let questionMovePlatformImg = document.createElement('img');
+    questionMovePlatformImg.classList.add('question-move-platform-img');
+    questionMovePlatformImg.alt = '';
+    questionMovePlatformImg.src = '../../static/main/images/move.svg';
+
+    questionMovePlatform.append(questionMovePlatformImg);
+    questionMove.append(questionMovePlatform);
+
     let questionMain = document.createElement('div');
     questionMain.classList.add('question-main');
     let questionMainName = document.createElement('textarea');
@@ -310,7 +324,7 @@ function createNewQuestion(poll_questions) {
     questionNavigateRemove_question.append(questionNavigateRemove_questionImg);
     questionNavigate.append(questionNavigateRemove_question);
 
-    question.append(questionMain, questionSettings, questionNavigate);
+    question.append(questionMove, questionMain, questionSettings, questionNavigate);
     poll_questions.append(question);
 }
 

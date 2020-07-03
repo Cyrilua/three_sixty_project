@@ -303,3 +303,7 @@ textarea:focus {
     border: none;
     background-color: transparent;
 }
+
+.question-settings-type_question:focus {
+    outline: none;
+}
