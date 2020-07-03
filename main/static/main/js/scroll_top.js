@@ -1,7 +1,6 @@
 $(function () {
     // Скролл вверх
     $('.scroll-top-btn').click(function () {
-        console.log('asd');
         $('body, html').animate({scrollTop: 0}, 400);
     });
     $(window).scroll(function () {
