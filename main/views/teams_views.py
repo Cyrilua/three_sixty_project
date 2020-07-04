@@ -31,7 +31,7 @@ def create_team(request):
 
             profile.groups.add(new_team)
             profile.groups.add()
-        return redirect('/communications/')
+        return redirect('/')
     return render(request, 'main/teams/add_new_team.html', args)
 
 
@@ -55,7 +55,7 @@ def connect_to_team_to_key(request):
         else:
             profile.groups.add(group)
             profile.save()
-            return redirect('/communications/')
+            return redirect('/')
     return render(request, 'main/teams/connect_to_team.html', args)
 
 
@@ -80,6 +80,7 @@ def connect_to_team_to_link(request, key):
         return redirect("/groups/{}/".format(group.id))
 
 
+#Возможно не понадобится
 def teams_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -113,7 +114,7 @@ def team_user_view(request, group_id):
             raise Exception()
     except:
         #args['error'] = "Данной группы не существует"
-        return redirect('/communications/')
+        return redirect('/')
 
     args['users'] = group.profile_set.all()
 

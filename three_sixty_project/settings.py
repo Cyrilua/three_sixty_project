@@ -73,12 +73,16 @@ WSGI_APPLICATION = 'three_sixty_project.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'postgresql': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'project360',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
+DATABASES['default'] = DATABASES['postgresql']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -120,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-try:
-    from .local_settingssss import *
-except ImportError:
-    from .prod_settings import *
+#try:
+#    from .local_settingssss import *
+#except ImportError:
+#    from .prod_settings import *
