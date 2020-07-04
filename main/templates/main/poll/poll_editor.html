@@ -17,7 +17,7 @@
                         <textarea class="poll-head-about" name="" id="" rows="1" placeholder="Описание">Вот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
                     </div>
                     <a href="{% url 'main:new_poll_view' %}" class="poll-head-remove">Отменить создание</a>
-                    <div class="poll-head-navigation">
+                    <div class="poll-head-navigation text-right">
                         <button class="poll-head-navigation-next-page btn btn-primary">Далее</button>
                     </div>
                 </div>
@@ -204,7 +204,7 @@
                                                 <span class="question-main-answers-answer-range-settings-before-step">С шагом:</span>
                                                 <input type="text"
                                                        class="question-main-answers-answer-range-settings-step"
-                                                       value='1' maxlength="5" autocomplete="off">
+                                                       maxlength="5" autocomplete="off" value="1" >
                                             </div>
                                             <input type="text" class="question-main-answers-answer-range-settings-max"
                                                    placeholder="До" maxlength="5" value="">
