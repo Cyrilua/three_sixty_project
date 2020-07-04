@@ -781,7 +781,7 @@ def new_poll_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {
-        'title': "Быстрый доступ к созданию опросов",
+        'title': "Опросы",
         'companys': build_company(request),
         'teams': build_teams(request)
     }

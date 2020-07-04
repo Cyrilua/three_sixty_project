@@ -1,25 +1,17 @@
 $(function () {
+
+
+
     // const csrf = $('input[name="csrfmiddlewaretoken"]').val();
-    const container = $('.new_poll-container');
-    const rightMenu = $('.new_poll-menu-right');
+    // window.history.pushState({
+    //     "pageContainer": container[0].outerHTML,
+    //     'rightMenu': rightMenu[0].outerHTML,
+    //     "pageTitle": history.
+    // }, "Опросы", '/poll/');
     // const search = $('#search');
     // const listItems = $('.new-poll-selection-list').children()
     // const listItemValues = listItems.children('.new-poll-selection-list-item-name').children('.new-poll-selection-list-item-checkbox');
     // const btnNext = $('.new-poll-to-step-2')[0];
-    $('.new_poll-create-btn').click(function () {
-        $.ajax({
-            url: '/poll/editor/',
-            type: 'get',
-            data: {
-
-            },
-            success: function (response) {
-                container[0].innerHTML = response.pageContainer;
-                rightMenu[0].innerHTML = response.rightMenu;
-            }
-        });
-    });
-
 
 
     // // Поиск
