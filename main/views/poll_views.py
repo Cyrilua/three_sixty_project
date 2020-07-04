@@ -777,7 +777,6 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context, loader
 
 
-
 def new_poll_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -788,8 +787,13 @@ def new_poll_view(request):
     }
 
     if request.is_ajax():
-        template = loader.render_to_string('main/tets.html', {'el': ['первый', 'второй', 'третий']})
-        return JsonResponse({'newHTML': template}, status=200)
+        pageContainer = loader.render_to_string('main/poll/polll_editor.html')
+        rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
+        data = {
+            'pageContainer': pageContainer,
+            'rightMenu': rightMenu
+        }
+        return JsonResponse(data, status=200)
 
     return render(request, 'main/poll/new_poll_view.html', args)
 
