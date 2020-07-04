@@ -1,3 +1,7 @@
+const maxAnswers = 5;
+const maxQuestions = 5;
+const timeAnimation = 200;
+
 $(function () {
 
     // TODO Загрузка и отображение данных с сервера
@@ -28,8 +32,21 @@ $(function () {
     });
     $('.poll-head-navigation-next-page').height(function () {
         if (poll_questions.children('.question').length === 0) {
-            $(this).addClass('disabled');
+            $(this).attr({
+                'disabled': true,
+            });
         }
+    });
+
+    // Сохранить опрос в Избранных
+    $('.poll_questions-navigate-save_in_favorite').click(function (event) {
+        event.preventDefault();
+        // TODO Сохранение в избранных
+    });
+
+    // Перейти к отправке опроса
+    body.on('click', '.poll-head-navigation-next-page', function () {
+        console.log('click')
     });
 
     // Удаление опроса
@@ -148,10 +165,33 @@ $(function () {
     body.on('click', '.question-main-answer-remove', function () {
         let answer = $(this).parent();
         let answers = answer.parent();
-        if (answers.children('.question-main-answers-answer').length > 1) {
-            answer.remove();
+        let countAnswers = answers.children('.question-main-answers-answer').length;
+        if (countAnswers > 1) {
+            let currentAnswer = answer;
+            let currentAnswerNumber = parseInt(currentAnswer.children('.question-main-answer').attr('placeholder').split(' ')[1]);
+            if (countAnswers !== currentAnswerNumber) {
+                let nextAnswer = currentAnswer.next();
+                let nextAnswerInput = nextAnswer.children('.question-main-answer');
+                let nextAnswerNumber = parseInt(nextAnswerInput.attr('placeholder').split(' ')[1]);
+                while (nextAnswer.length !== 0) {
+                    nextAnswerInput.attr({'placeholder': 'Вариант ' + currentAnswerNumber});
+                    currentAnswer = nextAnswer;
+                    currentAnswerNumber = nextAnswerNumber;
+                    nextAnswer = nextAnswer.next();
+                    if (nextAnswer.length !== 0) {
+                        nextAnswerInput = nextAnswer.children('.question-main-answer');
+                        nextAnswerNumber = parseInt(nextAnswerInput.attr('placeholder').split(' ')[1]);
+                    }
+                }
+            }
+            if (countAnswers === maxAnswers) {
+                answers.parent().children('.question-main-add').fadeIn(timeAnimation);
+            }
+            answer.fadeOut(timeAnimation, function () {
+                $(this).remove();
+            });
             let otherAnswers = answers.children('.question-main-answers-answer');
-            if (otherAnswers.length <= 1) {
+            if (otherAnswers.length - 1 <= 1) {
                 otherAnswers.children('.question-main-answer-remove').addClass('invisible');
             }
         } else {
@@ -162,24 +202,45 @@ $(function () {
     // Удаление вопроса
     body.on('click', '.question-navigate-remove_question', function () {
         let question = $(this).parent().parent();
-        let questions = question.parent().children('.question');
+        let countQuestions = question.parent().children('.question').length;
         question.remove();
-        if (questions.length - 1 === 0) {
-            $('.poll-head-navigation-next-page').addClass('disabled');
+        if (countQuestions - 1 === 0) {
+            let btnToNextStep = $('.poll-head-navigation-next-page');
+            btnToNextStep.attr({
+                'disabled': true,
+            });
+        }
+        if (countQuestions === maxQuestions) {
+            $('.poll_questions-navigate-add_question').attr({
+                'disabled': false,
+            });
         }
     });
 
     // Добавление вопроса
     body.on('click', '.poll_questions-navigate-add_question', function () {
         createNewQuestion(poll_questions);
-        if ($('.poll_questions').length === 1) {
-            $('.poll-head-navigation-next-page').removeClass('disabled');
+        let countQuestions = $('.poll_questions').children('.question').length;
+        if (countQuestions === 1) {
+            $('.poll-head-navigation-next-page').attr({
+                'disabled': false,
+            });
+        }
+        if (countQuestions === maxQuestions) {
+            $(this).attr({
+                'disabled': true,
+            });
         }
     });
 
     // Перемещение вопросов
     poll_questions.sortable({
         handle: '.question-move-platform',
+        scroll: false,
+        tolerance: 'move',
+        revert: 150,
+        // containment: ".poll-container_move",
+        // axis: 'y'
     });
 });
 
@@ -328,6 +389,13 @@ function createNewQuestion(poll_questions) {
 }
 
 function createNewAnswer(type, questionMainAnswers) {
+    let answerNumber = $(questionMainAnswers).children().length;
+    if (answerNumber >= maxAnswers) {
+        console.log('createNewAnswer ERROR!!!');
+        return;
+    }
+    answerNumber++;
+
     let questionMainAnswersAnswer = document.createElement('div');
     questionMainAnswersAnswer.classList.add('question-main-answers-answer');
     let questionRadioMainAnswer = document.createElement('span');
@@ -337,7 +405,7 @@ function createNewAnswer(type, questionMainAnswers) {
     questionMainAnswer.name = '';
     questionMainAnswer.id = '';
     questionMainAnswer.rows = 1;
-    questionMainAnswer.placeholder = 'Вариант 1';
+    questionMainAnswer.placeholder = 'Вариант ' + answerNumber;
     questionMainAnswer.setAttribute('data-number_answer', '1');
     let questionMainAnswerRemove = document.createElement('button');
     questionMainAnswerRemove.classList.add('question-main-answer-remove');
@@ -365,4 +433,8 @@ function createNewAnswer(type, questionMainAnswers) {
     questionMainAnswerRemove.prepend(questionMainAnswerRemoveImg);
     questionMainAnswersAnswer.append(questionRadioMainAnswer, questionCheckboxMainAnswer, questionMainAnswer, questionMainAnswerRemove);
     questionMainAnswers.append(questionMainAnswersAnswer);
+
+    if (answerNumber === maxAnswers) {
+        questionMainAnswers.parent().children('.question-main-add').fadeOut(timeAnimation);
+    }
 }

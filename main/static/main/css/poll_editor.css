@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 .scroll-top-btn-value {
     padding-top: calc(100vh - 365px);
 }
@@ -15,6 +19,11 @@ textarea {
 
 textarea:focus {
     outline: none;
+}
+
+.poll-container_move {
+    width: 100%;
+    height: auto;
 }
 
 .poll_editor {
@@ -111,7 +120,7 @@ textarea:focus {
 }
 
 .question-main-name {
-    font-weight: normal;
+    font-weight: 600;
     font-size: 18px;
     line-height: 21px;
     margin-bottom: 25px;
@@ -137,14 +146,13 @@ textarea:focus {
 }
 
 .question-main-answer {
-    width: 95%;
-    /*position: relative;*/
+    width: 94%;
     height: 23px;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
     border-bottom: 1px solid #595757;
-    margin: 0 10px 0;
+    margin: 0 auto 0 10px;
 }
 
 .question-radio-main-answer {
@@ -162,18 +170,16 @@ textarea:focus {
     border: 1px solid #000000;
 }
 
-.question-main-answer-remove,
-.question-navigate-remove_question {
-    margin: 0;
+.question-main-answer-remove {
+    margin: 0 0 0 0 ;
     padding: 0;
     position: relative;
     height: 15px;
     border: none;
     background-color: transparent;
-}
-
-.question-main-answer-remove {
     width: 15px;
+    filter: brightness(1.75);
+    transition: filter .3s;
 }
 
 .question-main-answer-remove:focus,
@@ -181,16 +187,17 @@ textarea:focus {
     outline: none;
 }
 
-.question-main-answer-remove-img,
-.question-navigate-remove_question-img {
+.question-main-answer-remove:hover,
+.question-main-answer-remove:focus {
+    filter: brightness(1);
+}
+
+.question-main-answer-remove-img {
     position: absolute;
     top: 0;
     left: 0;
     margin: 0;
     padding: 0;
-}
-
-.question-main-answer-remove-img {
     width: 15px;
 }
 
@@ -201,17 +208,29 @@ textarea:focus {
 .question-settings {
     position: absolute;
     top: 25px;
-    right: 15px;
+    right: 23px;
 }
 
 .question-navigate-remove_question {
     width: 18px;
-    padding-right: 40px;
-    margin-bottom: 10px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    filter: brightness(1);
+    transition: filter .3s;
+}
+
+.question-navigate-remove_question:focus,
+.question-navigate-remove_question:hover {
+    filter: brightness(0.85);
 }
 
 .question-navigate-remove_question-img {
     width: 18px;
+    margin: 0;
+    padding: 0;
 }
 
 .question-main-answers-answer-open_question {
@@ -268,6 +287,10 @@ textarea:focus {
 .question-main-answers-answer-range-settings-before-step {
 }
 
+.question-main-answers-answer-range-settings-before-step:hover {
+    cursor: default;
+}
+
 .question-main-answers-answer-range-settings-min {
 }
 
@@ -308,4 +331,11 @@ textarea:focus {
 
 .question-settings-type_question:focus {
     outline: none;
+}
+
+.poll_questions-navigate {
+}
+
+.poll_questions-navigate-add_question {
+    margin: 0 0 70px;
 }
