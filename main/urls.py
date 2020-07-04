@@ -166,7 +166,3 @@ urlpatterns = [
                   path('poll/editor/', new_poll_views.CreatePoll.as_view(), name='poll_editor')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
