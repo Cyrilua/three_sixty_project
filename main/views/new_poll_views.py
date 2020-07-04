@@ -11,10 +11,14 @@ from django.template import loader
 
 class CreatePoll(View):
     def get(self, request):
-        pageContainer = loader.render_to_string('main/poll/polll_editor.html')
-        rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
-        data = {
-            'pageContainer': pageContainer,
-            'rightMenu': rightMenu
+        # pageContainer = loader.render_to_string('main/poll/poll_editor.html')
+        # rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
+        # data = {
+        #     'pageContainer': pageContainer,
+        #     'rightMenu': rightMenu
+        # }
+        # return JsonResponse(data, status=200)
+        args = {
+            'title': 'Редактор опросов'
         }
-        return JsonResponse(data, status=200)
+        return render(request, 'main/poll/poll_editor.html', args)
