@@ -27,10 +27,11 @@ textarea:focus {
 }
 
 .poll-head-text {
-    width: 600px;
+    width: 100%;
 }
 
 .poll-head-name {
+    width: 600px;
     font-weight: bold;
     font-size: 32px;
     line-height: 37px;
@@ -41,26 +42,27 @@ textarea:focus {
 .poll-head-about {
     font-weight: normal;
     font-size: 16px;
-    line-height: 19px;
-    margin-bottom: 75px;
+    line-height: 21px;
+    margin-bottom: 20px;
     height: 23px;
+    color: #6b6969;
 }
 
 .poll-head-remove {
     position: absolute;
-    right: 25px;
-    top: 14px;
+    right: 23px;
+    top: 25px;
 }
 
 .poll-head-navigation {
-    position: relative;
+    /*position: relative;*/
 }
 
 .poll-head-navigation-next-page {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-80%);
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*top: 50%;*/
+    /*transform: translateY(-80%);*/
 }
 
 .poll_questions {

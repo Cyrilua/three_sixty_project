@@ -18,7 +18,7 @@ $(function () {
     $('.question-main-answer').height(function () {
         countLines($(this)[0], 4);
     });
-    $('.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max').val(function () {
+    $('.question-main-answers-answer-range-settings-min, .question-main-answers-answer-range-settings-step, .question-main-answers-answer-range-settings-max').height(function () {
         $(this)[0].value = $(this)[0].value.replace(/[^\d]/g, '');
     });
     $('.question-main-answer-remove').height(function () {
@@ -66,7 +66,6 @@ $(function () {
 
     // Смена типа вопроса
     body.on('input', '.question-settings-type_question', function () {
-        console.log('click')
         let question = $(this).parent().parent();
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
