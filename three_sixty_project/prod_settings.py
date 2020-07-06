@@ -12,9 +12,9 @@ ALLOWED_HOSTS = ["127.0.0.1"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project360',
+        'NAME': 'admin',
         'USER': 'userdb',
-        'PASSWORD': '123456',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
