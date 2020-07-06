@@ -1,6 +1,13 @@
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+    }
+}
+
 const maxAnswers = 5;
 const maxQuestions = 5;
-const timeAnimation = 200;
+const timeAnimation = 2000;
 
 $(function () {
 
@@ -37,6 +44,24 @@ $(function () {
             });
         }
     });
+    $('.question-radio').height(function () {
+        let elems = $(this).children('.question-main').children('.question-main-answers').children('.question-main-answers-answer').children('.question-radio-main-answer');
+        elems.css({
+            display: 'inline',
+        });
+        elems.animate({
+            opacity: '1',
+        }, timeAnimation * 2)
+    });
+    $('.question-checkbox').height(function () {
+        let elems = $(this).children('.question-main').children('.question-main-answers').children('.question-main-answers-answer').children('.question-checkbox-main-answer');
+        elems.css({
+            display: 'inline',
+        });
+        elems.animate({
+            opacity: '1',
+        }, timeAnimation * 2)
+    });
 
     // Сохранить опрос в Избранных
     $('.poll_questions-navigate-save_in_favorite').click(function (event) {
@@ -46,13 +71,15 @@ $(function () {
 
     // Перейти к отправке опроса
     body.on('click', '.poll-head-navigation-next-page', function () {
-        console.log('click')
+        // TODO
+        console.log('Отправка опроса -->')
     });
 
     // Удаление опроса
     body.on('click', '.poll-head-remove', function (event) {
         event.preventDefault();
         if (confirm('Вы действительно хотите удалить данный опрос?')) {
+            // TODO
             alert('Удаление данного опроса');
             location.href = '/poll/';
         }
@@ -87,6 +114,7 @@ $(function () {
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
         let lastType;
+        let currentType = $(this)[0].value;
         // Очитстка от старых классов
         if (question.hasClass('question-checkbox')) {
             question.removeClass('question-checkbox');
@@ -101,45 +129,384 @@ $(function () {
             question.removeClass('question-radio');
             lastType = 'question-radio';
         } else {
-            console.log('question-settings-type_question ERROR!!!')
+            throw new ValidationError("question-settings-type_question ERROR!!!");
         }
-        // Смена типа
-        if ($(this)[0].value === 'radio') {
+        // Добавление новых классов
+        if (currentType === 'radio') {
             question.addClass('question-radio');
-            if (lastType === 'question-checkbox') {
-                let answers = questionMainAnswers.children('.question-main-answers-answer');
-                answers.children('.question-checkbox-main-answer').addClass('d-none');
-                answers.children('.question-radio-main-answer').removeClass('d-none');
-            } else {
-                questionMainAnswers.children().remove();
-                createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
-            }
-        } else if ($(this)[0].value === 'checkbox') {
+        } else if (currentType === 'checkbox') {
             question.addClass('question-checkbox');
-            if (lastType === 'question-radio') {
-                let answers = questionMainAnswers.children('.question-main-answers-answer');
-                answers.children('.question-radio-main-answer').addClass('d-none');
-                answers.children('.question-checkbox-main-answer').removeClass('d-none');
-            } else {
-                questionMainAnswers.children().remove();
-                createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
-            }
-        } else if ($(this)[0].value === 'range') {
+        } else if (currentType === 'range') {
             question.addClass('question-range');
-            questionMainAnswers.children().remove();
-            if (lastType === 'question-radio' || lastType === 'question-checkbox')
-                questionMain.children('.question-main-add').remove();
-            createRange(questionMainAnswers);
-        } else if ($(this)[0].value === 'open_question') {
+        } else if (currentType === 'open_question') {
             question.addClass('question-open_question');
-            questionMainAnswers.children().remove();
-            if (lastType === 'question-radio' || lastType === 'question-checkbox')
-                questionMain.children('.question-main-add').remove();
-            createOpenQuestion(questionMainAnswers);
         } else {
-            console.log('question-settings-type_question ERROR!!!')
+            throw new ValidationError("Смена типа ERROR!!!");
+        }
+        // Смена типа (отображение)
+        if (lastType === 'question-radio' && currentType === 'checkbox' || lastType === 'question-checkbox' && currentType === 'radio') {
+            let answers = questionMainAnswers.children('.question-main-answers-answer');
+            let oldElems;
+            let newElems;
+            if (lastType === 'question-radio' && currentType === 'checkbox') {
+                oldElems = answers.children('.question-radio-main-answer');
+                newElems = answers.children('.question-checkbox-main-answer');
+            } else if (lastType === 'question-checkbox' && currentType === 'radio') {
+                oldElems = answers.children('.question-checkbox-main-answer');
+                newElems = answers.children('.question-radio-main-answer');
+            }
+            oldElems.animate({
+                    opacity: 0,
+                },
+                timeAnimation,
+                function () {
+                    $(this).css({
+                        display: 'none',
+                    });
+                    newElems.css({
+                        display: 'inline',
+                    });
+                    newElems.animate({
+                            opacity: 1,
+                        },
+                        timeAnimation,
+                    );
+                }
+            );
+        } else {
+            let delta = 0;
+            let height = parseFloat(question.css('height'));
+            question.css({height: height});
+            let btnAdd;
+            if (lastType === 'question-radio' || lastType === 'question-checkbox') {
+                btnAdd = questionMain.children('.question-main-add');
+                btnAdd.animate({
+                        opacity: 0,
+                    },
+                    {
+                        duration: timeAnimation,
+                        queue: false,
+                    },
+                );
+            }
+            delta = parseFloat(questionMain.css('height'));
+            questionMainAnswers.animate({
+                    opacity: 0,
+                },
+                {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+                        $(this).children().remove();
+                        if (lastType === 'question-radio' || lastType === 'question-checkbox')
+                            btnAdd.remove();
+                        if (currentType === 'radio') {
+                            createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
+                        } else if (currentType === 'checkbox') {
+                            createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
+                        } else if (currentType === 'range') {
+                            createRange(questionMainAnswers);
+                        } else if (currentType === 'open_question') {
+                            createOpenQuestion(questionMainAnswers);
+                        }
+                        delta -= parseFloat(questionMain.css('height'));
+                        height -= delta;
+                        question.children('.question-navigate').css({top: '+=' + delta.toString()});
+                        question.children('.question-navigate').animate({
+                                top: '-=' + delta.toString(),
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+
+                            },
+                        );
+                        question.animate({
+                                height: height,
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+                            },
+                        );
+                        $(this).animate({
+                                opacity: 1,
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+                                complete: function () {
+                                    question.css({height: 'auto'});
+                                }
+                            },
+                        );
+                    }
+                },
+            );
         }
     });
+
+
+    //     if ($(this)[0].value === 'radio') {
+    //         question.addClass('question-radio');
+    //         if (lastType === 'question-checkbox') {
+    //             let answers = questionMainAnswers.children('.question-main-answers-answer');
+    //             answers.children('.question-checkbox-main-answer').animate({
+    //                     opacity: 0,
+    //                 },
+    //                 timeAnimation,
+    //                 function () {
+    //                     $(this).css({
+    //                         display: 'none',
+    //                     });
+    //                     let radio = answers.children('.question-radio-main-answer');
+    //                     radio.css({
+    //                         display: 'inline',
+    //                     });
+    //                     radio.animate({
+    //                             opacity: 1,
+    //                         },
+    //                         timeAnimation,
+    //                     );
+    //                 }
+    //             );
+    //         } else {
+    //             // questionMainAnswers.children().remove();
+    //             // createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
+    //
+    //             // let height = questionMainAnswers.css('height');
+    //             // questionMainAnswers.animate({
+    //             //         opacity: 0,
+    //             //         height: height,
+    //             //     },
+    //             //     timeAnimation,
+    //             //     function () {
+    //             //         $(this).children().remove();
+    //             //         createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
+    //             //         height = questionMainAnswers.children().css('height');
+    //             //         $(this).animate({
+    //             //                 opacity: 1,
+    //             //                 height: height,
+    //             //             },
+    //             //             timeAnimation,
+    //             //             function () {
+    //             //                 $(this).animate({height: 'auto'}, timeAnimation / 2, function () {
+    //             //                     $(this).css({height: 'auto'});
+    //             //                 });
+    //             //             }
+    //             //         );
+    //             //     }
+    //             // );
+    //
+    //             let height = question.css('height');
+    //             question.css({height: height});
+    //             // let btnAdd = questionMain.children('.question-main-add');
+    //             $(questionMainAnswers).animate({
+    //                     opacity: 0,
+    //                 },
+    //                 1000,
+    //                 function () {
+    //
+    //                 }
+    //             )
+    //         }
+    //     } else if ($(this)[0].value === 'checkbox') {
+    //         question.addClass('question-checkbox');
+    //         if (lastType === 'question-radio') {
+    //             let answers = questionMainAnswers.children('.question-main-answers-answer');
+    //             answers.children('.question-radio-main-answer').animate({
+    //                     opacity: 0,
+    //                 },
+    //                 timeAnimation,
+    //                 function () {
+    //                     $(this).css({
+    //                         display: 'none',
+    //                     });
+    //                     let checkbox = answers.children('.question-checkbox-main-answer');
+    //                     checkbox.css({
+    //                         display: 'inline',
+    //                     });
+    //                     checkbox.animate({
+    //                             opacity: 1,
+    //                         },
+    //                         timeAnimation,
+    //                     );
+    //                 }
+    //             );
+    //         } else {
+    //             // questionMainAnswers.children().remove();
+    //             // createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
+    //
+    //             let height = questionMainAnswers.css('height');
+    //             questionMainAnswers.animate({
+    //                     opacity: 0,
+    //                     height: height,
+    //                 },
+    //                 timeAnimation,
+    //                 function () {
+    //                     $(this).children().remove();
+    //                     createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
+    //                     height = questionMainAnswers.children().css('height');
+    //                     $(this).animate({
+    //                             opacity: 1,
+    //                             height: height,
+    //                         },
+    //                         timeAnimation,
+    //                         function () {
+    //                             $(this).animate({height: 'auto'}, timeAnimation / 2, function () {
+    //                                 $(this).css({height: 'auto'});
+    //                             });
+    //                         }
+    //                     );
+    //                 }
+    //             );
+    //         }
+    //     } else if ($(this)[0].value === 'range') {
+    //         question.addClass('question-range');
+    //         // let height = questionMainAnswers.css('height');
+    //         // questionMainAnswers.css({'opacity': 1});
+    //         // $(questionMainAnswers).animate({
+    //         //         opacity: 0,
+    //         //         height: height,
+    //         //     },
+    //         //     timeAnimation,
+    //         //     function () {
+    //         //         $(this).children().remove();
+    //         //         if (lastType === 'question-radio' || lastType === 'question-checkbox')
+    //         //             questionMain.children('.question-main-add').animate({
+    //         //                     opacity: 0,
+    //         //                 },
+    //         //                 timeAnimation,
+    //         //                 function () {
+    //         //                     $(this).remove();
+    //         //                 }
+    //         //             );
+    //         //         createRange(questionMainAnswers);
+    //         //         height = questionMainAnswers.children().css('height');
+    //         //         $(this).animate({
+    //         //                 opacity: 1,
+    //         //                 height: height,
+    //         //             },
+    //         //             timeAnimation,
+    //         //             function () {
+    //         //                 $(this).animate({height: 'auto'}, timeAnimation / 2, function () {
+    //         //                     $(this).css({height: 'auto'});
+    //         //                 });
+    //         //             }
+    //         //         );
+    //         //     }
+    //         // );
+    //
+    //
+    //         // questionMainAnswers.children().remove();
+    //         // if (lastType === 'question-radio' || lastType === 'question-checkbox')
+    //         //     questionMain.children('.question-main-add').remove();
+    //         // createRange(questionMainAnswers);
+    //     } else if ($(this)[0].value === 'open_question') {
+    //         question.addClass('question-open_question');
+    //         // let height = questionMainAnswers.css('height');
+    //         // questionMainAnswers.css({'opacity': 1});
+    //         // $(questionMainAnswers).animate({
+    //         //         opacity: 0,
+    //         //         height: height,
+    //         //     },
+    //         //     timeAnimation,
+    //         //     function () {
+    //         //         $(this).children().remove();
+    //         //         if (lastType === 'question-radio' || lastType === 'question-checkbox')
+    //         //             questionMain.children('.question-main-add').animate({
+    //         //                     opacity: 0,
+    //         //                 },
+    //         //                 timeAnimation,
+    //         //                 function () {
+    //         //                     $(this).remove();
+    //         //                 }
+    //         //             );
+    //         //         createOpenQuestion(questionMainAnswers);
+    //         //         height = questionMainAnswers.children().css('height');
+    //         //         $(this).animate({
+    //         //                 opacity: 1,
+    //         //                 height: height,
+    //         //             },
+    //         //             timeAnimation,
+    //         //             function () {
+    //         //                 $(this).animate({height: 'auto'}, timeAnimation / 2, function () {
+    //         //                     $(this).css({height: 'auto'});
+    //         //                 });
+    //         //             }
+    //         //         );
+    //         //     }
+    //         // );
+    //
+    //
+    //         // let delta = 0;
+    //         // let height = parseFloat(question.css('height'));
+    //         // question.css({height: height});
+    //         // let btnAdd;
+    //         // if (lastType === 'question-radio' || lastType === 'question-checkbox') {
+    //         //     btnAdd = questionMain.children('.question-main-add');
+    //         //     btnAdd.animate({
+    //         //             opacity: 0,
+    //         //         },
+    //         //         {
+    //         //             duration: timeAnimation,
+    //         //             queue: false,
+    //         //         },
+    //         //     );
+    //         // }
+    //         // delta = parseFloat(questionMain.css('height'));
+    //         // questionMainAnswers.animate({
+    //         //         opacity: 0,
+    //         //     },
+    //         //     {
+    //         //         duration: timeAnimation,
+    //         //         queue: false,
+    //         //         complete: function () {
+    //         //             $(this).children().remove();
+    //         //             if (lastType === 'question-radio' || lastType === 'question-checkbox')
+    //         //                 btnAdd.remove();
+    //         //             createOpenQuestion(questionMainAnswers);
+    //         //             delta -= parseFloat(questionMain.css('height'));
+    //         //             height -= delta;
+    //         //             question.children('.question-navigate').css({top: '+=' + delta.toString()})
+    //         //             question.children('.question-navigate').animate({
+    //         //                     top: '-=' + delta.toString(),
+    //         //                 },
+    //         //                 {
+    //         //                     duration: timeAnimation,
+    //         //                     queue: false,
+    //         //                 },
+    //         //             );
+    //         //             question.animate({
+    //         //                     height: height,
+    //         //                 },
+    //         //                 {
+    //         //                     duration: timeAnimation,
+    //         //                     queue: false,
+    //         //                 },
+    //         //             );
+    //         //
+    //         //             $(this).animate({
+    //         //                     opacity: 1,
+    //         //                 },
+    //         //                 {
+    //         //                     duration: timeAnimation,
+    //         //                     queue: false,
+    //         //                 },
+    //         //             );
+    //         //         }
+    //         //     },
+    //         // )
+    //
+    //
+    //         // questionMainAnswers.children().remove();
+    //         // if (lastType === 'question-radio' || lastType === 'question-checkbox')
+    //         //     questionMain.children('.question-main-add').remove();
+    //         // createOpenQuestion(questionMainAnswers);
+    //     } else {
+    //         throw new ValidationError("question-settings-type_question ERROR!!!");
+    //     }
+    // });
 
     // Добавление варианта ответа
     body.on('click', '.question-main-add', function (event) {
@@ -152,12 +519,69 @@ $(function () {
         } else if (question.hasClass('question-checkbox')) {
             type = 'checkbox';
         } else {
-            console.log('Добавление варианта ответа ERROR!!!');
+            throw new ValidationError("Добавление варианта ответа ERROR!!!");
         }
+        // answers.css({height: height});
         createNewAnswer(type, answers);
-        let otherAnswers = answers.children('.question-main-answers-answer');
-        if (otherAnswers.length === 2) {
-            otherAnswers.children('.question-main-answer-remove').first().removeClass('invisible');
+        let allAnswers = answers.children('.question-main-answers-answer');
+        let lastAnswer = allAnswers.last();
+        let height = lastAnswer.css('height');
+        let delta = parseFloat(answers.css('margin-bottom')) + parseFloat($(this).css('height'));
+        console.log(delta)
+        lastAnswer.css({
+            opacity: 0,
+            height: 0,
+        });
+        lastAnswer.animate({
+            opacity: 1,
+            height: height,
+        }, {
+            duration: timeAnimation,
+            queue: false,
+            complete: function () {
+                lastAnswer.css({height: 'auto'});
+            }
+        });
+        if (allAnswers.length === 2) {
+            let btnRemoveAnswer = allAnswers.children('.question-main-answer-remove').first();
+            btnRemoveAnswer.css({opacity: 0});
+            btnRemoveAnswer.removeClass('invisible');
+            btnRemoveAnswer.animate({
+                    opacity: 1,
+                },
+                {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+                    }
+                }
+            );
+        }
+        if (allAnswers.length === maxAnswers) {
+            // TODO
+            // $(this).addClass('isDisabled');
+            // let heightQuestion = question.height;
+            // question.css({height: heightQuestion});
+            // $(this).animate({
+            //     height: 0,
+            //     opacity: 0,
+            //     margin: 0,
+            // }, {
+            //     duration: timeAnimation,
+            //     queue: false,
+            //     complete: function () {
+            //         $(this).addClass('d-none');
+            //     }
+            // });
+            // question.animate({
+            //     height: '-=' + delta.toString(),
+            // }, {
+            //     duration: timeAnimation,
+            //     queue: false,
+            //     complete: function () {
+            //         question.css({height: 'auto'});
+            //     }
+            // });
         }
     });
 
@@ -190,12 +614,22 @@ $(function () {
             answer.fadeOut(timeAnimation, function () {
                 $(this).remove();
             });
+
+
+            // if (countAnswers === maxAnswers) {
+            //     answers.parent().children('.question-main-add').fadeIn(timeAnimation);
+            // }
+            // answer.fadeOut(timeAnimation, function () {
+            //     $(this).remove();
+            // });
+
+
             let otherAnswers = answers.children('.question-main-answers-answer');
             if (otherAnswers.length - 1 <= 1) {
                 otherAnswers.children('.question-main-answer-remove').addClass('invisible');
             }
         } else {
-            console.log('Удаление варианта ответа ERROR!!!')
+            throw new ValidationError("Удаление варианта ответа ERROR!!!");
         }
     });
 
@@ -391,8 +825,7 @@ function createNewQuestion(poll_questions) {
 function createNewAnswer(type, questionMainAnswers) {
     let answerNumber = $(questionMainAnswers).children().length;
     if (answerNumber >= maxAnswers) {
-        console.log('createNewAnswer ERROR!!!');
-        return;
+        throw new ValidationError("createNewAnswer ERROR!!!");
     }
     answerNumber++;
 
@@ -420,21 +853,22 @@ function createNewAnswer(type, questionMainAnswers) {
         questionRadioMainAnswer.classList.add('question-radio-main-answer');
         let questionCheckboxMainAnswerClassList = questionCheckboxMainAnswer.classList;
         questionCheckboxMainAnswerClassList.add('question-checkbox-main-answer');
-        questionCheckboxMainAnswerClassList.add('d-none');
+        $(questionRadioMainAnswer).css({
+            opacity: 1,
+            display: 'inline',
+        });
     } else if (type === 'checkbox') {
         let questionRadioMainAnswerClassList = questionRadioMainAnswer.classList;
         questionRadioMainAnswerClassList.add('question-radio-main-answer');
-        questionRadioMainAnswerClassList.add('d-none');
         questionCheckboxMainAnswer.classList.add('question-checkbox-main-answer');
+        $(questionCheckboxMainAnswer).css({
+            opacity: 1,
+            display: 'inline',
+        });
     } else {
-        console.log('createRadioOrCheckbox ERROR!!!');
-        return;
+        throw new ValidationError("createRadioOrCheckbox ERROR!!!");
     }
     questionMainAnswerRemove.prepend(questionMainAnswerRemoveImg);
     questionMainAnswersAnswer.append(questionRadioMainAnswer, questionCheckboxMainAnswer, questionMainAnswer, questionMainAnswerRemove);
     questionMainAnswers.append(questionMainAnswersAnswer);
-
-    if (answerNumber === maxAnswers) {
-        questionMainAnswers.parent().children('.question-main-add').fadeOut(timeAnimation);
-    }
 }
