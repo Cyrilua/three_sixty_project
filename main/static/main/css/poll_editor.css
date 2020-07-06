@@ -59,8 +59,8 @@ textarea:focus {
 
 .poll-head-remove {
     position: absolute;
-    right: 23px;
-    top: 25px;
+    right: 30px;
+    top: 30px;
 }
 
 .poll-head-navigation {
@@ -85,6 +85,7 @@ textarea:focus {
 
 .question-move {
     width: 100%;
+    height: 0;
     padding: 0;
     margin: 0;
     position: relative;
@@ -96,7 +97,7 @@ textarea:focus {
     margin: 0 auto 0;
     padding: 0;
     position: relative;
-    top: -20px;
+    top: -30px;
 }
 
 .question-move-platform:hover {
@@ -156,6 +157,7 @@ textarea:focus {
 }
 
 .question-radio-main-answer {
+    display: inline;
     width: 13px;
     height: 13px;
     border: 1px solid #000000;
@@ -164,6 +166,7 @@ textarea:focus {
 }
 
 .question-checkbox-main-answer {
+    display: inline;
     z-index: 2;
     width: 13px;
     height: 13px;
@@ -206,9 +209,10 @@ textarea:focus {
 }
 
 .question-settings {
+    display: flex;
     position: absolute;
-    top: 25px;
-    right: 23px;
+    top: 30px;
+    right: 30px;
 }
 
 .question-navigate-remove_question {
