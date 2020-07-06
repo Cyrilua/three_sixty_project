@@ -13,7 +13,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'project360',
-        'USER': 'john',
+        'USER': 'userdb',
         'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432',
