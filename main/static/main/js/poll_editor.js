@@ -409,7 +409,6 @@ $(function () {
         let question = poll_questions.children('.question').last();
         let questionHeight = parseFloat(question.css('height'));
         question.css({height: 0, opacity: 0});
-        console.log(questionHeight);
         poll_questions.css({
             height: heightPoll,
         });
