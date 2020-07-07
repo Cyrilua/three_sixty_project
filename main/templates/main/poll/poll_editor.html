@@ -13,7 +13,8 @@
 
                 <div class="poll_editor">
                     <div class="poll-head rounded-block">
-                        {% if pool %}
+                        <!-- изменил с pool на poll -->
+                        {% if poll %}
                             {% if poll.status == 'create' %}
                                 <div class="poll-head-text">
                                     <textarea class="poll-head-name" name="" id="" rows="1"
@@ -44,7 +45,8 @@
                     <!-- /.poll-head -->
                     <div class="poll_questions">
 
-                        {% if pool %}
+                        <!-- изменил с pool на poll -->
+                        {% if poll %}
                             {% if poll.status == 'create' %}
 
                                 <div class="question question-radio rounded-block">

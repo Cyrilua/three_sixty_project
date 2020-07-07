@@ -1,6 +1,6 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group, \
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TemplatesPoll, Group, \
     NeedPassPoll, CreatedPoll
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import add_notification
@@ -188,13 +188,6 @@ def answer_the_poll(request, poll_id):
             elif question.type == 'range':
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
                 change_answer.sum_answer += user_answer
-                change_answer.count_answers += 1
-            else:
-                user_answer = request.POST.get('answer-{}'.format(question.id))
-                new_text_answer = TextAnswer()
-                new_text_answer.answer = change_answer
-                new_text_answer.text_answer = user_answer
-                new_text_answer.save()
                 change_answer.count_answers += 1
             change_answer.save()
 
@@ -777,7 +770,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context, loader
 
 
-def new_poll_view(request):
+def choose_poll(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {
@@ -786,14 +779,14 @@ def new_poll_view(request):
         'teams': build_teams(request)
     }
 
-    if request.is_ajax():
-        pageContainer = loader.render_to_string('main/poll/polll_editor.html')
-        rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
-        data = {
-            'pageContainer': pageContainer,
-            'rightMenu': rightMenu
-        }
-        return JsonResponse(data, status=200)
+    #if request.is_ajax():
+    #    pageContainer = loader.render_to_string('main/poll/polll_editor.html')
+    #    rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
+    #    data = {
+    #        'pageContainer': pageContainer,
+    #        'rightMenu': rightMenu
+    #    }
+    #    return JsonResponse(data, status=200)
 
     return render(request, 'main/poll/new_poll_view.html', args)
 
@@ -816,3 +809,27 @@ def build_teams(request):
             'url': '/respondent_choice_t/{}/'.format(group.id),
         })
     return result
+
+
+def poll_create(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    first_question = {
+        'type': 'radio',
+        'text': '',
+        'answers': {
+            'text': ''
+        }
+    }
+
+    args = {
+        'poll': {
+            'status': 'edit',
+            'data': {
+                'questions': [first_question]
+            },
+        }
+    }
+
+    return render(request, 'main/poll/poll_editor.html', args)
