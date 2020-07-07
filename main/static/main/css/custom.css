@@ -122,9 +122,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .unselectable {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
-  user-select: none;           /* Non-prefixed version, currently not supported by any browser */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
+.container-fluid {
+    background: white;
+    padding-top: 104px;
+    padding-bottom: 5%;
+    min-height: 100vh;
+    max-width: 1366px;
+}
+
+.col-left {
+    width: 228px
+}
+
+.col-center {
+    width: 910px;
+}
+
+.col-right {
+    width: 220px;
 }

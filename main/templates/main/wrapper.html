@@ -64,11 +64,10 @@
     </div>
 </header>
 
-<div class="container-fluid"
-     style="background: white; padding-top:104px; padding-bottom: 5%; min-height: 100vh; max-width: 1366px">
+<div class="container-fluid">
     <div class="row">
         {% if user.is_authenticated %}
-            <div class="col-md-2" style="padding-left: 25px;">
+            <div class="col-md-2 col-left" style="padding-left: 25px;">
                 {% block sidebar-nav %}
                     {% include 'main/includes/menu.html' %}
                 {% endblock sidebar-nav %}
@@ -76,21 +75,21 @@
                     {% include 'main/includes/profile_footer.html' %}
                 {% endblock %}
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-center">
                 {% block content-user %}
                 {% endblock content-user %}
             </div>
-            <div class="col-md-2" style="padding-right: 25px;">
+            <div class="col-md-2 col-right" style="padding-right: 25px;">
                 {% block sidebar-nav-right %}
                 {% endblock sidebar-nav-right %}
             </div>
         {% else %}
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-2 col-left"></div>
+            <div class="col-md-8 col-center">
                 {% block content %}
                 {% endblock content %}
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-2 col-right"></div>
         {% endif %}
     </div>
 </div>
