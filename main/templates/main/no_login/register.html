@@ -75,6 +75,7 @@
                                     class="fas fa-asterisk required"></i></label>
                             {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|add_class:"form-control" }}
                         </div>
+
                         <hr>
                         <div class="form-group">
                             <label for="id_city">Город<i class="fas fa-asterisk required"></i></label>
@@ -85,6 +86,7 @@
                                 {% endfor %}
                             </select>
                         </div>
+
                         <div style="text-align: right">
                             <input id="btn-register" class="btn btn-primary" type="submit" value="Зарегистрировать"
                                    disabled>

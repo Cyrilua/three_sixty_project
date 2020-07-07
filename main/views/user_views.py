@@ -21,11 +21,17 @@ def user_register(request):
     if auth.get_user(request).is_authenticated:
         return redirect('/{}/'.format(get_user_profile(request).id))
 
+    cities = [{'id': 1, 'name': "Yekaterinbyrg"}]
+
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
             'email_form': UserChangeEmailForm(),
             'title': "Регистрация",
-            'cities': City.objects.all()}
+            #'cities': City.objects.all()
+            'cities': cities,
+    }
+
+
 
     if request.method == 'POST':
         result_post = request_post_method_processing(request, args)
@@ -75,7 +81,7 @@ def request_post_method_processing(request, args):
         profile.user = user
         user.email = request.POST.get('email', '')
         user.save()
-        profile.city = City.objects.get(id=int(request.POST.get('city')))
+        #profile.city = City.objects.get(id=int(request.POST.get('city')))
         profile.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя

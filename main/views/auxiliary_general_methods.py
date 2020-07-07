@@ -8,7 +8,8 @@ from main.models import Profile, CompanyHR
 
 def get_user_profile(request):
     user = auth.get_user(request)
-    return Profile.objects.get(user=user)
+    profile = Profile.objects.get(user=user)
+    return profile
 
 
 def get_photo_height(width, height):
