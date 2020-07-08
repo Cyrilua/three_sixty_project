@@ -8,6 +8,10 @@ h1 {
     font-size: 35px;
 }
 
+.navbar-expand .navbar-nav .nav-link {
+    padding: 0;
+}
+
 /*.btn-primary {*/
 /*    color: #fff;*/
 /*    background-color: #ff4868;*/
