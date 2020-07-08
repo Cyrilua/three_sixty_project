@@ -137,14 +137,39 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 1366px;
 }
 
+/*###---header---###*/
+
+.header-first-icon {
+    margin-right: 24px;
+}
+
+/*###---!header---###*/
+
+/*###---wrapper---###*/
+
+.container-fluid {
+    display: flex;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+
 .col-left {
-    width: 228px
+    width: 228px;
+    height: auto;
+    padding-left: 15px;
 }
 
 .col-center {
     width: 910px;
+    height: auto;
 }
 
 .col-right {
     width: 220px;
+    height: auto;
+    padding-right: 15px;
 }
+
+/*###---!wrapper---###*/
+

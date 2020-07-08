@@ -1,7 +1,7 @@
 <div class='navbar-nav ml-auto' style="margin-right: 25px">
     <ul class="navbar-nav bd-navbar-nav flex-row">
         {% if user.is_authenticated %}
-            <li class="nav-item, active">
+            <li class="nav-item, active header-first-icon">
                 <a class="nav-link" href="{% url 'main:login' %}">
                     {% if profile %}
                         {{ profile.name }} {{ profile.surname }}
@@ -15,7 +15,7 @@
             </li>
         {% else %}
             <li class="{{ nav_login }} nav-item">
-                <a class="nav-link" id="login" href="{% url 'main:login' %}">Вход</a>
+                <a class="nav-link header-first-icon" id="login" href="{% url 'main:login' %}">Вход</a>
             </li>
             <li class="{{ nav_register }} nav-item">
                 <a class="nav-link" id="register" href="{% url 'main:register' %}">Регистрация</a>
