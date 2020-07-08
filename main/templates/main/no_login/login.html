@@ -13,41 +13,45 @@
             {% include 'main/includes/slider.html' %}
         </div>
         <div class="login-content rounded-block">
-            <div class="login-form">
-                <form method="post" action="">
-                    {% csrf_token %}
-                    <h1 class="login-form-title">Вход</h1>
-                    <div class="login-form-fields">
-                        <div class="form-group">
-                            <label class="login-form-fields-label" for="username">Логин</label>
-                            <input class="form-control login-form-fields-input" aria-describedby="usernameHelp" placeholder="Введите логин"
-                                   type="text"
-                                   name="username" value="{{ username }}" id="username" required>
+            {% block login-content %}
+                <div class="login-form">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <h1 class="login-form-title">Вход</h1>
+                        <div class="login-form-fields">
+                            <div class="form-group">
+                                <label class="form-fields-label" for="username">Логин</label>
+                                <input class="form-control form-fields-input" aria-describedby="usernameHelp"
+                                       placeholder="Введите логин"
+                                       type="text"
+                                       name="username" value="{{ username }}" id="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-fields-label" for="password">Пароль</label>
+                                <input class="form-control form-fields-input" aria-describedby="passwordHelp"
+                                       placeholder="Введите пароль"
+                                       type="password" name="password" id="password" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="login-form-fields-label"  for="password">Пароль</label>
-                            <input class="form-control login-form-fields-input" aria-describedby="passwordHelp" placeholder="Введите пароль"
-                                   type="password" name="password" id="password" required>
+                        <div class="login-form-navigate">
+                            <button class="button-red login-form-navigate-btn">Войти</button>
                         </div>
-                    </div>
-                    <div class="login-form-navigate">
-                        <button class="button-red login-form-navigate-login" >Войти</button>
-                    </div>
-                </form>
-            </div>
-            <span class="login-form-line"></span>
-            <div class="login-form-helper">
-                <div class="login-form--helper-register">
+                    </form>
+                </div>
+                <span class="login-form-line"></span>
+                <div class="login-form-helper">
+                    <div class="login-form--helper-register">
                             <span class="login-form--helper-register-text">
                                 Впервые у нас? <a href="{% url 'main:register' %}"
                                                   class="login-form--helper-register-btn">Зарегистрируйтесь</a>
                             </span>
+                    </div>
+                    <div class="login-form--helper-reset_pass">
+                        <a href="{% url 'main:password_reset' %}" class="login-form--helper-reset_pass-btn">Забыли
+                            пароль?</a>
+                    </div>
                 </div>
-                <div class="login-form--helper-reset_pass">
-                    <a href="{% url 'main:password_reset' %}" class="login-form--helper-reset_pass-btn">Забыли
-                        пароль?</a>
-                </div>
-            </div>
+            {% endblock %}
         </div>
     </div>
 
@@ -112,9 +116,13 @@
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/swiper.min.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/slider.js' %}></script>
+    {% block login-script %}
+    {% endblock %}
 {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/css/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+    {% block login-css %}
+    {% endblock %}
 {% endblock %}

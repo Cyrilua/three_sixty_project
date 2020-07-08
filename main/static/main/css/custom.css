@@ -193,11 +193,13 @@ h1, h2, h3, h4, h5, h6 {
 .button-red:hover {
     border: none;
     background-color: rgba(255, 24, 65, 0.85);
+    padding: 10px 14px;
 }
 
 .button-red:active {
     background: #E72144;
     border: 2px solid #FF1841;
+    padding: 8px 12px;
     outline: none;
 }
 

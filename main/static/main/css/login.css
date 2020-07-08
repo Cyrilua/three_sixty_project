@@ -43,28 +43,29 @@
     margin-bottom: 40px;
 }
 
-.login-form-fields-label,
-.login-form-fields-input {
+.form-fields-label,
+.form-fields-input {
     font-weight: normal;
     font-size: 14px;
     line-height: 16px;
 }
 
-.login-form-fields-label {
+.form-fields-label {
     margin: 0 0 7px;
 }
 
-.login-form-fields-input {
+.form-fields-input {
     height: 40px;
 }
 
 .login-form-navigate {
-
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
-.login-form-navigate-login {
-    float: right;
-    width: 80px;
+.login-form-navigate-btn {
+    /*width: 80px;*/
     height: 40px;
 }
 

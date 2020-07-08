@@ -1,5 +1,21 @@
 $(function () {
+    const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $(body).on('click', '.register-form-navigate-btn-next_step', function (event) {
+        event.preventDefault();
+        $('.step-1').addClass('d-none');
+        $('.step-2').removeClass('d-none');
+    });
+
+    $(body).on('click', '.register-form-navigate-btn-back_step', function (event) {
+        event.preventDefault();
+        $('.step-2').addClass('d-none');
+        $('.step-1').removeClass('d-none');
+    });
+
+    //################################################
+
     let required = {
         'username': false,
         'pass1': false,
@@ -130,7 +146,7 @@ $(function () {
     $('#id_surname').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20,  el.value);
+        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
@@ -145,7 +161,7 @@ $(function () {
     $('#id_patronymic').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 5, 20,  el.value);
+        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 5, 20, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
