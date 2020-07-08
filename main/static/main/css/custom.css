@@ -60,10 +60,6 @@ h1 {
     box-shadow: 0 0 0 0.1rem rgba(211, 61, 89, 0.7);
 }
 
-.button-red {
-    
-}
-
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
     margin-bottom: 0.5rem;
@@ -177,3 +173,78 @@ h1, h2, h3, h4, h5, h6 {
 
 /*###---!wrapper---###*/
 
+/*###---elements---###*/
+
+.button-red {
+    background-color: #FF1841;
+    color: #FAFAFA;
+    border-radius: 8px;
+    border: 2px solid #FF1841;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+}
+
+.button-red:hover {
+    background-color: rgba(255, 24, 65, 0.85);
+}
+
+.button-red:active {
+    background: #E72144;
+    border: 2px solid #FF1841;
+    outline: none;
+}
+
+.button-red:disabled {
+    background: #E5E5E5;
+    border: 2px solid #E5E5E5;
+    cursor: not-allowed;
+}
+
+.button-white {
+    background-color: #FAFAFA;
+    color: #000000;
+    border-radius: 8px;
+    border: 1px solid #000000;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 9px 15px;
+    box-sizing: border-box;
+}
+
+.button-white:hover {
+}
+
+.button-white:active {
+    border: 2px solid #FF1841;
+    outline: none;
+    padding: 8px 14px;
+}
+
+.button-white:disabled {
+    background: #FAFAFA;
+    border: 1px solid #C4C4C4;
+    color: #C4C4C4;
+    cursor: not-allowed;
+}
+
+.input-field {
+
+}
+
+.input-field:hover {
+
+}
+
+.input-field:active {
+
+}
+
+.input-field:disabled {
+
+}
+
+/*###---!elements---###*/
