@@ -154,16 +154,15 @@ urlpatterns = [
                   path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views.create_poll_from_template,
                        name='new_poll_from_template'),
 
-                  ##########################################
+                  ################ Old poll ##########################
 
                   path('walkthrough_polls_view/', poll_views.walkthrough_polls_view, name='walkthrough_polls_view'),
                   path('results_polls_view/', poll_views.results_polls_view, name='results_polls_view'),
+
+                  ########## New poll ######################
                   path('poll/', poll_views.choose_poll, name='new_poll_view'),
-
-                  ##########################################
-
-                  ###### New Poll ######
-                  path('poll/editor/', poll_views.poll_create, name='poll_editor')
+                  path('poll/editor/<int:poll_id>/', poll_views.poll_create, name='poll_editor_id'),
+                  path('poll/editor/new/', poll_views.poll_create_redirect, name='poll_editor')
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

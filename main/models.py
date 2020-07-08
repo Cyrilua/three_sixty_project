@@ -197,6 +197,15 @@ class TemplatesPoll(models.Model):
         return self.name_poll
 
 
+class Draft(models.Model):
+    poll = models.ManyToManyField('Poll')
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = 'Draft'
+
+
 class Poll(models.Model):
     key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
@@ -248,14 +257,14 @@ class Settings(models.Model):
 
 
 class AnswerChoice(models.Model):
-    value = models.CharField(max_length=50, default='')
+    text = models.CharField(max_length=50, default='')
     objects = models.Manager()
 
     class Meta:
         db_table = "Answer choice"
 
     def __str__(self):
-        return self.value
+        return self.text
 
 
 class Answers(models.Model):
