@@ -537,7 +537,7 @@ function createNewQuestion(poll_questions) {
     let questionMovePlatformImg = document.createElement('img');
     questionMovePlatformImg.classList.add('question-move-platform-img');
     questionMovePlatformImg.alt = '';
-    questionMovePlatformImg.src = '../../static/main/images/move.svg';
+    questionMovePlatformImg.src = '../../../static/main/images/move.svg';
 
     questionMovePlatform.append(questionMovePlatformImg);
     questionMove.append(questionMovePlatform);
@@ -591,7 +591,7 @@ function createNewQuestion(poll_questions) {
     questionNavigateRemove_question.classList.add('question-navigate-remove_question');
     let questionNavigateRemove_questionImg = document.createElement('img');
     questionNavigateRemove_questionImg.classList.add('question-navigate-remove_question-img');
-    questionNavigateRemove_questionImg.src = '../../static/main/images/remove2.svg';
+    questionNavigateRemove_questionImg.src = '../../../static/main/images/remove2.svg';
     questionNavigateRemove_questionImg.alt = '';
 
     questionNavigateRemove_question.append(questionNavigateRemove_questionImg);
@@ -626,7 +626,7 @@ function createNewAnswer(type, questionMainAnswers) {
     }
     let questionMainAnswerRemoveImg = document.createElement('img');
     questionMainAnswerRemoveImg.classList.add('question-main-answer-remove-img');
-    questionMainAnswerRemoveImg.src = '../../static/main/images/cross.svg';
+    questionMainAnswerRemoveImg.src = '../../../static/main/images/cross.svg';
     questionMainAnswerRemoveImg.alt = '';
     if (type === 'radio') {
         questionRadioMainAnswer.classList.add('question-radio-main-answer');
