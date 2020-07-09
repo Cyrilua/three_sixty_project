@@ -32,12 +32,12 @@
             </div>
             <div class="register-form-fields step-2 d-none">
                 <div class="form-group">
-                    <label class="form-fields-label" for="{{ user_form.fullname.id_for_label }}">ФИО</label>
-                    {{ user_form.fullname|attr:"placeholder:ФИО"|add_class:"form-control form-fields-input" }}
+                    <label class="form-fields-label" for="{{ profile_form.fullname.id_for_label }}">ФИО</label>
+                    {{ profile_form.fullname|attr:"placeholder:ФИО"|add_class:"form-control form-fields-input" }}
                 </div>
                 <div class="form-group">
-                    <label class="form-fields-label" for="{{ user_form.birthday.id_for_label }}">День рождения</label>
-                    {{ user_form.birthday|attr:"placeholder:Ваш день родения"|add_class:"form-control form-fields-input" }}
+                    <label class="form-fields-label" for="{{ birth_date_form.birthday.id_for_label }}">День рождения</label>
+                    {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|add_class:"form-control form-fields-input" }}
                 </div>
             </div>
             <div class="register-form-navigate">

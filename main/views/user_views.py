@@ -9,8 +9,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
-from main.forms import ProfileForm, UserChangeEmailForm
-from main.models import City
+from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
@@ -24,8 +23,8 @@ def user_register(request):
     args = {'user_form': UserCreationForm(),
             'profile_form': ProfileForm(),
             'email_form': UserChangeEmailForm(),
-            'title': "Регистрация",
-            'cities': City.objects.all()}
+            'birth_date_form': BirthDateForm,
+            'title': "Регистрация"}
 
     if request.method == 'POST':
         result_post = request_post_method_processing(request, args)
@@ -75,8 +74,6 @@ def request_post_method_processing(request, args):
         profile.user = user
         user.email = request.POST.get('email', '')
         user.save()
-        profile.city = City.objects.get(id=int(request.POST.get('city')))
-        profile.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)

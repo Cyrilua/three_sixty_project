@@ -7,35 +7,26 @@ from django.contrib.auth.models import User
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
-    patronymic = models.CharField(max_length=20)
+    fullname = models.CharField(max_length=100, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     groups = models.ManyToManyField('Group', null=True)
-    city = models.ForeignKey('City', on_delete=models.CASCADE, null=True)
     objects = models.Manager()
-    last_poll = models.OneToOneField('Poll', on_delete=models.CASCADE, null=True)
-    answers_sum = models.IntegerField(default=0)
-    count_answers = models.IntegerField(default=0)
 
     class Meta:
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {} {}'.format(self.name, self.surname)
+        return 'Profile for user {}'.format(self.fullname)
 
 
-class City(models.Model):
-    name = models.CharField(max_length=20)
-    objects = models.Manager()
+class BirthDate(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    birthday = models.DateField()
 
     class Meta:
-        db_table = 'City'
-
-    def __str__(self):
-        return self.name
+        db_table = 'BirthDate'
 
 
 class CreatedPoll(models.Model):
