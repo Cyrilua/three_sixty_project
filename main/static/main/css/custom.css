@@ -206,6 +206,8 @@ h1, h2, h3, h4, h5, h6 {
 .button-red:disabled {
     background: #E5E5E5;
     border: 2px solid #E5E5E5;
+
+    padding: 8px 12px;
     cursor: not-allowed;
 }
 
@@ -289,6 +291,71 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid rgba(0, 0, 0, 0.2);
     padding: 6px 12px;
     color: #FF1841;
+}
+
+.input-field.error:active {
+    border: 2px solid #FF1841;
+    outline: none;
+}
+
+.input-field.error:focus {
+    border: 2px solid #FF1841;
+    outline: none;
+    padding: 5px 11px;
+}
+
+.popup {
+    position: relative;
+    height: 0;
+}
+
+.popup_message {
+    display: block;
+    width: 220px;
+    position: relative;
+    right: calc(-100% - 15px);
+    top: -40px;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.popup_message::before {
+    content: '';
+    position: absolute;
+    border: 7px solid transparent;
+    border-right: 12px solid rgba(0, 0, 0, 0.2);
+    left: -20px;
+    top: 14px;
+}
+
+.popup_message::after {
+    content: '';
+    position: absolute;
+    border: 7px solid transparent;
+    border-right: 12px solid #FFFFFF;
+    left: -18px;
+    top: 14px;
+}
+
+.popup_message-text {
+    display: block;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #FF1841;
+    padding: 0;
+    margin-bottom: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.popup_message > .popup_message-text:first-child {
+    margin-top: 12px;
+}
+
+.popup_message > .popup_message-text:last-child {
+    margin-bottom: 12px;
 }
 
 /*###---!elements---###*/

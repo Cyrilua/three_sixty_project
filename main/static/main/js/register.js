@@ -2,6 +2,15 @@ $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
 
+    let required = {
+        'username': false,
+        'pass1': false,
+        'pass2': false,
+        'email': false,
+        'fullname': false,
+        'date': false,
+    };
+
     $(body).on('click', '.register-form-navigate-btn-next_step', function (event) {
         event.preventDefault();
         $('.step-1').addClass('d-none');
@@ -16,16 +25,6 @@ $(function () {
 
     //################################################
 
-    let required = {
-        'username': false,
-        'pass1': false,
-        'pass2': false,
-        'email': false,
-        'name': false,
-        'surname': false,
-        'patronymic': false,
-        'city': false,
-    };
 
     $('#id_username').on('input', function () {
         let el = $(this)[0];
@@ -128,76 +127,34 @@ $(function () {
         });
     });
 
-    $('#id_name').on('input', function () {
+    $('#id_fullname').on('input', function () {
         let el = $(this)[0];
         formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20, el.value);
+        let checker = checkFieldValidation(RegExp(''), 6, 150, el.value);
         console.log(checker);
         chooseValidationColor(el, checker);
         if (checker === 'success') {
-            required.name = true;
+            required.fullname = true;
         } else if (checker === 'error') {
-            required.name = false;
+            required.fullname = false;
             showMessage("ERROR");
         }
         checkBtnRegister(required);
     });
 
-    $('#id_surname').on('input', function () {
-        let el = $(this)[0];
-        formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 2, 20, el.value);
-        console.log(checker);
-        chooseValidationColor(el, checker);
-        if (checker === 'success') {
-            required.surname = true;
-        } else if (checker === 'error') {
-            required.surname = false;
-            showMessage("ERROR");
+    $('#id_birthday').on('input', function () {
+        let el = $(this);
+        let checker = checkBirthday($(this)[0], 1900, 15);
+        if (el.value !== '' && checker) {
+            $(this).removeClass('error');
+            required.date = true;
+        } else {
+            $(this).addClass('error');
+            required.date = false;
+            showMessage('Error!');
         }
         checkBtnRegister(required);
     });
-
-    $('#id_patronymic').on('input', function () {
-        let el = $(this)[0];
-        formatValue(el);
-        let checker = checkFieldValidation(RegExp('[А-Я][а-я]+'), 5, 20, el.value);
-        console.log(checker);
-        chooseValidationColor(el, checker);
-        if (checker === 'success') {
-            required.patronymic = true;
-        } else if (checker === 'error') {
-            required.patronymic = false;
-            showMessage("ERROR");
-        }
-        checkBtnRegister(required);
-    });
-
-    $('#id_city').on('change', function () {
-        console.log($(this)[0].value);
-        chooseValidationColor($(this)[0], 'success');
-        required.city = true;
-        checkBtnRegister(required);
-    });
-
-    // $('#btn-register').click(function () {
-    //     $.ajax({
-    //         url: '',
-    //         type: 'post',
-    //         data: {
-    //             id: $('#btn-register')[0].id,
-    //             username: $('#id_username')[0].value,
-    //             pass1: $('#id_password1')[0].value,
-    //             pass2: $('#id_password2')[0].value,
-    //             email: $('#id_email')[0].value,
-    //             name: $('#id_name')[0].value,
-    //             surname: $('#id_surname')[0].value,
-    //             patronymic: $('#id_patronymic')[0].value,
-    //             city: $('#id_city')[0].value,
-    //             csrfmiddlewaretoken: csrf,
-    //         },
-    //     });
-    // });
 });
 
 
@@ -224,11 +181,11 @@ function chooseValidationColor(element, status) {
         if (element.classList.contains('error')) {
             element.classList.remove('error');
         }
-        element.classList.add('success');
+        // element.classList.add('success');
     } else if (status === 'error') {
-        if (element.classList.contains('success')) {
-            element.classList.remove('success');
-        }
+        // if (element.classList.contains('success')) {
+        //     element.classList.remove('success');
+        // }
         element.classList.add('error');
     }
 }
@@ -258,4 +215,10 @@ function isTrueAllinObj(obj) {
         }
     }
     return true;
+}
+
+function checkBirthday(el, min, deltaMax) {
+    let year = el.value.split('-')[0];
+    let currentYear = (new Date()).getFullYear();
+    return year >= min && year <= currentYear - deltaMax;
 }
