@@ -20,7 +20,7 @@ $(function () {
         'birthday': false,
     };
 
-    $(body).on('click', '.register-form-navigate-btn-next_step', function (event) {
+    body.on('click', '.register-form-navigate-btn-next_step', function (event) {
         event.preventDefault();
         $('.step-1').addClass('d-none');
         $('.step-2').removeClass('d-none');
@@ -85,6 +85,7 @@ $(function () {
                     showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
@@ -117,6 +118,7 @@ $(function () {
                     });
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
@@ -144,6 +146,7 @@ $(function () {
                     showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
@@ -170,6 +173,7 @@ $(function () {
                     showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
@@ -196,6 +200,7 @@ $(function () {
                     showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
@@ -213,37 +218,38 @@ $(function () {
             success: function (response) {
                 chooseValidationColor($('#id_birthday')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
-                    required.fullname = true;
-                    errors.fullname = false;
+                    required.birthday = true;
+                    errors.birthday = false;
                     removeErrors(el, timeShow);
                 } else if (response.resultStatus === 'error') {
-                    required.fullname = false;
-                    errors.fullname = true;
+                    required.birthday = false;
+                    errors.birthday = true;
                     showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
+                checkBtnNext(required);
             }
         });
     });
 });
 
 
-// Первая буква заглавная, остальные строчные
-function formatValue(element) {
-    if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
-        let position = element.selectionStart;
-        element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
-        element.selectionStart = element.selectionEnd = position;
-    }
-}
+// // Первая буква заглавная, остальные строчные
+// function formatValue(element) {
+//     if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
+//         let position = element.selectionStart;
+//         element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
+//         element.selectionStart = element.selectionEnd = position;
+//     }
+// }
 
-// Проверка полей на правильность ввода
-function checkFieldValidation(regexp, minLen, maxLen, str) {
-    if (regexp.test(str) && str.length >= minLen && str.length <= maxLen) {
-        return 'success';
-    }
-    return 'error';
-}
+// // Проверка полей на правильность ввода
+// function checkFieldValidation(regexp, minLen, maxLen, str) {
+//     if (regexp.test(str) && str.length >= minLen && str.length <= maxLen) {
+//         return 'success';
+//     }
+//     return 'error';
+// }
 
 // Выбор цвета поля (отображение валидности полей)
 function chooseValidationColor(element, status) {
@@ -256,9 +262,9 @@ function chooseValidationColor(element, status) {
     }
 }
 
+// Появление ошибок
 function showErrors(body, el, errors, timeShow) {
-    console.log(errors)
-
+    // console.log(errors)
     let popup = $(el).parent().children('.popup');
     let alert = popup.children('.popup_message');
     alert.children().remove();
@@ -279,6 +285,7 @@ function showErrors(body, el, errors, timeShow) {
 
 }
 
+// Удаление ошибок
 function removeErrors(el, timeShow) {
     let popup = $(el).parent().children('.popup');
     let alert = popup.children('.popup_message');
@@ -306,6 +313,18 @@ function checkBtnRegister(required) {
     }
 }
 
+function checkBtnNext(required) {
+    if (required.username === true && required.email === true && required.password1 === true && required.password2 === true) {
+        $('.register-form-navigate-btn-next_step').prop({
+            disabled: false
+        })
+    } else {
+        $('.register-form-navigate-btn-next_step').prop({
+            disabled: true
+        })
+    }
+}
+
 //Проверка объекта (required), что все свойства true
 function isTrueAllinObj(obj) {
     for (let key in obj) {
@@ -316,8 +335,8 @@ function isTrueAllinObj(obj) {
     return true;
 }
 
-function checkBirthday(el, min, deltaMax) {
-    let year = el.value.split('-')[0];
-    let currentYear = (new Date()).getFullYear();
-    return year >= min && year <= currentYear - deltaMax;
-}
+// function checkBirthday(el, min, deltaMax) {
+//     let year = el.value.split('-')[0];
+//     let currentYear = (new Date()).getFullYear();
+//     return year >= min && year <= currentYear - deltaMax;
+// }
