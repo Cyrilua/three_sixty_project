@@ -1,5 +1,6 @@
 import copy
 import re
+import datetime
 
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
@@ -10,6 +11,7 @@ from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
+from main.models import BirthDate
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
@@ -26,14 +28,15 @@ def user_register(request):
             'birth_date_form': BirthDateForm,
             'title': "Регистрация"}
 
+    if request.is_ajax():
+        result_ajax = request_ajax_processing(request)
+        if result_ajax is not None:
+            return result_ajax
+
     if request.method == 'POST':
         result_post = request_post_method_processing(request, args)
         if result_post is not None:
             return result_post
-
-    if request.is_ajax():
-        return request_ajax_processing(request)
-
     return render(request, 'main/no_login/register.html', args)
 
 
@@ -48,21 +51,22 @@ def request_ajax_processing(request):
             errors = validate_login(date['username'])
             return get_result(errors)
 
-        if id_element == 'id_password2':
+        elif id_element == 'id_password2':
             errors = validate_password2(date['pass2'], date['pass1'])  # list
             return get_result(errors)
 
-        if id_element == 'id_password1':
+        elif id_element == 'id_password1':
             errors = validate_password1(date['pass1'])  # list
             return get_result(errors)
 
-        if id_element == 'id_email':
+        elif id_element == 'id_email':
             errors = validate_email(date['email'])
             return get_result(errors)
 
 
 def request_post_method_processing(request, args):
     post = copy.deepcopy(request.POST)
+    print(post)
     if 'username' in post:
         post['username'] = post['username'].lower()
     user_form = UserCreationForm(post)
@@ -74,6 +78,13 @@ def request_post_method_processing(request, args):
         profile.user = user
         user.email = request.POST.get('email', '')
         user.save()
+        profile.save()
+        birth_date = datetime.datetime.strptime(post['birthday'], '%Y-%m-%d').date()
+        print(birth_date)
+        date = BirthDate()
+        date.birthday = birth_date
+        date.profile = profile
+        date.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)
@@ -82,6 +93,7 @@ def request_post_method_processing(request, args):
         args['user_form'] = user_form
         args['profile_form'] = profile_form
         args['email_form'] = email_form
+        args
 
 
 def get_result(errors: list):
