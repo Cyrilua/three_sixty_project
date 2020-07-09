@@ -24,12 +24,6 @@ def get_render_user_profile(request):
 
     profile = get_user_profile(request)
 
-    rating = 0
-    if profile.count_answers > 0:
-        rating = profile.answers_sum / profile.count_answers
-
-    last_poll = profile.last_poll
-
     try:
         photo = profile.profilephoto.photo
     except:
@@ -38,8 +32,6 @@ def get_render_user_profile(request):
     args = {
         "title": "Мой профиль",
         'profile': profile,
-        'rating': rating,
-        'last_poll': last_poll,
         'photo': photo,
     }
     if photo is not None:
