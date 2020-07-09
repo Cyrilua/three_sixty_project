@@ -12,6 +12,7 @@ class Profile (models.Model):
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     groups = models.ManyToManyField('Group', null=True)
+    email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:
