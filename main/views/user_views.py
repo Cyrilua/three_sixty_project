@@ -120,6 +120,7 @@ def request_ajax_processing(request):
         pass
     if request.method == "POST":
         date = request.POST
+        print(date)
         id_element = date['id']
 
         if id_element == 'id_username':
@@ -127,11 +128,12 @@ def request_ajax_processing(request):
             return get_result(errors)
 
         elif id_element == 'id_password2':
-            errors = validate_password2(date['pass2'], date['pass1'])  # list
+            errors = validate_password2(date['password2'], date['password1'])  # list
             return get_result(errors)
 
         elif id_element == 'id_password1':
-            errors = validate_password1(date['pass1'])  # list
+            print(date)
+            errors = validate_password1(date['password1'])  # list
             return get_result(errors)
 
         elif id_element == 'id_email':
