@@ -32,15 +32,13 @@ $(function () {
         $('.step-1').removeClass('d-none');
     });
 
-    //################################################
-
     body.on('focus', '.input-field', function () {
-        console.log('show')
         for (let key in errors) {
             let name = $(this)[0].name;
             if (key === name) {
+                let popup = $(this).parent().children('.popup');
                 if (errors[key]) {
-                    $(this).parent().children('.popup').css({
+                    popup.css({
                         display: 'block',
                         opacity: 0,
                     })
@@ -55,7 +53,6 @@ $(function () {
     });
 
     body.on('focusout', '.input-field', function () {
-        console.log('no show')
         $(this).parent().children('.popup').stop().animate({
             opacity: 0,
         }, timeShow, function () {
@@ -68,35 +65,32 @@ $(function () {
     $('#id_username').on('input', function () {
         let el = $(this)[0];
         el.value = el.value.toLowerCase();
-        let checker = checkFieldValidation(RegExp('[a-z][a-z0-9]+'), 3, 20, el.value);
-        chooseValidationColor(el, checker);
-        if (checker === 'success') {
-            $.ajax({
-                url: '',
-                type: 'post',
-                data: {
-                    id: $(this)[0].id,
-                    username: $(this)[0].value,
-                    csrfmiddlewaretoken: csrf,
-                },
-                success: function (response) {
-                    chooseValidationColor($('#id_username')[0], response.resultStatus);
-                    if (response.resultStatus === 'success') {
-                        required.username = true;
-                        errors.username = false;
-                        removeErrors(body, el, response.resultError, timeShow);
-                    } else if (response.resultStatus === 'error') {
-                        required.username = false;
-                        errors.username = true;
-                        showErrors(body, el, response.resultError, timeShow);
-                    }
-                    checkBtnRegister(required);
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                username: $(this)[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor($('#id_username')[0], response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    required.username = true;
+                    errors.username = false;
+                    removeErrors(el, timeShow);
+                } else if (response.resultStatus === 'error') {
+                    required.username = false;
+                    errors.username = true;
+                    showErrors(body, el, response.resultError, timeShow);
                 }
-            });
-        }
+                checkBtnRegister(required);
+            }
+        });
     });
 
     $('#id_password1').on('input', function () {
+        let el = $(this)[0];
         $.ajax({
             url: '',
             type: 'post',
@@ -109,12 +103,15 @@ $(function () {
                 chooseValidationColor($('#id_password1')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.password1 = true;
+                    errors.password1 = false;
+                    removeErrors(el, timeShow);
                     $('#id_password2').prop({
                         'disabled': false,
                     });
                 } else if (response.resultStatus === 'error') {
                     required.password1 = false;
-                    showErrors(response.resultError);
+                    errors.password1 = true;
+                    showErrors(body, el, response.resultError, timeShow);
                     $('#id_password2').prop({
                         'disabled': true,
                     });
@@ -125,6 +122,7 @@ $(function () {
     });
 
     $('#id_password2').on('input', function () {
+        let el = $(this)[0];
         $.ajax({
             url: '',
             type: 'post',
@@ -138,9 +136,12 @@ $(function () {
                 chooseValidationColor($('#id_password2')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.password2 = true;
+                    errors.password2 = false;
+                    removeErrors(el, timeShow);
                 } else if (response.resultStatus === 'error') {
                     required.password2 = false;
-                    showErrors(response.resultError);
+                    errors.password2 = true;
+                    showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
             }
@@ -148,6 +149,7 @@ $(function () {
     });
 
     $('#id_email').on('input', function () {
+        let el = $(this)[0];
         $.ajax({
             url: '',
             type: 'post',
@@ -160,9 +162,12 @@ $(function () {
                 chooseValidationColor($('#id_email')[0], response.resultStatus);
                 if (response.resultStatus === 'success') {
                     required.email = true;
+                    errors.email = false;
+                    removeErrors(el, timeShow);
                 } else if (response.resultStatus === 'error') {
                     required.email = false;
-                    showErrors(response.resultError);
+                    errors.email = true;
+                    showErrors(body, el, response.resultError, timeShow);
                 }
                 checkBtnRegister(required);
             }
@@ -171,31 +176,54 @@ $(function () {
 
     $('#id_fullname').on('input', function () {
         let el = $(this)[0];
-        formatValue(el);
-        let checker = checkFieldValidation(RegExp(''), 6, 150, el.value);
-        console.log(checker);
-        chooseValidationColor(el, checker);
-        if (checker === 'success') {
-            required.fullname = true;
-        } else if (checker === 'error') {
-            required.fullname = false;
-            showErrors("ERROR");
-        }
-        checkBtnRegister(required);
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                fullname: $(this)[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor($('#id_fullname')[0], response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    required.fullname = true;
+                    errors.fullname = false;
+                    removeErrors(el, timeShow);
+                } else if (response.resultStatus === 'error') {
+                    required.fullname = false;
+                    errors.fullname = true;
+                    showErrors(body, el, response.resultError, timeShow);
+                }
+                checkBtnRegister(required);
+            }
+        });
     });
 
     $('#id_birthday').on('input', function () {
-        let el = $(this);
-        let checker = checkBirthday($(this)[0], 1900, 15);
-        if (el.value !== '' && checker) {
-            $(this).removeClass('error');
-            required.birthday = true;
-        } else {
-            $(this).addClass('error');
-            required.birthday = false;
-            showErrors('Error!');
-        }
-        checkBtnRegister(required);
+        let el = $(this)[0];
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: $(this)[0].id,
+                birthday: $(this)[0].value,
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor($('#id_birthday')[0], response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    required.fullname = true;
+                    errors.fullname = false;
+                    removeErrors(el, timeShow);
+                } else if (response.resultStatus === 'error') {
+                    required.fullname = false;
+                    errors.fullname = true;
+                    showErrors(body, el, response.resultError, timeShow);
+                }
+                checkBtnRegister(required);
+            }
+        });
     });
 });
 
@@ -223,16 +251,14 @@ function chooseValidationColor(element, status) {
         if (element.classList.contains('error')) {
             element.classList.remove('error');
         }
-        // element.classList.add('success');
     } else if (status === 'error') {
-        // if (element.classList.contains('success')) {
-        //     element.classList.remove('success');
-        // }
         element.classList.add('error');
     }
 }
 
 function showErrors(body, el, errors, timeShow) {
+    console.log(errors)
+
     let popup = $(el).parent().children('.popup');
     let alert = popup.children('.popup_message');
     alert.children().remove();
@@ -250,9 +276,10 @@ function showErrors(body, el, errors, timeShow) {
         .stop().animate({
         opacity: 1,
     }, timeShow);
+
 }
 
-function removeErrors(body, el, errors, timeShow) {
+function removeErrors(el, timeShow) {
     let popup = $(el).parent().children('.popup');
     let alert = popup.children('.popup_message');
     popup.stop().animate({

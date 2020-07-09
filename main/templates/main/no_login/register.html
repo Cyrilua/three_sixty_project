@@ -17,7 +17,6 @@
                     {{ user_form.username|attr:"placeholder:Придумайте логин"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-
                         </div>
                     </div>
                 </div>
@@ -27,9 +26,6 @@
                     {{ email_form.email|attr:"placeholder:Ваша электронная почта"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
                         </div>
                     </div>
                 </div>
@@ -38,9 +34,6 @@
                     {{ user_form.password1|attr:"placeholder:Придумайте пароль"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
                         </div>
                     </div>
                 </div>
@@ -50,9 +43,6 @@
                     {{ user_form.password2|attr:"placeholder:Повторите пароль"|attr:"disabled:disabled"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
                         </div>
                     </div>
                 </div>
@@ -61,6 +51,10 @@
                 <div class="form-group">
                     <label class="form-fields-label" for="{{ profile_form.fullname.id_for_label }}">ФИО</label>
                     {{ profile_form.fullname|attr:"placeholder:ФИО"|add_class:"input-field" }}
+                    <div class="popup">
+                        <div class="popup_message">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-fields-label" for="{{ birth_date_form.birthday.id_for_label }}">День
@@ -68,9 +62,6 @@
                     {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:date"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
                         </div>
                     </div>
                 </div>
