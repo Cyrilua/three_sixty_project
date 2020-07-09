@@ -305,6 +305,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .popup {
+    display: none;
     position: relative;
     height: 0;
 }
@@ -326,7 +327,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 7px solid transparent;
     border-right: 12px solid rgba(0, 0, 0, 0.2);
     left: -20px;
-    top: 14px;
+    top: 13px;
 }
 
 .popup_message::after {
@@ -335,7 +336,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 7px solid transparent;
     border-right: 12px solid #FFFFFF;
     left: -18px;
-    top: 14px;
+    top: 13px;
 }
 
 .popup_message-text {

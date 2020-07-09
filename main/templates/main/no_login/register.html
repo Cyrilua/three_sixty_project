@@ -17,9 +17,7 @@
                     {{ user_form.username|attr:"placeholder:Придумайте логин"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
-                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
-                            <span class="popup_message-text">Такой логин уже используется</span>
+
                         </div>
                     </div>
                 </div>
@@ -27,15 +25,36 @@
                     <label class="form-fields-label" for="{{ email_form.email.id_for_label }}">Электронная
                         почта</label>
                     {{ email_form.email|attr:"placeholder:Ваша электронная почта"|add_class:"input-field" }}
+                    <div class="popup">
+                        <div class="popup_message">
+                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-fields-label" for="{{ user_form.password1.id_for_label }}">Пароль</label>
                     {{ user_form.password1|attr:"placeholder:Придумайте пароль"|add_class:"input-field" }}
+                    <div class="popup">
+                        <div class="popup_message">
+                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-fields-label" for="{{ user_form.password2.id_for_label }}">Повторите
                         пароль</label>
                     {{ user_form.password2|attr:"placeholder:Повторите пароль"|attr:"disabled:disabled"|add_class:"input-field" }}
+                    <div class="popup">
+                        <div class="popup_message">
+                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="register-form-fields step-2 d-none">
@@ -47,6 +66,13 @@
                     <label class="form-fields-label" for="{{ birth_date_form.birthday.id_for_label }}">День
                         рождения</label>
                     {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:date"|add_class:"input-field" }}
+                    <div class="popup">
+                        <div class="popup_message">
+                            <span class="popup_message-text">Такой логин уже используется очень часто</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                            <span class="popup_message-text">Такой логин уже используется</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="register-form-navigate">
