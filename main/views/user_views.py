@@ -2,6 +2,8 @@ import copy
 import re
 import datetime
 
+from main.views.auxiliary_general_methods import *
+
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
@@ -11,23 +13,11 @@ from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
-from main.models import BirthDate, Profile
+from main.models import BirthDate
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
 from django.core.validators import EmailValidator
-
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import EmailMessage
-from django.contrib.auth import get_user_model
-
-
-
-UserModel = get_user_model()
 
 
 def user_register(request):
@@ -72,7 +62,6 @@ def request_post_method_processing(request, args):
         date.profile = profile
         date.save()
 
-
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)
         send_email_validate_message(request)
@@ -83,44 +72,11 @@ def request_post_method_processing(request, args):
         args['email_form'] = email_form
 
 
-def send_email_validate_message(request):
-    current_site = get_current_site(request)
-    user = auth.get_user(request)
-    mail_subject = 'Activate your email.'
-    message = render_to_string('main/validate_email.html', {
-        'user': user,
-        'domain': current_site.domain,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': default_token_generator.make_token(user),
-    })
-    to_email = user.email
-    email = EmailMessage(
-        mail_subject, message, to=[to_email]
-    )
-    email.send()
-
-
-def activate(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = UserModel._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-    if user is not None and default_token_generator.check_token(user, token):
-        profile = Profile.objects.get(user=user)
-        profile.email_is_validate = True
-        profile.save()
-        return HttpResponse('Thank you for your email confirmation.')
-    else:
-        return HttpResponse('Activation link is invalid!')
-
-
 def request_ajax_processing(request):
     if request.method == "GET":
         pass
     if request.method == "POST":
         date = request.POST
-        print(date)
         id_element = date['id']
 
         if id_element == 'id_username':
@@ -132,13 +88,21 @@ def request_ajax_processing(request):
             return get_result(errors)
 
         elif id_element == 'id_password1':
-            print(date)
             errors = validate_password1(date['password1'])  # list
             return get_result(errors)
 
         elif id_element == 'id_email':
             errors = validate_email(date['email'])
             return get_result(errors)
+
+        ########## Раскомментировать по готовности. Проверить правильность названий аргументов ############
+        #elif id_element == 'id_birthday':
+        #    errors = validate_birth_date(date['birthday'])
+        #    return get_result(errors)
+
+        #elif id_element == 'id_fullname':
+        #    errors = validate_fullname(date['fullname'])
+        #    return get_result(errors)
 
 
 def get_result(errors: list):
@@ -184,6 +148,20 @@ def validate_password2(password2: str, password1: str):
     return result
 
 
+def validate_birth_date(date: str):
+    result = []
+    current_date = datetime.datetime.today()
+    old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
+    try:
+        birth_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        result.append('Дата неправильного формата')
+        return result
+    if birth_date >= current_date or old_date <= birth_date:
+        result.append('Некорректная дата')
+    return result
+
+
 def validate_email(email: str):
     result = []
     try:
@@ -191,6 +169,24 @@ def validate_email(email: str):
         email_validator(email)
     except ValidationError as error:
         result = error.messages
+    users = User.objects.filter(email=email)
+    if len(users) != 0:
+        result.append('Данный email уже привязан к другоу аккаунту')
+    return result
+
+
+def validate_fullname(name: str):
+    result = []
+    len_name = len(name)
+    if len_name < 6:
+        result.append('Введенное имя слишком короткое. Оно должно содержать минимум 6 символа')
+    if len_name > 150:
+        result.append('Введенное имя слишком длинное. Оно должно состоять не более чем из 150 символов')
+
+    # убрать проверку на запрещенные символы при необходимости
+    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
+    if len(reg.sub('', name)) != len(name):
+        result.append('Имя содержит запрещенные символы')
     return result
 
 

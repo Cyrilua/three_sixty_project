@@ -16,7 +16,7 @@ urlpatterns = [
                   path('logout/', user_views.user_logout, name='logout'),
 
                   # Подтверждение почты
-                  path('activate/<uidb64>/<token>/', user_views.activate, name='activate'),
+                  path('activate/<uidb64>/<token>/', auxiliary_general_methods.activate, name='activate'),
 
                   # Сообщение об успешной смене пароля
                   path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(

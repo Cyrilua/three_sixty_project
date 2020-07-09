@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fullname = models.CharField(max_length=100, default='')
+    fullname = models.CharField(max_length=150, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
