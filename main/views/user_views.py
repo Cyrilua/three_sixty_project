@@ -96,13 +96,13 @@ def request_ajax_processing(request):
             return get_result(errors)
 
         ########## Раскомментировать по готовности. Проверить правильность названий аргументов ############
-        #elif id_element == 'id_birthday':
-        #    errors = validate_birth_date(date['birthday'])
-        #    return get_result(errors)
+        elif id_element == 'id_birthday':
+           errors = validate_birth_date(date['birthday'])
+           return get_result(errors)
 
-        #elif id_element == 'id_fullname':
-        #    errors = validate_fullname(date['fullname'])
-        #    return get_result(errors)
+        elif id_element == 'id_fullname':
+           errors = validate_fullname(date['fullname'])
+           return get_result(errors)
 
 
 def get_result(errors: list):
@@ -157,7 +157,7 @@ def validate_birth_date(date: str):
     except ValueError:
         result.append('Дата неправильного формата')
         return result
-    if birth_date >= current_date or old_date <= birth_date:
+    if birth_date >= current_date or old_date >= birth_date:
         result.append('Некорректная дата')
     return result
 
