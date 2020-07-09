@@ -6,16 +6,28 @@ from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
-from main.models import BirthDate
+from main.models import BirthDate, Profile
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
 from django.core.validators import EmailValidator
+
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
+from django.contrib.auth import get_user_model
+
+
+
+UserModel = get_user_model()
 
 
 def user_register(request):
@@ -40,6 +52,69 @@ def user_register(request):
     return render(request, 'main/no_login/register.html', args)
 
 
+def request_post_method_processing(request, args):
+    post = copy.deepcopy(request.POST)
+    if 'username' in post:
+        post['username'] = post['username'].lower()
+    user_form = UserCreationForm(post)
+    profile_form = ProfileForm(post)
+    email_form = UserChangeEmailForm(post)
+    if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
+        user = user_form.save(commit=False)
+        profile = profile_form.save(commit=False)
+        profile.user = user
+        user.email = request.POST.get('email', '')
+        user.save()
+        profile.save()
+        birth_date = datetime.datetime.strptime(post['birthday'], '%Y-%m-%d').date()
+        date = BirthDate()
+        date.birthday = birth_date
+        date.profile = profile
+        date.save()
+
+
+        # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
+        auth.login(request, user)
+        send_email_validate_message(request)
+        return redirect('/')
+    else:
+        args['user_form'] = user_form
+        args['profile_form'] = profile_form
+        args['email_form'] = email_form
+
+
+def send_email_validate_message(request):
+    current_site = get_current_site(request)
+    user = auth.get_user(request)
+    mail_subject = 'Activate your email.'
+    message = render_to_string('main/validate_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': default_token_generator.make_token(user),
+    })
+    to_email = user.email
+    email = EmailMessage(
+        mail_subject, message, to=[to_email]
+    )
+    email.send()
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = UserModel._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and default_token_generator.check_token(user, token):
+        profile = Profile.objects.get(user=user)
+        profile.email_is_validate = True
+        profile.save()
+        return HttpResponse('Thank you for your email confirmation.')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
+
 def request_ajax_processing(request):
     if request.method == "GET":
         pass
@@ -62,38 +137,6 @@ def request_ajax_processing(request):
         elif id_element == 'id_email':
             errors = validate_email(date['email'])
             return get_result(errors)
-
-
-def request_post_method_processing(request, args):
-    post = copy.deepcopy(request.POST)
-    print(post)
-    if 'username' in post:
-        post['username'] = post['username'].lower()
-    user_form = UserCreationForm(post)
-    profile_form = ProfileForm(post)
-    email_form = UserChangeEmailForm(post)
-    if user_form.is_valid() and profile_form.is_valid() and email_form.is_valid():
-        user = user_form.save(commit=False)
-        profile = profile_form.save(commit=False)
-        profile.user = user
-        user.email = request.POST.get('email', '')
-        user.save()
-        profile.save()
-        birth_date = datetime.datetime.strptime(post['birthday'], '%Y-%m-%d').date()
-        print(birth_date)
-        date = BirthDate()
-        date.birthday = birth_date
-        date.profile = profile
-        date.save()
-
-        # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
-        auth.login(request, user)
-        return redirect('/')
-    else:
-        args['user_form'] = user_form
-        args['profile_form'] = profile_form
-        args['email_form'] = email_form
-        args
 
 
 def get_result(errors: list):
