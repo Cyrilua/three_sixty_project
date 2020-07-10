@@ -1,7 +1,7 @@
-<div class='navbar-nav ml-auto' style="margin-right: 25px;">
+<div class='navbar-nav ml-auto' style="margin-right: 1.84vw;">
     <ul class="navbar-nav bd-navbar-nav flex-row">
         {% if user.is_authenticated %}
-            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 1.172vw; line-height: 1.4vw;">
                 <a class="nav-link" href="{% url 'main:login' %}">
                     {% if profile %}
                         {{ profile.name }} {{ profile.surname }}
@@ -10,14 +10,14 @@
                     {% endif %}
                 </a>
             </li>
-            <li class="nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            <li class="nav-item"  style="font-weight: bold; font-size: 1.172vw; line-height: 1.4vw;">
                 <a class="nav-link" id="logout" href="{% url 'main:logout' %}">Выход</a>
             </li>
         {% else %}
-            <li class="{{ nav_login }} nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            <li class="{{ nav_login }} nav-item"  style="font-weight: bold; font-size: 1.172vw; line-height: 1.4vw;">
                 <a class="nav-link header-first-icon" id="login" href="{% url 'main:login' %}">Вход</a>
             </li>
-            <li class="{{ nav_register }} nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            <li class="{{ nav_register }} nav-item"  style="font-weight: bold; font-size: 1.172vw; line-height: 1.4vw;">
                 <a class="nav-link" id="register" href="{% url 'main:register' %}">Регистрация</a>
             </li>
         {% endif %}

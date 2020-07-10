@@ -1,3 +1,7 @@
+:root {
+    font-size: 0.625em; /*10px*/
+}
+
 body {
     font-family: "Roboto", sans-serif;
     /*overflow-x: hidden;*/
@@ -5,7 +9,7 @@ body {
 
 h1 {
     font-weight: 600;
-    font-size: 35px;
+    /*font-size: 35px; !*3.5rem*!*/
 }
 
 .navbar-expand .navbar-nav .nav-link {
@@ -71,8 +75,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .rounded-block {
     background-color: #fafafa;
-    border-radius: 5px;
-    padding: 30px;
+    border-radius: 0.37vw;
+    padding: 2.2vw;
     height: auto;
 }
 
@@ -99,11 +103,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .user-sidebar-item {
     display: block;
-    width: 150px;
+    width: 10.98vw;
     background: transparent;
-    padding-left: 10px;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    padding-left: 0.733vw;
+    border-radius: 0.37vw;
+    margin-bottom: 0.37vw;
 }
 
 .user-sidebar-item:hover {
@@ -132,46 +136,44 @@ h1, h2, h3, h4, h5, h6 {
     user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }
 
-.container-fluid {
-    background: white;
-    padding-top: 104px;
-    /*padding-bottom: 5%;*/
-    min-height: 100vh;
-    max-width: 1366px;
-}
-
 /*###---header---###*/
 
 .header-first-icon {
-    margin-right: 24px;
+    margin-right: 1.76vw;
 }
 
 /*###---!header---###*/
 
 /*###---wrapper---###*/
-
 .container-fluid {
     display: flex;
     padding-left: 0;
     padding-right: 0;
     box-sizing: border-box;
+    background: white;
+    padding-top: 7.914vw;
+    /*padding-bottom: 5%;*/
+    min-height: 100vh;
+    max-width: 100vw;
 }
 
 .col-left {
-    width: 228px;
+    width: 16.69vw;
     height: auto;
-    padding-left: 15px;
+    padding-left: 1.098vw;
 }
 
 .col-center {
-    width: 910px;
+    /*width: 910px;*/
+    /*width: 66.62vw;*/
+    width: calc(910/1366*100vw);
     height: auto;
 }
 
 .col-right {
-    width: 220px;
+    width: 16.69vw;
     height: auto;
-    padding-right: 15px;
+    padding-right: 1.098vw;
 }
 
 /*###---!wrapper---###*/
@@ -181,12 +183,12 @@ h1, h2, h3, h4, h5, h6 {
 .button-red {
     background-color: #FF1841;
     color: #FAFAFA;
-    border-radius: 8px;
-    border: 2px solid #FF1841;
+    border-radius: 0.59vw;
+    border: 0.15vw solid #FF1841;
     font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    padding: 8px 12px;
+    font-size: 1.172vw;
+    line-height: 1.4vw;
+    padding: 0.59vw 0.88vw;
     box-sizing: border-box;
 }
 
@@ -198,27 +200,27 @@ h1, h2, h3, h4, h5, h6 {
 
 .button-red:active {
     background: #B61E39;
-    border: 2px solid #FF1841;
-    padding: 8px 12px;
+    border: 0.15vw solid #FF1841;
+    padding: 0.59vw 0.88vw;
     outline: none;
 }
 
 .button-red:disabled {
     background: #E5E5E5;
-    border: 2px solid #E5E5E5;
+    border: 0.15vw solid #E5E5E5;
 
-    padding: 8px 12px;
+    padding: 0.59vw 0.88vw;
     cursor: not-allowed;
 }
 
 .button-red:focus {
-    outline: 1px dotted blue;
+    outline: 0.07321vw dotted blue;
 }
 
 .button-white {
     background-color: #FAFAFA;
     color: #000000;
-    border-radius: 8px;
+    border-radius: 0.59vw;
     border: 1px solid #000000;
     font-weight: normal;
     font-size: 16px;
@@ -231,9 +233,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .button-white:active {
-    border: 2px solid #FF1841;
+    border: 0.15vw solid #FF1841;
     outline: none;
-    padding: 8px 14px;
+    padding: 0.59vw 14px;
 }
 
 .button-white:disabled {
@@ -248,18 +250,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-field {
-    height: 40px;
+    height: 2.93vw;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 1.03vw;
+    line-height: 1.172vw;
     color: #595757;
     /*display: block;*/
     width: 100%;
-    padding: 6px 12px;
+    padding: 0.44vw 0.88vw;
     background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 0.07321vw solid rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    border-radius: 5px;
+    border-radius: 0.37vw;
 }
 
 .input-field::placeholder {
@@ -271,37 +273,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-field:active {
-    border: 2px solid #FF1841;
+    border: 0.15vw solid #FF1841;
     outline: none;
 }
 
 .input-field:focus {
-    border: 2px solid #FF1841;
+    border: 0.15vw solid #FF1841;
     outline: none;
-    padding: 5px 11px;
+    padding: 0.37vw 0.81vw;
 }
 
 .input-field:disabled {
     background: #FAFAFA;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 0.07321vw solid rgba(0, 0, 0, 0.2);
 }
 
 .input-field.error {
     background: rgba(255, 24, 65, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 6px 12px;
+    border: 0.07321vw solid rgba(0, 0, 0, 0.2);
+    padding: 0.44vw 0.88vw;
     color: #FF1841;
 }
 
 .input-field.error:active {
-    border: 2px solid #FF1841;
+    border: 0.15vw solid #FF1841;
     outline: none;
 }
 
 .input-field.error:focus {
-    border: 2px solid #FF1841;
+    border: 0.15vw solid #FF1841;
     outline: none;
-    padding: 5px 11px;
+    padding: 0.37vw 0.81vw;
 }
 
 .popup {
@@ -313,51 +315,57 @@ h1, h2, h3, h4, h5, h6 {
 
 .popup_message {
     display: block;
-    width: 220px;
+    width: 16.11vw;
     position: relative;
     right: calc(-100% - 15px);
-    top: -40px;
+    top: -2.93vw;
     background-color: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border: 0.07321vw solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.586vw;
 }
 
 .popup_message::before {
     content: '';
     position: absolute;
-    border: 7px solid transparent;
-    border-right: 12px solid rgba(0, 0, 0, 0.2);
-    left: -20px;
-    top: 13px;
+    border: 0.513vw solid transparent;
+    border-right: 0.88vw solid rgba(0, 0, 0, 0.2);
+    left: -1.4642vw;
+    top: 0.952vw;
 }
 
 .popup_message::after {
     content: '';
     position: absolute;
-    border: 7px solid transparent;
-    border-right: 12px solid #FFFFFF;
-    left: -18px;
-    top: 13px;
+    border: 0.513vw solid transparent;
+    border-right: 0.88vw solid #FFFFFF;
+    left: -1.3178vw;
+    top: 0.952vw;
 }
 
 .popup_message-text {
     display: block;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 1.249vw;
+    line-height: 1.17131vw;
     color: #FF1841;
     padding: 0;
-    margin-bottom: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-bottom: 0.8785vw;
+    margin-left: 0.8785vw;
+    margin-right: 0.8785vw;
 }
 
 .popup_message > .popup_message-text:first-child {
-    margin-top: 12px;
+    margin-top: 0.8785vw;
 }
 
 .popup_message > .popup_message-text:last-child {
-    margin-bottom: 12px;
+    margin-bottom: 0.8785vw;
 }
 
 /*###---!elements---###*/
+
+@media (max-width: 1365px) {
+    body {
+        display: none;
+    }
+}

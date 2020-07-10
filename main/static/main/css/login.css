@@ -5,19 +5,19 @@
 }
 
 .slider {
-    height: 550px;
-    width: 550px;
-    margin-right: 5px;
-    border-radius: 5px;
+    height: 40.26vw;
+    width: 40.26vw;
+    margin-right: 0.37vw;
+    border-radius: 0.37vw;
 }
 
 .slider-slide {
-    width: 550px;
-    border-radius: 5px;
+    width: 40.26vw;
+    border-radius: 0.37vw;
 }
 
 .login-content {
-    width: 355px;
+    width: 25.99vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -29,28 +29,28 @@
 
 .login-form-title {
     font-weight: bold;
-    font-size: 36px;
-    line-height: 42px;
+    font-size: 2.64vw;
+    line-height: 3.08vw;
     text-align: center;
-    margin: 52px 0 11px;
+    margin: 3.81vw 0 0.81vw;
 }
 
 .form-group {
-    margin: 0 0 12px;
+    margin: 0 0 0.89vw;
 }
 
 .login-form-fields > .form-group:last-child {
-    margin-bottom: 40px;
+    margin-bottom: 2.93vw;
 }
 
 .form-fields-label {
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 1.025vw;
+    line-height: 1.172vw;
 }
 
 .form-fields-label {
-    margin: 0 0 7px;
+    margin: 0 0 0.51vw;
 }
 
 .form-fields-input {
@@ -65,30 +65,30 @@
 
 .login-form-navigate-btn {
     /*width: 80px;*/
-    height: 40px;
+    height: 2.93vw;
 }
 
 .login-form-line {
     width: 100%;
-    height: 1px;
+    height: 0.074vw;
     background-color: #E5E5E5;
-    margin: auto 0 17px;
+    margin: auto 0 1.25vw;
 }
 
 .login-form-helper {
     text-align: center;
-    margin: 0 0 37px;
+    margin: 0 0 2.71vw;
 }
 
 .login-form--helper-register {
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    margin: 0 0 14px;
+    font-size: 1.025vw;
+    line-height: 1.172vw;
+    margin: 0 0 1.03vw;
 }
 
 .login-form--helper-reset_pass {
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: 1.025vw;
+    line-height: 1.172vw;
 }
