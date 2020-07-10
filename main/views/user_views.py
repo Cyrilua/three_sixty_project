@@ -95,7 +95,6 @@ def request_ajax_processing(request):
             errors = validate_email(date['email'])
             return get_result(errors)
 
-        ########## Раскомментировать по готовности. Проверить правильность названий аргументов ############
         elif id_element == 'id_birthday':
            errors = validate_birth_date(date['birthday'])
            return get_result(errors)
@@ -179,9 +178,9 @@ def validate_fullname(name: str):
     result = []
     len_name = len(name)
     if len_name < 6:
-        result.append('Введенное имя слишком короткое. Оно должно содержать минимум 6 символа')
+        result.append('Слишком короткое имя')
     if len_name > 150:
-        result.append('Введенное имя слишком длинное. Оно должно состоять не более чем из 150 символов')
+        result.append('Слишком длинное имя')
 
     # убрать проверку на запрещенные символы при необходимости
     reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
@@ -206,7 +205,12 @@ def user_login(request):
             auth.login(request, user)
             return redirect('/{}/'.format(get_user_profile(request).id))
         else:
-            args['login_error'] = "Неверный логин или пароль"
+            count_users = User.objects.filter(username=username)
+            print(count_users)
+            if len(count_users) != 0:
+                args['error'] = {'password': 'Неверный пароль'}
+            else:
+                args['error'] = {'login': 'Проверьте правильность логина'}
             args['username'] = username
             return render(request, 'main/no_login/login.html', args)
     return render(request, 'main/no_login/login.html', args)
