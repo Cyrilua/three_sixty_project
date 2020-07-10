@@ -25,12 +25,26 @@
                                        placeholder="Введите логин"
                                        type="text"
                                        name="username" value="{{ username }}" id="username" required>
+                                {% if error %}
+                                    <div class="popup">
+                                        <div class="popup_message">
+                                            <span class="popup_message-text">{{ error.login }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <label class="form-fields-label" for="password">Пароль</label>
-                                <input class="input-field" aria-describedby="passwordHelp"
+                                <input class="input-field {% if error %}error{% endif %}" aria-describedby="passwordHelp"
                                        placeholder="Введите пароль"
                                        type="password" name="password" id="password" required>
+                                {% if error %}
+                                    <div class="popup">
+                                        <div class="popup_message">
+                                            <span class="popup_message-text">{{ error.password }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="login-form-navigate">
@@ -116,6 +130,7 @@
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/swiper.min.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/slider.js' %}></script>
+    <script type="text/javascript" src="{% static 'main/js/login.js' %}"></script>
     {% block login-script %}
     {% endblock %}
 {% endblock %}
