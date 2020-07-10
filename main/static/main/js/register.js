@@ -2,7 +2,14 @@ $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     const timeShow = 300;
+
+    let username = $('#id_username');
+    let password1 = $('#id_password1');
+    let password2 = $('#id_password2');
+    let email = $('#id_email');
+    let fullname = $('#id_fullname');
     let birthday = $('#id_birthday');
+
     let required = {
         'username': false,
         'password1': false,
@@ -20,10 +27,35 @@ $(function () {
         'birthday': false,
     };
 
+    username
+        .val('')
+        .blur();
+    password1.val('');
+    password2.val('');
+    email.val('');
+    fullname.val('');
+    birthday.val('');
+    checkBtnNext(required);
+    checkBtnRegister(required);
+
+    // if (username.val() !== '')
+    //     ajaxForUsername(username, csrf, required, errors, body, timeShow);
+    // if (password1.val() !== '')
+    //     ajaxForPassword1(password1, csrf, required, errors, body, timeShow);
+    // if (password2.val() !== '')
+    //     ajaxForPassword2(password2, csrf, required, errors, body, timeShow);
+    // if (email.val() === '')
+    //     ajaxForEmail(email, csrf, required, errors, body, timeShow);
+    // if (fullname.val() === '')
+    //     ajaxForName(fullname, csrf, required, errors, body, timeShow);
+    // if (birthday.val() === '')
+    //     ajaxForBirthday(birthday, csrf, required, errors, body, timeShow);
+
+
     if (birthday.prop('type') !== 'date') {
         birthday.datepicker({
             onSelect: function (formattedDate, date, inst) {
-                let el = birthday[0];
+                let el = birthday;
                 $.ajax({
                     url: '',
                     type: 'post',
@@ -94,173 +126,33 @@ $(function () {
     });
 
     body.on('input', '#id_username', function () {
-        let el = $(this)[0];
-        el.value = el.value.toLowerCase();
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                username: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_username')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.username = true;
-                    errors.username = false;
-                    removeErrors(el, timeShow);
-                } else if (response.resultStatus === 'error') {
-                    required.username = false;
-                    errors.username = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+        let el = $(this);
+        ajaxForUsername(el, csrf, required, errors, body, timeShow);
     });
 
     body.on('input', '#id_password1', function () {
-        let el = $(this)[0];
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                password1: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_password1')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.password1 = true;
-                    errors.password1 = false;
-                    removeErrors(el, timeShow);
-                    $('#id_password2').prop({
-                        'disabled': false,
-                    });
-                } else if (response.resultStatus === 'error') {
-                    required.password1 = false;
-                    errors.password1 = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                    $('#id_password2').prop({
-                        'disabled': true,
-                    });
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+        let el = $(this);
+        ajaxForPassword1(el, csrf, required, errors, body, timeShow);
     });
 
     body.on('input', '#id_password2', function () {
-        let el = $(this)[0];
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                password1: $('#id_password1')[0].value,
-                password2: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_password2')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.password2 = true;
-                    errors.password2 = false;
-                    removeErrors(el, timeShow);
-                } else if (response.resultStatus === 'error') {
-                    required.password2 = false;
-                    errors.password2 = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+        let el = $(this);
+        ajaxForPassword2(el, csrf, required, errors, body, timeShow);
     });
 
     body.on('input', '#id_email', function () {
-        let el = $(this)[0];
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                email: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_email')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.email = true;
-                    errors.email = false;
-                    removeErrors(el, timeShow);
-                } else if (response.resultStatus === 'error') {
-                    required.email = false;
-                    errors.email = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+        let el = $(this);
+        ajaxForEmail(el, csrf, required, errors, body, timeShow);
     });
 
     body.on('input', '#id_fullname', function () {
-        let el = $(this)[0];
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                fullname: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_fullname')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.fullname = true;
-                    errors.fullname = false;
-                    removeErrors(el, timeShow);
-                } else if (response.resultStatus === 'error') {
-                    required.fullname = false;
-                    errors.fullname = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+        let el = $(this);
+        ajaxForName(el, csrf, required, errors, body, timeShow);
     });
 
-    body.on('change', '#id_birthday', function () {
-        let el = $(this)[0];
-        $.ajax({
-            url: '',
-            type: 'post',
-            data: {
-                id: $(this)[0].id,
-                birthday: $(this)[0].value,
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                chooseValidationColor($('#id_birthday')[0], response.resultStatus);
-                if (response.resultStatus === 'success') {
-                    required.birthday = true;
-                    errors.birthday = false;
-                    removeErrors(el, timeShow);
-                } else if (response.resultStatus === 'error') {
-                    required.birthday = false;
-                    errors.birthday = true;
-                    showErrors(body, el, response.resultError, timeShow);
-                }
-                checkBtnRegister(required);
-                checkBtnNext(required);
-            }
-        });
+    body.on('input', '#id_birthday', function () {
+        let el = $(this);
+        ajaxForBirthday(el, csrf, required, errors, body, timeShow);
     });
 });
 
@@ -281,6 +173,171 @@ $(function () {
 //     }
 //     return 'error';
 // }
+
+function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
+    el[0].value = el[0].value.toLowerCase();
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            username: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor($('#id_username')[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.username = true;
+                errors.username = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.username = false;
+                errors.username = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
+
+function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            password1: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor($('#id_password1')[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.password1 = true;
+                errors.password1 = false;
+                removeErrors(el, timeShow);
+                $('#id_password2').prop({
+                    'disabled': false,
+                });
+            } else if (response.resultStatus === 'error') {
+                required.password1 = false;
+                errors.password1 = true;
+                showErrors(body, el, response.resultError, timeShow);
+                $('#id_password2').prop({
+                    'disabled': true,
+                });
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
+
+function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
+    let pass1 = $('#id_password1');
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            password1: pass1[0].value,
+            password2: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor(el[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.password2 = true;
+                errors.password2 = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.password2 = false;
+                errors.password2 = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
+
+function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            email: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor($('#id_email')[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.email = true;
+                errors.email = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.email = false;
+                errors.email = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
+
+function ajaxForName(el, csrf, required, errors, body, timeShow) {
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            fullname: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor($('#id_fullname')[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.fullname = true;
+                errors.fullname = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.fullname = false;
+                errors.fullname = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
+
+function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            birthday: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor($('#id_birthday')[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.birthday = true;
+                errors.birthday = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.birthday = false;
+                errors.birthday = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            checkBtnNext(required);
+        }
+    });
+}
 
 // Выбор цвета поля (отображение валидности полей)
 function chooseValidationColor(element, status) {
