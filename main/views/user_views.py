@@ -148,11 +148,12 @@ def validate_password2(password2: str, password1: str):
 
 
 def validate_birth_date(date: str):
+    print(date)
     result = []
     current_date = datetime.datetime.today()
     old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
     try:
-        birth_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+        birth_date = datetime.datetime.strptime(date, '%d.%m.%Y')
     except ValueError:
         result.append('Дата неправильного формата')
         return result
