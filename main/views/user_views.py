@@ -212,6 +212,7 @@ def user_login(request):
             else:
                 args['error'] = {'login': 'Проверьте правильность логина'}
             args['username'] = username
+            print(args['error'])
             return render(request, 'main/no_login/login.html', args)
     return render(request, 'main/no_login/login.html', args)
 
