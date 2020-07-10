@@ -36,8 +36,8 @@ $(function () {
         for (let key in errors) {
             let name = $(this)[0].name;
             if (key === name) {
-                let popup = $(this).parent().children('.popup');
                 if (errors[key]) {
+                    let popup = $(this).parent().children('.popup');
                     popup.css({
                         display: 'block',
                         opacity: 0,
