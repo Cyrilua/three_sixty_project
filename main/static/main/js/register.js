@@ -27,9 +27,7 @@ $(function () {
         'birthday': false,
     };
 
-    username
-        .val('')
-        .blur();
+    username.val('');
     password1.val('');
     password2.val('');
     email.val('');
