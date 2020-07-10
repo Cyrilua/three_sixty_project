@@ -2,7 +2,7 @@ $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     const timeShow = 300;
-
+    let birthday = $('#id_birthday');
     let required = {
         'username': false,
         'password1': false,
@@ -19,6 +19,37 @@ $(function () {
         'email': false,
         'birthday': false,
     };
+
+    if (birthday.prop('type') !== 'date') {
+        birthday.datepicker({
+            onSelect: function (formattedDate, date, inst) {
+                let el = birthday[0];
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    data: {
+                        id: birthday[0].id,
+                        birthday: formattedDate,
+                        csrfmiddlewaretoken: csrf,
+                    },
+                    success: function (response) {
+                        chooseValidationColor($('#id_birthday')[0], response.resultStatus);
+                        if (response.resultStatus === 'success') {
+                            required.birthday = true;
+                            errors.birthday = false;
+                            removeErrors(el, timeShow);
+                        } else if (response.resultStatus === 'error') {
+                            required.birthday = false;
+                            errors.birthday = true;
+                            showErrors(body, el, response.resultError, timeShow);
+                        }
+                        checkBtnRegister(required);
+                        checkBtnNext(required);
+                    }
+                });
+            },
+        });
+    }
 
     body.on('click', '.register-form-navigate-btn-next_step', function (event) {
         event.preventDefault();
@@ -62,7 +93,7 @@ $(function () {
         });
     });
 
-    $('#id_username').on('input', function () {
+    body.on('input', '#id_username', function () {
         let el = $(this)[0];
         el.value = el.value.toLowerCase();
         $.ajax({
@@ -90,7 +121,7 @@ $(function () {
         });
     });
 
-    $('#id_password1').on('input', function () {
+    body.on('input', '#id_password1', function () {
         let el = $(this)[0];
         $.ajax({
             url: '',
@@ -123,7 +154,7 @@ $(function () {
         });
     });
 
-    $('#id_password2').on('input', function () {
+    body.on('input', '#id_password2', function () {
         let el = $(this)[0];
         $.ajax({
             url: '',
@@ -151,7 +182,7 @@ $(function () {
         });
     });
 
-    $('#id_email').on('input', function () {
+    body.on('input', '#id_email', function () {
         let el = $(this)[0];
         $.ajax({
             url: '',
@@ -178,7 +209,7 @@ $(function () {
         });
     });
 
-    $('#id_fullname').on('input', function () {
+    body.on('input', '#id_fullname', function () {
         let el = $(this)[0];
         $.ajax({
             url: '',
@@ -205,7 +236,7 @@ $(function () {
         });
     });
 
-    $('#id_birthday').on('input', function () {
+    body.on('change', '#id_birthday', function () {
         let el = $(this)[0];
         $.ajax({
             url: '',

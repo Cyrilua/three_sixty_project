@@ -59,7 +59,7 @@
                 <div class="form-group">
                     <label class="form-fields-label" for="{{ birth_date_form.birthday.id_for_label }}">День
                         рождения</label>
-                    {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:date"|add_class:"input-field" }}
+                    {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -174,8 +174,10 @@
 
 {% block login-css %}
     <link rel="stylesheet" href="{% static 'main/css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/datepicker.min.css' %}">
 {% endblock %}
 
 {% block login-script %}
     <script type="text/javascript" src={% static 'main/js/register.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/datepicker.min.js' %}></script>
 {% endblock %}
