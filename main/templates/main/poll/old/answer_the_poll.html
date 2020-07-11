@@ -14,7 +14,7 @@
                 <form method="post" action="">
                     {% csrf_token %}
                     {% for question in questions %}
-                        <div class="form-group" id="questionContent-{{ question.id }}" style="margin-bottom: 20px">
+                        <div class="form-group" id="questionContent-{{ question.id }}" style="margin-bottom: calc(20vw/1366*100)">
                             <label
                                     {% if question.type == "small_text" or question.type == "big_text" or question.type == "range" %}
                                         for="text-{{ question.id }}"{% endif %} style="font-weight: bold">
