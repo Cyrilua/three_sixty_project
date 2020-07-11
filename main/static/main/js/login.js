@@ -37,5 +37,7 @@ $(function () {
         }, timeShow, function () {
             $(this).remove();
         })
-    })
+    });
+
+    $('.popup').parent().children('.error').focus();
 });
