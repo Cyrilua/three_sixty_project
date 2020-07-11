@@ -1,19 +1,19 @@
 .reset-pass-block {
-    height: 370px;
+    height: calc(370vw/1366*100);
 }
 
 .reset-pass-title {
-    margin-bottom: 20px;
+    margin-bottom: calc(20vw/1366*100);
 }
 
 .reset-pass-subtitle {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 18px;
-    width: 450px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(18vw/1366*100);
+    width: calc(450vw/1366*100);
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 60px;
+    margin-bottom: calc(60vw/1366*100);
 }
 
 .reset-pass-email {
@@ -21,30 +21,30 @@
     left: 50%;
     bottom: 50%;
     transform: translateX(-50%) translateY(50%);
-    min-width: 200px;
-    width: 200px;
-    max-width: 400px;
+    min-width: calc(200vw/1366*100);
+    width: calc(200vw/1366*100);
+    max-width: calc(400vw/1366*100);
     /*margin: 0 auto 100px;*/
 }
 
 .reset-pass-back-home-page {
-    line-height: 14px;
+    line-height: calc(14vw/1366*100);
     position: absolute;
-    bottom: 15px;
+    bottom: calc(15vw/1366*100);
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
 }
 
 .reset-pass-next {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: calc(10vw/1366*100);
+    bottom: calc(10vw/1366*100);
 }
 
 .input-buffer {
     position: absolute;
-    top: -1000px;
-    left: -1000px;
+    top: calc(-1000vw/1366*100);
+    left: calc(-1000vw/1366*100);
     visibility: hidden;
     white-space: nowrap;
 }
@@ -55,16 +55,16 @@
 
 .reset-pass-success-subtitle {
     font-weight: 500;
-    font-size: 16px;
-    line-height: 18px;
-    width: 450px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(18vw/1366*100);
+    width: calc(450vw/1366*100);
     margin-left: auto;
     margin-right: auto;
 }
 
 .reset-pass-success-subtitle-part {
-    margin-bottom: 35px;
-    padding-left: 15px;
+    margin-bottom: calc(35vw/1366*100);
+    padding-left: calc(15vw/1366*100);
 }
 
 .reset-pass-repeat-letter {
@@ -73,12 +73,12 @@
 
 .reset-pass-back {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
+    left: calc(10vw/1366*100);
+    bottom: calc(10vw/1366*100);
 }
 
 .new-pass-subtitle {
-    width: 320px;
+    width: calc(320vw/1366*100);
 }
 
 .new-pass-block {
@@ -89,6 +89,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 250px;
-    height: 90px;
+    width: calc(250vw/1366*100);
+    height: calc(90vw/1366*100);
 }

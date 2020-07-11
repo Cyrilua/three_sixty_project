@@ -1,5 +1,5 @@
 .scroll-top-btn-value {
-    padding-top: calc(100vh - 320px);
+    padding-top: calc(100vh - calc(320vw/1366*100));
 }
 
 .notifications {
@@ -9,7 +9,7 @@
 
 .notification {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: calc(10vw/1366*100);
     opacity: 1;
     transition: opacity .5s;
 }
@@ -30,9 +30,9 @@
 .notifications-date-block {
     color: #a2a2a2;
     margin: 0;
-    padding: 10px 0 10px;
+    padding: calc(10vw/1366*100) 0 calc(10vw/1366*100);
     position: sticky;
-    top: 56px;
+    top: calc(56vw/1366*100);
     background-color: transparent;
     z-index: 10;
     display: flex;
@@ -40,8 +40,8 @@
 }
 
 .notifications-date-value {
-    width: 110px;
-    padding: 10px 0;
+    width: calc(110vw/1366*100);
+    padding: calc(10vw/1366*100) 0;
     margin: 0;
     background-color: #ffffff;
     border-radius: 10%;
@@ -54,40 +54,40 @@
 }
 
 .notification-icon {
-    margin-right: 15px;
-    width: 80px;
+    margin-right: calc(15vw/1366*100);
+    width: calc(80vw/1366*100);
 }
 
 .notification-icon-img {
-    height: 80px;
+    height: calc(80vw/1366*100);
 }
 
 .notification-text {
-    width: 535px;
+    width: calc(535vw/1366*100);
 }
 
 .notification-text-only-title {
-    padding-bottom: 40px;
+    padding-bottom: calc(40vw/1366*100);
 }
 
 .notification-title {
     font-weight: bold;
-    font-size: 24px;
-    line-height: 28px;
-    margin-bottom: 10px;
+    font-size: calc(24vw/1366*100);
+    line-height: calc(28vw/1366*100);
+    margin-bottom: calc(10vw/1366*100);
 }
 
 .notification-details {
-    font-size: 16px;
-    line-height: 14px;
-    margin-bottom: 13px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(14vw/1366*100);
+    margin-bottom: calc(13vw/1366*100);
 }
 
 .notification-about {
-    font-size: 16px;
-    line-height: 14px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(14vw/1366*100);
     color: #595757;
-    padding-bottom: 11px;
+    padding-bottom: calc(11vw/1366*100);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -98,7 +98,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 140px;
+    width: calc(140vw/1366*100);
     margin-left: auto;
 }
 
@@ -107,8 +107,8 @@
     margin: 0 0 0 auto;
     border: none;
     background-color: transparent;
-    width: 15px;
-    height: 15px;
+    width: calc(15vw/1366*100);
+    height: calc(15vw/1366*100);
     position: relative;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .notification-button {
-    width: 135px;
+    width: calc(135vw/1366*100);
     margin-left: auto;
 }
 

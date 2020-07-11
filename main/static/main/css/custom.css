@@ -5,11 +5,11 @@ body {
 
 h1 {
     font-weight: 600;
-    font-size: 35px;
+    font-size: calc(35vw/1366*100);
 }
 
 .navbar-expand .navbar-nav .nav-link {
-    padding: 0;
+    padding: calc(0vw/1366*100);
 }
 
 /*.btn-primary {*/
@@ -65,14 +65,14 @@ h1 {
 /*}*/
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0;
+    margin: calc(0vw/1366*100);
     color: rgba(0, 0, 0, 0.93);
 }
 
 .rounded-block {
     background-color: #fafafa;
-    border-radius: 5px;
-    padding: 30px;
+    border-radius: calc(5vw/1366*100);
+    padding: calc(30vw/1366*100);
     height: auto;
 }
 
@@ -99,11 +99,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .user-sidebar-item {
     display: block;
-    width: 150px;
+    width: calc(150vw/1366*100);
     background: transparent;
-    padding-left: 10px;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    padding-left: calc(10vw/1366*100);
+    border-radius: calc(5vw/1366*100);
+    margin-bottom: calc(5vw/1366*100);
 }
 
 .user-sidebar-item:hover {
@@ -112,8 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .profile-footer-item {
     text-align: left;
-    padding-left: 10px;
-    margin-bottom: 5px;
+    padding-left: calc(10vw/1366*100);
+    margin-bottom: calc(5vw/1366*100);
 }
 
 .footer-link {
@@ -134,44 +134,41 @@ h1, h2, h3, h4, h5, h6 {
 
 .container-fluid {
     background: white;
-    padding-top: 104px;
+    padding-top: calc(104vw/1366*100);
     /*padding-bottom: 5%;*/
     min-height: 100vh;
-    max-width: 1366px;
+    max-width: 100vw;
+    display: flex;
+    padding-left: calc(0vw/1366*100);
+    padding-right: calc(0vw/1366*100);
+    box-sizing: border-box;
 }
 
 /*###---header---###*/
 
 .header-first-icon {
-    margin-right: 24px;
+    margin-right: calc(24vw/1366*100);
 }
 
 /*###---!header---###*/
 
 /*###---wrapper---###*/
 
-.container-fluid {
-    display: flex;
-    padding-left: 0;
-    padding-right: 0;
-    box-sizing: border-box;
-}
-
 .col-left {
-    width: 228px;
+    width: calc(228vw/1366*100);
     height: auto;
-    padding-left: 15px;
+    padding-left: calc(15vw/1366*100);
 }
 
 .col-center {
-    width: 910px;
+    width: calc(910vw/1366*100);
     height: auto;
 }
 
 .col-right {
-    width: 220px;
+    width: calc(228vw/1366*100);
     height: auto;
-    padding-right: 15px;
+    padding-right: calc(15vw/1366*100);
 }
 
 /*###---!wrapper---###*/
@@ -181,12 +178,12 @@ h1, h2, h3, h4, h5, h6 {
 .button-red {
     background-color: #FF1841;
     color: #FAFAFA;
-    border-radius: 8px;
-    border: 2px solid #FF1841;
+    border-radius: calc(8vw/1366*100);
+    border: calc(2vw/1366*100) solid #FF1841;
     font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    padding: 8px 12px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(19vw/1366*100);
+    padding: calc(8vw/1366*100) calc(12vw/1366*100);
     box-sizing: border-box;
 }
 
@@ -198,32 +195,32 @@ h1, h2, h3, h4, h5, h6 {
 
 .button-red:active {
     background: #B61E39;
-    border: 2px solid #FF1841;
-    padding: 8px 12px;
+    border: calc(2vw/1366*100) solid #FF1841;
+    padding: calc(8vw/1366*100) calc(12vw/1366*100);
     outline: none;
 }
 
 .button-red:disabled {
     background: #E5E5E5;
-    border: 2px solid #E5E5E5;
+    border: calc(2vw/1366*100) solid #E5E5E5;
 
-    padding: 8px 12px;
+    padding: calc(8vw/1366*100) calc(12vw/1366*100);
     cursor: not-allowed;
 }
 
 .button-red:focus {
-    outline: 1px dotted blue;
+    outline: calc(1vw/1366*100) dotted blue;
 }
 
 .button-white {
     background-color: #FAFAFA;
     color: #000000;
-    border-radius: 8px;
-    border: 1px solid #000000;
+    border-radius: calc(8vw/1366*100);
+    border: calc(1vw/1366*100) solid #000000;
     font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
-    padding: 9px 15px;
+    font-size: calc(16vw/1366*100);
+    line-height: calc(19vw/1366*100);
+    padding: calc(9vw/1366*100) calc(15vw/1366*100);
     box-sizing: border-box;
 }
 
@@ -231,35 +228,35 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .button-white:active {
-    border: 2px solid #FF1841;
+    border: calc(2vw/1366*100) solid #FF1841;
     outline: none;
-    padding: 8px 14px;
+    padding: calc(8vw/1366*100) calc(14vw/1366*100);
 }
 
 .button-white:disabled {
     background: #FAFAFA;
-    border: 1px solid #C4C4C4;
+    border: calc(1vw/1366*100) solid #C4C4C4;
     color: #C4C4C4;
     cursor: not-allowed;
 }
 
 .button-white:focus {
-    outline: 1px dotted blue;
+    outline: calc(1vw/1366*100) dotted blue;
 }
 
 .input-field {
-    height: 40px;
+    height: calc(40vw/1366*100);
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: calc(14vw/1366*100);
+    line-height: calc(16vw/1366*100);
     color: #595757;
     /*display: block;*/
     width: 100%;
-    padding: 6px 12px;
+    padding: calc(6vw/1366*100) calc(12vw/1366*100);
     background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
-    border-radius: 5px;
+    border-radius: calc(5vw/1366*100);
 }
 
 .input-field::placeholder {
@@ -271,37 +268,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-field:active {
-    border: 2px solid #FF1841;
+    border: calc(2vw/1366*100) solid #FF1841;
     outline: none;
 }
 
 .input-field:focus {
-    border: 2px solid #FF1841;
+    border: calc(2vw/1366*100) solid #FF1841;
     outline: none;
-    padding: 5px 11px;
+    padding: calc(5vw/1366*100) calc(11vw/1366*100);
 }
 
 .input-field:disabled {
     background: #FAFAFA;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
 }
 
 .input-field.error {
     background: rgba(255, 24, 65, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 6px 12px;
+    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
+    padding: calc(6vw/1366*100) calc(12vw/1366*100);
     color: #FF1841;
 }
 
 .input-field.error:active {
-    border: 2px solid #FF1841;
+    border: calc(2vw/1366*100) solid #FF1841;
     outline: none;
 }
 
 .input-field.error:focus {
-    border: 2px solid #FF1841;
+    border: calc(2vw/1366*100) solid #FF1841;
     outline: none;
-    padding: 5px 11px;
+    padding: calc(5vw/1366*100) calc(11vw/1366*100);
 }
 
 .popup {
@@ -313,51 +310,57 @@ h1, h2, h3, h4, h5, h6 {
 
 .popup_message {
     display: block;
-    width: 220px;
+    width: calc(220vw/1366*100);
     position: relative;
-    right: calc(-100% - 15px);
-    top: -40px;
+    right: calc(-100% - calc(15vw/1366*100));
+    top: calc(-40vw/1366*100);
     background-color: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
+    border-radius: calc(8vw/1366*100);
 }
 
 .popup_message::before {
     content: '';
     position: absolute;
-    border: 7px solid transparent;
-    border-right: 12px solid rgba(0, 0, 0, 0.2);
-    left: -20px;
-    top: 13px;
+    border: calc(7vw/1366*100) solid transparent;
+    border-right: calc(12vw/1366*100) solid rgba(0, 0, 0, 0.2);
+    left: calc(-20vw/1366*100);
+    top: calc(13vw/1366*100);
 }
 
 .popup_message::after {
     content: '';
     position: absolute;
-    border: 7px solid transparent;
-    border-right: 12px solid #FFFFFF;
-    left: -18px;
-    top: 13px;
+    border: calc(7vw/1366*100) solid transparent;
+    border-right: calc(12vw/1366*100) solid #FFFFFF;
+    left: calc(-18vw/1366*100);
+    top: calc(13vw/1366*100);
 }
 
 .popup_message-text {
     display: block;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
+    font-size: calc(14vw/1366*100);
+    line-height: calc(16vw/1366*100);
     color: #FF1841;
-    padding: 0;
-    margin-bottom: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
+    padding: calc(0vw/1366*100);
+    margin-bottom: calc(12vw/1366*100);
+    margin-left: calc(12vw/1366*100);
+    margin-right: calc(12vw/1366*100);
 }
 
 .popup_message > .popup_message-text:first-child {
-    margin-top: 12px;
+    margin-top: calc(12vw/1366*100);
 }
 
 .popup_message > .popup_message-text:last-child {
-    margin-bottom: 12px;
+    margin-bottom: calc(12vw/1366*100);
 }
 
 /*###---!elements---###*/
+
+@media (max-width: 1365px) {
+    body {
+        opacity: .3;
+    }
+}

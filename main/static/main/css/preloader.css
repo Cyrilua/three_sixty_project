@@ -16,8 +16,8 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 50px;
-    height: 50px;
+    width: calc(50vw/1366*100);
+    height: calc(50vw/1366*100);
     border-radius: 50%;
     border-top-color: transparent;
     transform: translateY(-50%) translateX(-50%);
@@ -40,12 +40,12 @@ body {
 @keyframes spin {
     from {
         transform: translateY(-50%) translateX(-50%) rotate(0deg);
-        border: 5px solid red;
+        border: calc(5vw/1366*100) solid red;
         border-top-color: transparent;
     }
     to {
         transform: translateY(-50%) translateX(-50%) rotate(360deg);
-        border: 5px solid green;
+        border: calc(5vw/1366*100) solid green;
 
         border-top-color: transparent;
     }
@@ -53,42 +53,42 @@ body {
 
 @keyframes spin2 {
     0% {
-        border: 5px solid red;
+        border: calc(5vw/1366*100) solid red;
         transform: translateY(-50%) translateX(-50%) rotate(0deg);
         border-top-color: transparent;
     }
     14% {
-        border: 5px solid orange;
+        border: calc(5vw/1366*100) solid orange;
         transform: translateY(-50%) translateX(-50%) rotate(51deg);
         border-top-color: transparent;
     }
     28% {
-        border: 5px solid yellow;
+        border: calc(5vw/1366*100) solid yellow;
         transform: translateY(-50%) translateX(-50%) rotate(102deg);
         border-top-color: transparent;
     }
     42% {
-        border: 5px solid green;
+        border: calc(5vw/1366*100) solid green;
         transform: translateY(-50%) translateX(-50%) rotate(153deg);
         border-top-color: transparent;
     }
     56% {
-        border: 5px solid skyblue;
+        border: calc(5vw/1366*100) solid skyblue;
         transform: translateY(-50%) translateX(-50%) rotate(204deg);
         border-top-color: transparent;
     }
     70% {
-        border: 5px solid blue;
+        border: calc(5vw/1366*100) solid blue;
         transform: translateY(-50%) translateX(-50%) rotate(255deg);
         border-top-color: transparent;
     }
     85% {
-        border: 5px solid purple;
+        border: calc(5vw/1366*100) solid purple;
         transform: translateY(-50%) translateX(-50%) rotate(306deg);
         border-top-color: transparent;
     }
     100% {
-        border: 5px solid red;
+        border: calc(5vw/1366*100) solid red;
         transform: translateY(-50%) translateX(-50%) rotate(360deg);
         border-top-color: transparent;
     }

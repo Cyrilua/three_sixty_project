@@ -29,10 +29,10 @@
 
 .register-form-title {
     font-weight: bold;
-    font-size: 36px;
-    line-height: 42px;
+    font-size: calc(36vw/1366*100);
+    line-height: calc(42vw/1366*100);
     text-align: center;
-    margin: 31px 0 11px;
+    margin: calc(31vw/1366*100) 0 calc(11vw/1366*100);
 }
 
 .register-form-fields {
@@ -47,14 +47,14 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin: auto 0 33px;
+    margin: auto 0 calc(33vw/1366*100);
 }
 
 .register-form-navigate-btn {
     /*width: 80px;*/
-    height: 40px;
+    height: calc(40vw/1366*100);
 }
 
 .register-form-navigate-btn-back_step {
-    margin-right: 12px;
+    margin-right: calc(12vw/1366*100);
 }
