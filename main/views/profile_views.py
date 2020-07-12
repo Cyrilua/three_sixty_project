@@ -38,7 +38,7 @@ def get_render_user_profile(request):
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     args['teams'] = profile.groups.all()
 
-    return render(request, 'main/user/old/profile.html', args)
+    return render(request, 'main/user/profile.html', args)
 
 
 def get_other_profile_render(request, profile_id):
@@ -100,7 +100,7 @@ def upload_profile_photo(request):
             photo_profile.profile = profile
             photo_profile.save()
         return redirect('/')
-    return render(request, "main/user/old/upload_photo.html", args)
+    return render(request, "main/user/upload_photo.html", args)
 
 
 def edit_profile(request):
@@ -142,7 +142,7 @@ def edit_profile(request):
             user.email = new_email
             user.save()
         return redirect('/edit/')
-    return render(request, 'main/user/old/edit_profile.html', args)
+    return render(request, 'main/user/edit_profile.html', args)
 
 
 
