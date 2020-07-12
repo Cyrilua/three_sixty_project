@@ -203,7 +203,7 @@ def answer_the_poll(request, poll_id):
 
         return redirect('/walkthrough_polls_view/')
 
-    return render(request, 'main/poll/answer_the_poll.html', args)
+    return render(request, 'main/poll/old/answer_the_poll.html', args)
 
 
 def build_questions(poll):
@@ -252,7 +252,7 @@ def result_view(request, poll_id):
         'name_poll': poll.name_poll,
         'results': question_answer_result
     }
-    return render(request, 'main/poll/poll_results.html', args)
+    return render(request, 'main/poll/old/poll_results.html', args)
 
 
 def build_result_questions_answers(questions):
@@ -347,7 +347,7 @@ def new_poll(request, poll_id):
             return redirect('/search_target_poll/{}/'.format(poll_id))
         return redirect('/communications/')
 
-    return render(request, 'main/poll/new_poll.html', args)
+    return render(request, 'main/poll/old/new_poll.html', args)
 
 
 def build_template(poll_id):
@@ -477,7 +477,7 @@ def create_poll_from_template(request, poll_id, template_id):
 
         return redirect('/communications/')
 
-    return render(request, 'main/poll/custom_poll.html', args)
+    return render(request, 'main/poll/old/custom_poll.html', args)
 
 
 def create_new_poll_from_template(request, poll, template):
@@ -581,7 +581,7 @@ def respondent_choice_group(request, group_id):
         group = Group.objects.get(id=group_id)
     except:
         args['error'] = "Данной комманды не существует"
-        return render(request, 'main/poll/respondent_choice.html', args)
+        return render(request, 'main/poll/old/respondent_choice.html', args)
     add_positions_and_platform_from_group(group, args)
     users = filter(lambda profile: profile != get_user_profile(request), group.profile_set.all())
     args['users'] = build_users(users)
@@ -611,7 +611,7 @@ def respondent_choice_group(request, group_id):
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
-    return render(request, 'main/poll/respondent_choice.html', args)
+    return render(request, 'main/poll/old/respondent_choice.html', args)
 
 
 def add_positions_and_platform_from_group(group, args):
@@ -679,7 +679,7 @@ def respondent_choice_from_company(request):
                                    [i.position for i in company.positioncompany_set.all()], args)
     else:
         args['error'] = "Пользователь не состоит в компании"
-        return render(request, 'main/poll/respondent_choice.html', args)
+        return render(request, 'main/poll/old/respondent_choice.html', args)
 
     users = filter(lambda profile: profile != get_user_profile(request), company.profile_set.all())
     args['users'] = build_users(users)
@@ -708,7 +708,7 @@ def respondent_choice_from_company(request):
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
-    return render(request, 'main/poll/respondent_choice.html', args)
+    return render(request, 'main/poll/old/respondent_choice.html', args)
 
 
 def walkthrough_polls_view(request):
@@ -718,7 +718,7 @@ def walkthrough_polls_view(request):
         'title': "Вопросы для прохождения",
         'polls': build_need_pass_poll(request)
     }
-    return render(request, 'main/poll/walkthrough_polls_view.html', args)
+    return render(request, 'main/poll/old/walkthrough_polls_view.html', args)
 
 
 def build_need_pass_poll(request):
@@ -742,7 +742,7 @@ def results_polls_view(request):
         'results': build_list_results_polls(request)
     }
 
-    return render(request, 'main/poll/results_polls_view.html', args)
+    return render(request, 'main/poll/old/results_polls_view.html', args)
 
 
 def build_list_results_polls(request):
