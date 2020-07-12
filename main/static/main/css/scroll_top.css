@@ -1,7 +1,7 @@
 .scroll-top-btn {
     background-color: transparent;
-    padding-bottom: calc(100vh - calc(330vw/1366*100));
-    margin: calc(20vw/1366*100) 0 0;
+    padding-bottom: calc(100vh - 330px);
+    margin: 20px 0 0;
     visibility: hidden;
     opacity: 0;
     transition: visibility .4s, opacity .4s, background-color .3s;
@@ -26,8 +26,8 @@
 .scroll-top-btn-value {
     display: flex;
     /*padding-top: 50px;*/
-    padding-top: calc(100vh - calc(330vw/1366*100));
-    margin-left: calc(25vw/1366*100);
+    padding-top: calc(100vh - 330px);
+    margin-left: 25px;
     user-select: none;
     opacity: .7;
 }
@@ -36,11 +36,11 @@
     padding: 0;
     margin: 0;
     font-weight: bold;
-    font-size: calc(16vw/1366*100);
-    line-height: calc(18vw/1366*100);
+    font-size: 16px;
+    line-height: 18px;
     color: #595757;
 }
 
 .scroll-top-btn-img {
-    margin: 0 0 0 calc(5vw/1366*100);
+    margin: 0 0 0 5px;
 }

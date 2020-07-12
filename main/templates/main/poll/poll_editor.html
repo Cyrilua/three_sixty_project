@@ -14,12 +14,21 @@
                 <div class="poll_editor">
                     <div class="poll-head rounded-block">
                         {% if poll %}
+                            {#                            {% if poll.status == 'create' %}#}
+                            {#                                <div class="poll-head-text">#}
+                            {#                                    <textarea class="poll-head-name" name="" id="" rows="1"#}
+                            {#                                              placeholder="Название опроса"></textarea>#}
+                            {#                                    <textarea class="poll-head-about" name="" id="" rows="1"#}
+                            {#                                              placeholder="Описание"></textarea>#}
+                            {#                                </div>#}
+                            {#                            {% elif poll.status == 'edit' %}#}
                             <div class="poll-head-text">
                                     <textarea class="poll-head-name" name="" id="" rows="1"
                                               placeholder="Название опроса">{{ poll.data.head.name }}</textarea>
                                 <textarea class="poll-head-about" name="" id="" rows="1"
                                           placeholder="Описание">{{ poll.data.head.about }}</textarea>
                             </div>
+                            {#                            {% endif %}#}
                         {% else %}
                             <div class="poll-head-text">
                                 <textarea class="poll-head-name" name="" id="" rows="1"
@@ -36,6 +45,61 @@
                     <div class="poll_questions">
 
                         {% if poll %}
+                            {#                            {% if poll.status == 'create' %}#}
+                            {##}
+                            {#                                <div class="question question-radio rounded-block">#}
+                            {#                                    <div class="question-move">#}
+                            {#                                        <div class="question-move-platform">#}
+                            {#                                            <img src="{% static 'main/images/move.svg' %}" alt=""#}
+                            {#                                                 class="question-move-platform-img">#}
+                            {#                                        </div>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="question-main">#}
+                            {#                                        <textarea name="" id="" rows="1" class="question-main-name"#}
+                            {#                                                  placeholder="Вопрос"></textarea>#}
+                            {#                                        <div class="question-main-answers">#}
+                            {#                                            <div class="question-main-answers-answer">#}
+                            {#                                                <span class="question-radio-main-answer"></span>#}
+                            {#                                                <span class="question-checkbox-main-answer"></span>#}
+                            {#                                                <textarea name="" id="" rows="1" class="question-main-answer"#}
+                            {#                                                          placeholder="Вариант 1" data-number_answer="1"></textarea>#}
+                            {#                                                <button class="question-main-answer-remove">#}
+                            {#                                                    <img class="question-main-answer-remove-img"#}
+                            {#                                                         src="{% static 'main/images/cross.svg' %}" alt="">#}
+                            {#                                                </button>#}
+                            {#                                            </div>#}
+                            {#                                        </div>#}
+                            {#                                        <a href="#" class="question-main-add">Добавить еще вариант</a>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="question-settings">#}
+                            {#                                        <select name="type_question" id="type_question"#}
+                            {#                                                class="question-settings-type_question">#}
+                            {#                                            <option value="radio" class="question-settings-type_question-option"#}
+                            {#                                                    selected>#}
+                            {#                                                Один из списка#}
+                            {#                                            </option>#}
+                            {#                                            <option value="checkbox" class="question-settings-type_question-option">#}
+                            {#                                                Несколько из списка#}
+                            {#                                            </option>#}
+                            {#                                            <option value="range" class="question-settings-type_question-option">#}
+                            {#                                                Шкала#}
+                            {#                                            </option>#}
+                            {#                                            <option value="open_question"#}
+                            {#                                                    class="question-settings-type_question-option">#}
+                            {#                                                Развернутый ответ#}
+                            {#                                            </option>#}
+                            {#                                        </select>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="question-navigate text-right">#}
+                            {#                                        <button class="question-navigate-remove_question">#}
+                            {#                                            <img class="question-navigate-remove_question-img"#}
+                            {#                                                 src="{% static 'main/images/remove2.svg' %}" alt="">#}
+                            {#                                        </button>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                                <!-- /.question -->#}
+                            {##}
+                            {#                            {% elif poll.status == 'edit' %}#}
 
                             {% for question in poll.data.questions %}
 
@@ -128,6 +192,8 @@
                                 <!-- /.question -->
 
                             {% endfor %}
+
+                            {#                            {% endif %}#}
                         {% else %}
                             <div class="question question-radio rounded-block">
                                 <div class="question-move">
@@ -196,6 +262,7 @@
                                 <!-- /.question-navigate -->
                             </div>
                             <!-- /.question -->
+
                             <div class="question question-checkbox rounded-block">
                                 <div class="question-move">
                                     <div class="question-move-platform">

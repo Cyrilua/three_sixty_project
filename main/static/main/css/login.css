@@ -5,19 +5,19 @@
 }
 
 .slider {
-    height: calc(550vw/1366*100);
-    width: calc(550vw/1366*100);
-    margin-right: calc(5vw/1366*100);
-    border-radius: calc(5vw/1366*100);
+    height: 550px;
+    width: 550px;
+    margin-right: 5px;
+    border-radius: 5px;
 }
 
 .slider-slide {
-    width: calc(550vw/1366*100);
-    border-radius: calc(5vw/1366*100);
+    width: 550px;
+    border-radius: 5px;
 }
 
 .login-content {
-    width: calc(355vw/1366*100);
+    width: 355px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -29,28 +29,28 @@
 
 .login-form-title {
     font-weight: bold;
-    font-size: calc(36vw/1366*100);
-    line-height: calc(42vw/1366*100);
+    font-size: 36px;
+    line-height: 42px;
     text-align: center;
-    margin: calc(52vw/1366*100) 0 calc(11vw/1366*100);
+    margin: 52px 0 11px;
 }
 
 .form-group {
-    margin: 0 0 calc(12vw/1366*100);
+    margin: 0 0 12px;
 }
 
 .login-form-fields > .form-group:last-child {
-    margin-bottom: calc(40vw/1366*100);
+    margin-bottom: 40px;
 }
 
 .form-fields-label {
     font-weight: normal;
-    font-size: calc(14vw/1366*100);
-    line-height: calc(16vw/1366*100);
+    font-size: 14px;
+    line-height: 16px;
 }
 
 .form-fields-label {
-    margin: 0 0 calc(7vw/1366*100);
+    margin: 0 0 7px;
 }
 
 .form-fields-input {
@@ -65,30 +65,30 @@
 
 .login-form-navigate-btn {
     /*width: 80px;*/
-    height: calc(40vw/1366*100);
+    height: 40px;
 }
 
 .login-form-line {
     width: 100%;
-    height: calc(1vw/1366*100);
+    height: 1px;
     background-color: #E5E5E5;
-    margin: auto 0 calc(17vw/1366*100);
+    margin: auto 0 17px;
 }
 
 .login-form-helper {
     text-align: center;
-    margin: 0 0 calc(37vw/1366*100);
+    margin: 0 0 37px;
 }
 
 .login-form--helper-register {
     font-weight: normal;
-    font-size: calc(14vw/1366*100);
-    line-height: calc(16vw/1366*100);
-    margin: 0 0 calc(14vw/1366*100);
+    font-size: 14px;
+    line-height: 16px;
+    margin: 0 0 14px;
 }
 
 .login-form--helper-reset_pass {
     font-weight: normal;
-    font-size: calc(14vw/1366*100);
-    line-height: calc(16vw/1366*100);
+    font-size: 14px;
+    line-height: 16px;
 }

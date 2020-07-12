@@ -1,14 +1,14 @@
 .new-poll-title {
     font-weight: bold;
-    font-size: calc(32vw/1366*100);
-    line-height: calc(37vw/1366*100);
-    margin: 0 0 calc(5vw/1366*100);
+    font-size: 32px;
+    line-height: 37px;
+    margin: 0 0 5px;
 }
 
 .new-poll-subtitle {
     font-weight: normal;
-    font-size: calc(16vw/1366*100);
-    line-height: calc(19vw/1366*100);
+    font-size: 16px;
+    line-height: 19px;
     margin: 0;
 }
 
@@ -18,7 +18,7 @@
     /*border-radius: 5px;*/
     display: flex;
     flex-direction: column;
-    padding: calc(10vw/1366*100) 0 0;
+    padding: 10px 0 0;
 }
 
 .new-poll-selection-search-block {
@@ -31,12 +31,12 @@
     background-color: #ffffff;
     background-image: url('../images/search.svg');
     background-repeat: no-repeat;
-    background-size: calc(17vw/1366*100);
-    background-position: left calc(212vw/1366*100) center;
-    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
-    border-radius: calc(5vw/1366*100) calc(5vw/1366*100) 0 0;
-    height: calc(50vw/1366*100);
-    padding-left: calc(242vw/1366*100);
+    background-size: 17px;
+    background-position: left 212px center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 0 0;
+    height: 50px;
+    padding-left: 242px
 }
 
 .new-poll-selection-search-label {
@@ -48,34 +48,34 @@
     content: "Ваши коллективы";
     position: absolute;
     top: 0.8em;
-    left: calc(17vw/1366*100);
+    left: 17px;
     font-weight: bold;
-    font-size: calc(17vw/1366*100);
-    line-height: calc(21vw/1366*100);
+    font-size: 17px;
+    line-height: 21px;
 }
 
 .new-poll-selection-search + label::after {
     content: "";
     position: absolute;
-    width: calc(1vw/1366*100);
-    height: calc(32vw/1366*100);
+    width: 1px;
+    height: 32px;
     background-color: #595757;
-    left: calc(196vw/1366*100);
-    top: calc(9vw/1366*100);
+    left: 196px;
+    top: 9px;
 }
 
 .new-poll-selection-list {
     background-color: #fff;
-    border: calc(1vw/1366*100) solid rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 calc(5vw/1366*100) calc(5vw/1366*100);
-    height: calc(250vw/1366*100);
-    max-height: calc(250vw/1366*100);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 5px 5px;
+    height: 250px;
+    max-height: 250px;
     overflow: auto;
 }
 
 .new-poll-selection-list > .new-poll-selection-list-item {
     width: 100%;
-    height: calc(50vw/1366*100);
+    height: 50px;
 }
 
 .new-poll-selection-list-item-checkbox {
@@ -102,8 +102,8 @@
     color: #595757;
     font-style: italic;
     font-weight: normal;
-    font-size: calc(16vw/1366*100);
-    line-height: calc(19vw/1366*100);
+    font-size: 16px;
+    line-height: 19px;
     position: relative;
-    left: calc(280vw/1366*100);
+    left: 280px;
 }
