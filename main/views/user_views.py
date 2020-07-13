@@ -135,13 +135,11 @@ def user_login(request):
             return redirect('/{}/'.format(get_user_profile(request).id))
         else:
             count_users = User.objects.filter(username=username)
-            print(count_users)
             if len(count_users) != 0:
                 args['error'] = {'password': 'Неверный пароль'}
             else:
                 args['error'] = {'login': 'Проверьте правильность логина'}
             args['username'] = username
-            print(args['error'])
             return render(request, 'main/no_login/login.html', args)
     return render(request, 'main/no_login/login.html', args)
 
