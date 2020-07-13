@@ -181,7 +181,7 @@ h1, h2, h3, h4, h5, h6 {
 .button-red {
     background-color: #FF1841;
     color: #FAFAFA;
-    border-radius: 8px;
+    border-radius: 5px;
     border: 2px solid #FF1841;
     font-weight: bold;
     font-size: 16px;
@@ -218,7 +218,7 @@ h1, h2, h3, h4, h5, h6 {
 .button-white {
     background-color: #FAFAFA;
     color: #000000;
-    border-radius: 8px;
+    border-radius: 5px;
     border: 1px solid #000000;
     font-weight: normal;
     font-size: 16px;
