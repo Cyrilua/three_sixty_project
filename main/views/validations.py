@@ -3,11 +3,12 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, validators
 from django.core.validators import EmailValidator
 
 
 def validate_login(login: str):
+
     result = []
     login = login.lower()
     users = User.objects.all()
