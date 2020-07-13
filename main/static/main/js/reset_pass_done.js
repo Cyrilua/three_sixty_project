@@ -32,9 +32,14 @@ $(function () {
 
     // Очистка памяти
     $('#logo, #login, #logout, #register').click(function () {
-        if (sessionStorage.getItem('emailForResetPass').length){
+        if (sessionStorage.getItem('emailForResetPass').length) {
             sessionStorage.removeItem('emailForResetPass');
         }
-    })
+    });
+
+    // Переход на предыдущую страницу
+    $('.reset-pass-success-back').click(function () {
+        $(location).attr('href', '/password_reset/');
+    });
 });
 

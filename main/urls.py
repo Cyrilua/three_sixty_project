@@ -34,7 +34,7 @@ urlpatterns = [
                   # Неведомая и странно работающая часть
                   path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
                       template_name='main/password/password_reset_confirm.html',
-                      success_url=reverse_lazy('main:password_reset_complete')
+                      success_url=reverse_lazy('main:login')
                   ),
                        name='password_reset_confirm'),
                   # Сброс пароля
@@ -46,7 +46,7 @@ urlpatterns = [
                        name='password_reset'),
                   # Сообщение об успешном сбросе пароля
                   path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
-                      template_name='main/password/password_reset_complete.html'),
+                      template_name='main/password/old/password_reset_complete.html'),
                        name='password_reset_complete'),
 
                   # Просмотр профиля
