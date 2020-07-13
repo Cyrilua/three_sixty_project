@@ -1,5 +1,5 @@
 {% extends "main/wrapper.html" %}
-
+{% load static %}
 {% load widget_tweaks %}
 
 {% block header-nav %}
@@ -8,116 +8,137 @@
 
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-7">
-            <div style="max-width: 100%; max-height: 30%;  top: 0">
-                {% include 'main/includes/login_carousel.html' %}
-            </div>
+    <div class="login">
+        <div class="slider">
+            {% include 'main/includes/slider.html' %}
         </div>
-
-        <div class="col-md-5">
-            <div class="rounded-block">
-                <h1 style="text-align: center;">Вход</h1>
-
-
-                {% if login_error %}
-                    <div class="alert alert-danger" style="text-align: center" role="alert">
-                        <b>{{ login_error }}</b>
-                        <br>
-                        <b><a href="{% url 'main:password_reset' %}">Восстановить пароль</a></b>
-                    </div>
-                {% endif %}
-
-
-                <div>
+        <div class="login-content rounded-block">
+            {% block login-content %}
+                <div class="login-form">
                     <form method="post" action="">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <label for="username">Логин</label>
-                            <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"
-                                   type="text"
-                                   name="username" value="{{ username }}" id="username" required>
-                            <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
+                        <h1 class="login-form-title">Вход</h1>
+                        <div class="login-form-fields">
+                            <div class="form-group">
+                                <label class="form-fields-label" for="username">Логин</label>
+                                <input class="input-field {% if error.login %}error{% endif %}" aria-describedby="usernameHelp"
+                                       placeholder="Введите логин"
+                                       type="text"
+                                       name="username" value="{{ username }}" id="username" required>
+                                {% if error.login %}
+                                    <div class="popup">
+                                        <div class="popup_message">
+                                            <span class="popup_message-text">{{ error.login }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-fields-label" for="password">Пароль</label>
+                                <input class="input-field {% if error.password %}error{% endif %}"
+                                       aria-describedby="passwordHelp"
+                                       placeholder="Введите пароль"
+                                       type="password" name="password" id="password" required>
+                                {% if error.password %}
+                                    <div class="popup">
+                                        <div class="popup_message">
+                                            <span class="popup_message-text">{{ error.password }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Пароль</label>
-                            <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"
-                                   type="password" name="password" id="password" required>
-                            <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->
-                        </div>
-                        <div style="text-align: center">
-                            <p style="color: #6c757d">
-                                Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>
-                            </p>
-                            <p>
-                                <a href="{% url 'main:password_reset' %}">Забыли пароль?</a>
-                            </p>
-                        </div>
-                        <hr>
-                        <div style="text-align: right">
-                            <input class="btn btn-primary" type="submit" value="Войти"/>
+                        <div class="login-form-navigate">
+                            <button class="button-red login-form-navigate-btn">Войти</button>
                         </div>
                     </form>
                 </div>
-            </div>
-
+                <span class="login-form-line"></span>
+                <div class="login-form-helper">
+                    <div class="login-form--helper-register">
+                            <span class="login-form--helper-register-text">
+                                Впервые у нас? <a href="{% url 'main:register' %}"
+                                                  class="login-form--helper-register-btn">Зарегистрируйтесь</a>
+                            </span>
+                    </div>
+                    <div class="login-form--helper-reset_pass">
+                        <a href="{% url 'main:password_reset' %}" class="login-form--helper-reset_pass-btn">Забыли
+                            пароль?</a>
+                    </div>
+                </div>
+            {% endblock %}
         </div>
     </div>
 
+    {#    <div class="row">#}
+    {#        <div class="col-md-7">#}
+    {#            <div style="max-width: 100%; max-height: 30%;  top: 0">#}
+    {#                {% include 'main/includes/login_carousel.html' %}#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#        <div class="col-md-5">#}
+    {#            <div class="rounded-block">#}
+    {#                <h1 style="text-align: center;">Вход</h1>#}
+    {##}
+    {##}
+    {#                {% if login_error %}#}
+    {#                    <div class="alert alert-danger" style="text-align: center" role="alert">#}
+    {#                        <b>{{ login_error }}</b>#}
+    {#                        <br>#}
+    {#                        <b><a href="{% url 'main:password_reset' %}">Восстановить пароль</a></b>#}
+    {#                    </div>#}
+    {#                {% endif %}#}
+    {##}
+    {##}
+    {#                <div>#}
+    {#                    <form method="post" action="">#}
+    {#                        {% csrf_token %}#}
+    {#                        <div class="form-group">#}
+    {#                            <label for="username">Логин</label>#}
+    {#                            <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"#}
+    {#                                   type="text"#}
+    {#                                   name="username" value="{{ username }}" id="username" required>#}
+    {#                            <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->#}
+    {#                        </div>#}
+    {#                        <div class="form-group">#}
+    {#                            <label for="password">Пароль</label>#}
+    {#                            <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"#}
+    {#                                   type="password" name="password" id="password" required>#}
+    {#                            <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->#}
+    {#                        </div>#}
+    {#                        <div style="text-align: center">#}
+    {#                            <p style="color: #6c757d">#}
+    {#                                Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>#}
+    {#                            </p>#}
+    {#                            <p>#}
+    {#                                <a href="{% url 'main:password_reset' %}">Забыли пароль?</a>#}
+    {#                            </p>#}
+    {#                        </div>#}
+    {#                        <hr>#}
+    {#                        <div style="text-align: right">#}
+    {#                            <input class="btn btn-primary" type="submit" value="Войти"/>#}
+    {#                        </div>#}
+    {#                    </form>#}
+    {#                </div>#}
+    {#            </div>#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
+
 {% endblock %}
 
-{#{% block d %}#}
-{#    <div class="row">#}
-{#        <div class="col-md-2 col-xl-2"></div>#}
-{#        <div class="col-md-5 col-xl-5">#}
-{#            <div style="max-width: 100%; max-height: 30%;  top: 0">#}
-{#                {% include 'main/includes/login_carousel.html' %}#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="col-md-3 col-xl-3">#}
-{#            <div class="rounded-block">#}
-{#                <h1 style="text-align: center;">Вход</h1>#}
-{##}
-{##}
-{#                {% if login_error %}#}
-{#                    <div class="alert alert-danger" role="alert">#}
-{#                        <b>{{ login_error }}</b>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{##}
-{##}
-{#                <div>#}
-{#                    <form method="post" action="">#}
-{#                        {% csrf_token %}#}
-{#                        <div class="form-group">#}
-{#                            <label for="username">Логин</label>#}
-{#                            <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите логин"#}
-{#                                   type="text"#}
-{#                                   name="username" value="{{ username }}" id="username" required>#}
-{#                            <!--small id="usernameHelp" class="form-text text-muted">Придумайте логин для входа.</small-->#}
-{#                        </div>#}
-{#                        <div class="form-group">#}
-{#                            <label for="password">Пароль</label>#}
-{#                            <input class="form-control" aria-describedby="passwordHelp" placeholder="Введите пароль"#}
-{#                                   type="password" name="password" id="password" required>#}
-{#                            <!--small id="passwordHelp" class="form-text text-muted">Придумайте логин для входа.</small-->#}
-{#                        </div>#}
-{#                        <div style="text-align: center">#}
-{#                            <p style="color: #6c757d">#}
-{#                                Впервые у нас? <a class="link" href="{% url 'main:register' %}">Зарегистрируйтесь</a>#}
-{#                            </p>#}
-{#                        </div>#}
-{#                        <hr>#}
-{#                        <div style="text-align: right">#}
-{#                            <input class="btn btn-primary" type="submit" value="Войти"/>#}
-{#                        </div>#}
-{#                    </form>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{#        <div class="col-md-2 col-xl-2"></div>#}
-{#    </div>#}
-{##}
-{#{% endblock %}#}
+{% block scripts %}
+    <script type="text/javascript" src={% static 'main/js/swiper.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/slider.js' %}></script>
+    {% block login-script %}
+        <script type="text/javascript" src="{% static 'main/js/login.js' %}"></script>
+    {% endblock %}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+    {% block login-css %}
+    {% endblock %}
+{% endblock %}

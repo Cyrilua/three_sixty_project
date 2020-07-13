@@ -1,3 +1,10 @@
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+    }
+}
+
 const maxAnswers = 5;
 const maxQuestions = 5;
 const timeAnimation = 200;
@@ -37,6 +44,24 @@ $(function () {
             });
         }
     });
+    $('.question-radio').height(function () {
+        let elems = $(this).children('.question-main').children('.question-main-answers').children('.question-main-answers-answer').children('.question-radio-main-answer');
+        elems.css({
+            display: 'inline',
+        });
+        elems.animate({
+            opacity: '1',
+        }, timeAnimation * 2)
+    });
+    $('.question-checkbox').height(function () {
+        let elems = $(this).children('.question-main').children('.question-main-answers').children('.question-main-answers-answer').children('.question-checkbox-main-answer');
+        elems.css({
+            display: 'inline',
+        });
+        elems.animate({
+            opacity: '1',
+        }, timeAnimation * 2)
+    });
 
     // Сохранить опрос в Избранных
     $('.poll_questions-navigate-save_in_favorite').click(function (event) {
@@ -46,13 +71,15 @@ $(function () {
 
     // Перейти к отправке опроса
     body.on('click', '.poll-head-navigation-next-page', function () {
-        console.log('click')
+        // TODO
+        console.log('Отправка опроса -->')
     });
 
     // Удаление опроса
     body.on('click', '.poll-head-remove', function (event) {
         event.preventDefault();
         if (confirm('Вы действительно хотите удалить данный опрос?')) {
+            // TODO
             alert('Удаление данного опроса');
             location.href = '/poll/';
         }
@@ -87,6 +114,7 @@ $(function () {
         let questionMain = question.children('.question-main');
         let questionMainAnswers = questionMain.children('.question-main-answers');
         let lastType;
+        let currentType = $(this)[0].value;
         // Очитстка от старых классов
         if (question.hasClass('question-checkbox')) {
             question.removeClass('question-checkbox');
@@ -101,43 +129,120 @@ $(function () {
             question.removeClass('question-radio');
             lastType = 'question-radio';
         } else {
-            console.log('question-settings-type_question ERROR!!!')
+            throw new ValidationError("question-settings-type_question ERROR!!!");
         }
-        // Смена типа
-        if ($(this)[0].value === 'radio') {
+        // Добавление новых классов
+        if (currentType === 'radio') {
             question.addClass('question-radio');
-            if (lastType === 'question-checkbox') {
-                let answers = questionMainAnswers.children('.question-main-answers-answer');
-                answers.children('.question-checkbox-main-answer').addClass('d-none');
-                answers.children('.question-radio-main-answer').removeClass('d-none');
-            } else {
-                questionMainAnswers.children().remove();
-                createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
-            }
-        } else if ($(this)[0].value === 'checkbox') {
+        } else if (currentType === 'checkbox') {
             question.addClass('question-checkbox');
-            if (lastType === 'question-radio') {
-                let answers = questionMainAnswers.children('.question-main-answers-answer');
-                answers.children('.question-radio-main-answer').addClass('d-none');
-                answers.children('.question-checkbox-main-answer').removeClass('d-none');
-            } else {
-                questionMainAnswers.children().remove();
-                createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
-            }
-        } else if ($(this)[0].value === 'range') {
+        } else if (currentType === 'range') {
             question.addClass('question-range');
-            questionMainAnswers.children().remove();
-            if (lastType === 'question-radio' || lastType === 'question-checkbox')
-                questionMain.children('.question-main-add').remove();
-            createRange(questionMainAnswers);
-        } else if ($(this)[0].value === 'open_question') {
+        } else if (currentType === 'open_question') {
             question.addClass('question-open_question');
-            questionMainAnswers.children().remove();
-            if (lastType === 'question-radio' || lastType === 'question-checkbox')
-                questionMain.children('.question-main-add').remove();
-            createOpenQuestion(questionMainAnswers);
         } else {
-            console.log('question-settings-type_question ERROR!!!')
+            throw new ValidationError("Смена типа ERROR!!!");
+        }
+        // Смена типа (отображение)
+        if (lastType === 'question-radio' && currentType === 'checkbox' || lastType === 'question-checkbox' && currentType === 'radio') {
+            let answers = questionMainAnswers.children('.question-main-answers-answer');
+            let oldElems;
+            let newElems;
+            if (lastType === 'question-radio' && currentType === 'checkbox') {
+                oldElems = answers.children('.question-radio-main-answer');
+                newElems = answers.children('.question-checkbox-main-answer');
+            } else if (lastType === 'question-checkbox' && currentType === 'radio') {
+                oldElems = answers.children('.question-checkbox-main-answer');
+                newElems = answers.children('.question-radio-main-answer');
+            }
+            oldElems.animate({
+                    opacity: 0,
+                },
+                timeAnimation,
+                function () {
+                    $(this).css({
+                        display: 'none',
+                    });
+                    newElems.css({
+                        display: 'inline',
+                    });
+                    newElems.animate({
+                            opacity: 1,
+                        },
+                        timeAnimation,
+                    );
+                }
+            );
+        } else {
+            let delta = 0;
+            let height = parseFloat(question.css('height'));
+            question.css({height: height});
+            let btnAdd;
+            if (lastType === 'question-radio' || lastType === 'question-checkbox') {
+                btnAdd = questionMain.children('.question-main-add');
+                btnAdd.animate({
+                        opacity: 0,
+                    },
+                    {
+                        duration: timeAnimation,
+                        queue: false,
+                    },
+                );
+            }
+            delta = parseFloat(questionMain.css('height'));
+            questionMainAnswers.animate({
+                    opacity: 0,
+                },
+                {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+                        $(this).children().remove();
+                        if (lastType === 'question-radio' || lastType === 'question-checkbox')
+                            btnAdd.remove();
+                        if (currentType === 'radio') {
+                            createRadioOrCheckbox('radio', questionMainAnswers, questionMain);
+                        } else if (currentType === 'checkbox') {
+                            createRadioOrCheckbox('checkbox', questionMainAnswers, questionMain);
+                        } else if (currentType === 'range') {
+                            createRange(questionMainAnswers);
+                        } else if (currentType === 'open_question') {
+                            createOpenQuestion(questionMainAnswers);
+                        }
+                        delta -= parseFloat(questionMain.css('height'));
+                        height -= delta;
+                        question.children('.question-navigate').css({top: '+=' + delta.toString()});
+                        question.children('.question-navigate').animate({
+                                top: '-=' + delta.toString(),
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+
+                            },
+                        );
+                        question.animate({
+                                height: height,
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+                            },
+                        );
+                        $(this).animate({
+                                opacity: 1,
+                            },
+                            {
+                                duration: timeAnimation,
+                                queue: false,
+                                complete: function () {
+                                    question.css({height: 'auto'});
+                                }
+                            },
+                        );
+                    }
+                },
+            );
         }
     });
 
@@ -145,6 +250,7 @@ $(function () {
     body.on('click', '.question-main-add', function (event) {
         event.preventDefault();
         let answers = $(this).prev('.question-main-answers');
+        let btnAdd = $(this);
         let type;
         let question = $(this).parent().parent();
         if (question.hasClass('question-radio')) {
@@ -152,12 +258,52 @@ $(function () {
         } else if (question.hasClass('question-checkbox')) {
             type = 'checkbox';
         } else {
-            console.log('Добавление варианта ответа ERROR!!!');
+            throw new ValidationError("Добавление варианта ответа ERROR!!!");
         }
         createNewAnswer(type, answers);
-        let otherAnswers = answers.children('.question-main-answers-answer');
-        if (otherAnswers.length === 2) {
-            otherAnswers.children('.question-main-answer-remove').first().removeClass('invisible');
+        let allAnswers = answers.children('.question-main-answers-answer');
+        let lastAnswer = allAnswers.last();
+        let height = lastAnswer.css('height');
+        let delta = parseFloat(answers.css('margin-bottom')) + parseFloat($(this).css('height'));
+        lastAnswer.css({
+            opacity: 0,
+            height: 0,
+        });
+        lastAnswer.animate({
+            opacity: 1,
+            height: height,
+        }, {
+            duration: timeAnimation,
+            queue: false,
+            complete: function () {
+                lastAnswer.css({height: 'auto'});
+            }
+        });
+        if (allAnswers.length === 2) {
+            let btnRemoveAnswer = allAnswers.children('.question-main-answer-remove').first();
+            btnRemoveAnswer.css({opacity: 0});
+            btnRemoveAnswer.removeClass('invisible');
+            btnRemoveAnswer.animate({
+                    opacity: 1,
+                },
+                {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+                    }
+                }
+            );
+        }
+        if (allAnswers.length === maxAnswers) {
+            btnAdd.animate({
+                opacity: 0,
+            }, {
+                duration: timeAnimation,
+                queue: false,
+                complete: function () {
+                    btnAdd.css({visibility: 'hidden'})
+                }
+            })
         }
     });
 
@@ -185,17 +331,45 @@ $(function () {
                 }
             }
             if (countAnswers === maxAnswers) {
-                answers.parent().children('.question-main-add').fadeIn(timeAnimation);
+                let btnAdd = answers.parent().children('.question-main-add');
+                btnAdd.css({visibility: 'visible'});
+                btnAdd.animate({
+                    opacity: 1,
+                }, {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+
+                    }
+                });
             }
-            answer.fadeOut(timeAnimation, function () {
-                $(this).remove();
+            answer.animate({
+                height: 0,
+                opacity: 0,
+                margin: '0',
+            }, {
+                duration: timeAnimation,
+                queue: false,
+                complete: function () {
+                    answer.remove();
+                }
             });
+
             let otherAnswers = answers.children('.question-main-answers-answer');
             if (otherAnswers.length - 1 <= 1) {
-                otherAnswers.children('.question-main-answer-remove').addClass('invisible');
+                let btnRemove = otherAnswers.children('.question-main-answer-remove');
+                btnRemove.animate({
+                    opacity: 0,
+                }, {
+                    duration: timeAnimation,
+                    queue: false,
+                    complete: function () {
+                        btnRemove.addClass('invisible');
+                    }
+                })
             }
         } else {
-            console.log('Удаление варианта ответа ERROR!!!')
+            throw new ValidationError("Удаление варианта ответа ERROR!!!");
         }
     });
 
@@ -203,7 +377,18 @@ $(function () {
     body.on('click', '.question-navigate-remove_question', function () {
         let question = $(this).parent().parent();
         let countQuestions = question.parent().children('.question').length;
-        question.remove();
+        question.animate({
+            opacity: 0,
+            height: 0,
+            margin: 0,
+            padding: 0,
+        }, {
+            duration: timeAnimation,
+            queue: false,
+            complete: function () {
+                question.remove();
+            }
+        });
         if (countQuestions - 1 === 0) {
             let btnToNextStep = $('.poll-head-navigation-next-page');
             btnToNextStep.attr({
@@ -219,7 +404,35 @@ $(function () {
 
     // Добавление вопроса
     body.on('click', '.poll_questions-navigate-add_question', function () {
+        let heightPoll = poll_questions.css('height');
         createNewQuestion(poll_questions);
+        let question = poll_questions.children('.question').last();
+        let questionHeight = parseFloat(question.css('height'));
+        question.css({height: 0, opacity: 0});
+        poll_questions.css({
+            height: heightPoll,
+        });
+        poll_questions.animate({
+            height: '+=' + questionHeight.toString(),
+        }, {
+            duration: timeAnimation,
+            queue: false,
+            complete: function () {
+                poll_questions.css({height: 'auto'});
+            }
+        });
+        question.animate({
+            opacity: 1,
+            heightPoll: '+=' + questionHeight.toString(),
+        }, {
+            duration: timeAnimation,
+            queue: false,
+            complete: function () {
+                question.css({height: 'auto'});
+            }
+        });
+
+
         let countQuestions = $('.poll_questions').children('.question').length;
         if (countQuestions === 1) {
             $('.poll-head-navigation-next-page').attr({
@@ -324,7 +537,7 @@ function createNewQuestion(poll_questions) {
     let questionMovePlatformImg = document.createElement('img');
     questionMovePlatformImg.classList.add('question-move-platform-img');
     questionMovePlatformImg.alt = '';
-    questionMovePlatformImg.src = '../../static/main/images/move.svg';
+    questionMovePlatformImg.src = '../../../static/main/images/move.svg';
 
     questionMovePlatform.append(questionMovePlatformImg);
     questionMove.append(questionMovePlatform);
@@ -378,7 +591,7 @@ function createNewQuestion(poll_questions) {
     questionNavigateRemove_question.classList.add('question-navigate-remove_question');
     let questionNavigateRemove_questionImg = document.createElement('img');
     questionNavigateRemove_questionImg.classList.add('question-navigate-remove_question-img');
-    questionNavigateRemove_questionImg.src = '../../static/main/images/remove2.svg';
+    questionNavigateRemove_questionImg.src = '../../../static/main/images/remove2.svg';
     questionNavigateRemove_questionImg.alt = '';
 
     questionNavigateRemove_question.append(questionNavigateRemove_questionImg);
@@ -391,8 +604,7 @@ function createNewQuestion(poll_questions) {
 function createNewAnswer(type, questionMainAnswers) {
     let answerNumber = $(questionMainAnswers).children().length;
     if (answerNumber >= maxAnswers) {
-        console.log('createNewAnswer ERROR!!!');
-        return;
+        throw new ValidationError("createNewAnswer ERROR!!!");
     }
     answerNumber++;
 
@@ -414,27 +626,28 @@ function createNewAnswer(type, questionMainAnswers) {
     }
     let questionMainAnswerRemoveImg = document.createElement('img');
     questionMainAnswerRemoveImg.classList.add('question-main-answer-remove-img');
-    questionMainAnswerRemoveImg.src = '../../static/main/images/cross.svg';
+    questionMainAnswerRemoveImg.src = '../../../static/main/images/cross.svg';
     questionMainAnswerRemoveImg.alt = '';
     if (type === 'radio') {
         questionRadioMainAnswer.classList.add('question-radio-main-answer');
         let questionCheckboxMainAnswerClassList = questionCheckboxMainAnswer.classList;
         questionCheckboxMainAnswerClassList.add('question-checkbox-main-answer');
-        questionCheckboxMainAnswerClassList.add('d-none');
+        $(questionRadioMainAnswer).css({
+            opacity: 1,
+            display: 'inline',
+        });
     } else if (type === 'checkbox') {
         let questionRadioMainAnswerClassList = questionRadioMainAnswer.classList;
         questionRadioMainAnswerClassList.add('question-radio-main-answer');
-        questionRadioMainAnswerClassList.add('d-none');
         questionCheckboxMainAnswer.classList.add('question-checkbox-main-answer');
+        $(questionCheckboxMainAnswer).css({
+            opacity: 1,
+            display: 'inline',
+        });
     } else {
-        console.log('createRadioOrCheckbox ERROR!!!');
-        return;
+        throw new ValidationError("createRadioOrCheckbox ERROR!!!");
     }
     questionMainAnswerRemove.prepend(questionMainAnswerRemoveImg);
     questionMainAnswersAnswer.append(questionRadioMainAnswer, questionCheckboxMainAnswer, questionMainAnswer, questionMainAnswerRemove);
     questionMainAnswers.append(questionMainAnswersAnswer);
-
-    if (answerNumber === maxAnswers) {
-        questionMainAnswers.parent().children('.question-main-add').fadeOut(timeAnimation);
-    }
 }

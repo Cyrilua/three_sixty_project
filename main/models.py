@@ -7,35 +7,30 @@ from django.contrib.auth.models import User
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
-    patronymic = models.CharField(max_length=20)
+    fullname = models.CharField(max_length=150, default='')
+    name = models.CharField(max_length=50, default='')
+    surname = models.CharField(max_length=50, default='')
+    patronymic = models.CharField(max_length=50, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
     groups = models.ManyToManyField('Group', null=True)
-    city = models.ForeignKey('City', on_delete=models.CASCADE, null=True)
+    email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
-    last_poll = models.OneToOneField('Poll', on_delete=models.CASCADE, null=True)
-    answers_sum = models.IntegerField(default=0)
-    count_answers = models.IntegerField(default=0)
 
     class Meta:
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {} {}'.format(self.name, self.surname)
+        return 'Profile for user {}'.format(self.fullname)
 
 
-class City(models.Model):
-    name = models.CharField(max_length=20)
-    objects = models.Manager()
+class BirthDate(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    birthday = models.DateField()
 
     class Meta:
-        db_table = 'City'
-
-    def __str__(self):
-        return self.name
+        db_table = 'BirthDate'
 
 
 class CreatedPoll(models.Model):
@@ -168,7 +163,6 @@ class Position(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=20, default='')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
-    #user = models.ManyToManyField(User)
     key = models.CharField(max_length=36, default='')
     objects = models.Manager()
 
@@ -198,12 +192,20 @@ class TemplatesPoll(models.Model):
         return self.name_poll
 
 
+class Draft(models.Model):
+    poll = models.ManyToManyField('Poll')
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = 'Draft'
+
+
 class Poll(models.Model):
     key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name_poll = models.CharField(max_length=50, default='')
-    questions = models.ManyToManyField('Questions')
     respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
     objects = models.Manager()
@@ -218,15 +220,7 @@ class Poll(models.Model):
 
 
 class Questions(models.Model):
-    TYPE_CHOICES = [
-        ('small_text', 0),
-        ('radio', 1),
-        ('range', 2),
-        ('checkbox', 3),
-        ('big_text', 4)
-    ]
-
-    type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     objects = models.Manager()
@@ -239,9 +233,17 @@ class Questions(models.Model):
 
 
 class Settings(models.Model):
-    min = models.IntegerField(default=0)
-    max = models.IntegerField(default=100)
-    step = models.IntegerField(default=10)
+    TYPE_CHOICES = [
+        ('small_text', 0),
+        ('radio', 1),
+        ('range', 2),
+        ('checkbox', 3),
+    ]
+
+    type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
+    min = models.IntegerField(null=True)
+    max = models.IntegerField(null=True)
+    step = models.IntegerField(null=True)
     answer_choice = models.ManyToManyField('AnswerChoice')
     objects = models.Manager()
 
@@ -250,59 +252,23 @@ class Settings(models.Model):
 
 
 class AnswerChoice(models.Model):
-    value = models.CharField(max_length=30, default='')
-    weight = models.IntegerField(default=10)
-    count = models.IntegerField(default=0)
+    text = models.CharField(max_length=50, default='')
     objects = models.Manager()
 
     class Meta:
         db_table = "Answer choice"
 
     def __str__(self):
-        return self.value
+        return self.text
 
 
 class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
-    sum_answer = models.IntegerField(default=0)
-    count_answers = models.IntegerField(default=0)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
-    choices = models.ManyToManyField(AnswerChoice)
+    choices = models.ForeignKey(AnswerChoice, null=True, on_delete=models.CASCADE)
+    text = models.CharField(max_length=200, null=True)
+    range_number = models.IntegerField(null=True)
     objects = models.Manager()
 
     class Meta:
         db_table = "Answer"
-
-    def __str__(self):
-        return "{}: {}".format(self.question, self.sum_answer)
-
-
-class TextAnswer(models.Model):
-    answer = models.ForeignKey(Answers, on_delete=models.CASCADE)
-    text_answer = models.CharField(max_length=500, default='')
-
-    class Meta:
-        db_table = "Text answer"
-
-    def __str__(self):
-        return self.text_answer
-
-
-class OpenQuestions(models.Model):
-    question = models.CharField(max_length=100)
-    objects = models.Manager()
-
-
-class OpenAnswer(models.Model):
-    open_question = models.OneToOneField(OpenQuestions, on_delete=models.CASCADE)
-    answer = models.CharField(max_length=200)
-    objects = models.Manager()
-
-
-class EvaluationMessage (models.Model):
-    def __init__(self):
-        return
-    #TODO
-
-
-# Create your models here.

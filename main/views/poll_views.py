@@ -1,7 +1,7 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TextAnswer, TemplatesPoll, Group, \
-    NeedPassPoll, CreatedPoll
+from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TemplatesPoll, Group, \
+    NeedPassPoll, CreatedPoll, Draft
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import add_notification
 
@@ -189,13 +189,6 @@ def answer_the_poll(request, poll_id):
                 user_answer = int(request.POST.get('answer-{}'.format(question.id)))
                 change_answer.sum_answer += user_answer
                 change_answer.count_answers += 1
-            else:
-                user_answer = request.POST.get('answer-{}'.format(question.id))
-                new_text_answer = TextAnswer()
-                new_text_answer.answer = change_answer
-                new_text_answer.text_answer = user_answer
-                new_text_answer.save()
-                change_answer.count_answers += 1
             change_answer.save()
 
         # Удаление прошедшего опрос пользователя
@@ -210,7 +203,7 @@ def answer_the_poll(request, poll_id):
 
         return redirect('/walkthrough_polls_view/')
 
-    return render(request, 'main/poll/answer_the_poll.html', args)
+    return render(request, 'main/poll/old/answer_the_poll.html', args)
 
 
 def build_questions(poll):
@@ -259,7 +252,7 @@ def result_view(request, poll_id):
         'name_poll': poll.name_poll,
         'results': question_answer_result
     }
-    return render(request, 'main/poll/poll_results.html', args)
+    return render(request, 'main/poll/old/poll_results.html', args)
 
 
 def build_result_questions_answers(questions):
@@ -354,7 +347,7 @@ def new_poll(request, poll_id):
             return redirect('/search_target_poll/{}/'.format(poll_id))
         return redirect('/')
 
-    return render(request, 'main/poll/new_poll.html', args)
+    return render(request, 'main/poll/old/new_poll.html', args)
 
 
 def build_template(poll_id):
@@ -484,7 +477,7 @@ def create_poll_from_template(request, poll_id, template_id):
 
         return redirect('/')
 
-    return render(request, 'main/poll/custom_poll.html', args)
+    return render(request, 'main/poll/old/custom_poll.html', args)
 
 
 def create_new_poll_from_template(request, poll, template):
@@ -588,7 +581,7 @@ def respondent_choice_group(request, group_id):
         group = Group.objects.get(id=group_id)
     except:
         args['error'] = "Данной комманды не существует"
-        return render(request, 'main/poll/respondent_choice.html', args)
+        return render(request, 'main/poll/old/respondent_choice.html', args)
     add_positions_and_platform_from_group(group, args)
     users = filter(lambda profile: profile != get_user_profile(request), group.profile_set.all())
     args['users'] = build_users(users)
@@ -618,7 +611,7 @@ def respondent_choice_group(request, group_id):
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
-    return render(request, 'main/poll/respondent_choice.html', args)
+    return render(request, 'main/poll/old/respondent_choice.html', args)
 
 
 def add_positions_and_platform_from_group(group, args):
@@ -686,7 +679,7 @@ def respondent_choice_from_company(request):
                                    [i.position for i in company.positioncompany_set.all()], args)
     else:
         args['error'] = "Пользователь не состоит в компании"
-        return render(request, 'main/poll/respondent_choice.html', args)
+        return render(request, 'main/poll/old/respondent_choice.html', args)
 
     users = filter(lambda profile: profile != get_user_profile(request), company.profile_set.all())
     args['users'] = build_users(users)
@@ -715,7 +708,7 @@ def respondent_choice_from_company(request):
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
-    return render(request, 'main/poll/respondent_choice.html', args)
+    return render(request, 'main/poll/old/respondent_choice.html', args)
 
 
 def walkthrough_polls_view(request):
@@ -725,7 +718,7 @@ def walkthrough_polls_view(request):
         'title': "Вопросы для прохождения",
         'polls': build_need_pass_poll(request)
     }
-    return render(request, 'main/poll/walkthrough_polls_view.html', args)
+    return render(request, 'main/poll/old/walkthrough_polls_view.html', args)
 
 
 def build_need_pass_poll(request):
@@ -749,7 +742,7 @@ def results_polls_view(request):
         'results': build_list_results_polls(request)
     }
 
-    return render(request, 'main/poll/results_polls_view.html', args)
+    return render(request, 'main/poll/old/results_polls_view.html', args)
 
 
 def build_list_results_polls(request):
@@ -777,7 +770,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context, loader
 
 
-def new_poll_view(request):
+def choose_poll(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     args = {
@@ -786,14 +779,14 @@ def new_poll_view(request):
         'teams': build_teams(request)
     }
 
-    if request.is_ajax():
-        pageContainer = loader.render_to_string('main/poll/polll_editor.html')
-        rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
-        data = {
-            'pageContainer': pageContainer,
-            'rightMenu': rightMenu
-        }
-        return JsonResponse(data, status=200)
+    #if request.is_ajax():
+    #    pageContainer = loader.render_to_string('main/poll/polll_editor.html')
+    #    rightMenu = loader.render_to_string('main/includes/menu_poll_editor_right.html')
+    #    data = {
+    #        'pageContainer': pageContainer,
+    #        'rightMenu': rightMenu
+    #    }
+    #    return JsonResponse(data, status=200)
 
     return render(request, 'main/poll/new_poll_view.html', args)
 
@@ -816,3 +809,103 @@ def build_teams(request):
             'url': '/respondent_choice_t/{}/'.format(group.id),
         })
     return result
+
+
+def poll_create(request, poll_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    try:
+        poll = Poll.objects.get(id=poll_id)
+    except:
+        print('poll does not exist')
+        return redirect('/')
+    if poll.initiator.id != auth.get_user(request).id:
+        print('I am not an initiator')
+        return redirect('/')
+
+    questions = poll.questions_set.all()
+
+    if len(questions) == 0:
+        first_question = {
+            'type': 'radio',
+            'text': '',
+            'answers': {
+                'text': ''
+            }
+        }
+        questions = [first_question]
+    else:
+        questions = build_questions(poll)
+
+    args = {
+        'poll': {
+            'status': 'edit',
+            'data': {
+                'questions': questions
+            },
+        }
+    }
+
+    if request.method == "POST":
+        print()
+        print('I am in POST')
+        print()
+
+    if request.is_ajax():
+        print()
+        print('I am in AJAX')
+        print()
+
+    return render(request, 'main/poll/poll_editor.html', args)
+
+
+def build_questions(questions):
+    result = []
+
+    for question in questions:
+        type = question.settings.type
+        build_question = {
+            'type': type,
+            'text': question.text
+        }
+
+        if type == 'radio' or type == 'checkbox':
+            build_question['answers'] = []
+            number = 1
+            for answer in question.settings.answer_choice.all():
+                build_question['answers'].append({
+                    'number': number,
+                    'text': answer.text
+                })
+                number += 1
+        elif type == 'range':
+            settings = question.settings
+            build_question['range'] = {
+                'min': settings.min,
+                'max': settings.max,
+                'step': settings.step
+            }
+    return result
+
+
+def poll_create_redirect(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    draft_polls = list(Draft.objects.get(profile=profile).poll.all())
+    if len(draft_polls) == 0:
+        poll = Poll()
+        poll.initiator = auth.get_user(request)
+        poll.save()
+
+        draft = Draft()
+        draft.profile = profile
+        draft.save()
+
+        draft.poll.add(poll)
+        draft.save()
+        return redirect('/poll/editor/{}/'.format(poll.id))
+
+    return redirect('/poll/editor/{}/'.format(draft_polls[0].id))

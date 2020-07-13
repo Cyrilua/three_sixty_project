@@ -4,7 +4,7 @@ from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views, \
-    auxiliary_general_methods, notifications_views, new_poll_views
+    auxiliary_general_methods, notifications_views
 
 app_name = "main"
 urlpatterns = [
@@ -14,6 +14,9 @@ urlpatterns = [
                   path('', user_views.user_login, name='login'),
                   # Выход
                   path('logout/', user_views.user_logout, name='logout'),
+
+                  # Подтверждение почты
+                  path('activate/<uidb64>/<token>/', auxiliary_general_methods.activate, name='activate'),
 
                   # Сообщение об успешной смене пароля
                   path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
@@ -154,16 +157,15 @@ urlpatterns = [
                   path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views.create_poll_from_template,
                        name='new_poll_from_template'),
 
-                  ##########################################
+                  ################ Old poll ##########################
 
                   path('walkthrough_polls_view/', poll_views.walkthrough_polls_view, name='walkthrough_polls_view'),
                   path('results_polls_view/', poll_views.results_polls_view, name='results_polls_view'),
-                  path('poll/', poll_views.new_poll_view, name='new_poll_view'),
 
-                  ##########################################
-
-                  ###### New Poll ######
-                  path('poll/editor/', new_poll_views.CreatePoll.as_view(), name='poll_editor')
+                  ########## New poll ######################
+                  path('poll/', poll_views.choose_poll, name='new_poll_view'),
+                  path('poll/editor/<int:poll_id>/', poll_views.poll_create, name='poll_editor_id'),
+                  path('poll/editor/new/', poll_views.poll_create_redirect, name='poll_editor')
 
               ]
 

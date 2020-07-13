@@ -51,7 +51,7 @@ def user_view(request):
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     ########################
 
-    return render(request, 'main/user/profile.html', args)
+    return render(request, 'main/user/old/profile.html', args)
 
 
 def upload_profile_photo(request):
@@ -76,7 +76,7 @@ def upload_profile_photo(request):
             photo_profile.profile = profile
             photo_profile.save()
         return redirect('/')
-    return render(request, "main/user/upload_photo.html", args)
+    return render(request, "main/user/old/upload_photo.html", args)
 
 
 def other_user_view(request, profile_id):
@@ -142,7 +142,7 @@ def edit_profile(request):
     })
     args['title'] = "Редактирование профия"
     args['profile'] = profile
-    return render(request, 'main/user/edit_profile.html', args)
+    return render(request, 'main/user/old/edit_profile.html', args)
 
 
 def add_new_platform(request):
@@ -433,7 +433,7 @@ def create_team(request):
             profile.groups.add(new_team)
             profile.groups.add()
         return redirect('/communications/')
-    return render(request, 'main/teams/add_new_team.html', args)
+    return render(request, 'main/teams/old/add_new_team.html', args)
 
 
 def connect_to_team(request):
@@ -449,15 +449,15 @@ def connect_to_team(request):
             group = Group.objects.get(key=key_group)
             if group in profile.groups.all():
                 args['error'] = "Пользователь уже состоит в этой команде"
-                return render(request, 'main/teams/connect_to_team.html', args)
+                return render(request, 'main/teams/old/connect_to_team.html', args)
         except:
             args['error'] = "Ключ не существует или введен неверно"
-            return render(request, 'main/teams/connect_to_team.html', args)
+            return render(request, 'main/teams/old/connect_to_team.html', args)
         else:
             profile.groups.add(group)
             profile.save()
             return redirect('/communications/')
-    return render(request, 'main/teams/connect_to_team.html', args)
+    return render(request, 'main/teams/old/connect_to_team.html', args)
 
 
 def teams_view(request):
@@ -488,7 +488,7 @@ def teams_view(request):
     except:
         args['photo'] = None
 
-    return render(request, 'main/user/communications.html', args)
+    return render(request, 'main/user/old/communications.html', args)
 
 
 def team_user_view(request, group_id):

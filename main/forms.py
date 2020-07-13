@@ -1,12 +1,18 @@
 from django.forms import ModelForm
-from .models import Profile, Company, Group, ProfilePhoto
+from .models import Profile, Company, Group, ProfilePhoto, BirthDate
 from django.contrib.auth.models import User
 
 
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ('name', 'surname', 'patronymic')
+        fields = ('name', 'surname', 'patronymic',)
+
+
+class BirthDateForm(ModelForm):
+    class Meta:
+        model = BirthDate
+        fields = ('birthday',)
 
 
 class CompanyForm(ModelForm):
