@@ -182,7 +182,7 @@ $(function () {
 
 // Первая буква заглавная, остальные строчные
 function formatValue(element) {
-    if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
+    if (element.value !== '') {
         let position = element.selectionStart;
         element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
         element.selectionStart = element.selectionEnd = position;
