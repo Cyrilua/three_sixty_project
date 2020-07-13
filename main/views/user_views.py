@@ -103,6 +103,15 @@ def request_ajax_processing(request):
            errors = validate_fullname(date['fullname'])
            return get_result(errors)
 
+        elif id_element == 'id_name':
+            pass
+
+        elif id_element == 'id_surname':
+            pass
+
+        elif id_element == 'id_patronymic':
+            pass
+
 
 def get_result(errors: list):
     if len(errors) == 0:
@@ -188,6 +197,8 @@ def validate_fullname(name: str):
     if len(reg.sub('', name)) != len(name):
         result.append('Имя содержит запрещенные символы')
     return result
+
+
 
 
 def user_login(request):

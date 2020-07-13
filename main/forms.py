@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ('fullname',)
+        fields = ('name', 'surname', 'patronymic',)
 
 
 class BirthDateForm(ModelForm):
