@@ -1,30 +1,40 @@
+.reset-pass {
+    display: flex;
+    justify-content: center;
+}
+
 .reset-pass-block {
-    height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /*align-items: center;*/
+    height: 355px;
+    width: 500px;
 }
 
 .reset-pass-title {
-    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 42px;
+    margin-bottom: 15px;
+    padding-top: 4px;
 }
 
 .reset-pass-subtitle {
-    font-weight: 500;
+    margin: 0 0 20px;
+    font-weight: normal;
     font-size: 16px;
-    line-height: 18px;
-    width: 450px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 60px;
+    line-height: 19px;
+    color: #595757;
+    text-align: center;
 }
 
 .reset-pass-email {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-    transform: translateX(-50%) translateY(50%);
-    min-width: 200px;
-    width: 200px;
+    margin: 0 auto auto;
+    min-width: 262px;
+    width: 262px;
     max-width: 400px;
-    /*margin: 0 auto 100px;*/
 }
 
 .reset-pass-back-home-page {
@@ -35,10 +45,14 @@
     transform: translateY(-50%) translateX(-50%);
 }
 
+.reset-pass-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 15px;
+}
+
 .reset-pass-next {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
 }
 
 .input-buffer {
@@ -50,45 +64,75 @@
 }
 
 .reset-pass-success-title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .reset-pass-success-subtitle {
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 18px;
-    width: 450px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 0 25px;
+    /*padding-left: 5px;*/
+
+    /*font-weight: 500;*/
+    /*font-size: 16px;*/
+    /*line-height: 18px;*/
+    /*width: 450px;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+}
+
+.reset-pass-success-subtitle > .reset-pass-success-subtitle-part:last-child {
+    margin-bottom: 0;
 }
 
 .reset-pass-success-subtitle-part {
-    margin-bottom: 35px;
-    padding-left: 15px;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-align: left;
+    margin: 0 0 20px;
+}
+
+.reset-pass-success-form {
+    margin: 0 0 auto;
 }
 
 .reset-pass-repeat-letter {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #C4C4C4;
+}
+
+.reset-pass-success-btn {
+    justify-content: flex-start;
+    margin-left: 15px;
+}
+
+.reset-pass-success-back {
 
 }
 
-.reset-pass-back {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
+.reset-pass-confirm-title {
+    margin: 0 0 7px;
 }
 
-.new-pass-subtitle {
-    width: 320px;
+.reset-pass-confirm-subtitle {
+    margin: 0 0 20px;
 }
 
-.new-pass-block {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 250px;
-    height: 90px;
+.reset-pass-confirm-new-pass-form-group {
+    width: 262px;
+    margin: 0 auto;
+}
+
+.reset-pass-confirm-new-pass-block {
+    margin: 0 0 auto;
+}
+
+.reset-pass-confirm-new-pass-input {
+    display: block;
+    margin: 0 auto;
+    width: 262px;
+}
+
+.reset-pass-confirm-new-pass-block > .reset-pass-confirm-new-pass-form-group {
+    margin-bottom: 20px;
 }

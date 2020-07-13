@@ -18,8 +18,8 @@ function getCounterSymbols(el1, el2) {
     counter.innerText = (500 - text.value.length).toString();
 }
 
-$(function () {
-    $('body').on('mouseup', '.btn', function () {
-        $(this).blur();
-    })
-});
+// $(function () {
+//     $('body').on('mouseup', '.btn', function () {
+//         $(this).blur();
+//     })
+// });
