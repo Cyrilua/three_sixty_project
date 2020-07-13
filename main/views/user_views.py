@@ -1,6 +1,5 @@
 import copy
-import re
-import datetime
+from .validations import *
 
 from main.views.auxiliary_general_methods import *
 
@@ -14,10 +13,6 @@ from django.contrib.auth.models import User
 from main.views.profile_views import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
 from main.models import BirthDate
-
-from django.core.exceptions import ValidationError
-from django.contrib.auth import password_validation
-from django.core.validators import EmailValidator
 
 
 def user_register(request):
@@ -104,13 +99,16 @@ def request_ajax_processing(request):
            return get_result(errors)
 
         elif id_element == 'id_name':
-            pass
+            errors = validate_name(date['name'])
+            return get_result(errors)
 
         elif id_element == 'id_surname':
-            pass
+            errors = validate_surname(date['surname'])
+            return get_result(errors)
 
         elif id_element == 'id_patronymic':
-            pass
+            errors = validate_patronymic(date['patronymic'])
+            return get_result(errors)
 
 
 def get_result(errors: list):
@@ -118,87 +116,6 @@ def get_result(errors: list):
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
-
-
-def validate_login(login: str):
-    result = []
-    login = login.lower()
-    users = User.objects.all()
-    other_users = list(filter(lambda x: x.username == login, users))
-
-    if len(other_users) != 0:
-        result.append('Имя пользователя уже занято')
-    if len(login) < 1:
-        result.append('Введите имя пользователя')
-    if len(login) < 3:
-        result.append('Минимальная длинна логина - 3 символа')
-
-    reg = re.compile('[^a-z0-9_]')
-    if len(reg.sub('', login)) != len(login):
-        result.append('Логин содержит запрещенные символы')
-
-    return result
-
-
-def validate_password1(password: str):
-    result = []
-    try:
-        password_validation.validate_password(password)
-    except ValidationError as error:
-        result = error.messages
-    return result
-
-
-def validate_password2(password2: str, password1: str):
-    result = []
-    if password2 != password1:
-        result.append('Пароли не совпадают')
-    return result
-
-
-def validate_birth_date(date: str):
-    print(date)
-    result = []
-    current_date = datetime.datetime.today()
-    old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
-    try:
-        birth_date = datetime.datetime.strptime(date, '%d.%m.%Y')
-    except ValueError:
-        result.append('Дата неправильного формата')
-        return result
-    if birth_date >= current_date or old_date >= birth_date:
-        result.append('Некорректная дата')
-    return result
-
-
-def validate_email(email: str):
-    result = []
-    try:
-        email_validator = EmailValidator()
-        email_validator(email)
-    except ValidationError as error:
-        result = error.messages
-    users = User.objects.filter(email=email)
-    if len(users) != 0:
-        result.append('Данный email уже привязан к другоу аккаунту')
-    return result
-
-
-def validate_fullname(name: str):
-    result = []
-    len_name = len(name)
-    if len_name < 6:
-        result.append('Слишком короткое имя')
-    if len_name > 150:
-        result.append('Слишком длинное имя')
-
-    # убрать проверку на запрещенные символы при необходимости
-    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
-    if len(reg.sub('', name)) != len(name):
-        result.append('Имя содержит запрещенные символы')
-    return result
-
-
 
 
 def user_login(request):
