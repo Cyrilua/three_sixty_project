@@ -44,23 +44,6 @@
                     <div class="popup">
                         <div class="popup_message">
                         </div>
-<<<<<<< HEAD
-
-                        <hr>
-                        <div class="form-group">
-                            <label for="id_city">Город<i class="fas fa-asterisk required"></i></label>
-                            <select name="city" id="id_city" class="form-control register-select-city" required>
-                                <option value="" disabled selected hidden>Выберите город</option>
-                                {% for city in cities %}
-                                    <option value="{{ city.id }}">{{ city.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div style="text-align: right">
-                            <input id="btn-register" class="btn btn-primary" type="submit" value="Зарегистрировать"
-                                   disabled>
-=======
                     </div>
                 </div>
             </div>
@@ -79,7 +62,6 @@
                     {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
->>>>>>> master
                         </div>
                     </div>
                 </div>
