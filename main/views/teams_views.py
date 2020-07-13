@@ -32,7 +32,7 @@ def create_team(request):
             profile.groups.add(new_team)
             profile.groups.add()
         return redirect('/communications/')
-    return render(request, 'main/teams/add_new_team.html', args)
+    return render(request, 'main/teams/old/add_new_team.html', args)
 
 
 def connect_to_team_to_key(request):
@@ -48,15 +48,15 @@ def connect_to_team_to_key(request):
             group = Group.objects.get(key=key_group)
             if group in profile.groups.all():
                 args['error'] = "Пользователь уже состоит в этой команде"
-                return render(request, 'main/teams/connect_to_team.html', args)
+                return render(request, 'main/teams/old/connect_to_team.html', args)
         except:
             args['error'] = "Ключ не существует или введен неверно"
-            return render(request, 'main/teams/connect_to_team.html', args)
+            return render(request, 'main/teams/old/connect_to_team.html', args)
         else:
             profile.groups.add(group)
             profile.save()
             return redirect('/communications/')
-    return render(request, 'main/teams/connect_to_team.html', args)
+    return render(request, 'main/teams/old/connect_to_team.html', args)
 
 
 def connect_to_team_to_link(request, key):
@@ -98,7 +98,7 @@ def teams_view(request):
     except:
         args['photo'] = None
 
-    return render(request, 'main/user/communications.html', args)
+    return render(request, 'main/user/old/communications.html', args)
 
 
 def team_user_view(request, group_id):
@@ -125,4 +125,4 @@ def team_user_view(request, group_id):
     args['team_name'] = group.name
     args['title'] = group.name
     args['group_id'] = group_id
-    return render(request, 'main/teams/team_view.html', args)
+    return render(request, 'main/teams/old/team_view.html', args)
