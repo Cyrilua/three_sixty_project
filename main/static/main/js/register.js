@@ -37,6 +37,9 @@ $(function () {
     username.val('');
     password1.val('');
     password2.val('');
+    password2.prop({
+        'disabled': true,
+    });
     email.val('');
     name.val('');
     surname.val('');
@@ -181,7 +184,8 @@ $(function () {
 
 
 // Первая буква заглавная, остальные строчные
-function formatValue(element) {
+function formatValue(el) {
+    let element = el[0];
     if (element.value !== '') {
         let position = element.selectionStart;
         element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
