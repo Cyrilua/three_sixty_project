@@ -31,13 +31,8 @@ def create_team(request):
 
             profile.groups.add(new_team)
             profile.groups.add()
-<<<<<<< HEAD
-        return redirect('/')
-    return render(request, 'main/teams/add_new_team.html', args)
-=======
         return redirect('/communications/')
     return render(request, 'main/teams/old/add_new_team.html', args)
->>>>>>> master
 
 
 def connect_to_team_to_key(request):
@@ -60,13 +55,9 @@ def connect_to_team_to_key(request):
         else:
             profile.groups.add(group)
             profile.save()
-<<<<<<< HEAD
-            return redirect('/')
-    return render(request, 'main/teams/connect_to_team.html', args)
-=======
+
             return redirect('/communications/')
     return render(request, 'main/teams/old/connect_to_team.html', args)
->>>>>>> master
 
 
 def connect_to_team_to_link(request, key):
