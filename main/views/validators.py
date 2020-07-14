@@ -8,7 +8,6 @@ from django.core.validators import EmailValidator
 
 
 def validate_login(login: str):
-
     result = []
     login = login.lower()
     users = User.objects.all()
@@ -45,7 +44,6 @@ def validate_password2(password2: str, password1: str):
 
 
 def validate_birth_date(date: str):
-    print(date)
     result = []
     current_date = datetime.datetime.today()
     old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
