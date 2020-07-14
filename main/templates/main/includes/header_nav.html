@@ -6,14 +6,18 @@
             <div class="head-menu">
                 <div class="head-menu-up">
                     <p class="head-menu-name">
-                        Александр Александров
+                        {{ profile.name }} {{ profile.surname }}
                     </p>
-                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="head-menu-img">
+                    <img src="{{ photo.url }}" alt="" class="head-menu-img">
                     <img src="{% static 'main/images/head_item.svg' %}" alt="" class="head-menu-mark">
                 </div>
                 <div class="head-menu-down">
                     <div class="head-menu-items">
-                        <div class="head-menu-item" id="head-menu-company">ООО Крутая компания</div>
+                        <div class="head-menu-item" id="head-menu-company">
+                            <div class="head-menu-item-text">
+                                {{ profile.company.name }}
+                            </div>
+                        </div>
                         <div class="head-menu-line"></div>
                         <div class="head-menu-item" id="head-menu-settings">Настройки</div>
                         <div class="head-menu-line"></div>
@@ -22,7 +26,28 @@
                 </div>
             </div>
         {% else %}
-            Что-то не так
+            <div class="head-menu">
+                <div class="head-menu-up">
+                    <p class="head-menu-name">
+                        Лу Ми
+                    </p>
+                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="head-menu-img">
+                    <img src="{% static 'main/images/head_item.svg' %}" alt="" class="head-menu-mark">
+                </div>
+                <div class="head-menu-down">
+                    <div class="head-menu-items">
+                        <div class="head-menu-item" id="head-menu-company">
+                            <div class="head-menu-item-text">
+                                ООО Крутая компания вылаоыйцуйуйцуйцуйцу йцуйцуйц йц
+                            </div>
+                        </div>
+                        <div class="head-menu-line"></div>
+                        <div class="head-menu-item" id="head-menu-settings">Настройки</div>
+                        <div class="head-menu-line"></div>
+                        <div class="head-menu-item" id="head-menu-logout">Выйти</div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
         {#            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 16px; line-height: 19px;">#}
         {#                <a class="nav-link" href="{% url 'main:login' %}">#}

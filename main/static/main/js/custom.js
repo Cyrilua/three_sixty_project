@@ -24,11 +24,13 @@ $(function () {
     let menuDown = headMenu.children('.head-menu-down');
     let body = $('body');
 
+    // Открыть меню (в шапке)
     body.on('click', '.head-menu-up', function () {
         menuUp.toggleClass('active');
         menuDown.toggle();
     });
 
+    // Скрыть меню при клике в любом месте (под шапкой)
     body.on('click', '.container-fluid', function () {
         if (menuDown.css('display') !== 'none') {
             menuUp.toggleClass('active');
@@ -36,6 +38,46 @@ $(function () {
         }
     });
 
+    // Анимация для длинного названия компании
+    body.on('mouseenter', '#head-menu-company', function () {
+        let id = this.id;
+        if (id === 'head-menu-company') {
+            let text = $(this).children('.head-menu-item-text');
+            let width = parseFloat(text.css('width')) * (-1) + $(this).width();
+            let timeAnimation = Math.abs((width - parseFloat(text.css('margin-left'))) * 15);
+            let timeAnimationBack = Math.abs(width * 15);
+            body.on('mouseleave', '#head-menu-company', function () {
+                if (text.hasClass('in')) {
+                    text.removeClass('in');
+                    text.addClass('out');
+                    text.stop().animate({
+                        'margin-left': 0,
+                    }, (parseFloat(text.css('margin-left')) * -15));
+                }
+            });
+            if (text.hasClass('out')) {
+                text.removeClass('out');
+            }
+            if (!text.hasClass('in')) {
+                text.addClass('in');
+                if (width < 0) {
+                    text.stop().animate({
+                        'margin-left': width + 'px',
+                    }, timeAnimation, function () {
+                        if (text.hasClass('in')) {
+                            text.removeClass('in');
+                            text.addClass('out');
+                        }
+                        text.stop().animate({
+                            'margin-left': 0,
+                        }, timeAnimationBack);
+                    });
+                }
+            }
+        }
+    });
+
+    // Перуходы по кнопкам в меню (в шапке)
     body.on('click', '.head-menu-item', function () {
         let id = this.id;
         if (id === 'head-menu-company') {

@@ -149,6 +149,7 @@ h1, h2, h3, h4, h5, h6 {
 .head-menu {
     position: relative;
     box-sizing: border-box;
+    min-width: 150px;
     width: auto;
     height: 57px;
 }
@@ -184,7 +185,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .head-menu-img {
-    margin: auto 5px auto 0;
+    margin: auto 5px auto auto ;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -238,6 +239,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     padding-left: 8px;
+    padding-right: 8px;
     margin: 5px 0;
     height: 30px;
     width: 100%;
@@ -245,6 +247,13 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 14px;
     line-height: 16px;
     color: #2269D5;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.head-menu-item-text {
+    /*width: 100%;*/
+    white-space: nowrap;
 }
 
 .head-menu-item:hover,
