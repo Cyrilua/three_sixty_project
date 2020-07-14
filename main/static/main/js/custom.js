@@ -42,10 +42,13 @@ $(function () {
     body.on('mouseenter', '#head-menu-company', function () {
         let id = this.id;
         if (id === 'head-menu-company') {
-            let text = $(this).children('.head-menu-item-text');
+            let block = $(this).children('.head-menu-item-text-block');
+            let text = block.children('.head-menu-item-text');
+            block.css({'overflow': 'visible'});
             let width = parseFloat(text.css('width')) * (-1) + $(this).width();
             let timeAnimation = Math.abs((width - parseFloat(text.css('margin-left'))) * 15);
             let timeAnimationBack = Math.abs(width * 15);
+            block.css({'overflow': 'hidden'});
             body.on('mouseleave', '#head-menu-company', function () {
                 if (text.hasClass('in')) {
                     text.removeClass('in');
