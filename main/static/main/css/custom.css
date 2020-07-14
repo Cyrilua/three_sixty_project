@@ -362,7 +362,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
     font-size: 14px;
     line-height: 16px;
-    color: #595757;
+    color: #000000;
     /*display: block;*/
     width: 100%;
     padding: 6px 12px;
@@ -374,7 +374,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input-field::placeholder {
+    color: #595757;
+}
 
+.input-field::-moz-placeholder {
+    color: #000000;
+}
+
+.input-field:-moz-placeholder {
+    color: #000000;
+}
+
+.input-field::-webkit-input-placeholder {
+    color: #595757;
+}
+
+.input-field:-ms-input-placeholder {
+    color: #595757;
+}
+
+.input-field::-ms-input-placeholder {
+    color: #595757;
 }
 
 .input-field:hover {
