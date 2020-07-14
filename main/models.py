@@ -21,12 +21,13 @@ class Profile (models.Model):
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {}'.format(self.fullname)
+        return 'Profile for user {}'.format(self.name)
 
 
 class BirthDate(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     birthday = models.DateField()
+    objects = models.Manager()
 
     class Meta:
         db_table = 'BirthDate'
