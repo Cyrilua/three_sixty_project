@@ -3,7 +3,7 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth import password_validation
+from django.contrib.auth import password_validation, validators
 from django.core.validators import EmailValidator
 
 
@@ -44,7 +44,6 @@ def validate_password2(password2: str, password1: str):
 
 
 def validate_birth_date(date: str):
-    print(date)
     result = []
     current_date = datetime.datetime.today()
     old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')

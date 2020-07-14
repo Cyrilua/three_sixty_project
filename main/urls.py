@@ -3,8 +3,9 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from .views import profile_views, user_views, teams_views, company_views, poll_views, questions_views, \
+from .views import profile_views, user_views, teams_views, company_views, poll_views_old, questions_views, \
     auxiliary_general_methods, notifications_views
+from .views.poll_views import create_poll
 
 app_name = "main"
 urlpatterns = [
@@ -34,7 +35,7 @@ urlpatterns = [
                   # Неведомая и странно работающая часть
                   path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
                       template_name='main/password/password_reset_confirm.html',
-                      success_url=reverse_lazy('main:password_reset_complete')
+                      success_url=reverse_lazy('main:login')
                   ),
                        name='password_reset_confirm'),
                   # Сброс пароля
@@ -46,7 +47,7 @@ urlpatterns = [
                        name='password_reset'),
                   # Сообщение об успешном сбросе пароля
                   path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
-                      template_name='main/password/password_reset_complete.html'),
+                      template_name='main/password/old/password_reset_complete.html'),
                        name='password_reset_complete'),
 
                   # Просмотр профиля
@@ -113,62 +114,58 @@ urlpatterns = [
                   path('add_new_question', questions_views.add_new_question, name="add_new_question"),
 
                   # Создание опроса
-                  path('create_poll/', poll_views.create_pool, name='create_pool'),
+                  path('create_poll/', poll_views_old.create_pool, name='create_pool'),
                   # Добавление вопросов к опросу
-                  path('<int:pool_id>/add_question', poll_views.add_questions_in_poll, name='add_question_in_pool'),
+                  path('<int:pool_id>/add_question', poll_views_old.add_questions_in_poll, name='add_question_in_pool'),
                   # Добавление ответа к вопросу опроса
-                  path('<int:poll_id>/add_answer/<int:question_id>/', poll_views.add_answer,
+                  path('<int:poll_id>/add_answer/<int:question_id>/', poll_views_old.add_answer,
                        name='add_answer_in_poll_for_question'),
                   # Возвращает список вопросов
-                  path('<int:poll_id>/poll_questions/', poll_views.questions_in_pool_view,
+                  path('<int:poll_id>/poll_questions/', poll_views_old.questions_in_pool_view,
                        name='view_questions_in_poll'),
                   # Выбор типа опроса
-                  path('type_poll/', poll_views.type_poll, name='choose_type_poll'),
+                  path('type_poll/', poll_views_old.type_poll, name='choose_type_poll'),
                   # Список стандартных опросов
-                  path('default_poll_list/', poll_views.default_poll_template_view, name='list_default_poll'),
+                  path('default_poll_list/', poll_views_old.default_poll_template_view, name='list_default_poll'),
                   # Выбор цели опроса (только для HR)
-                  path('default_poll/<int:poll>', poll_views.search_target_poll, name='select_respondents'),
+                  path('default_poll/<int:poll>', poll_views_old.search_target_poll, name='select_respondents'),
                   # Выбор области опрашиваемых
-                  path('default_poll/<int:poll>/select_survey_area/', poll_views.select_survey_area,
+                  path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),
 
                   # Уведомления
                   path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
 
                   # Выбор участников опроса для компании
-                  path('respondent_choice_c/', poll_views.respondent_choice_from_company,
+                  path('respondent_choice_c/', poll_views_old.respondent_choice_from_company,
                        name="respondent_choice_company"),
                   # Выбор участников опроса для команды
-                  path('respondent_choice_t/<int:group_id>/', poll_views.respondent_choice_group,
+                  path('respondent_choice_t/<int:group_id>/', poll_views_old.respondent_choice_group,
                        name='respondent_choice_group'),
                   # Создание опроса
-                  path('new_poll/<int:poll_id>/', poll_views.new_poll, name='new_poll'),
+                  path('new_poll/<int:poll_id>/', poll_views_old.new_poll, name='new_poll'),
                   # Ответ на опрос
-                  path('answer_poll/<int:poll_id>/', poll_views.answer_the_poll, name='answer_the_poll'),
+                  path('answer_poll/<int:poll_id>/', poll_views_old.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
-                  path('result_poll/<int:poll_id>/', poll_views.result_view, name='result_poll'),
+                  path('result_poll/<int:poll_id>/', poll_views_old.result_view, name='result_poll'),
                   # Поик цели опроса
                   path('search_target_poll/<int:poll_id>/', auxiliary_general_methods.find_target,
                        name='search_target'),
                   # Выбор цели опроса
-                  path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views.select_target,
+                  path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views_old.select_target,
                        name='select_target_poll'),
                   # Создание опроса через шаблон
-                  path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views.create_poll_from_template,
+                  path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views_old.create_poll_from_template,
                        name='new_poll_from_template'),
 
                   ################ Old poll ##########################
 
-                  path('walkthrough_polls_view/', poll_views.walkthrough_polls_view, name='walkthrough_polls_view'),
-                  path('results_polls_view/', poll_views.results_polls_view, name='results_polls_view'),
+                  path('walkthrough_polls_view/', poll_views_old.walkthrough_polls_view, name='walkthrough_polls_view'),
+                  path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
-                  path('poll/', poll_views.choose_poll, name='new_poll_view'),
-                  path('poll/editor/<int:poll_id>/', poll_views.poll_create, name='poll_editor_id'),
-                  path('poll/editor/new/', poll_views.poll_create_redirect, name='poll_editor')
+                  path('poll/', create_poll.choose_poll, name='new_poll_view'),
+                  path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
+                  path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor')
 
-              ]
-
-if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

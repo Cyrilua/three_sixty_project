@@ -1,5 +1,7 @@
+import datetime
+
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto
+from main.models import ProfilePhoto, BirthDate
 from main.views.auxiliary_general_methods import *
 
 from django.http import JsonResponse
@@ -109,13 +111,17 @@ def edit_profile(request):
 
     user = auth.get_user(request)
     profile = get_user_profile(request)
+    try:
+        birth_date = BirthDate.objects.get(profile=profile)
+    except:
+        birth_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
     args = {
         'title': "Редактирование профия",
         'profile_form': ProfileForm({
             'name': profile.name,
             'surname': profile.surname,
             'patronymic': profile.patronymic,
-            'city': profile.city}),
+            'birthday': birth_date}),
         'email_form': UserChangeEmailForm({'email': user.email}),
         'profile': profile,
         'user': user
