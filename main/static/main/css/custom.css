@@ -146,6 +146,116 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 24px;
 }
 
+.head-menu {
+    position: relative;
+    box-sizing: border-box;
+    width: auto;
+    height: 57px;
+}
+
+.head-menu-up {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 57px;
+    cursor: pointer;
+    padding: 0 8px;
+}
+
+.head-menu-up:hover {
+    background: rgba(0, 0, 0, .05);
+}
+
+.head-menu-up:active {
+    background: rgba(0, 0, 0, .2);
+}
+
+.head-menu-name {
+    margin: auto 10px auto 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+}
+
+.head-menu-img {
+    margin: auto 5px auto 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.head-menu-mark {
+    margin: auto 0;
+    width: 12px;
+    height: 12px;
+}
+
+.head-menu-down {
+
+}
+
+.head-menu-items {
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: #FFFFFF;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    cursor: default;
+    box-shadow: -3px 3px 5px rgba(0,0,0,0.3);
+}
+
+.head-menu-items::before {
+    content: '';
+    top: -18px;
+    right: 31px;
+    position: absolute;
+    border: 9px solid transparent;
+    border-bottom: 9px solid #cccccc;
+}
+
+.head-menu-items::after {
+    content: '';
+    top: -16px;
+    right: 31px;
+    position: absolute;
+    border: 9px solid transparent;
+    border-bottom: 9px solid #FFFFFF;
+    cursor: pointer;
+}
+
+.head-menu-item {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    margin: 5px 0;
+    height: 30px;
+    width: 100%;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2269D5;
+}
+
+.head-menu-item:hover,
+.head-menu-item:active {
+    background: #F0F1F6;
+    cursor: pointer;
+}
+
+.head-menu-line {
+    margin: 0 auto;
+    height: 1px;
+    width: 95%;
+    background-color: #E5E5E5;
+}
+
 /*###---!header---###*/
 
 /*###---wrapper---###*/
