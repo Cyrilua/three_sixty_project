@@ -31,10 +31,13 @@ $(function () {
     });
 
     // Скрыть меню при клике в любом месте (под шапкой)
-    body.on('click', '.container-fluid', function () {
+    body.on('mouseup', function (el) {
         if (menuDown.css('display') !== 'none') {
-            menuUp.toggleClass('active');
-            menuDown.toggle();
+            if (el.target.closest('.head-menu') === null) {
+                menuUp.toggleClass('active');
+                menuDown.toggle();
+                console.log('close')
+            }
         }
     });
 
