@@ -28,6 +28,7 @@ class Profile (models.Model):
 class BirthDate(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     birthday = models.DateField()
+    objects = models.Manager()
 
     class Meta:
         db_table = 'BirthDate'

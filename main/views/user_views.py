@@ -1,5 +1,5 @@
 import copy
-from .validations import *
+from .validators import *
 
 from main.views.auxiliary_general_methods import *
 
