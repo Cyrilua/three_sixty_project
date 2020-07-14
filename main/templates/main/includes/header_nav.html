@@ -1,25 +1,49 @@
-<div class='navbar-nav ml-auto' style="margin-right: 25px;">
-    <ul class="navbar-nav bd-navbar-nav flex-row">
-        {% if user.is_authenticated %}
-            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
-                <a class="nav-link" href="{% url 'main:login' %}">
-                    {% if profile %}
-                        {{ profile.name }} {{ profile.surname }}
-                    {% else %}
-                        Мой профиль
-                    {% endif %}
-                </a>
-            </li>
-            <li class="nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
-                <a class="nav-link" id="logout" href="{% url 'main:logout' %}">Выход</a>
-            </li>
+{% load static %}
+
+<div class='navbar-nav ml-auto unselectable' style="margin-right: 15px;">
+    {% if user.is_authenticated %}
+        {% if profile %}
+            <div class="head-menu">
+                <div class="head-menu-up">
+                    <p class="head-menu-name">
+                        Александр Александров
+                    </p>
+                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="head-menu-img">
+                    <img src="{% static 'main/images/head_item.svg' %}" alt="" class="head-menu-mark">
+                </div>
+                <div class="head-menu-down">
+                    <div class="head-menu-items">
+                        <div class="head-menu-item">ООО Крутая компания</div>
+                        <div class="head-menu-line"></div>
+                        <div class="head-menu-item">Настройки</div>
+                        <div class="head-menu-line"></div>
+                        <div class="head-menu-item">Выйти</div>
+                    </div>
+                </div>
+            </div>
         {% else %}
-            <li class="{{ nav_login }} nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            Что-то не так
+        {% endif %}
+        {#            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 16px; line-height: 19px;">#}
+        {#                <a class="nav-link" href="{% url 'main:login' %}">#}
+        {#                    {% if profile %}#}
+        {#                        {{ profile.name }} {{ profile.surname }}#}
+        {#                    {% else %}#}
+        {#                        Мой профиль#}
+        {#                    {% endif %}#}
+        {#                </a>#}
+        {#            </li>#}
+        {#            <li class="nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">#}
+        {#                <a class="nav-link" id="logout" href="{% url 'main:logout' %}">Выход</a>#}
+        {#            </li>#}
+    {% else %}
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+            <li class="{{ nav_login }} nav-item" style="font-weight: bold; font-size: 16px; line-height: 19px;">
                 <a class="nav-link header-first-icon" id="login" href="{% url 'main:login' %}">Вход</a>
             </li>
-            <li class="{{ nav_register }} nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">
+            <li class="{{ nav_register }} nav-item" style="font-weight: bold; font-size: 16px; line-height: 19px;">
                 <a class="nav-link" id="register" href="{% url 'main:register' %}">Регистрация</a>
             </li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
 </div>
