@@ -23,7 +23,6 @@ def validate_login(login: str):
     reg = re.compile('[^a-z0-9_]')
     if len(reg.sub('', login)) != len(login):
         result.append('Логин содержит запрещенные символы')
-
     return result
 
 
