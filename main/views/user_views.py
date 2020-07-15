@@ -53,7 +53,7 @@ def request_post_method_processing(request, args):
         user.email = request.POST.get('email', '')
         user.save()
         profile.save()
-        birth_date = datetime.datetime.strptime(post['birthday'], '%Y-%m-%d').date()
+        birth_date = datetime.datetime.strptime(post['birthday'], '%d.%m.%Y').date()
         date = BirthDate()
         date.birthday = birth_date
         date.profile = profile
