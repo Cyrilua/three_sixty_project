@@ -354,12 +354,12 @@ function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
         success: function (response) {
             chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
-                required.surnam = true;
-                errors.surnam = false;
+                required.surname = true;
+                errors.surname = false;
                 removeErrors(el, timeShow);
             } else if (response.resultStatus === 'error') {
-                required.surnam = false;
-                errors.surnam = true;
+                required.surname = false;
+                errors.surname = true;
                 showErrors(body, el, response.resultError, timeShow);
             }
             checkBtnRegister(required);
