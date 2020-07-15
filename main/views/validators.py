@@ -14,11 +14,13 @@ def validate_login(login: str):
     other_users = list(filter(lambda x: x.username == login, users))
 
     if len(other_users) != 0:
-        result.append('Имя пользователя уже занято')
+        result.append('Логин уже занят')
     if len(login) < 1:
-        result.append('Введите имя пользователя')
+        result.append('Введите логин')
     if len(login) < 3:
         result.append('Минимальная длинна логина - 3 символа')
+    if not login[0].isalpha():
+        result.append('Логин должен начинаться с буквы')
 
     reg = re.compile('[^a-z0-9_]')
     if len(reg.sub('', login)) != len(login):
