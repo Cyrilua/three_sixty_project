@@ -36,7 +36,6 @@ $(function () {
             if (el.target.closest('.head-menu') === null) {
                 menuUp.toggleClass('active');
                 menuDown.toggle();
-                console.log('close')
             }
         }
     });
