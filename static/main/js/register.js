@@ -7,7 +7,9 @@ $(function () {
     let password1 = $('#id_password1');
     let password2 = $('#id_password2');
     let email = $('#id_email');
-    let fullname = $('#id_fullname');
+    let name = $('#id_name');
+    let surname = $('#id_surname');
+    let patronymic = $('#id_patronymic');
     let birthday = $('#id_birthday');
 
     let required = {
@@ -15,7 +17,9 @@ $(function () {
         'password1': false,
         'password2': false,
         'email': false,
-        'fullname': false,
+        'name': false,
+        'surname': false,
+        'patronymic': false,
         'birthday': false,
     };
 
@@ -24,14 +28,22 @@ $(function () {
         'password1': false,
         'password2': false,
         'email': false,
+        'name': false,
+        'surname': false,
+        'patronymic': false,
         'birthday': false,
     };
 
     username.val('');
     password1.val('');
     password2.val('');
+    password2.prop({
+        'disabled': true,
+    });
     email.val('');
-    fullname.val('');
+    name.val('');
+    surname.val('');
+    patronymic.val('');
     birthday.val('');
     checkBtnNext(required);
     checkBtnRegister(required);
@@ -50,6 +62,7 @@ $(function () {
     //     ajaxForBirthday(birthday, csrf, required, errors, body, timeShow);
 
 
+    // Кастомный календарь
     if (birthday.prop('type') !== 'date') {
         birthday.datepicker({
             onSelect: function (formattedDate, date, inst) {
@@ -75,24 +88,28 @@ $(function () {
                         }
                         checkBtnRegister(required);
                         checkBtnNext(required);
+                        console.log('birthday', errors.birthday)
                     }
                 });
             },
         });
     }
 
+    // To step 2
     body.on('click', '.register-form-navigate-btn-next_step', function (event) {
         event.preventDefault();
         $('.step-1').addClass('d-none');
         $('.step-2').removeClass('d-none');
     });
 
+    // To step 1
     body.on('click', '.register-form-navigate-btn-back_step', function (event) {
         event.preventDefault();
         $('.step-2').addClass('d-none');
         $('.step-1').removeClass('d-none');
     });
 
+    // Вывод шибки при фокусе на поле
     body.on('focus', '.input-field', function () {
         for (let key in errors) {
             let name = $(this)[0].name;
@@ -113,6 +130,7 @@ $(function () {
         }
     });
 
+    // Скрытие ошибки при расфокусировке поля
     body.on('focusout', '.input-field', function () {
         $(this).parent().children('.popup').stop().animate({
             opacity: 0,
@@ -123,6 +141,7 @@ $(function () {
         });
     });
 
+    // Обработка полей
     body.on('input', '#id_username', function () {
         let el = $(this);
         ajaxForUsername(el, csrf, required, errors, body, timeShow);
@@ -143,9 +162,19 @@ $(function () {
         ajaxForEmail(el, csrf, required, errors, body, timeShow);
     });
 
-    body.on('input', '#id_fullname', function () {
+    body.on('input', '#id_name', function () {
         let el = $(this);
         ajaxForName(el, csrf, required, errors, body, timeShow);
+    });
+
+    body.on('input', '#id_surname', function () {
+        let el = $(this);
+        ajaxForSurname(el, csrf, required, errors, body, timeShow);
+    });
+
+    body.on('input', '#id_patronymic', function () {
+        let el = $(this);
+        ajaxForPatronymic(el, csrf, required, errors, body, timeShow);
     });
 
     body.on('input', '#id_birthday', function () {
@@ -155,14 +184,15 @@ $(function () {
 });
 
 
-// // Первая буква заглавная, остальные строчные
-// function formatValue(element) {
-//     if (element.value !== '' && element.value[0] !== element.value[0].toUpperCase()) {
-//         let position = element.selectionStart;
-//         element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
-//         element.selectionStart = element.selectionEnd = position;
-//     }
-// }
+// Первая буква заглавная, остальные строчные
+function formatValue(el) {
+    let element = el[0];
+    if (element.value !== '') {
+        let position = element.selectionStart;
+        element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
+        element.selectionStart = element.selectionEnd = position;
+    }
+}
 
 // // Проверка полей на правильность ввода
 // function checkFieldValidation(regexp, minLen, maxLen, str) {
@@ -183,7 +213,7 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
-            chooseValidationColor($('#id_username')[0], response.resultStatus);
+            chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
                 required.username = true;
                 errors.username = false;
@@ -195,6 +225,7 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
+            console.log('username', errors.username)
         }
     });
 }
@@ -209,7 +240,7 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
-            chooseValidationColor($('#id_password1')[0], response.resultStatus);
+            chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
                 required.password1 = true;
                 errors.password1 = false;
@@ -227,6 +258,7 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
+            console.log('password1', errors.password1)
         }
     });
 }
@@ -255,6 +287,7 @@ function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
+            console.log('password2', errors.password2)
         }
     });
 }
@@ -269,7 +302,7 @@ function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
-            chooseValidationColor($('#id_email')[0], response.resultStatus);
+            chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
                 required.email = true;
                 errors.email = false;
@@ -281,32 +314,91 @@ function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
+            console.log('email', errors.email)
         }
     });
 }
 
 function ajaxForName(el, csrf, required, errors, body, timeShow) {
+    formatValue(el);
     $.ajax({
         url: '',
         type: 'post',
         data: {
             id: el[0].id,
-            fullname: el[0].value,
+            name: el[0].value,
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
-            chooseValidationColor($('#id_fullname')[0], response.resultStatus);
+            chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
-                required.fullname = true;
-                errors.fullname = false;
+                required.name = true;
+                errors.name = false;
                 removeErrors(el, timeShow);
             } else if (response.resultStatus === 'error') {
-                required.fullname = false;
-                errors.fullname = true;
+                required.name = false;
+                errors.name = true;
                 showErrors(body, el, response.resultError, timeShow);
             }
             checkBtnRegister(required);
-            checkBtnNext(required);
+            // checkBtnNext(required);
+            console.log('name', errors.name)
+        }
+    });
+}
+
+function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
+    formatValue(el);
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            surname: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor(el[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.surname = true;
+                errors.surname = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.surname = false;
+                errors.surname = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            // checkBtnNext(required);
+            console.log('surname', errors.surname)
+        }
+    });
+}
+
+function ajaxForPatronymic(el, csrf, required, errors, body, timeShow) {
+    formatValue(el);
+    $.ajax({
+        url: '',
+        type: 'post',
+        data: {
+            id: el[0].id,
+            patronymic: el[0].value,
+            csrfmiddlewaretoken: csrf,
+        },
+        success: function (response) {
+            chooseValidationColor(el[0], response.resultStatus);
+            if (response.resultStatus === 'success') {
+                required.patronymic = true;
+                errors.patronymic = false;
+                removeErrors(el, timeShow);
+            } else if (response.resultStatus === 'error') {
+                required.patronymic = false;
+                errors.patronymic = true;
+                showErrors(body, el, response.resultError, timeShow);
+            }
+            checkBtnRegister(required);
+            // checkBtnNext(required);
+            console.log('patronymic', errors.patronymic)
         }
     });
 }
@@ -321,7 +413,7 @@ function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
-            chooseValidationColor($('#id_birthday')[0], response.resultStatus);
+            chooseValidationColor(el[0], response.resultStatus);
             if (response.resultStatus === 'success') {
                 required.birthday = true;
                 errors.birthday = false;
@@ -332,7 +424,8 @@ function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
                 showErrors(body, el, response.resultError, timeShow);
             }
             checkBtnRegister(required);
-            checkBtnNext(required);
+            // checkBtnNext(required);
+            console.log('birthday', errors.birthday)
         }
     });
 }
@@ -399,6 +492,7 @@ function checkBtnRegister(required) {
     }
 }
 
+// Проверка, что все поля страницы 1 заполнены и кнопку "Далее" можно нажать
 function checkBtnNext(required) {
     if (required.username === true && required.email === true && required.password1 === true && required.password2 === true) {
         $('.register-form-navigate-btn-next_step').prop({
