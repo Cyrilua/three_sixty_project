@@ -14,7 +14,7 @@ DATABASES = {
         'NAME': 'dbms_db',
         'USER': 'dbms',
         'PASSWORD': 'some_password',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
