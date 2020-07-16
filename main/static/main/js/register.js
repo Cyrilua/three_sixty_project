@@ -88,7 +88,6 @@ $(function () {
                         }
                         checkBtnRegister(required);
                         checkBtnNext(required);
-                        console.log('birthday', errors.birthday)
                     }
                 });
             },
@@ -225,7 +224,6 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-            console.log('username', errors.username)
         }
     });
 }
@@ -258,7 +256,6 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-            console.log('password1', errors.password1)
         }
     });
 }
@@ -287,7 +284,6 @@ function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-            console.log('password2', errors.password2)
         }
     });
 }
@@ -314,7 +310,6 @@ function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-            console.log('email', errors.email)
         }
     });
 }
@@ -342,7 +337,6 @@ function ajaxForName(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-            console.log('name', errors.name)
         }
     });
 }
@@ -370,7 +364,6 @@ function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-            console.log('surname', errors.surname)
         }
     });
 }
@@ -398,7 +391,6 @@ function ajaxForPatronymic(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-            console.log('patronymic', errors.patronymic)
         }
     });
 }
@@ -425,7 +417,6 @@ function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-            console.log('birthday', errors.birthday)
         }
     });
 }
