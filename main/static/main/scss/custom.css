@@ -1,0 +1,54 @@
+.role {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 8px;
+  height: 22px;
+  border: 1px solid #595757;
+  box-sizing: border-box;
+  border-radius: 40px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.role:hover {
+  border-color: #000000;
+  background-color: #000000;
+  color: #FFFFFF;
+}
+.role.role-boss {
+  border-color: #FF1841;
+  color: #FF1841;
+}
+.role.role-boss:hover {
+  border-color: #FF1841;
+  background-color: #FF1841;
+  color: #FFFFFF;
+}
+.role.role-master {
+  border-color: #DB00FF;
+  color: #DB00FF;
+}
+.role.role-master:hover {
+  border-color: #DB00FF;
+  background-color: #DB00FF;
+  color: #FFFFFF;
+}
+.role.role-moderator {
+  border-color: #001AFF;
+  color: #001AFF;
+}
+.role.role-moderator:hover {
+  border-color: #001AFF;
+  background-color: #001AFF;
+  color: #FFFFFF;
+}
+
+._hint ._hint-up {
+  cursor: pointer;
+}
+._hint ._hint-down {
+  display: none;
+}
+
+/*# sourceMappingURL=custom.css.map */
