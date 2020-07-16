@@ -295,12 +295,13 @@ h1, h2, h3, h4, h5, h6 {
 .col-center {
     width: 910px;
     height: auto;
+    margin-right: 15px;
 }
 
 .col-right {
     width: 220px;
     height: auto;
-    padding-right: 15px;
+    /*padding-left: 15px;*/
 }
 
 /*###---!wrapper---###*/

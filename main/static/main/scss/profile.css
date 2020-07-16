@@ -121,10 +121,17 @@
 }
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn:hover {
   background-color: #F0F1F6;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more {
   height: 47px;
   border-bottom: 1px solid #E5E5E5;
+}
+.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more:hover {
+  background-color: #F0F1F6;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn .center-content-information-more-btn-text {
   font-weight: normal;
@@ -211,6 +218,260 @@
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link:not(:last-child)::after {
   content: ",";
   color: black;
+}
+.profile .center-content .center-content-notifications {
+  margin-bottom: 25vh;
+}
+.profile .center-content .center-content-notifications > .substrate {
+  position: sticky;
+  top: 57px;
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  z-index: 2;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort {
+  padding-bottom: 0;
+  padding-top: 0;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category {
+  width: 204px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 5px solid #939393;
+  cursor: pointer;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:not(:last-child) {
+  margin-right: 4px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover > .center-content-notifications-sort-category-title {
+  background: #F0F1F6;
+  color: #595757;
+  border-bottom-color: #595757;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active > .center-content-notifications-sort-category-title, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort > .center-content-notifications-sort-category-title {
+  color: #001AFF;
+  border-bottom-color: #001AFF;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title {
+  position: relative;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #939393;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice {
+  position: absolute;
+  bottom: calc(100% - 3px);
+  left: 100%;
+  background: #FF1841;
+  border: 1px solid #FF1841;
+  box-sizing: border-box;
+  border-radius: 40px;
+  height: 16px;
+  width: auto;
+  padding-right: 6px;
+  padding-left: 6px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  color: #FFFFFF;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice:before {
+  content: "+";
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image {
+  width: 45px;
+  margin-right: 10px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image .notification-image-img,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image .notification-image-img,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image .notification-image-img {
+  width: 45px;
+  height: 45px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information {
+  width: 385px;
+  padding-right: 49px;
+  box-sizing: content-box;
+  border-right: 1px solid #E5E5E5;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-title,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-title,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-title {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000000;
+  margin-bottom: 5px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+  margin-bottom: 5px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more .notification-information-more-link {
+  font-weight: normal;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-about,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-about,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-about {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-date,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-date,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-date {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #C4C4C4;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions {
+  width: 130px;
+  position: relative;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu {
+  width: 20px;
+  height: 8px;
+  margin: 0 0 0 auto;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover {
+  filter: brightness(0.7);
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option {
+  filter: brightness(0.7);
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark {
+  width: 20px;
+  height: 8px;
+  position: relative;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img {
+  filter: brightness(0.85);
+  width: 20px;
+  height: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down {
+  z-index: 2;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items {
+  width: 100px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  box-shadow: -4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  position: absolute;
+  left: calc(100px / -2 + 50% - 10px);
+  top: calc(100% + 9px);
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: calc(50% - 20px);
+  border: 10px solid transparent;
+  border-bottom: 10px solid #cccccc;
+  cursor: pointer;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after {
+  content: "";
+  position: absolute;
+  top: -18px;
+  right: calc(50% - 20px);
+  border: 10px solid transparent;
+  border-bottom: 10px solid #ffffff;
+  cursor: pointer;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item {
+  width: 98px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D5;
+  cursor: pointer;
+  margin: 5px 0;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover {
+  background-color: #F0F1F6;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
+  z-index: 1;
+}
+
+.scroll-top-btn-value {
+  padding-top: calc(100vh - 200px);
 }
 
 /*# sourceMappingURL=profile.css.map */
