@@ -3,29 +3,32 @@ $(function () {
     let moreDetails = $('.center-content-information-more-details');
     let sortable = $('.center-content-notifications-sort');
     let categories = $('.center-content-notifications-categories');
-    let categorySubstrate  = $('.notifications-sort-substrate');
-    let name = $('.center-content-information-name')
+    let categorySubstrate = $('.notifications-sort-substrate');
+    let name = $('.center-content-information-name');
     let aCompany = $('.center-content-information-company');
 
-    // Расположеие ссылки на компанию
-    if (parseFloat(name.width()) + parseFloat(name.css('margin-left')) + parseFloat(name.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
-        aCompany.css({
-            'position': 'absolute',
-            'right': '0',
-            'bottom': 'calc(100% + 14px)'
-        })
-    }
-
-    // Сортировка поднимается над контентом
-    $(window).scroll(function () {
-        let up = categorySubstrate[0].getBoundingClientRect();
-        let down = categories[0].getBoundingClientRect();
-        if (up.bottom >= down.top) {
-            categorySubstrate.addClass('shadow-category');
-        } else {
-            categorySubstrate.removeClass('shadow-category');
+    // Расположеие ссылки на компанию возле имени
+    $(function () {
+        if (parseFloat(name.width()) + parseFloat(name.css('margin-left')) + parseFloat(name.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
+            aCompany.css({
+                'position': 'absolute',
+                'right': '0',
+                'bottom': 'calc(100% + 14px)'
+            })
         }
+        aCompany.removeClass('hide')
     });
+
+    // // Сортировка поднимается над контентом
+    // $(window).scroll(function () {
+    //     let up = categorySubstrate[0].getBoundingClientRect();
+    //     let down = categories[0].getBoundingClientRect();
+    //     if (up.bottom >= down.top) {
+    //         categorySubstrate.addClass('shadow-category');
+    //     } else {
+    //         categorySubstrate.removeClass('shadow-category');
+    //     }
+    // });
 
     // Открыть больше информации
     body.on('click', '.center-content-information-more-btn', function () {
