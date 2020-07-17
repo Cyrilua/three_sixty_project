@@ -3,6 +3,18 @@ $(function () {
     let moreDetails = $('.center-content-information-more-details');
     let sortable = $('.center-content-notifications-sort');
     let categories = $('.center-content-notifications-categories');
+    let categorySubstrate  = $('.notifications-sort-substrate');
+
+    // Сортировка поднимается над контентом
+    $(window).scroll(function () {
+        let up = categorySubstrate[0].getBoundingClientRect();
+        let down = categories[0].getBoundingClientRect();
+        if (up.bottom >= down.top) {
+            categorySubstrate.addClass('shadow');
+        } else {
+            categorySubstrate.removeClass('shadow');
+        }
+    });
 
     // Открыть больше информации
     body.on('click', '.center-content-information-more-btn', function () {

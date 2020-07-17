@@ -272,7 +272,10 @@
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         z-index: 2;
-        box-shadow: 0 3px 5px -2px grey;
+
+        &.shadow {
+          box-shadow: 0 3px 5px -2px grey;
+        }
       }
 
       .center-content-notifications-sort {
