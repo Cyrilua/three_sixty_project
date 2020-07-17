@@ -111,9 +111,7 @@
   display: block;
 }
 
-._hint ._hint-up,
 ._hint ._hint-up-wait,
-._hint-wait ._hint-up,
 ._hint-wait ._hint-up-wait {
   cursor: pointer;
 }
