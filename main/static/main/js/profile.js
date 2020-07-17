@@ -21,9 +21,9 @@ $(function () {
         let up = categorySubstrate[0].getBoundingClientRect();
         let down = categories[0].getBoundingClientRect();
         if (up.bottom >= down.top) {
-            categorySubstrate.addClass('shadow');
+            categorySubstrate.addClass('shadow-category');
         } else {
-            categorySubstrate.removeClass('shadow');
+            categorySubstrate.removeClass('shadow-category');
         }
     });
 

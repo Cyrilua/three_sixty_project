@@ -233,8 +233,10 @@
   border-bottom-right-radius: 5px;
   z-index: 2;
 }
-.profile .center-content .center-content-notifications > .substrate.shadow {
-  box-shadow: 0 3px 5px -2px grey;
+.profile .center-content .center-content-notifications > .substrate.shadow-category {
+  -webkit-box-shadow: 0 15px 10px -12px #8a8a8a;
+  -moz-box-shadow: 0 15px 10px -12px #8a8a8a;
+  box-shadow: 0 15px 10px -12px #8a8a8a;
 }
 .profile .center-content .center-content-notifications .center-content-notifications-sort {
   padding-bottom: 0;

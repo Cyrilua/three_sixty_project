@@ -279,8 +279,10 @@
         border-bottom-right-radius: 5px;
         z-index: 2;
 
-        &.shadow {
-          box-shadow: 0 3px 5px -2px grey;
+        &.shadow-category {
+          -webkit-box-shadow: 0 15px 10px -12px rgba(138, 138, 138, 1);
+          -moz-box-shadow: 0 15px 10px -12px rgba(138, 138, 138, 1);
+          box-shadow: 0 15px 10px -12px rgba(138, 138, 138, 1);
         }
       }
 
