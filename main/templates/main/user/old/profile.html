@@ -5,7 +5,7 @@
 {% load widget_tweaks %}
 
 {% block sidebar-nav %}
-    {% include 'main/includes/menu.html' with menu_profile="active" only %}
+    {#    {% include 'main/includes/menu.html' with menu_profile="active" only %}#}
 {% endblock %}
 
 {% block content-user %}
@@ -513,7 +513,8 @@
                             <div class="notification-information">
                                 <div class="notification-information-title">Название опроса</div>
                                 <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван Иванович</a>
+                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
+                                    Иванович</a>
                                 </div>
                                 <div class="notification-information-about">35 ответов</div>
                                 <div class="notification-information-date">9 июля 2020</div>
@@ -548,9 +549,12 @@
                                      class="notification-image-img">
                             </div>
                             <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с длиннным название, который уже посмотрели</div>
+                                <div class="notification-information-title">Название опроса с длиннным название, который
+                                    уже посмотрели
+                                </div>
                                 <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван Иванович</a>
+                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
+                                    Иванович</a>
                                 </div>
                                 <div class="notification-information-about">65 ответов</div>
                                 <div class="notification-information-date">9 июля 2020</div>
@@ -664,7 +668,18 @@
                             </div>
                         </div>
 
+                    </div>
 
+                    <div class="center-content-notifications-empty rounded-block hide">
+                        <div class="center-content-notifications-empty-substrate">
+                            <div class="center-content-notifications-empty-block">
+                                <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
+                                     class="center-content-notifications-empty-block-img">
+                                <div class="center-content-notifications-empty-block-text">
+                                    Сейчас уведомлений&nbsp;нет
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -674,7 +689,7 @@
 {% endblock %}
 
 {% block sidebar-nav-right %}
-    {% include 'main/includes/menu_profile_right.html'%}
+    {% include 'main/includes/menu_profile_right.html' %}
 {% endblock %}
 
 {% block scripts %}

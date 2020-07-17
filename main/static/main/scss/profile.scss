@@ -267,11 +267,12 @@
 
       & > .substrate {
         position: sticky;
-        top: 57px;
+        top: 56px;
         background-color: white;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         z-index: 2;
+        box-shadow: 0 3px 5px -2px grey;
       }
 
       .center-content-notifications-sort {
@@ -513,11 +514,44 @@
             }
           }
         }
+
+        .center-content-notifications-empty {
+
+          .center-content-notifications-empty-substrate {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .center-content-notifications-empty-block {
+              width: 188px;
+              height: 140px;
+              text-align: center;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
+
+
+              .center-content-notifications-empty-block-img {
+                width: 82px;
+                height: 82px;
+              }
+
+              .center-content-notifications-empty-block-text {
+                font-style: italic;
+                font-weight: normal;
+                font-size: 18px;
+                line-height: 21px;
+                color: #C4C4C4;
+              }
+            }
+          }
+        }
       }
     }
   }
 }
 
 .scroll-top-btn-value {
-    padding-top: calc(100vh - 200px);
+  padding-top: calc(100vh - 200px);
 }

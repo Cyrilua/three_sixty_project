@@ -224,11 +224,12 @@
 }
 .profile .center-content .center-content-notifications > .substrate {
   position: sticky;
-  top: 57px;
+  top: 56px;
   background-color: white;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   z-index: 2;
+  box-shadow: 0 3px 5px -2px grey;
 }
 .profile .center-content .center-content-notifications .center-content-notifications-sort {
   padding-bottom: 0;
@@ -468,6 +469,31 @@
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
   z-index: 1;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block {
+  width: 188px;
+  height: 140px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block .center-content-notifications-empty-block-img {
+  width: 82px;
+  height: 82px;
+}
+.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block .center-content-notifications-empty-block-text {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: #C4C4C4;
 }
 
 .scroll-top-btn-value {
