@@ -8,6 +8,11 @@ $(function () {
     body.on('click', '.center-content-information-more-btn', function () {
         moreDetails.toggle();
         $(this).toggleClass('active-more');
+        if ($(this).hasClass('active-more')) {
+            $(this).children('.center-content-information-more-btn-text').text('Скрыть подробную информацию');
+        } else {
+            $(this).children('.center-content-information-more-btn-text').text('Показать подробную информацию');
+        }
     });
 
     // Смена категории с уведомлениями
