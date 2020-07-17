@@ -38,6 +38,7 @@
       margin-bottom: 10px;
 
       .center-content-information-name {
+        display: inline-block;
         font-weight: bold;
         font-size: 36px;
         line-height: 42px;
@@ -47,10 +48,12 @@
       }
 
       .center-content-information-roles_n_company {
+        position: relative;
+        min-height: 9px;
         height: auto;
-        padding-bottom: 13px;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #E5E5E5;
+        //padding-bottom: 13px;
+        //margin-bottom: 15px;
+        //border-bottom: 1px solid #E5E5E5;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -80,6 +83,9 @@
         display: flex;
         margin-left: 30px;
         margin-right: 30px;
+        padding-top: 15px;
+        border-top: 1px solid #E5E5E5;
+        margin-top: 13px;
 
         .center-content-information-positions {
           width: 50%;
