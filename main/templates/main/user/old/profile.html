@@ -5,687 +5,1116 @@
 {% load widget_tweaks %}
 
 {% block sidebar-nav %}
-    {#    {% include 'main/includes/menu.html' with menu_profile="active" only %}#}
+    {% include 'main/includes/menu.html' with menu_profile="active" only %}
 {% endblock %}
 
 {% block content-user %}
-    <div class="profile">
-        <div class="left-content rounded-block">
-            <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
-            <button class="left-content-new_poll button-red">Провести опрос</button>
-            <button class="left-content-new_team button-white">Создать команду</button>
-        </div>
-        <div class="center-content">
-            <div class="center-content-information rounded-block">
-                <h1 class="center-content-information-name">Александр Александров</h1>
-                <div class="center-content-information-roles_n_company">
-                    <div class="center-content-information-role _hint">
-                        <div class="role role-boss _hint-up">
-                            Босс
-                        </div>
-                        <div class="_hint-down">
-                            <div class="_hint-down-block">
-                                <div class="role-information">
-                                    <strong>Босс</strong> - это суперюзер с полным спектром возможностей.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="center-content-information-role _hint">
-                        <div class="role role-master _hint-up">
-                            Мастер опросов
-                        </div>
-                        <div class="_hint-down">
-                            <div class="_hint-down-block">
-                                <div class="role-information">
-                                    <strong>Мастер опросов</strong> может проводить опросы по компании и по любым
-                                    командам (даже по тем, в которых не состоит), а также выбирать о ком будет опрос.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="center-content-information-role _hint">
-                        <div class="role role-moderator _hint-up">
-                            Модератор
-                        </div>
-                        <div class="_hint-down">
-                            <div class="_hint-down-block">
-                                <div class="role-information">
-                                    <strong>Модератор</strong> может создавать отделы и должности а также менять отделы,
-                                    дожности и роли участников.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="center-content-information-company">ООО Крутая компания</a>
-                </div>
-                <div class="center-content-information-platforms_n_positions">
-                    <div class="center-content-information-positions">
-                        <h2 class="center-content-information-positions-title">Должности</h2>
-                        {#                        <div class="center-content-information-position">Аналитик</div>#}
-                        {#                        <div class="center-content-information-position">Тимлид</div>#}
-                        <div class="center-content-information-positions-data">
-                            <div class="center-content-information-position _hint">
-                                <div class="role _hint-up">
-                                    Аналитик
-                                </div>
-                                <div class="_hint-down">
-                                    <div class="_hint-down-block">
-                                        <div class="position-information role-information">
-                                            Должность
+
+    {% if profile %}
+        <div class="profile">
+            <div class="left-content rounded-block">
+                {% if photo %}
+                    <img src="{{ photo.url }}" alt="" class="left-content-photo">
+                {% else %}
+                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
+                {% endif %}
+                <button class="left-content-new_poll button-red">Провести опрос</button>
+                <button class="left-content-new_team button-white">Создать команду</button>
+            </div>
+            <div class="center-content">
+                <div class="center-content-information rounded-block">
+                    <h1 class="center-content-information-name">{{ profile.name }} {{ profile.surname }}</h1>
+                    <div class="center-content-information-roles_n_company">
+                        {% if roles %}
+                            {% for role in roles %}
+                                <div class="center-content-information-role _hint unselectable">
+                                    <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                        {% if role == 'boss' %}
+                                            Босс
+                                        {% elif role == 'master' %}
+                                            Мастер опросов
+                                        {% elif role == 'moderator' %}
+                                            Модератор
+                                        {% endif %}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="role-information">
+                                                {% if role == 'boss' %}
+                                                    <strong>Босс</strong> - это суперюзер с полным спектром
+                                                    возможностей.
+                                                {% elif role == 'master' %}
+                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и
+                                                    по любым командам (даже по тем, в которых не состоит), а также
+                                                    выбирать о ком будет опрос.
+                                                {% elif role == 'moderator' %}
+                                                    <strong>Модератор</strong> может создавать отделы и должности а
+                                                    также менять отделы, дожности и роли участников.
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="center-content-information-position _hint">
-                                <div class="role _hint-up">
-                                    Тимлид
-                                </div>
-                                <div class="_hint-down">
-                                    <div class="_hint-down-block">
-                                        <div class="position-information role-information">
-                                            Должность
+                            {% endfor %}
+                        {% endif %}
+                        <a href="{{ profile.company.url }}"
+                           class="center-content-information-company hide">{{ profile.company.name }}</a>
+                    </div>
+                    <div class="center-content-information-platforms_n_positions">
+                        <div class="center-content-information-positions">
+                            <h2 class="center-content-information-positions-title">Должности</h2>
+                            <div class="center-content-information-positions-data">
+                                {% if profile.position %}
+                                    <div class="center-content-information-position _hint">
+                                        <div class="role _hint-up">
+                                            {{ profile.position }}
+                                        </div>
+                                        <div class="_hint-down">
+                                            <div class="_hint-down-block">
+                                                <div class="position-information role-information">
+                                                    Должность
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <div class="center-content-information-position-empty">Нет должностей</div>
+                                {% endif %}
                             </div>
                         </div>
 
-                    </div>
-                    <div class="center-content-information-platforms">
-                        <h2 class="center-content-information-platforms-title">Отделы</h2>
-                        {#                        <div class="center-content-information-platform">Юрики</div>#}
-                        {#                        <div class="center-content-information-platform">Физики</div>#}
-                        <div class="center-content-information-platforms-data">
-                            <div class="center-content-information-platform _hint">
-                                <div class="role _hint-up">
-                                    Юрики
-                                </div>
-                                <div class="_hint-down">
-                                    <div class="_hint-down-block">
-                                        <div class="platform-information role-information">
-                                            Отдел
+                        <div class="center-content-information-platforms">
+                            <h2 class="center-content-information-platforms-title">Отделы</h2>
+                            <div class="center-content-information-platforms-data">
+                                {% if profile.platform %}
+                                    <div class="center-content-information-platform _hint">
+                                        <div class="role _hint-up">
+                                            {{ profile.platform }}
+                                        </div>
+                                        <div class="_hint-down">
+                                            <div class="_hint-down-block">
+                                                <div class="platform-information role-information">
+                                                    Отдел
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                {% else %}
+                                    <div class="center-content-information-platform-empty">Нет должностей</div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="center-content-information-more">
+                        <div class="center-content-information-more-btn unselectable">
+                            <span class="center-content-information-more-btn-text">Показать подробную информацию</span>
+                        </div>
+                        <div class="center-content-information-more-details">
+                            <div class="center-content-information-more-details-main">
+                                <div class="center-content-information-more-details-main-fullname">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">ФИО</h2>
+                                    <span class="center-content-information-more-details-main-fullname-text">{{ profile.name }} {{ profile.surname }} {{ profile.patronymic }}</span>
+                                </div>
+                                <div class="center-content-information-more-details-main-birthday">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">Дата
+                                        рождения</h2>
+                                    <span class="center-content-information-more-details-main-birthday-text">{{ profile.birthdate }}</span>
                                 </div>
                             </div>
-                            <div class="center-content-information-platform _hint">
-                                <div class="role _hint-up">
-                                    Физики
-                                </div>
-                                <div class="_hint-down">
-                                    <div class="_hint-down-block">
-                                        <div class="platform-information role-information">
-                                            Отдел
-                                        </div>
-                                    </div>
+                            <div class="center-content-information-more-details-email">
+                                <h2 class="center-content-information-more-details-main-email-title">Эл. почта</h2>
+                                <a href="mailto:beast.master64@icloud.com"
+                                   class="center-content-information-more-details-main-email-text">{{ profile.email }}</a>
+                            </div>
+                            <div class="center-content-information-more-details-teams">
+                                <h2 class="center-content-information-more-details-main-teams-title">Команды</h2>
+                                <div class="center-content-information-more-details-main-teams-block
+                                    {% if not profile.teams %}teams-empty{% endif %}">
+                                    {% if profile.teams %}
+                                        {% for team in profile.teams %}
+                                            <a href="{{ team.url }}"
+                                               class="center-content-information-more-details-main-team-link">{{ team.name }}</a>
+                                        {% endfor %}
+                                    {% else %}
+                                        Команд нет
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-                <div class="center-content-information-more">
-                    <div class="center-content-information-more-btn unselectable">
-                        <span class="center-content-information-more-btn-text">Показать подробную информацию</span>
-                    </div>
-                    <div class="center-content-information-more-details">
-                        <div class="center-content-information-more-details-main">
-                            <div class="center-content-information-more-details-main-fullname">
-                                <h2 class="center-content-information-more-details-main-birthday-title">ФИО</h2>
-                                <span class="center-content-information-more-details-main-fullname-text">Иванов Иван Иванович</span>
+                <div class="center-content-notifications">
+                    <div class="notifications-sort-substrate substrate">
+                        <div class="center-content-notifications-sort rounded-block unselectable">
+                            <div class="center-content-notifications-sort-category active-sort"
+                                 data-category=".center-content-notifications-polls">
+                                <div class="center-content-notifications-sort-category-title">Для прохождения
+                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                </div>
                             </div>
-                            <div class="center-content-information-more-details-main-birthday">
-                                <h2 class="center-content-information-more-details-main-birthday-title">Дата
-                                    рождения</h2>
-                                <span class="center-content-information-more-details-main-birthday-text">12 января 1982 г.</span>
+                            <div class="center-content-notifications-sort-category"
+                                 data-category=".center-content-notifications-my_polls">
+                                <div class="center-content-notifications-sort-category-title">Мои опросы
+                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                </div>
+
                             </div>
-                        </div>
-                        <div class="center-content-information-more-details-email">
-                            <h2 class="center-content-information-more-details-main-email-title">Эл. почта</h2>
-                            <a href="mailto:beast.master64@icloud.com"
-                               class="center-content-information-more-details-main-email-text">beast.master64@icloud.com</a>
-                        </div>
-                        <div class="center-content-information-more-details-teams">
-                            <h2 class="center-content-information-more-details-main-teams-title">Команды</h2>
-                            <div class="center-content-information-more-details-main-teams-block">
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда аналитиков</a>
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда тимлидов</a>
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда</a>
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда аналитиков</a>
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда</a>
-                                <a href="#" class="center-content-information-more-details-main-team-link">Крутая
-                                    команда тимлидов</a>
+                            <div class="center-content-notifications-sort-category"
+                                 data-category=".center-content-notifications-invites">
+                                <div class="center-content-notifications-sort-category-title">Приглашения
+                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="center-content-notifications-categories">
+                        <div class="center-content-notifications-polls hide">
+                            {% if notifications.polls %}
+                                {% for notif in notifications.polls %}
+                                    <div class="center-content-notification rounded-block">
+                                        <div class="notification-image">
+                                            <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                                 class="notification-image-img">
+                                        </div>
+                                        <div class="notification-information">
+                                            <div class="notification-information-title">{{ notif.title }}</div>
+                                            <div class="notification-information-more">
+                                                О ком: <a href="{{ notif.more.url }}"
+                                                          class="notification-information-more-link">{{ notif.more.name }}</a>
+                                            </div>
+                                            <div class="notification-information-about">
+                                                {{ notif.about }}
+                                            </div>
+                                            <div class="notification-information-date">{{ notif.date }}</div>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <div class="notification-actions-menu _hint-wait unselectable">
+                                                <div class="notification-actions-menu-up _hint-up-wait">
+                                                    <div class="notification-actions-menu-mark">
+                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                             class="notification-actions-menu-mark-img">
+                                                    </div>
+                                                </div>
+                                                <div class="notification-actions-menu-down _hint-down-wait">
+                                                    <div class="notification-actions-menu-items _hint-down-block">
+                                                        <div class="notification-actions-menu-item"
+                                                             id="notification-actions-menu-item">
+                                                            Скрыть
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notification-actions-move">
+                                                <button class="notification-actions-move-btn button-red"
+                                                        {% if notif.complited %}disabled{% endif %}
+                                                        data-url="{{ notif.url }}">Пройти
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="center-content-notifications-my_polls hide">
+                            {% if notifications.my_polls %}
+                                {% for notif in notifications.polls %}
+                                    <div class="center-content-notification rounded-block">
+                                        <div class="notification-image">
+                                            <img src="{% static 'main/images/pollDone.svg' %}" alt=""
+                                                 class="notification-image-img">
+                                        </div>
+                                        <div class="notification-information">
+                                            <div class="notification-information-title">{{ notif.title }}</div>
+                                            <div class="notification-information-more">
+                                                О ком: <a href="{{ notif.more.url }}"
+                                                          class="notification-information-more-link">{{ notif.more.name }}</a>
+                                            </div>
+                                            <div class="notification-information-about">
+                                                {{ notif.about }}
+                                            </div>
+                                            <div class="notification-information-date">{{ notif.date }}</div>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <div class="notification-actions-menu _hint-wait unselectable">
+                                                <div class="notification-actions-menu-up _hint-up-wait">
+                                                    <div class="notification-actions-menu-mark">
+                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                             class="notification-actions-menu-mark-img">
+                                                    </div>
+                                                </div>
+                                                <div class="notification-actions-menu-down _hint-down-wait">
+                                                    <div class="notification-actions-menu-items _hint-down-block">
+                                                        <div class="notification-actions-menu-item"
+                                                             id="notification-actions-menu-item">
+                                                            Скрыть
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notification-actions-move">
+                                                <button class="notification-actions-move-btn button-{% if not notif.complited %}red{% else %}white{% endif %}"
+                                                        data-url="{{ notif.url }}">Смотреть
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="center-content-notifications-invites hide">
+                            {% if notifications.my_polls %}
+                                {% for notif in notifications.polls %}
+                                    <div class="center-content-notification rounded-block">
+                                        <div class="notification-image">
+                                            <img src="{% static 'main/images/pollDone.svg' %}" alt=""
+                                                 class="notification-image-img">
+                                        </div>
+                                        <div class="notification-information">
+                                            <div class="notification-information-title">
+                                                <a href="{{ notif.title.url }}"
+                                                   class="notification-information-title-link">
+                                                    {{ notif.title.name }}
+                                                </a>
+                                            </div>
+                                            <div class="notification-information-more">
+                                                О ком: <a href="{{ notif.more.url }}"
+                                                          class="notification-information-more-link">{{ notif.more.name }}</a>
+                                            </div>
+                                            <div class="notification-information-about">
+                                                {{ notif.about }}
+                                            </div>
+                                            <div class="notification-information-date">{{ notif.date }}</div>
+                                        </div>
+                                        <div class="notification-actions">
+                                            <div class="notification-actions-menu _hint-wait unselectable">
+                                                <div class="notification-actions-menu-up _hint-up-wait">
+                                                    <div class="notification-actions-menu-mark">
+                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                             class="notification-actions-menu-mark-img">
+                                                    </div>
+                                                </div>
+                                                <div class="notification-actions-menu-down _hint-down-wait">
+                                                    <div class="notification-actions-menu-items _hint-down-block">
+                                                        <div class="notification-actions-menu-item"
+                                                             id="notification-actions-menu-item">
+                                                            Скрыть
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notification-actions-move">
+                                                <button class="notification-actions-move-btn button-red"
+                                                        {% if notif.complited %}disabled{% endif %}
+                                                        data-url="{{ notif.url }}">Вступить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                            {% endif %}
+
+                        </div>
+
+                        <div class="center-content-notifications-empty rounded-block hide">
+                            <div class="center-content-notifications-empty-substrate">
+                                <div class="center-content-notifications-empty-block">
+                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
+                                         class="center-content-notifications-empty-block-img">
+                                    <div class="center-content-notifications-empty-block-text">
+                                        Сейчас уведомлений&nbsp;нет
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <div class="center-content-notifications">
-                <div class="notifications-sort-substrate substrate">
-                    <div class="center-content-notifications-sort rounded-block unselectable">
-                        <div class="center-content-notifications-sort-category active-sort"
-                             data-category=".center-content-notifications-polls">
-                            <div class="center-content-notifications-sort-category-title">Для прохождения
-                                <div class="center-content-notifications-sort-category-notice hide"></div>
+        </div>
+    {% else %}
+        <div class="profile">
+            <div class="left-content rounded-block">
+                <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
+                <button class="left-content-new_poll button-red">Провести опрос</button>
+                <button class="left-content-new_team button-white">Создать команду</button>
+            </div>
+            <div class="center-content">
+                <div class="center-content-information rounded-block">
+                    <h1 class="center-content-information-name">Александр Александров</h1>
+                    <div class="center-content-information-roles_n_company">
+                        <div class="center-content-information-role _hint unselectable">
+                            <div class="role role-boss _hint-up">
+                                Босс
+                            </div>
+                            <div class="_hint-down">
+                                <div class="_hint-down-block">
+                                    <div class="role-information">
+                                        <strong>Босс</strong> - это суперюзер с полным спектром возможностей.
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="center-content-notifications-sort-category"
-                             data-category=".center-content-notifications-my_polls">
-                            <div class="center-content-notifications-sort-category-title">Мои опросы
-                                <div class="center-content-notifications-sort-category-notice show">1</div>
+                        <div class="center-content-information-role _hint unselectable">
+                            <div class="role role-master _hint-up">
+                                Мастер опросов
+                            </div>
+                            <div class="_hint-down">
+                                <div class="_hint-down-block">
+                                    <div class="role-information">
+                                        <strong>Мастер опросов</strong> может проводить опросы по компании и по
+                                        любым
+                                        командам (даже по тем, в которых не состоит), а также выбирать о ком
+                                        будет
+                                        опрос.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="center-content-information-role _hint unselectable">
+                            <div class="role role-moderator _hint-up">
+                                Модератор
+                            </div>
+                            <div class="_hint-down">
+                                <div class="_hint-down-block">
+                                    <div class="role-information">
+                                        <strong>Модератор</strong> может создавать отделы и должности а также
+                                        менять
+                                        отделы,
+                                        дожности и роли участников.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="center-content-information-company hide">ООО Крутая компания</a>
+                    </div>
+                    <div class="center-content-information-platforms_n_positions">
+                        <div class="center-content-information-positions">
+                            <h2 class="center-content-information-positions-title">Должности</h2>
+                            <div class="center-content-information-position">Аналитик</div>
+                            <div class="center-content-information-position">Тимлид</div>
+                            <div class="center-content-information-positions-data">
+                                <div class="center-content-information-position _hint">
+                                    <div class="role _hint-up">
+                                        Аналитик
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="position-information role-information">
+                                                Должность
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="center-content-information-position _hint">
+                                    <div class="role _hint-up">
+                                        Тимлид
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="position-information role-information">
+                                                Должность
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
-                        <div class="center-content-notifications-sort-category"
-                             data-category=".center-content-notifications-invites">
-                            <div class="center-content-notifications-sort-category-title">Приглашения
-                                <div class="center-content-notifications-sort-category-notice hide"></div>
+                        <div class="center-content-information-platforms">
+                            <h2 class="center-content-information-platforms-title">Отделы</h2>
+                            <div class="center-content-information-platform">Юрики</div>
+                            <div class="center-content-information-platform">Физики</div>
+                            <div class="center-content-information-platforms-data">
+                                <div class="center-content-information-platform _hint">
+                                    <div class="role _hint-up">
+                                        Юрики
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="platform-information role-information">
+                                                Отдел
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="center-content-information-platform _hint">
+                                    <div class="role _hint-up">
+                                        Физики
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="platform-information role-information">
+                                                Отдел
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
-
-
-                <div class="center-content-notifications-categories">
-                    <div class="center-content-notifications-polls show">
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса</div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#"
-                                              class="notification-information-more-link">Иванов Иван Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавылда жаьыждаьывла ьждывалдывьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red">Пройти</button>
-                                </div>
-                            </div>
+                    <div class="center-content-information-more">
+                        <div class="center-content-information-more-btn unselectable">
+                            <span class="center-content-information-more-btn-text">Показать подробную информацию</span>
                         </div>
-
-
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннн ым
-                                    названием
+                        <div class="center-content-information-more-details">
+                            <div class="center-content-information-more-details-main">
+                                <div class="center-content-information-more-details-main-fullname">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">
+                                        ФИО</h2>
+                                    <span class="center-content-information-more-details-main-fullname-text">Иванов Иван Иванович</span>
                                 </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавылдажаьы ждаьывлаьждывалды вьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
+                                <div class="center-content-information-more-details-main-birthday">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">Дата
+                                        рождения</h2>
+                                    <span class="center-content-information-more-details-main-birthday-text">12 января 1982 г.</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
+                            <div class="center-content-information-more-details-email">
+                                <h2 class="center-content-information-more-details-main-email-title">Эл.
+                                    почта</h2>
+                                <a href="mailto:beast.master64@icloud.com"
+                                   class="center-content-information-more-details-main-email-text">beast.master64@icloud.com</a>
                             </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#"
-                                              class="notification-information-more-link">Иванов Иван Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавы лдажаьыждаьывлаьжды валдывьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросав ылдажаьыждаьывлаьждывалдыв ьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавылдажаьыж даьывлаьж дывалдывьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавылд ажаьыжда ьывлаьжд ывалды вьлаывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавы лдажаьыжда ьывлаьждывалд ывьла ывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/newPoll.svg' %}" alt="" class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с очень длиннным названием
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание опроса
-                                    опросавылдажаьыжда ьывла ьждывалдывьла ывлра лывла jsdlkf isdf hdsilf рывл fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Пройти</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="center-content-notifications-my_polls hide">
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/pollDone.svg' %}" alt=""
-                                     class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса</div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">35 ответов</div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red">Смотреть</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/pollDone.svg' %}" alt=""
-                                     class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Название опроса с длиннным название, который
-                                    уже посмотрели
-                                </div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">65 ответов</div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-white">Смотреть</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="center-content-notifications-invites hide">
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""
-                                     class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Крутая команда</div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание
-                                    команды опро савылдажаьыжд аьывлаьждыв алдывьлаывлра лывла jsdlkf isdf hdsilf рывл
-                                    fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red">Вступить</button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="center-content-notification rounded-block">
-                            <div class="notification-image">
-                                <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""
-                                     class="notification-image-img">
-                            </div>
-                            <div class="notification-information">
-                                <div class="notification-information-title">Крутая команда, в которую уже вступил</div>
-                                <div class="notification-information-more">
-                                    О ком: <a href="#" class="notification-information-more-link">Иванов Иван
-                                    Иванович</a>
-                                </div>
-                                <div class="notification-information-about">Здесь можно вставить краткое описание
-                                    команды опросав ылдажа ьыждаьыв лаьждывалдывьлаывлра лывла jsdlkf isdf hdsilf рывл
-                                    fusdl f
-                                </div>
-                                <div class="notification-information-date">9 июля 2020</div>
-                            </div>
-                            <div class="notification-actions">
-                                <div class="notification-actions-menu _hint-wait">
-                                    <div class="notification-actions-menu-up _hint-up-wait">
-                                        <div class="notification-actions-menu-mark">
-                                            <img src="{% static 'main/images/markDown.svg' %}" alt=""
-                                                 class="notification-actions-menu-mark-img">
-                                        </div>
-                                    </div>
-                                    <div class="notification-actions-menu-down _hint-down-wait">
-                                        <div class="notification-actions-menu-items _hint-down-block">
-                                            <div class="notification-actions-menu-item"
-                                                 id="notification-actions-menu-item">
-                                                Скрыть
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="notification-actions-move">
-                                    <button class="notification-actions-move-btn button-red" disabled>Вступить</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="center-content-notifications-empty rounded-block hide">
-                        <div class="center-content-notifications-empty-substrate">
-                            <div class="center-content-notifications-empty-block">
-                                <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
-                                     class="center-content-notifications-empty-block-img">
-                                <div class="center-content-notifications-empty-block-text">
-                                    Сейчас уведомлений&nbsp;нет
+                            <div class="center-content-information-more-details-teams">
+                                <h2 class="center-content-information-more-details-main-teams-title">
+                                    Команды</h2>
+                                <div class="center-content-information-more-details-main-teams-block">
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда аналитиков</a>
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда тимлидов</a>
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда</a>
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда аналитиков</a>
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда</a>
+                                    <a href="#" class="center-content-information-more-details-main-team-link">Крутая
+                                        команда тимлидов</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="center-content-notifications">
+                    <div class="notifications-sort-substrate substrate">
+                        <div class="center-content-notifications-sort rounded-block unselectable">
+                            <div class="center-content-notifications-sort-category active-sort"
+                                 data-category=".center-content-notifications-polls">
+                                <div class="center-content-notifications-sort-category-title">Для прохождения
+                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                </div>
+                            </div>
+                            <div class="center-content-notifications-sort-category"
+                                 data-category=".center-content-notifications-my_polls">
+                                <div class="center-content-notifications-sort-category-title">Мои опросы
+                                    <div class="center-content-notifications-sort-category-notice show">1</div>
+                                </div>
 
+                            </div>
+                            <div class="center-content-notifications-sort-category"
+                                 data-category=".center-content-notifications-invites">
+                                <div class="center-content-notifications-sort-category-title">Приглашения
+                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="center-content-notifications-categories">
+                        <div class="center-content-notifications-polls show">
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса</div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#"
+                                                  class="notification-information-more-link">Иванов Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавылда жаьыждаьывла ьждывалдывьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait unselectable">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red">Пройти</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннн
+                                        ым
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавылдажаьы ждаьывлаьждывалды вьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#"
+                                                  class="notification-information-more-link">Иванов Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавы лдажаьыждаьывлаьжды валдывьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросав ылдажаьыждаьывлаьждывалдыв ьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавылдажаьыж даьывлаьж дывалдывьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавылд ажаьыжда ьывлаьжд ывалды вьлаывлра лывла jsdlkf isdf hdsilf
+                                        рывл
+                                        fusdl f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавы лдажаьыжда ьывлаьждывалд ывьла ывлра лывла jsdlkf isdf hdsilf
+                                        рывл
+                                        fusdl f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/newPoll.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с очень длиннным
+                                        названием
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        опроса
+                                        опросавылдажаьыжда ьывла ьждывалдывьла ывлра лывла jsdlkf isdf hdsilf
+                                        рывл fusdl
+                                        f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>Пройти
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="center-content-notifications-my_polls hide">
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/pollDone.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса</div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">35 ответов</div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red">Смотреть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/pollDone.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">Название опроса с длиннным
+                                        название,
+                                        который
+                                        уже посмотрели
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">65 ответов</div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-white">Смотреть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="center-content-notifications-invites hide">
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">
+                                        <a href="#" class="notification-information-title-link">Крутая команда</a>
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        команды опро савылдажаьыжд аьывлаьждыв алдывьлаывлра лывла jsdlkf isdf
+                                        hdsilf
+                                        рывл
+                                        fusdl f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red">Вступить
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="center-content-notification rounded-block">
+                                <div class="notification-image">
+                                    <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""
+                                         class="notification-image-img">
+                                </div>
+                                <div class="notification-information">
+                                    <div class="notification-information-title">
+                                        <a href="#" class="notification-information-title-link">Крутая команда, в
+                                            которую уже вступил
+                                        </a>
+                                    </div>
+                                    <div class="notification-information-more">
+                                        О ком: <a href="#" class="notification-information-more-link">Иванов
+                                        Иван
+                                        Иванович</a>
+                                    </div>
+                                    <div class="notification-information-about">Здесь можно вставить краткое
+                                        описание
+                                        команды опросав ылдажа ьыждаьыв лаьждывалдывьлаывлра лывла jsdlkf isdf
+                                        hdsilf
+                                        рывл
+                                        fusdl f
+                                    </div>
+                                    <div class="notification-information-date">9 июля 2020</div>
+                                </div>
+                                <div class="notification-actions">
+                                    <div class="notification-actions-menu _hint-wait">
+                                        <div class="notification-actions-menu-up _hint-up-wait">
+                                            <div class="notification-actions-menu-mark">
+                                                <img src="{% static 'main/images/markDown.svg' %}" alt=""
+                                                     class="notification-actions-menu-mark-img">
+                                            </div>
+                                        </div>
+                                        <div class="notification-actions-menu-down _hint-down-wait">
+                                            <div class="notification-actions-menu-items _hint-down-block">
+                                                <div class="notification-actions-menu-item"
+                                                     id="notification-actions-menu-item">
+                                                    Скрыть
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="notification-actions-move">
+                                        <button class="notification-actions-move-btn button-red" disabled>
+                                            Вступить
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="center-content-notifications-empty rounded-block hide">
+                            <div class="center-content-notifications-empty-substrate">
+                                <div class="center-content-notifications-empty-block">
+                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
+                                         class="center-content-notifications-empty-block-img">
+                                    <div class="center-content-notifications-empty-block-text">
+                                        Сейчас уведомлений&nbsp;нет
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+
+
 {% endblock %}
 
 {% block sidebar-nav-right %}
