@@ -101,11 +101,19 @@
 
           .center-content-information-positions-data {
             display: flex;
-            flex-direction: row;
+            flex-wrap: wrap;
             padding-bottom: 13px;
 
             .center-content-information-position {
               margin-right: 5px;
+              margin-bottom: 4px;
+            }
+
+            .center-content-information-position-empty {
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 16px;
+              color: #C4C4C4;
             }
           }
         }
@@ -124,11 +132,19 @@
 
           .center-content-information-platforms-data {
             display: flex;
-            flex-direction: row;
+            flex-wrap: wrap;
             padding-bottom: 13px;
 
             .center-content-information-platform {
               margin-right: 5px;
+              margin-bottom: 4px;
+            }
+
+            .center-content-information-platform-empty {
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 16px;
+              color: #C4C4C4;
             }
           }
         }
@@ -253,6 +269,13 @@
               font-weight: normal;
               font-size: 18px;
               line-height: 21px;
+
+              &.teams-empty {
+                font-weight: normal;
+                font-size: 18px;
+                line-height: 21px;
+                color: #C4C4C4;
+              }
 
               .center-content-information-more-details-main-team-link {
                 display: inline-block;

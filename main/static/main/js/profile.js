@@ -6,6 +6,7 @@ $(function () {
     let categorySubstrate = $('.notifications-sort-substrate');
     let name = $('.center-content-information-name');
     let aCompany = $('.center-content-information-company');
+    let categoryEmpty = categories.children('.center-content-notifications-empty');
 
     // Расположеие ссылки на компанию возле имени
     $(function () {
@@ -17,6 +18,20 @@ $(function () {
             })
         }
         aCompany.removeClass('hide')
+    });
+
+    // Проверка на отсутствие уведомлений в первой категории сортироаки
+    $(function () {
+        let polls = $('.center-content-notifications-polls');
+        if (polls.children().length > 0) {
+            polls
+                .removeClass('hide')
+                .addClass('show');
+        } else {
+            categoryEmpty
+                .removeClass('hide')
+                .addClass('show');
+        }
     });
 
     // // Сортировка поднимается над контентом
@@ -55,7 +70,7 @@ $(function () {
                     .removeClass('hide')
                     .addClass('show');
             } else {
-                categories.children('.center-content-notifications-empty')
+                categoryEmpty
                     .removeClass('hide')
                     .addClass('show');
             }

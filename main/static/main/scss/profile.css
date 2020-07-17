@@ -88,11 +88,18 @@
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   padding-bottom: 13px;
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position {
   margin-right: 5px;
+  margin-bottom: 4px;
+}
+.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position-empty {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #C4C4C4;
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms {
   width: 50%;
@@ -107,11 +114,18 @@
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   padding-bottom: 13px;
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform {
   margin-right: 5px;
+  margin-bottom: 4px;
+}
+.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform-empty {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #C4C4C4;
 }
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn {
   display: flex;
@@ -214,6 +228,12 @@
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
+}
+.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block.teams-empty {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: #C4C4C4;
 }
 .profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link {
   display: inline-block;
