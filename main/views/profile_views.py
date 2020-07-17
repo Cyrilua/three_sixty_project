@@ -32,7 +32,7 @@ def get_render_user_profile(request):
         photo = None
 
     args = {
-        "title": "Мой профиль",
+        "title": "Главная",
         'profile': profile,
         'photo': photo,
     }
