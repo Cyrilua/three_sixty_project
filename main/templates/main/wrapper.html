@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-grid.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-reboot.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/awesome/css/all.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/custom.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'main/css/custom.css' %}">#}
     {% block css %}
     {% endblock css %}
 
@@ -37,11 +38,11 @@
 {#<!-- /.preloader -->#}
 
 <!-- Тело сайта, отвечает за вывод на страницу-->
-<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back"
-        style="padding: 8px 0; height: 57px">
-    <div class="container" style="max-width: 1366px;">
-        <a class="navbar-brand logo" style="margin-left: 25px" id="logo" href="{% url 'main:login' %}">
-            <img src="{% static 'main/images/logo.svg' %}" alt="logo" width="120px" height="30px" class="logo-img">
+
+<header class="header__container unselectable">
+    <div class="header__content">
+        <a href="{% url 'main:login' %}" class="header__link">
+            <img src="{% static 'main/images/newLogo.svg' %}" alt="logo" class="header__logo">
         </a>
         {% block header-nav %}
             {% include 'main/includes/header_nav.html' %}
@@ -49,9 +50,22 @@
     </div>
 </header>
 
-<div class="container-fluid">
+{#<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar fixed-top animated-back"#}
+{#        style="padding: 8px 0; height: 57px">#}
+{#    <div class="container" style="max-width: 1366px;">#}
+{#        <a class="navbar-brand logo" style="margin-left: 25px" id="logo" href="{% url 'main:login' %}">#}
+{#            <img src="{% static 'main/images/logo.svg' %}" alt="logo" width="120px" height="30px" class="logo-img">#}
+{#        </a>#}
+{#        {% block header-nav %}#}
+{#            {% include 'main/includes/header_nav.html' %}#}
+{#        {% endblock %}#}
+{#    </div>#}
+{#</header>#}
+
+
+<div class="container-main">
     {% if user.is_authenticated %}
-        <div class="col-left" style="padding-left: 25px;">
+        <div class="col-left">
             {% block sidebar-nav %}
                 {% include 'main/includes/menu.html' %}
             {% endblock sidebar-nav %}
@@ -76,6 +90,34 @@
         <div class="col-right"></div>
     {% endif %}
 </div>
+
+{#<div class="container-fluid">#}
+{#    {% if user.is_authenticated %}#}
+{#        <div class="col-left" style="padding-left: 25px;">#}
+{#            {% block sidebar-nav %}#}
+{#                {% include 'main/includes/menu.html' %}#}
+{#            {% endblock sidebar-nav %}#}
+{#            {% block sidebar-footer %}#}
+{#                {% include 'main/includes/profile_footer.html' %}#}
+{#            {% endblock %}#}
+{#        </div>#}
+{#        <div class="col-center">#}
+{#            {% block content-user %}#}
+{#            {% endblock content-user %}#}
+{#        </div>#}
+{#        <div class="col-right">#}
+{#            {% block sidebar-nav-right %}#}
+{#            {% endblock sidebar-nav-right %}#}
+{#        </div>#}
+{#    {% else %}#}
+{#        <div class="col-left"></div>#}
+{#        <div class="col-center">#}
+{#            {% block content %}#}
+{#            {% endblock content %}#}
+{#        </div>#}
+{#        <div class="col-right"></div>#}
+{#    {% endif %}#}
+{#</div>#}
 
 <div class="scripts">
     <script type="text/javascript" src={% static 'main/js/jquery.com_jquery-3.4.1.js' %}></script>

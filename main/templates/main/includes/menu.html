@@ -1,27 +1,44 @@
 {#<div class="row">#}
-    <div class=" navbar-light position-fixed">
-        <ul class="navbar-nav flex-column">
-            <li class="{{ menu_profile }} user-sidebar-item">
-                <a class="nav-link" href="{% url 'main:login' %}">Главная</a>
-            </li>
-            <li class="{{ menu_polls }} user-sidebar-item">
-                <a class="nav-link" href="{% url 'main:walkthrough_polls_view' %}">Опросы</a>
-            </li>
-            <li class="{{ menu_settings }} user-sidebar-item">
-                <a class="nav-link" href="#">Команды</a>
-            </li>
-            <li class="{{ menu_settings }} user-sidebar-item">
-                <a class="nav-link" href="#">События</a>
-            </li>
-            {#            <li class="{{ menu_notifications }} user-sidebar-item">#}
-            {#                <a class="nav-link" href="{% url 'main:notifications' %}">Уведомления</a>#}
-            {#            </li>#}
-            {#            <li class="{{ menu_communications }} user-sidebar-item">#}
-            {#                <a class="nav-link" href="{% url 'main:communications' %}">Круги общения</a>#}
-            {#            </li>#}
-            {#            <li class="{{ menu_settings }} user-sidebar-item">#}
-            {#                <a class="nav-link" href="{% url 'main:edit' %}">Настройки</a>#}
-            {#            </li>#}
-        </ul>
-    </div>
+<div class="menu-left">
+    <ul class="menu unselectable">
+        <li class="{{ menu_profile }} menu-item">
+            <a class="menu-link" href="{% url 'main:login' %}">Главная</a>
+        </li>
+        <li class="{{ menu_polls }} menu-item">
+            <a class="menu-link" href="{% url 'main:walkthrough_polls_view' %}">Опросы</a>
+        </li>
+        <li class="{{ menu_settings }} menu-item">
+            <a class="menu-link" href="#">Команды</a>
+        </li>
+        <li class="{{ menu_settings }} menu-item">
+            <a class="menu-link" href="#">События</a>
+        </li>
+    </ul>
+</div>
+
+{#<div class=" navbar-light position-fixed">#}
+{#    <ul class="navbar-nav flex-column">#}
+{#        <li class="{{ menu_profile }} user-sidebar-item">#}
+{#            <a class="nav-link" href="{% url 'main:login' %}">Главная</a>#}
+{#        </li>#}
+{#        <li class="{{ menu_polls }} user-sidebar-item">#}
+{#            <a class="nav-link" href="{% url 'main:walkthrough_polls_view' %}">Опросы</a>#}
+{#        </li>#}
+{#        <li class="{{ menu_settings }} user-sidebar-item">#}
+{#            <a class="nav-link" href="#">Команды</a>#}
+{#        </li>#}
+{#        <li class="{{ menu_settings }} user-sidebar-item">#}
+{#            <a class="nav-link" href="#">События</a>#}
+{#        </li>#}
+{#                    <li class="{{ menu_notifications }} user-sidebar-item">#}
+{#                        <a class="nav-link" href="{% url 'main:notifications' %}">Уведомления</a>#}
+{#                    </li>#}
+{#                    <li class="{{ menu_communications }} user-sidebar-item">#}
+{#                        <a class="nav-link" href="{% url 'main:communications' %}">Круги общения</a>#}
+{#                    </li>#}
+{#                    <li class="{{ menu_settings }} user-sidebar-item">#}
+{#                        <a class="nav-link" href="{% url 'main:edit' %}">Настройки</a>#}
+{#                    </li>#}
+{#    </ul>#}
+{#</div>#}
 {#</div>#}
