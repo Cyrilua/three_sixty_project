@@ -51,7 +51,7 @@ def user_view(request):
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     ########################
 
-    return render(request, 'main/user/old/profile.html', args)
+    return render(request, 'main/user/profile.html', args)
 
 
 def upload_profile_photo(request):

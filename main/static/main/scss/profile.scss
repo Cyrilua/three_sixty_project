@@ -102,7 +102,7 @@
           .center-content-information-positions-data {
             display: flex;
             flex-wrap: wrap;
-            padding-bottom: 13px;
+            padding-bottom: 9px;
 
             .center-content-information-position {
               margin-right: 5px;
@@ -110,10 +110,13 @@
             }
 
             .center-content-information-position-empty {
+              padding-top: 6px;
+              height: 22px;
               font-weight: normal;
               font-size: 14px;
               line-height: 16px;
               color: #C4C4C4;
+              margin-bottom: 4px;
             }
           }
         }
@@ -133,7 +136,7 @@
           .center-content-information-platforms-data {
             display: flex;
             flex-wrap: wrap;
-            padding-bottom: 13px;
+            padding-bottom: 9px;
 
             .center-content-information-platform {
               margin-right: 5px;
@@ -141,10 +144,13 @@
             }
 
             .center-content-information-platform-empty {
+              padding-top: 6px;
+              height: 22px;
               font-weight: normal;
               font-size: 14px;
               line-height: 16px;
               color: #C4C4C4;
+              margin-bottom: 4px;
             }
           }
         }

@@ -225,7 +225,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .menu-left {
   position: fixed;
-  width: 204px;
+  width: 209px;
   padding: 0 0 0 15px;
 }
 .menu-left .menu {
@@ -241,6 +241,9 @@ h1, h2, h3, h4, h5, h6 {
   margin: 5px 0;
   display: flex;
   align-items: center;
+}
+.menu-left .menu .menu-item:first-child {
+  margin-top: 0;
 }
 .menu-left .menu .menu-item:hover {
   color: #595757;

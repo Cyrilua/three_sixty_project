@@ -40,7 +40,7 @@ def get_render_user_profile(request):
         args['photo_height'] = get_photo_height(photo.width, photo.height)
     args['teams'] = profile.groups.all()
 
-    return render(request, 'main/user/old/profile.html', args)
+    return render(request, 'main/user/profile.html', args)
 
 
 def get_other_profile_render(request, profile_id):
