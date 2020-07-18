@@ -178,6 +178,9 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 19px;
   color: #C4C4C4;
 }
+.header__container .header__content .head-menu-no-login .menu-no-login .menu-no-login-item:hover {
+  color: #939393;
+}
 .header__container .header__content .head-menu-no-login .menu-no-login .menu-no-login-item.active {
   color: #595757;
 }

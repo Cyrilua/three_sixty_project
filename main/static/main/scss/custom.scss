@@ -205,6 +205,10 @@ h1, h2, h3, h4, h5, h6 {
           line-height: 19px;
           color: #C4C4C4;
 
+          &:hover {
+            color: #939393;
+          }
+
           &.active {
             color: #595757;
           }
