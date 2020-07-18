@@ -243,7 +243,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #595757;
   background-color: #FAFAFA;
 }
-.menu-left .menu .menu-item.menu-item:active, .menu-left .menu .menu-item.menu-item.active {
+.menu-left .menu .menu-item.menu-item.active {
   color: #000000;
 }
 .menu-left .menu .menu-item .menu-link {
