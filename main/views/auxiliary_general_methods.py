@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
-from main.models import Profile, CompanyHR
+from main.models import Profile, Moderator, SurveyWizard
 
 
 def get_user_profile(request):
@@ -119,7 +119,7 @@ def user_is_hr_or_owner(request):
     user = auth.get_user(request)
     profile = get_user_profile(request)
     try:
-        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
+        user_is_hr = SurveyWizard.objects.get(profile=profile) is not None
     except:
         user_is_hr = False
     user_is_owner = profile.company.owner.id == user.id

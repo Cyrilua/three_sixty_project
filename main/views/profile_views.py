@@ -1,7 +1,7 @@
 import datetime
 
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto, BirthDate
+from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany
 from main.views.auxiliary_general_methods import *
 
 from django.http import JsonResponse
@@ -16,25 +16,67 @@ def profile_view(request, profile_id=-1):
 
 
 def get_render_user_profile(request):
-    # if request.is_ajax():
-    #     if request.method == "GET":
-    #         text = request.GET.get('button_text')
-    #         return JsonResponse({'result_1': text}, status=200)
-    #     if request.method == "POST":
-    #         span_text = request.POST.get('text')
-    #         return JsonResponse({'data_result': span_text}, status=200)
-
     profile = get_user_profile(request)
-
     try:
         photo = profile.profilephoto.photo
     except:
         photo = None
 
+    profile_data = {
+            'name': profile.name,
+            'surname': profile.surname,
+            'patronymic': profile.patronymic,
+            'roles': []
+        }
+
+    company = profile.company
+    print(company)
+    print(company.owner.id)
+    print(auth.get_user(request).id)
+    if company is not None and company.owner.id == auth.get_user(request).id:
+        profile_data['roles'].append('boss')
+    try:
+        SurveyWizard.objects.get(profile=profile)
+    except:
+        pass
+    else:
+        profile_data['roles'].append('master')
+    try:
+        Moderator.objects.get(profile=profile)
+    except:
+        pass
+    else:
+        profile_data['roles'].append('moderator')
+    print(profile_data['roles'])
+    profile_data['company'] = {
+        'url': '/company_view/',
+        'name': company.name,
+    }
+
+    if profile.platform is not None:
+        profile_data['platform'] = profile.platform
+    if profile.position is not None:
+        profile_data['position'] = profile.position
+    try:
+        profile_data['birthdate'] = BirthDate.objects.get(profile=profile)
+    except:
+        pass
+    try:
+        profile_data['email'] = auth.get_user(request).email
+    except:
+        pass
+    teams = []
+    for team in profile.groups.all():
+        teams.append({
+            'url': 'command/{}/'.format(team.id),
+            'name': team.name
+        })
+    if len(teams) != 0:
+        profile_data['teams'] = teams
     args = {
         "title": "Главная",
-        'profile': profile,
         'photo': photo,
+        'profile': profile_data,
     }
     if photo is not None:
         args['photo_height'] = get_photo_height(photo.width, photo.height)

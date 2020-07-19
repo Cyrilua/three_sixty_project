@@ -13,7 +13,7 @@ class Profile (models.Model):
     patronymic = models.CharField(max_length=50, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
-    position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
+    position = models.ForeignKey('PositionCompany', on_delete=models.CASCADE, null=True)
     groups = models.ManyToManyField('Group', null=True)
     email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
@@ -52,25 +52,25 @@ class NeedPassPoll(models.Model):
         db_table = "NeedPassPolls"
 
 
-class CompanyAdmins(models.Model):
+class Moderator(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     class Meta:
-        db_table = 'Admins'
+        db_table = 'Moderator'
 
     def __str__(self):
         return '{} in company \"{}\"'.format(self.profile, self.company)
 
 
-class CompanyHR(models.Model):
+class SurveyWizard(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     class Meta:
-        db_table = 'HR'
+        db_table = 'SurveyWizard'
 
     def __str__(self):
         return '{} in company \"{}\"'.format(self.profile, self.company)
@@ -116,7 +116,7 @@ class Company(models.Model):
 
 
 class PlatformCompany(models.Model):
-    platform = models.ForeignKey('Platforms', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -124,22 +124,11 @@ class PlatformCompany(models.Model):
         db_table = "Platforms in company"
 
     def __str__(self):
-        return '{}'.format(self.platform)
-
-
-class Platforms (models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "Platforms"
-
-    def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
 
 class PositionCompany (models.Model):
-    position = models.ForeignKey('Position', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -147,18 +136,7 @@ class PositionCompany (models.Model):
         db_table = "Positions in company"
 
     def __str__(self):
-        return '{}'.format(self.position)
-
-
-class Position(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "Positions"
-
-    def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
 
 class Group(models.Model):

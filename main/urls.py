@@ -62,11 +62,11 @@ urlpatterns = [
                   path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
 
                   # Промотр конкретной команды
-                  path('groups/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
+                  path('command/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
                   # Создание группы команды
-                  path('create_group/', teams_views.create_team, name='create_group'),
+                  path('create_command/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
-                  path('connect_to_group/', teams_views.connect_to_team_to_key, name='connect_to_group'),
+                  path('connect_to_command/', teams_views.connect_to_team_to_key, name='connect_to_group'),
                   # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
 
