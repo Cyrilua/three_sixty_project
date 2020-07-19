@@ -27,7 +27,7 @@ $(function () {
             });
         }
     });
-
+    
     body.on('input', '.input-field', function () {
         let popup = $(this).parent().children('.popup');
         popup.addClass('old');
