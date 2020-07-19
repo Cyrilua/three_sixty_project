@@ -1,6 +1,6 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TemplatesPoll, Group, \
+from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
     NeedPassPoll, CreatedPoll, Draft
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import add_notification
@@ -17,7 +17,7 @@ def default_poll_template_view(request):
         return redirect('/')
     polls = Poll.objects.filter(template_type=0)
     try:
-        is_hr = CompanyHR.objects.get(profile=get_user_profile(request)) is not None
+        is_hr = SurveyWizard.objects.get(profile=get_user_profile(request)) is not None
     except:
         is_hr = False
     args = {
@@ -366,7 +366,7 @@ def user_is_hr_or_owner(request):
     user = auth.get_user(request)
     profile = get_user_profile(request)
     try:
-        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
+        user_is_hr = SurveyWizard.objects.get(profile=profile) is not None
     except:
         user_is_hr = False
     user_is_owner = profile.company.owner.id == user.id
