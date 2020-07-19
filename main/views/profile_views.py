@@ -64,7 +64,7 @@ def get_render_user_profile(request):
     teams = []
     for team in profile.groups.all():
         teams.append({
-            'url': 'command/{}/'.format(team.id),
+            'url': '/command/{}/'.format(team.id),
             'name': team.name
         })
     if len(teams) != 0:
