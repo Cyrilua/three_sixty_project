@@ -49,15 +49,19 @@ $(function () {
             block.css({'overflow': 'visible'});
             let width = parseFloat(text.css('width')) * (-1) + $(this).width();
             let timeAnimation = Math.abs((width - parseFloat(text.css('margin-left'))) * 15);
-            let timeAnimationBack = Math.abs(width * 15);
+            // let timeAnimationBack = Math.abs(width * 15);
+            let timeAnimationBack = 0;
             block.css({'overflow': 'hidden'});
             body.on('mouseleave', '#head-menu-company', function () {
                 if (text.hasClass('in')) {
                     text.removeClass('in');
                     text.addClass('out');
+                    // text.stop().animate({
+                    //     'margin-left': 0,
+                    // }, (parseFloat(text.css('margin-left')) * -15));
                     text.stop().animate({
                         'margin-left': 0,
-                    }, (parseFloat(text.css('margin-left')) * -15));
+                    }, 0);
                 }
             });
             if (text.hasClass('out')) {
