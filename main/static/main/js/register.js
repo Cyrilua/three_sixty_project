@@ -97,15 +97,15 @@ $(function () {
     // To step 2
     body.on('click', '.register-form-navigate-btn-next_step', function (event) {
         event.preventDefault();
-        $('.step-1').addClass('d-none');
-        $('.step-2').removeClass('d-none');
+        $('.step-1').addClass('hide');
+        $('.step-2').removeClass('hide');
     });
 
     // To step 1
     body.on('click', '.register-form-navigate-btn-back_step', function (event) {
         event.preventDefault();
-        $('.step-2').addClass('d-none');
-        $('.step-1').removeClass('d-none');
+        $('.step-2').addClass('hide');
+        $('.step-1').removeClass('hide');
     });
 
     // Вывод шибки при фокусе на поле

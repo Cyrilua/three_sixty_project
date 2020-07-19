@@ -1,7 +1,10 @@
 .profile {
   display: flex;
+  z-index: 50;
 }
 .profile .left-content {
+  display: flex;
+  flex-direction: column;
   width: 220px;
   height: 364px;
   margin-right: 10px;
@@ -9,6 +12,7 @@
   top: 57px;
   padding-left: 20px;
   padding-right: 20px;
+  z-index: 50;
 }
 .profile .left-content .left-content-photo {
   width: 180px;
@@ -26,6 +30,7 @@
 .profile .center-content {
   width: 680px;
   height: auto;
+  z-index: 50;
 }
 .profile .center-content .center-content-information {
   padding-bottom: 0;
@@ -257,7 +262,7 @@
   background-color: white;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  z-index: 2;
+  z-index: 200;
 }
 .profile .center-content .center-content-notifications > .substrate.shadow-category {
   -webkit-box-shadow: 0 15px 10px -12px #8a8a8a;
@@ -434,7 +439,7 @@
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down {
-  z-index: 2;
+  z-index: 200;
 }
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
@@ -501,7 +506,7 @@
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
-  z-index: 1;
+  z-index: 100;
 }
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate {
   display: flex;
