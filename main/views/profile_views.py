@@ -26,28 +26,24 @@ def get_render_user_profile(request):
             'name': profile.name,
             'surname': profile.surname,
             'patronymic': profile.patronymic,
-            'roles': []
         }
 
     company = profile.company
-    print(company)
-    print(company.owner.id)
-    print(auth.get_user(request).id)
+    roles = []
     if company is not None and company.owner.id == auth.get_user(request).id:
-        profile_data['roles'].append('boss')
+        roles.append('boss')
     try:
         SurveyWizard.objects.get(profile=profile)
     except:
         pass
     else:
-        profile_data['roles'].append('master')
+        roles.append('master')
     try:
         Moderator.objects.get(profile=profile)
     except:
         pass
     else:
-        profile_data['roles'].append('moderator')
-    print(profile_data['roles'])
+        roles.append('moderator')
     profile_data['company'] = {
         'url': '/company_view/',
         'name': company.name,
@@ -77,6 +73,7 @@ def get_render_user_profile(request):
         "title": "Главная",
         'photo': photo,
         'profile': profile_data,
+        'roles': roles
     }
     if photo is not None:
         args['photo_height'] = get_photo_height(photo.width, photo.height)
