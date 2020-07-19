@@ -1,7 +1,10 @@
 .profile {
   display: flex;
+  z-index: 50;
 
   .left-content {
+    display: flex;
+    flex-direction: column;
     width: 220px;
     height: 364px;
     margin-right: 10px;
@@ -9,6 +12,7 @@
     top: 57px;
     padding-left: 20px;
     padding-right: 20px;
+    z-index: 50;
 
     .left-content-photo {
       width: 180px;
@@ -30,6 +34,7 @@
   .center-content {
     width: 680px;
     height: auto;
+    z-index: 50;
 
     .center-content-information {
       padding-bottom: 0;
@@ -306,7 +311,7 @@
         background-color: white;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
-        z-index: 2;
+        z-index: 200;
 
         &.shadow-category {
           -webkit-box-shadow: 0 15px 10px -12px rgba(138, 138, 138, 1);
@@ -486,7 +491,7 @@
                 }
 
                 .notification-actions-menu-down {
-                  z-index: 2;
+                  z-index: 200;
 
                   .notification-actions-menu-items {
                     width: 100px;
@@ -548,7 +553,7 @@
                 right: 0;
 
                 .notification-actions-move-btn {
-                  z-index: 1;
+                  z-index: 100;
                 }
               }
             }

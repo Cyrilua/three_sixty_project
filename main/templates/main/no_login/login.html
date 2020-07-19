@@ -19,7 +19,7 @@
                         {% csrf_token %}
                         <h1 class="login-form-title">Вход</h1>
                         <div class="login-form-fields">
-                            <div class="form-group">
+                            <div class="form-grouping">
                                 <label class="form-fields-label" for="username">Логин</label>
                                 <input class="input-field {% if error.login %}error{% endif %}" aria-describedby="usernameHelp"
                                        placeholder="Введите логин"
@@ -33,7 +33,7 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="form-group">
+                            <div class="form-grouping">
                                 <label class="form-fields-label" for="password">Пароль</label>
                                 <input class="input-field {% if error.password %}error{% endif %}"
                                        aria-describedby="passwordHelp"

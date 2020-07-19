@@ -35,21 +35,20 @@
     margin: 52px 0 11px;
 }
 
-.form-group {
+.form-grouping {
+    height: auto;
     margin: 0 0 12px;
 }
 
-.login-form-fields > .form-group:last-child {
+.login-form-fields > .form-grouping:last-child {
     margin-bottom: 40px;
 }
 
 .form-fields-label {
+    display: block;
     font-weight: normal;
     font-size: 14px;
     line-height: 16px;
-}
-
-.form-fields-label {
     margin: 0 0 7px;
 }
 
