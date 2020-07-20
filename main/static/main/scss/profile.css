@@ -506,6 +506,7 @@
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
+  width: 90px;
   z-index: 100;
 }
 
