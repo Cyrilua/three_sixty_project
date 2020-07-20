@@ -222,12 +222,11 @@ def add_platform_in_company(request):
     return render(request, 'main/add_new_platform.html', args)
 
 
-def company_view(request):
+def company_view(request, id_company):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    profile = get_user_profile(request)
-    company = profile.company
+    company = Company.objects.get(id=id_company)
 
     if company is None:
         return redirect('/communications/')

@@ -1,7 +1,7 @@
 import datetime
 
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany, Notifications
+from main.models import ProfilePhoto, BirthDate, Notifications, Poll, Company, Group
 from main.views.auxiliary_general_methods import *
 
 from django.http import JsonResponse
@@ -44,11 +44,14 @@ def get_render_user_profile(request):
         pass
     else:
         roles.append('moderator')
-    profile_data['company'] = {
-        'url': '/company_view/',
-        'name': company.name,
-    }
-
+    try:
+        company = profile.company
+        profile_data['company'] = {
+            'url': '/company_view/{}/'.format(company.id),
+            'name': company.name,
+        }
+    except:
+        pass
     if profile.platform is not None:
         profile_data['platform'] = profile.platform
     if profile.position is not None:
@@ -62,8 +65,6 @@ def get_render_user_profile(request):
     except:
         pass
 
-    #print(profile_data['birthdate'])
-
     teams = []
     for team in profile.groups.all():
         teams.append({
@@ -76,19 +77,99 @@ def get_render_user_profile(request):
         "title": "Главная",
         'photo': photo,
         'profile': profile_data,
-        'roles': roles
+        'roles': roles,
+        'notifications': build_notifications(profile)
     }
-    if photo is not None:
-        args['photo_height'] = get_photo_height(photo.width, photo.height)
-    args['teams'] = profile.groups.all()
-
     return render(request, 'main/user/profile.html', args)
 
 
 def build_notifications(profile):
     notifications = Notifications.objects.filter(profile=profile)
+    my_polls = []
+    polls = []
+    invites = []
     for notif in notifications:
-        pass
+        if notif.type == 'my_poll':
+            try:
+                poll = Poll.objects.get(id=notif.key)
+            except:
+                continue
+            collected_notification = {
+                'url': notif.url.format(notif.key),
+                'date': notif.date,
+                'title': poll.name_poll,
+                'more': {
+                    'name': "{} {} {}".format(notif.on_profile.surname, notif.on_profile.name,
+                                              notif.on_profile.patronymic),
+                    'url': '/{}/'.format(notif.on_profile.id)
+                },
+                'about': '{} ответов'.format(poll.count_passed)
+            }
+            my_polls.append(collected_notification)
+
+        elif notif.type == 'invite_company':
+            try:
+                company = Company.objects.get(key=notif.key)
+            except:
+                continue
+            collected_notification = {
+                'url': notif.url.format(notif.key),
+                'date': notif.date,
+                'title': {
+                    'name': company.name,
+                    'url': '/company_view/{}/'.format(company.id),
+                },
+                'more': {
+                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
+                                              notif.from_profile.patronymic),
+                    'url': '/{}/'.format(notif.from_profile.id)
+                },
+                'about': company.description
+            }
+            invites.append(collected_notification)
+        elif notif.type == 'invite_company':
+            try:
+                command = Group.objects.get(key=notif.key)
+            except:
+                continue
+            collected_notification = {
+                'url': notif.url.format(notif.key),
+                'date': notif.date,
+                'title': {
+                    'name': command.name,
+                    'url': '/company_view/{}/'.format(command.id),
+                },
+                'more': {
+                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
+                                              notif.from_profile.patronymic),
+                    'url': '/{}/'.format(notif.from_profile.id)
+                },
+                'about': command.description
+            }
+            invites.append(collected_notification)
+        elif notif.type == 'alien_poll':
+            try:
+                poll = Poll.objects.get(id=notif.key)
+            except:
+                continue
+            collected_notification = {
+                'url': notif.url.format(notif.key),
+                'date': notif.date,
+                'title': poll.name_poll,
+                'more': {
+                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
+                                              notif.from_profile.patronymic),
+                    'url': '/{}/'.format(notif.from_profile.id)
+                },
+                'about': poll.description
+            }
+            polls.append(collected_notification)
+        return {
+            'polls': polls,
+            'my_polls': my_polls,
+            'invites': invites
+        }
+
 
 
 def get_other_profile_render(request, profile_id):
@@ -197,6 +278,4 @@ def edit_profile(request):
             user.save()
         return redirect('/edit/')
     return render(request, 'main/user/old/edit_profile.html', args)
-
-
 

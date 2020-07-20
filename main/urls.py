@@ -74,7 +74,7 @@ urlpatterns = [
                   path('add_company/', company_views.create_company, name='add_company'),
                   # Просмотр компании (список должностей и платформ, название компании,
                   #     ее владелец и ключ для присоединения)
-                  path('company_view/', company_views.company_view, name='company_view'),
+                  path('company_view/<int:id_company>/', company_views.company_view, name='company_view'),
                   # Присоединение к компании (по ключу)
                   path('connect_to_company/', company_views.connect_to_company_to_key, name='connect_to_company'),
                   # Присоеддинение к компании (по ссылке)
