@@ -4,10 +4,10 @@ from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
 from main.models import ProfilePhoto, BirthDate, Notifications, Poll, Company, Group
 from main.views.auxiliary_general_methods import *
 
-from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 
-def profile_view(request, profile_id=-1):
+def profile_view(request, profile_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if profile_id == get_user_profile(request).id or profile_id == -1:
@@ -22,65 +22,80 @@ def get_render_user_profile(request):
     except:
         photo = None
 
+    profile_data = build_profile_data(auth.get_user(request), get_user_profile(request))
+
+    args = {
+        "title": "Главная",
+        'photo': photo,
+        'profile': profile_data[0],
+        'roles': profile_data[1],
+        'notifications': build_notifications(profile)
+    }
+    return render(request, 'main/user/profile.html', args)
+
+
+def build_profile_data(user, profile):
     profile_data = {
             'name': profile.name,
             'surname': profile.surname,
             'patronymic': profile.patronymic,
+            'teams': get_user_teams(profile)
         }
 
     company = profile.company
     roles = []
-    if company is not None and company.owner.id == auth.get_user(request).id:
-        roles.append('boss')
-    try:
-        SurveyWizard.objects.get(profile=profile)
-    except:
-        pass
-    else:
-        roles.append('master')
-    try:
-        Moderator.objects.get(profile=profile)
-    except:
-        pass
-    else:
-        roles.append('moderator')
-    try:
-        company = profile.company
+    if company is not None:
+        roles = get_user_roles(user, profile, company)
         profile_data['company'] = {
             'url': '/company_view/{}/'.format(company.id),
             'name': company.name,
         }
-    except:
-        pass
-    if profile.platform is not None:
-        profile_data['platform'] = profile.platform
-    if profile.position is not None:
-        profile_data['position'] = profile.position
+
+        if profile.platform is not None:
+            profile_data['platform'] = profile.platform
+        if profile.position is not None:
+            profile_data['position'] = profile.position
+
     try:
         profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday
-    except:
-        pass
-    try:
-        profile_data['email'] = auth.get_user(request).email
-    except:
+    except ObjectDoesNotExist:
         pass
 
+    try:
+        profile_data['email'] = user.email
+    except ObjectDoesNotExist:
+        pass
+    return [profile_data, roles]
+
+
+def get_user_roles(user, profile, company):
+    roles = []
+    if company is not None and company.owner.id == user.id:
+        roles.append('boss')
+    try:
+        SurveyWizard.objects.get(profile=profile)
+    except ObjectDoesNotExist:
+        pass
+    else:
+        roles.append('master')
+
+    try:
+        Moderator.objects.get(profile=profile)
+    except ObjectDoesNotExist:
+        pass
+    else:
+        roles.append('moderator')
+    return roles
+
+
+def get_user_teams(profile):
     teams = []
     for team in profile.groups.all():
         teams.append({
             'url': '/team/{}/'.format(team.id),
             'name': team.name
         })
-    if len(teams) != 0:
-        profile_data['teams'] = teams
-    args = {
-        "title": "Главная",
-        'photo': photo,
-        'profile': profile_data,
-        'roles': roles,
-        'notifications': build_notifications(profile)
-    }
-    return render(request, 'main/user/profile.html', args)
+    return teams
 
 
 def build_notifications(profile):
@@ -97,7 +112,7 @@ def build_notifications(profile):
             collected_notification = {
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
-                'title': poll.name_poll,
+                'title': notif.name,
                 'more': {
                     'name': "{} {} {}".format(notif.on_profile.surname, notif.on_profile.name,
                                               notif.on_profile.patronymic),
@@ -116,7 +131,7 @@ def build_notifications(profile):
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
                 'title': {
-                    'name': company.name,
+                    'name': notif.name,
                     'url': '/company_view/{}/'.format(company.id),
                 },
                 'more': {
@@ -127,7 +142,7 @@ def build_notifications(profile):
                 'about': company.description
             }
             invites.append(collected_notification)
-        elif notif.type == 'invite_company':
+        elif notif.type == 'invite_command':
             try:
                 command = Group.objects.get(key=notif.key)
             except:
@@ -136,7 +151,7 @@ def build_notifications(profile):
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
                 'title': {
-                    'name': command.name,
+                    'name': notif.name,
                     'url': '/company_view/{}/'.format(command.id),
                 },
                 'more': {
@@ -155,7 +170,7 @@ def build_notifications(profile):
             collected_notification = {
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
-                'title': poll.name_poll,
+                'title': notif.name,
                 'more': {
                     'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
                                               notif.from_profile.patronymic),
@@ -171,42 +186,22 @@ def build_notifications(profile):
         }
 
 
-
 def get_other_profile_render(request, profile_id):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
     profile = Profile.objects.get(id=profile_id)
+    try:
+        photo = profile.profilephoto.photo
+    except:
+        photo = None
+
+    profile_data = build_profile_data(profile.user, profile)
+
     args = {
-        'title': "Профиль просматриваемого пользователя",
-        'name': profile.name,
-        'surname': profile.surname,
-        'patronymic': profile.patronymic,
-        'groups': profile.groups.all(),
+        "title": "Просмотр профиля пользователя",
+        'photo': photo,
+        'alien_profile': profile_data[0],
+        'roles': profile_data[1],
     }
-
-    profile_photo = ProfilePhoto.objects.filter(profile=profile)
-    if len(profile_photo) != 0:
-        args['photo'] = profile_photo[0].photo
-        args['photo_height'] = get_photo_height(args['photo'].width, args['photo'].height)
-    else:
-        args['photo'] = None
-
-    if profile.position is not None:
-        args['position'] = profile.position.name
-    else:
-        args['position'] = 'не указано'
-
-    if profile.company is not None:
-        args['company'] = profile.company.name
-    else:
-        args['company'] = 'не указано'
-
-    if profile.platform is not None:
-        args['platform'] = profile.platform.platform.name
-    else:
-        args['platform'] = 'не указано'
-
+    print(args)
     return render(request, "main/user/alien_profile.html", args)
 
 

@@ -33,7 +33,7 @@ def build_notifications_list(list_notifications):
 def create_notifications(profile, name: str, type_notification: str, key=None, from_profile=None, on_profile=None):
     new_notification = Notifications()
     new_notification.url = get_url_from_type(type_notification)
-    new_notification.data = datetime.today()
+    new_notification.date = datetime.today()
     new_notification.from_profile = from_profile
     new_notification.on_profile = on_profile
     new_notification.name = name
