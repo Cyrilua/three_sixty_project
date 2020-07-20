@@ -80,6 +80,7 @@ def get_render_user_profile(request):
         'roles': roles,
         'notifications': build_notifications(profile)
     }
+    print(args['notifications'])
     return render(request, 'main/user/profile.html', args)
 
 
@@ -97,7 +98,7 @@ def build_notifications(profile):
             collected_notification = {
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
-                'title': poll.name_poll,
+                'title': notif.name,
                 'more': {
                     'name': "{} {} {}".format(notif.on_profile.surname, notif.on_profile.name,
                                               notif.on_profile.patronymic),
@@ -116,7 +117,7 @@ def build_notifications(profile):
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
                 'title': {
-                    'name': company.name,
+                    'name': notif.name,
                     'url': '/company_view/{}/'.format(company.id),
                 },
                 'more': {
@@ -127,7 +128,7 @@ def build_notifications(profile):
                 'about': company.description
             }
             invites.append(collected_notification)
-        elif notif.type == 'invite_company':
+        elif notif.type == 'invite_command':
             try:
                 command = Group.objects.get(key=notif.key)
             except:
@@ -136,7 +137,7 @@ def build_notifications(profile):
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
                 'title': {
-                    'name': command.name,
+                    'name': notif.name,
                     'url': '/company_view/{}/'.format(command.id),
                 },
                 'more': {
@@ -155,7 +156,7 @@ def build_notifications(profile):
             collected_notification = {
                 'url': notif.url.format(notif.key),
                 'date': notif.date,
-                'title': poll.name_poll,
+                'title': notif.name,
                 'more': {
                     'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
                                               notif.from_profile.patronymic),
@@ -169,7 +170,6 @@ def build_notifications(profile):
             'my_polls': my_polls,
             'invites': invites
         }
-
 
 
 def get_other_profile_render(request, profile_id):

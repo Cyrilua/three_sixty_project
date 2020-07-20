@@ -104,7 +104,7 @@ class Notifications (models.Model):
     key = models.CharField(max_length=100, null=True)
     on_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='on_profile', null=True)
     from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='from_profile', null=True)
-    data = models.DateField(null=True)
+    date = models.DateField(null=True)
     objects = models.Manager()
 
     class Meta:
@@ -154,6 +154,7 @@ class PositionCompany (models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=20, default='')
+    description = models.CharField(max_length=150, default='')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     key = models.CharField(max_length=36, default='')
     objects = models.Manager()
