@@ -295,7 +295,6 @@ button {
   font-weight: bold;
   font-size: 16px;
   line-height: 19px;
-  padding: 8px 12px;
   box-sizing: border-box;
 }
 .button-red:hover {
@@ -306,13 +305,11 @@ button {
 .button-red:active {
   background: #B61E39;
   border: 2px solid #FF1841;
-  padding: 8px 12px;
   outline: none;
 }
 .button-red:disabled {
   background: #E5E5E5;
   border: 2px solid #E5E5E5;
-  padding: 8px 12px;
   cursor: not-allowed;
 }
 .button-red:focus {
@@ -328,13 +325,11 @@ button {
   font-weight: normal;
   font-size: 16px;
   line-height: 19px;
-  padding: 9px 15px;
   box-sizing: border-box;
 }
 .button-white:active {
   border: 2px solid #FF1841;
   outline: none;
-  padding: 8px 14px;
 }
 .button-white:disabled {
   background: #FAFAFA;

@@ -363,7 +363,8 @@ button {
   font-weight: bold;
   font-size: 16px;
   line-height: 19px;
-  padding: 8px 12px;
+  //padding: 8px 12px;
+  //padding: 0 12px;
   box-sizing: border-box;
 
   &:hover {
@@ -375,7 +376,7 @@ button {
   &:active {
     background: #B61E39;
     border: 2px solid #FF1841;
-    padding: 8px 12px;
+    //padding: 8px 12px;
     outline: none;
   }
 
@@ -383,7 +384,7 @@ button {
     background: #E5E5E5;
     border: 2px solid #E5E5E5;
 
-    padding: 8px 12px;
+    //padding: 8px 12px;
     cursor: not-allowed;
   }
 
@@ -401,7 +402,8 @@ button {
   font-weight: normal;
   font-size: 16px;
   line-height: 19px;
-  padding: 9px 15px;
+  //padding: 9px 15px;
+  //padding: 0 15px;
   box-sizing: border-box;
 
   &:hover {
@@ -410,7 +412,7 @@ button {
   &:active {
     border: 2px solid #FF1841;
     outline: none;
-    padding: 8px 14px;
+    //padding: 8px 14px;
   }
 
   &:disabled {
