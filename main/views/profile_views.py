@@ -207,7 +207,7 @@ def get_other_profile_render(request, profile_id):
     else:
         args['platform'] = 'не указано'
 
-    return render(request, "main/alien_profile.html", args)
+    return render(request, "main/user/alien_profile.html", args)
 
 
 def upload_profile_photo(request):

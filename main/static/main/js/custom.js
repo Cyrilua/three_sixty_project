@@ -86,7 +86,7 @@ $(function () {
         }
     });
 
-    // Перуходы по кнопкам в меню (в шапке)
+    // Переходы по кнопкам в меню (в шапке)
     body.on('click', '.head-menu-item', function () {
         let id = this.id;
         if (id === 'head-menu-company') {
@@ -99,4 +99,10 @@ $(function () {
             throw new Error('invalid argument value');
         }
     });
+
+    // Переход на другие страницы по кнопкам (как ссылки)
+    body.on('click', '.button-href', function () {
+        let href = $(this).attr('data-href');
+        $(location).attr({'href':href});
+    })
 });

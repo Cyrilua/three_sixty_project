@@ -1,0 +1,26 @@
+{% extends 'main/wrapper.html' %}
+
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="search">Ппоиск команд для приглашения</div>
+
+{% endblock %}
+
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'main/js/scroll_top.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/css/scroll_top.css' %}">
+{% endblock %}

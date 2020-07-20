@@ -18,8 +18,8 @@
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
                 {% endif %}
-                <button class="left-content-new_poll button-red">Провести опрос</button>
-                <button class="left-content-new_team button-white">Создать команду</button>
+                <button class="left-content-new_poll button-red button-href" data-href="#">Провести опрос</button>
+                <button class="left-content-new_team button-white button-href" data-href="#">Создать команду</button>
             </div>
             <div class="center-content">
                 <div class="center-content-information rounded-block">
@@ -110,7 +110,7 @@
                         <div class="center-content-information-more-btn unselectable">
                             <span class="center-content-information-more-btn-text">Показать подробную информацию</span>
                         </div>
-                        <div class="center-content-information-more-details">
+                        <div class="center-content-information-more-details show">
                             <div class="center-content-information-more-details-main">
                                 <div class="center-content-information-more-details-main-fullname">
                                     <h2 class="center-content-information-more-details-main-birthday-title">ФИО</h2>
@@ -345,8 +345,8 @@
         <div class="profile">
             <div class="left-content rounded-block">
                 <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
-                <button class="left-content-new_poll button-red">Провести опрос</button>
-                <button class="left-content-new_team button-white">Создать команду</button>
+                <button class="left-content-new_poll button-red button-href" data-href="#">Провести опрос</button>
+                <button class="left-content-new_team button-white button-href" data-href="#">Создать команду</button>
             </div>
             <div class="center-content">
                 <div class="center-content-information rounded-block">
@@ -1120,6 +1120,7 @@
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/profile.js' %}></script>
     <script src="{% static 'main/js/scroll_top.js' %}"></script>
+    <script src="{% static 'main/js/hint.js' %}"></script>
 {% endblock %}
 
 {% block css %}
