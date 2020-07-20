@@ -4,7 +4,7 @@ from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, questions_views, \
-    auxiliary_general_methods, notifications_views
+    auxiliary_general_methods, notifications_views, test
 from .views.poll_views import create_poll
 
 app_name = "main"
@@ -69,8 +69,8 @@ urlpatterns = [
                   path('connect_to_command/', teams_views.connect_to_team_to_key, name='connect_to_group'),
                   # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
-                  # Просмотр команды для присоединения в нее
-                  path('search_team_for_invite/<int:id_team>/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+                  # Поиск команды для присоединения в нее
+                  path('search_team_for_invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
@@ -168,6 +168,10 @@ urlpatterns = [
                   ########## New poll ######################
                   path('poll/', create_poll.choose_poll, name='new_poll_view'),
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
-                  path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor')
+                  path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
+
+
+                 ############ Only for debug ###############
+                 path('test/', test.create_notifications)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

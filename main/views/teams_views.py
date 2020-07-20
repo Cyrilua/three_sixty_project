@@ -128,5 +128,5 @@ def team_user_view(request, group_id):
     return render(request, 'main/teams/old/team_view.html', args)
 
 
-def search_team_for_invite(request, id_team):
+def search_team_for_invite(request):
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', {})
