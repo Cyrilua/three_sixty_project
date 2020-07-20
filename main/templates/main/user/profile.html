@@ -10,7 +10,7 @@
 
 {% block content-user %}
 
-    {% if profile1 %}
+    {% if profile %}
         <div class="profile">
             <div class="left-content rounded-block">
                 {% if photo %}
@@ -208,9 +208,9 @@
                                                 </div>
                                             </div>
                                             <div class="notification-actions-move">
-                                                <button class="notification-actions-move-btn button-red"
+                                                <button class="notification-actions-move-btn button-red button-href"
                                                         {% if notif.complited %}disabled{% endif %}
-                                                        data-url="{{ notif.url }}">Пройти
+                                                        data-href="{{ notif.url }}">Пройти
                                                 </button>
                                             </div>
                                         </div>
@@ -258,8 +258,8 @@
                                                 </div>
                                             </div>
                                             <div class="notification-actions-move">
-                                                <button class="notification-actions-move-btn button-{% if not notif.complited %}red{% else %}white{% endif %}"
-                                                        data-url="{{ notif.url }}">Смотреть
+                                                <button class="notification-actions-move-btn button-{% if not notif.complited %}red{% else %}white{% endif %} button-href"
+                                                        data-href="{{ notif.url }}">Смотреть
                                                 </button>
                                             </div>
                                         </div>
@@ -312,9 +312,9 @@
                                                 </div>
                                             </div>
                                             <div class="notification-actions-move">
-                                                <button class="notification-actions-move-btn button-red"
+                                                <button class="notification-actions-move-btn button-red button-href"
                                                         {% if notif.complited %}disabled{% endif %}
-                                                        data-url="{{ notif.url }}">Вступить
+                                                        data-href="{{ notif.url }}">Вступить
                                                 </button>
                                             </div>
                                         </div>
@@ -1120,14 +1120,14 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src={% static 'main/js/profile.js' %}></script>
-    <script src="{% static 'main/js/scroll_top.js' %}"></script>
-    <script src="{% static 'main/js/hint.js' %}"></script>
+    <script type="text/javascript" src={% static 'main/js/profile.min.js' %}></script>
+    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
+    <script src="{% static 'main/js/hint.min.js' %}"></script>
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'main/css/scroll_top.css' %}">
-    <link rel="stylesheet" href="{% static 'main/scss/custom.css' %}">
-    <link rel="stylesheet" href="{% static 'main/scss/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/custom.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/profile.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
 {% endblock %}

@@ -1,6 +1,5 @@
 {% load static %}
 
-{#<div class='navbar-nav ml-auto unselectable' style="margin-right: 15px;">#}
 {% if user.is_authenticated %}
     {% if profile %}
         <div class="head-menu">
@@ -51,18 +50,6 @@
             </div>
         </div>
     {% endif %}
-    {#            <li class="nav-item, active header-first-icon"  style="font-weight: bold; font-size: 16px; line-height: 19px;">#}
-    {#                <a class="nav-link" href="{% url 'main:login' %}">#}
-    {#                    {% if profile %}#}
-    {#                        {{ profile.name }} {{ profile.surname }}#}
-    {#                    {% else %}#}
-    {#                        Мой профиль#}
-    {#                    {% endif %}#}
-    {#                </a>#}
-    {#            </li>#}
-    {#            <li class="nav-item"  style="font-weight: bold; font-size: 16px; line-height: 19px;">#}
-    {#                <a class="nav-link" id="logout" href="{% url 'main:logout' %}">Выход</a>#}
-    {#            </li>#}
 {% else %}
     <div class="head-menu-no-login">
         <ul class="menu-no-login">
@@ -75,4 +62,3 @@
         </ul>
     </div>
 {% endif %}
-{#</div>#}
