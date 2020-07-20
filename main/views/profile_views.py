@@ -1,7 +1,7 @@
 import datetime
 
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany
+from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany, Notifications
 from main.views.auxiliary_general_methods import *
 
 from django.http import JsonResponse
@@ -54,17 +54,20 @@ def get_render_user_profile(request):
     if profile.position is not None:
         profile_data['position'] = profile.position
     try:
-        profile_data['birthdate'] = BirthDate.objects.get(profile=profile)
+        profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday
     except:
         pass
     try:
         profile_data['email'] = auth.get_user(request).email
     except:
         pass
+
+    #print(profile_data['birthdate'])
+
     teams = []
     for team in profile.groups.all():
         teams.append({
-            'url': '/command/{}/'.format(team.id),
+            'url': '/team/{}/'.format(team.id),
             'name': team.name
         })
     if len(teams) != 0:
@@ -80,6 +83,12 @@ def get_render_user_profile(request):
     args['teams'] = profile.groups.all()
 
     return render(request, 'main/user/profile.html', args)
+
+
+def build_notifications(profile):
+    notifications = Notifications.objects.filter(profile=profile)
+    for notif in notifications:
+        pass
 
 
 def get_other_profile_render(request, profile_id):

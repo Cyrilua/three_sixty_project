@@ -62,7 +62,7 @@ urlpatterns = [
                   path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
 
                   # Промотр конкретной команды
-                  path('command/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
+                  path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
                   # Создание группы команды
                   path('create_command/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
