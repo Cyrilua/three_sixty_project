@@ -62,7 +62,7 @@ def get_render_user_profile(request):
     except:
         pass
 
-    print(profile_data['birthdate'])
+    #print(profile_data['birthdate'])
 
     teams = []
     for team in profile.groups.all():
