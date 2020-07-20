@@ -223,7 +223,7 @@
 
                         <div class="center-content-notifications-my_polls hide">
                             {% if notifications.my_polls %}
-                                {% for notif in notifications.polls %}
+                                {% for notif in notifications.my_polls %}
                                     <div class="center-content-notification rounded-block">
                                         <div class="notification-image">
                                             <img src="{% static 'main/images/pollDone.svg' %}" alt=""
@@ -271,8 +271,8 @@
 
 
                         <div class="center-content-notifications-invites hide">
-                            {% if notifications.my_polls %}
-                                {% for notif in notifications.polls %}
+                            {% if notifications.invites %}
+                                {% for notif in notifications.invites %}
                                     <div class="center-content-notification rounded-block">
                                         <div class="notification-image">
                                             <img src="{% static 'main/images/pollDone.svg' %}" alt=""
