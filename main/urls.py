@@ -70,7 +70,7 @@ urlpatterns = [
                   # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
                   # Просмотр команды для присоединения в нее
-                  path('search_team_for_invite/<int:id_team>/', name='search_team_for_invite'),
+                  path('search_team_for_invite/<int:id_team>/', teams_views.search_team_for_invite, name='search_team_for_invite'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
