@@ -1,7 +1,7 @@
 import datetime
 
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany
+from main.models import ProfilePhoto, BirthDate, PositionCompany, PlatformCompany, Notifications
 from main.views.auxiliary_general_methods import *
 
 from django.http import JsonResponse
@@ -80,6 +80,12 @@ def get_render_user_profile(request):
     args['teams'] = profile.groups.all()
 
     return render(request, 'main/user/profile.html', args)
+
+
+def build_notifications(profile):
+    notifications = Notifications.objects.filter(profile=profile)
+    for notif in notifications:
+        pass
 
 
 def get_other_profile_render(request, profile_id):

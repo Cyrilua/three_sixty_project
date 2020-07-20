@@ -14,7 +14,7 @@ class Profile (models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
     position = models.ForeignKey('PositionCompany', on_delete=models.CASCADE, null=True)
-    groups = models.ManyToManyField('Group', null=True)
+    groups = models.ManyToManyField('Group')
     email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
 
@@ -89,23 +89,36 @@ class ProfilePhoto (models.Model):
 
 
 class Notifications (models.Model):
+    TYPE_CHOICES = [
+        ('my_poll', 0),
+        ('invite_command', 1),
+        ('invite_company', 2),
+        ('alien_poll', 3)
+    ]
+
+    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='my_poll')
     name = models.CharField(max_length=50, default='')
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    redirect = models.CharField(max_length=100, default='')
-    key = models.CharField(max_length=36, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
+    # url хранится в формате фоматируемой строки для возможности ставки ключа
+    url = models.CharField(max_length=100, default='')
+    key = models.CharField(max_length=100, null=True)
+    on_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='on_profile', null=True)
+    from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='from_profile', null=True)
+    data = models.DateField(null=True)
     objects = models.Manager()
 
     class Meta:
         db_table = "Notifications"
 
     def __str__(self):
-        return self.redirect
+        return self.url
 
 
 class Company(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=36, unique=True, default='')
+    description = models.CharField(max_length=150, default='')
     objects = models.Manager()
 
     class Meta:

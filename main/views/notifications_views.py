@@ -1,5 +1,6 @@
 from main.models import Notifications
 from main.views.auxiliary_general_methods import *
+from datetime import datetime
 
 
 def redirect_from_notifications(request):
@@ -29,11 +30,26 @@ def build_notifications_list(list_notifications):
     return result_list
 
 
-def add_notification(profile, name, redirect_name, key=None):
+def create_notifications(profile, name: str, type_notification: str, key=None, from_profile=None, on_profile=None):
     new_notification = Notifications()
-    new_notification.profile = profile
-    new_notification.redirect = redirect_name
+    new_notification.url = get_url_from_type(type_notification)
+    new_notification.data = datetime.today()
+    new_notification.from_profile = from_profile
+    new_notification.on_profile = on_profile
     new_notification.name = name
-    if key is not None:
-        new_notification.key = key
+    new_notification.profile = profile
+    new_notification.key = key
+    new_notification.type = type_notification
     new_notification.save()
+
+
+def get_url_from_type(type_notification: str):
+    if type_notification == 'my_poll':
+        return '/result_poll/{}/'
+    elif type_notification == 'invite_command':
+        return '/invite/t/{}/'
+    elif type_notification == 'invite_company':
+        return '/invite/c/{}/'
+    elif type_notification == 'alien_poll':
+        return '/answer_poll/{}/'
+    return None
