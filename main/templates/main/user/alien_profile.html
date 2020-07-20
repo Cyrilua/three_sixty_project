@@ -3,13 +3,14 @@
 {% load static %}
 
 {% block sidebar-nav %}
+    {% include 'main/includes/menu.html' %}
 {% endblock %}
 
 {% block content-user %}
     {% if alien_profile %}
         <div class="profile">
             <div class="left-content rounded-block">
-                {% if photo and photo.url != '' and pho%}
+                {% if photo and photo.url != '' and pho %}
                     <img src="{{ photo.url }}" alt="" class="left-content-photo">
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
@@ -102,9 +103,9 @@
                         </div>
                     </div>
                     <div class="center-content-information-more">
-{#                        <div class="center-content-information-more-btn unselectable">#}
-{#                            <span class="center-content-information-more-btn-text">Показать подробную информацию</span>#}
-{#                        </div>#}
+                        {#                        <div class="center-content-information-more-btn unselectable">#}
+                        {#                            <span class="center-content-information-more-btn-text">Показать подробную информацию</span>#}
+                        {#                        </div>#}
                         <div class="center-content-information-more-details">
                             <div class="center-content-information-more-details-main">
                                 <div class="center-content-information-more-details-main-fullname">
@@ -140,6 +141,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+    {% else %}
+        <div class="" style="display: flex; justify-content: center; align-items: center; height: 60vh">
+            <h1 class="" style="color: red">Что-то пошло не так</h1>
         </div>
     {% endif %}
 
