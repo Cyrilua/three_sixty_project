@@ -3,7 +3,7 @@ $(function () {
     let moreDetails = $('.center-content-information-more-details');
     let sortable = $('.center-content-notifications-sort');
     let categories = $('.center-content-notifications-categories');
-    let categorySubstrate = $('.notifications-sort-substrate');
+    // let categorySubstrate = $('.notifications-sort-substrate');
     let name = $('.center-content-information-name');
     let aCompany = $('.center-content-information-company');
     let categoryEmpty = categories.children('.center-content-notifications-empty');
@@ -77,56 +77,56 @@ $(function () {
         }
     });
 
-    // Показ всплывающих окон
-    body.on('mouseenter', '._hint-up', function () {
-        $(this).parent().children('._hint-down').css({
-            'display': 'block',
-        });
-    });
-
-    // Скрытие всплывающих окон
-    body.on('mouseleave', '._hint-up', function () {
-        $(this).parent().children('._hint-down').css({
-            'display': 'none',
-        });
-    });
-
-    // Показ всплывающих окон
-    body.on('mouseenter', '._hint-up-wait', function () {
-        $(this).addClass('active-option');
-        $(this).parent()
-            .addClass('up')
-            .removeClass('down');
-        $(this).parent().children('._hint-down-wait').css({
-            'display': 'block',
-        });
-    });
-
-    // Показ всплывающих окон
-    body.on('mouseenter', '._hint-down-wait', function () {
-        $(this).parent()
-            .addClass('up')
-            .removeClass('down');
-        $(this).css({
-            'display': 'block',
-        });
-    });
-
-    // Скрытие всплывающих окон
-    body.on('mouseleave', '._hint-wait', function () {
-        let _ = $(this);
-        _
-            .addClass('down')
-            .removeClass('up');
-        setTimeout(function () {
-            if (_.hasClass('down')) {
-                _.children('._hint-up-wait').removeClass('active-option');
-                _.children('._hint-down-wait').css({
-                    'display': 'none',
-                });
-            }
-        }, 200)
-    });
+    // // Показ всплывающих окон
+    // body.on('mouseenter', '._hint-up', function () {
+    //     $(this).parent().children('._hint-down').css({
+    //         'display': 'block',
+    //     });
+    // });
+    //
+    // // Скрытие всплывающих окон
+    // body.on('mouseleave', '._hint-up', function () {
+    //     $(this).parent().children('._hint-down').css({
+    //         'display': 'none',
+    //     });
+    // });
+    //
+    // // Показ всплывающих окон (С ожиданием)
+    // body.on('mouseenter', '._hint-up-wait', function () {
+    //     $(this).addClass('active-option');
+    //     $(this).parent()
+    //         .addClass('up')
+    //         .removeClass('down');
+    //     $(this).parent().children('._hint-down-wait').css({
+    //         'display': 'block',
+    //     });
+    // });
+    //
+    // // Показ всплывающих окон (С ожиданием)
+    // body.on('mouseenter', '._hint-down-wait', function () {
+    //     $(this).parent()
+    //         .addClass('up')
+    //         .removeClass('down');
+    //     $(this).css({
+    //         'display': 'block',
+    //     });
+    // });
+    //
+    // // Скрытие всплывающих окон (С ожиданием)
+    // body.on('mouseleave', '._hint-wait', function () {
+    //     let _ = $(this);
+    //     _
+    //         .addClass('down')
+    //         .removeClass('up');
+    //     setTimeout(function () {
+    //         if (_.hasClass('down')) {
+    //             _.children('._hint-up-wait').removeClass('active-option');
+    //             _.children('._hint-down-wait').css({
+    //                 'display': 'none',
+    //             });
+    //         }
+    //     }, 200)
+    // });
 
     // Удаление уведомлений
     body.on('click', '#notification-actions-menu-item', function () {
