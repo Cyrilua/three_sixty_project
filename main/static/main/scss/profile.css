@@ -508,30 +508,5 @@
 .profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
   z-index: 100;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block {
-  width: 188px;
-  height: 140px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block .center-content-notifications-empty-block-img {
-  width: 82px;
-  height: 82px;
-}
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-empty .center-content-notifications-empty-substrate .center-content-notifications-empty-block .center-content-notifications-empty-block-text {
-  font-style: italic;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  color: #C4C4C4;
-}
 
 /*# sourceMappingURL=profile.css.map */

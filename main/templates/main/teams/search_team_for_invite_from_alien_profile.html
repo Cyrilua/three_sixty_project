@@ -8,7 +8,63 @@
 
 {% block content-user %}
 
-    <div class="search">Ппоиск команд для приглашения</div>
+    <div class="content">
+        <div class="search rounded-block">
+            <button class="search__button button-white">Готово</button>
+            <input type="text" class="search__input input-field" placeholder="Поиск по командам...">
+        </div>
+        <!-- /.search -->
+        <div class="result">
+            <div class="teams show">
+
+                <div class="team show" data-name="Крутая команда">
+                    <div class="team__content rounded-block">
+                        <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
+                        <div class="team__details">
+                            <div class="team__title">
+                                <a href="#" class="team__name">Крутая команда</a>
+                            </div>
+                            <span class="team__members">35 участников</span>
+                            <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
+                        </div>
+                        <button class="team__button button-white">Пригласить</button>
+                    </div>
+                </div>
+                <!-- /.team -->
+
+                <div class="team show" data-name="Крутая не команда 123456789qwertyuisdfghjkcvbnm,.">
+                    <div class="team__content rounded-block">
+                        <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
+                        <div class="team__details">
+                            <div class="team__title">
+                                <a href="#" class="team__name">Крутая не команда 123456789qwertyuisdfghjkcvbnm,.</a>
+                            </div>
+                            <span class="team__members">35 участников</span>
+                            <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
+                        </div>
+                        <button class="team__button button-white">Пригласить</button>
+                    </div>
+                </div>
+                <!-- /.team -->
+
+            </div>
+            <!-- /.teams -->
+
+
+            <div class="result__empty hide">
+                {% include 'main/includes/bad_search.html' with text="Нет доступных команд.<br>Создавайте команды, чтобы приглашать<br>в них пользователей" only %}
+            </div>
+            <!-- /.result_empty -->
+
+            <div class="result__not-find hide">
+                {% include 'main/includes/bad_search.html' with text="По вашему запросу<br>ничего не найдено" only %}
+            </div>
+            <!-- /.result__not-find -->
+
+        </div>
+        <!-- /.result -->
+    </div>
+    <!-- /.content -->
 
 {% endblock %}
 
@@ -19,8 +75,11 @@
 
 {% block scripts %}
     <script src="{% static 'main/js/scroll_top.js' %}"></script>
+    <script src="{% static 'main/js/search_team_for_invite_from_alien_profile.js' %}"></script>
 {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/css/scroll_top.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/search_team_for_invite_from_alien_profile.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
 {% endblock %}

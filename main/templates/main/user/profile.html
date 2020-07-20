@@ -287,7 +287,7 @@
                                             </div>
                                             <div class="notification-information-more">
                                                 От кого: <a href="{{ notif.more.url }}"
-                                                          class="notification-information-more-link">{{ notif.more.name }}</a>
+                                                            class="notification-information-more-link">{{ notif.more.name }}</a>
                                             </div>
                                             <div class="notification-information-about">
                                                 {{ notif.about }}
@@ -325,16 +325,17 @@
 
                         </div>
 
-                        <div class="center-content-notifications-empty rounded-block hide">
-                            <div class="center-content-notifications-empty-substrate">
-                                <div class="center-content-notifications-empty-block">
-                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
-                                         class="center-content-notifications-empty-block-img">
-                                    <div class="center-content-notifications-empty-block-text">
-                                        Сейчас уведомлений&nbsp;нет
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="center-content-notifications-empty hide">
+                            {#                            <div class="center-content-notifications-empty-substrate">#}
+                            {#                                <div class="center-content-notifications-empty-block">#}
+                            {#                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""#}
+                            {#                                         class="center-content-notifications-empty-block-img">#}
+                            {#                                    <div class="center-content-notifications-empty-block-text">#}
+                            {#                                        Сейчас уведомлений&nbsp;нет#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {% include 'main/includes/bad_search.html' with text="Сейчас<br>уведомлений нет" only %}
                         </div>
                     </div>
 
@@ -1092,16 +1093,17 @@
 
                         </div>
 
-                        <div class="center-content-notifications-empty rounded-block hide">
-                            <div class="center-content-notifications-empty-substrate">
-                                <div class="center-content-notifications-empty-block">
-                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""
-                                         class="center-content-notifications-empty-block-img">
-                                    <div class="center-content-notifications-empty-block-text">
-                                        Сейчас уведомлений&nbsp;нет
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="center-content-notifications-empty hide">
+                            {#                            <div class="center-content-notifications-empty-substrate">#}
+                            {#                                <div class="center-content-notifications-empty-block">#}
+                            {#                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""#}
+                            {#                                         class="center-content-notifications-empty-block-img">#}
+                            {#                                    <div class="center-content-notifications-empty-block-text">#}
+                            {#                                        Сейчас уведомлений&nbsp;нет#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {% include 'main/includes/bad_search.html' with text="Сейчас<br>уведомлений нет" only %}
                         </div>
                     </div>
 
@@ -1127,4 +1129,5 @@
     <link rel="stylesheet" href="{% static 'main/css/scroll_top.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/custom.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
 {% endblock %}
