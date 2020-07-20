@@ -54,17 +54,20 @@ def get_render_user_profile(request):
     if profile.position is not None:
         profile_data['position'] = profile.position
     try:
-        profile_data['birthdate'] = BirthDate.objects.get(profile=profile)
+        profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday
     except:
         pass
     try:
         profile_data['email'] = auth.get_user(request).email
     except:
         pass
+
+    print(profile_data['birthdate'])
+
     teams = []
     for team in profile.groups.all():
         teams.append({
-            'url': '/command/{}/'.format(team.id),
+            'url': '/team/{}/'.format(team.id),
             'name': team.name
         })
     if len(teams) != 0:
