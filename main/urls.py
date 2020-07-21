@@ -3,9 +3,10 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from .views import profile_views, user_views, teams_views, company_views, poll_views_old, questions_views, \
+from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
 from .views.poll_views import create_poll
+from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
 urlpatterns = [
@@ -51,11 +52,11 @@ urlpatterns = [
                        name='password_reset_complete'),
 
                   # Просмотр профиля
-                  path('<int:profile_id>/', profile_views.render_profile.profile_view, name='profile'),
+                  path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
-                  path('edit/', profile_views.edit_profile.edit_profile, name='edit'),
+                  path('edit/', edit_profile.edit_profile, name='edit'),
                   # Загрузка аватарки
-                  path('upload_photo/', profile_views.edit_profile.upload_profile_photo, name='upload_photo'),
+                  path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
@@ -105,11 +106,6 @@ urlpatterns = [
                   path('search_hr/', company_views.search_hr, name='search_hr_and_redirect_to_add_method'),
                   # Контроллер, на который ссылается поиск HR
                   path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
-
-                  # Поиск вопроса среди имеющихся
-                  path('questions_search/', questions_views.find_question, name='questions_search'),
-                  # Добавление нового вопроса
-                  path('add_new_question', questions_views.add_new_question, name="add_new_question"),
 
                   # Создание опроса
                   path('create_poll/', poll_views_old.create_pool, name='create_pool'),

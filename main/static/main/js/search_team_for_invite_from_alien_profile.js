@@ -73,6 +73,7 @@ $(function () {
                 btn.prop({
                     'disabled': true,
                 });
+                console.log('Все норм');
             },
             statusCode: {
                 400: function () {

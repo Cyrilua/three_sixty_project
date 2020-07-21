@@ -80,7 +80,7 @@ def connect_to_team_to_link(request, key):
         return redirect("/team/{}/".format(group.id))
 
 
-def team_user_view(request, group_id):
+def team_user_view(request, group_id: int) -> render:
     args = {}
 
     if auth.get_user(request).is_anonymous:
@@ -106,7 +106,7 @@ def team_user_view(request, group_id):
     return render(request, 'main/teams/old/team_view.html', args)
 
 
-def search_team_for_invite(request, profile_id):
+def search_team_for_invite(request, profile_id: int) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     try:
@@ -123,10 +123,15 @@ def search_team_for_invite(request, profile_id):
         'title': "Пригласить в команду",
         'teams': build_teams(commands)
     }
+    print('i am in here')
+    if request.is_ajax():
+        print('I am in AJAX')
+    if request.method == "POST":
+        print('I am in POST')
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
 
 
-def build_teams(commands):
+def build_teams(commands: list) -> list:
     result = []
     for team in commands:
         users = team.profile_set.all()
@@ -134,6 +139,8 @@ def build_teams(commands):
             'name': team.name,
             'about': team.description,
             'members': len(users),
-            'url': 'team/{}/'.format(team.id)
+            'url': '/team/{}/'.format(team.id),
+            'url_send_invite': '/invite/t/{}/'.format(team.key)
         }
         result.append(collected_team)
+    return result
