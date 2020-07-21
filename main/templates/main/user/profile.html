@@ -64,8 +64,8 @@
                         <div class="center-content-information-positions">
                             <h2 class="center-content-information-positions-title">Должности</h2>
                             <div class="center-content-information-positions-data">
-                                {% if profile.position %}
-                                    {% for position in profile.position %}
+                                {% if profile.positions %}
+                                    {% for position in profile.positions %}
                                         <div class="center-content-information-position _hint">
                                             <div class="role _hint-up">
                                                 {{ position }}
@@ -88,8 +88,8 @@
                         <div class="center-content-information-platforms">
                             <h2 class="center-content-information-platforms-title">Отделы</h2>
                             <div class="center-content-information-platforms-data">
-                                {% if profile.platform %}
-                                    {% for platform in profile.platform %}
+                                {% if profile.platforms %}
+                                    {% for platform in profile.platforms %}
                                         <div class="center-content-information-platform _hint">
                                             <div class="role _hint-up">
                                                 {{ platform }}
