@@ -3,9 +3,10 @@ from django.conf.urls.static import static
 from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
-from .views import profile_views, user_views, teams_views, company_views, poll_views_old, questions_views, \
+from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
 from .views.poll_views import create_poll
+from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
 urlpatterns = [
@@ -51,26 +52,24 @@ urlpatterns = [
                        name='password_reset_complete'),
 
                   # Просмотр профиля
-                  path('<int:profile_id>/', profile_views.profile_view, name='profile'),
+                  path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
-                  path('edit/', profile_views.edit_profile, name='edit'),
+                  path('edit/', edit_profile.edit_profile, name='edit'),
                   # Загрузка аватарки
-                  path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
-                  # Просмотр других пользователей
-                  # path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
-                  # Поиск пользователей
-                  path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
+                  path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
-                  # Создание группы команды
+                  # Создание команды
                   path('create_command/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
                   path('connect_to_command/', teams_views.connect_to_team_to_key, name='connect_to_group'),
                   # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
                   # Поиск команды для присоединения в нее
-                  path('<int:user_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+                  path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+                  # Отправить уведомление о приглашении
+                  path('<int:profile_id>/invite/<int:team_id>/', teams_views.send_notification_profile),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
@@ -110,11 +109,6 @@ urlpatterns = [
                   # Контроллер, на который ссылается поиск HR
                   path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
 
-                  # Поиск вопроса среди имеющихся
-                  path('questions_search/', questions_views.find_question, name='questions_search'),
-                  # Добавление нового вопроса
-                  path('add_new_question', questions_views.add_new_question, name="add_new_question"),
-
                   # Создание опроса
                   path('create_poll/', poll_views_old.create_pool, name='create_pool'),
                   # Добавление вопросов к опросу
@@ -135,8 +129,8 @@ urlpatterns = [
                   path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),
 
-                  # Уведомления
-                  path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
+                  # Выполнение уведомления
+                  path('notifications/<int:notification_id>/', notifications_views.redirect_from_notification),
 
                   # Выбор участников опроса для компании
                   path('respondent_choice_c/', poll_views_old.respondent_choice_from_company,
@@ -150,9 +144,6 @@ urlpatterns = [
                   path('answer_poll/<int:poll_id>/', poll_views_old.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views_old.result_view, name='result_poll'),
-                  # Поик цели опроса
-                  path('search_target_poll/<int:poll_id>/', auxiliary_general_methods.find_target,
-                       name='search_target'),
                   # Выбор цели опроса
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views_old.select_target,
                        name='select_target_poll'),
@@ -172,6 +163,6 @@ urlpatterns = [
 
 
                  ############ Only for debug ###############
-                 path('test/', test.create_notifications)
+                 path('test/', test.test_ajax_request)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

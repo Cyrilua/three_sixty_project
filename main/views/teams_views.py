@@ -1,19 +1,19 @@
 import uuid
 
-from django.shortcuts import redirect
-from django.shortcuts import render
-
 from main.forms import TeamForm
 from main.models import Group
-from main.views.auxiliary_general_methods import *
+from .auxiliary_general_methods import *
+from . import notifications_views
+
+from django.http import JsonResponse
 
 
-def create_team(request):
+def create_team(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     args = {
-        'title': 'Создание новой группы',
+        'title': 'Создание новой команды',
         'team_form': TeamForm()
     }
 
@@ -35,7 +35,7 @@ def create_team(request):
     return render(request, 'main/teams/old/add_new_team.html', args)
 
 
-def connect_to_team_to_key(request):
+def connect_to_team_to_key(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
@@ -59,11 +59,10 @@ def connect_to_team_to_key(request):
     return render(request, 'main/teams/old/connect_to_team.html', args)
 
 
-def connect_to_team_to_link(request, key):
+def connect_to_team_to_link(request, key: str) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    args = {'title': 'Присоединиться к комманде'}
     profile = get_user_profile(request)
 
     try:
@@ -71,16 +70,14 @@ def connect_to_team_to_link(request, key):
         if group in profile.groups.all():
             return redirect("/team/{}/".format(group.id))
     except:
-        return render(request, 'main/old/error_old.html', {
-            'error': "Этой группы не существует или ссылка введена неправильно"
-        })
+        return redirect('/')
     else:
         profile.groups.add(group)
         profile.save()
         return redirect("/team/{}/".format(group.id))
 
 
-def team_user_view(request, group_id):
+def team_user_view(request, group_id: int) -> render:
     args = {}
 
     if auth.get_user(request).is_anonymous:
@@ -106,5 +103,55 @@ def team_user_view(request, group_id):
     return render(request, 'main/teams/old/team_view.html', args)
 
 
-def search_team_for_invite(request, user_id):
-    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', {})
+def search_team_for_invite(request, profile_id: int) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    try:
+        alien_profile = Profile.objects.get(id=profile_id)
+    except:
+        return redirect('/')
+    alien_commands = alien_profile.groups.all()
+
+    user = auth.get_user(request)
+    profile = get_user_profile(request)
+    commands = filter(lambda x: x not in alien_commands, profile.groups.all())
+    if not profile_is_owner(request):
+        commands = filter(lambda x: x.owner.id == user.id, commands)
+    args = {
+        'title': "Пригласить в команду",
+        'teams': build_teams(commands, profile_id)
+    }
+    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
+
+
+def build_teams(commands: filter, alien_profile_id: int) -> list:
+    result = []
+    for team in commands:
+        users = team.profile_set.all()
+        collected_team = {
+            'name': team.name,
+            'about': team.description,
+            'members': len(users),
+            'url': '/team/{}/'.format(team.id),
+            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id)
+        }
+        result.append(collected_team)
+    return result
+
+
+def send_notification_profile(request, profile_id: int, team_id: int) -> JsonResponse:
+    try:
+        alien_profile = Profile.objects.get(id=profile_id)
+        command = Group.objects.get(id=team_id)
+    except:
+        return JsonResponse({}, status=400)
+
+    profile = get_user_profile(request)
+
+    notifications_views.create_notifications(profile=alien_profile,
+                                             name=command.name,
+                                             type_notification='invite_command',
+                                             key=command.key,
+                                             from_profile=profile)
+
+    return JsonResponse({}, status=200)
