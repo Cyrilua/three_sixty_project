@@ -51,10 +51,9 @@ def build_profile_data(user, profile):
             'name': company.name,
         }
 
-        if profile.platform is not None:
-            profile_data['platform'] = profile.platform
-        if profile.position is not None:
-            profile_data['position'] = profile.position
+        profile_data['platforms'] = profile.platform.all()
+        profile_data['positions'] = profile.position.all()
+        print(profile_data['positions'])
 
     try:
         profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday
