@@ -80,27 +80,6 @@ def connect_to_team_to_link(request, key):
         return redirect("/team/{}/".format(group.id))
 
 
-def teams_view(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    profile = get_user_profile(request)
-    teams = profile.groups.all()
-    args = {
-        'title': "Круги общения",
-        'teams': teams,
-        'profile': profile,
-    }
-
-    try:
-        photo = profile.profilephoto.photo
-        args['photo'] = photo
-        args['photo_height'] = get_photo_height(photo.width, photo.height)
-    except:
-        args['photo'] = None
-
-    return render(request, 'main/user/old/communications.html', args)
-
-
 def team_user_view(request, group_id):
     args = {}
 
@@ -112,7 +91,6 @@ def team_user_view(request, group_id):
         if profile not in group.profile_set.all():
             raise Exception()
     except:
-        #args['error'] = "Данной группы не существует"
         return redirect('/')
 
     args['users'] = group.profile_set.all()
@@ -128,5 +106,5 @@ def team_user_view(request, group_id):
     return render(request, 'main/teams/old/team_view.html', args)
 
 
-def search_team_for_invite(request):
+def search_team_for_invite(request, user_id):
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', {})

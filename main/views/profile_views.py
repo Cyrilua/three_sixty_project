@@ -205,7 +205,6 @@ def get_other_profile_render(request, profile_id):
         'alien_profile': profile_data[0],
         'roles': profile_data[1],
     }
-    print(args)
     return render(request, "main/user/alien_profile.html", args)
 
 
