@@ -2,6 +2,7 @@ import datetime
 
 from main.models import BirthDate, Notifications, Poll, Company, Group
 from main.views.auxiliary_general_methods import *
+from main.views import notifications_views
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -28,7 +29,8 @@ def get_render_user_profile(request):
         'photo': photo,
         'profile': profile_data[0],
         'roles': profile_data[1],
-        'notifications': build_notifications(profile)
+        #'notifications': build_notifications(profile)
+        'notifications': notifications_views.build_notifications(profile)
     }
     return render(request, 'main/user/profile.html', args)
 
@@ -93,98 +95,6 @@ def get_user_teams(profile):
             'name': team.name
         })
     return teams
-
-
-def build_notifications(profile):
-    notifications = Notifications.objects.filter(profile=profile)
-    my_polls = []
-    polls = []
-    invites = []
-    for notif in notifications:
-        if notif.type == 'my_poll':
-            try:
-                poll = Poll.objects.get(id=notif.key)
-            except:
-                continue
-            collected_notification = {
-                'url': '/notifications/{}/'.format(notif.id),
-                'date': notif.date,
-                'title': notif.name,
-                'more': {
-                    'name': "{} {} {}".format(notif.on_profile.surname, notif.on_profile.name,
-                                              notif.on_profile.patronymic),
-                    'url': '/{}/'.format(notif.on_profile.id)
-                },
-                'about': '{} ответов'.format(poll.count_passed),
-                'complited': notif.completed
-            }
-            my_polls.append(collected_notification)
-
-        elif notif.type == 'invite_company':
-            try:
-                company = Company.objects.get(key=notif.key)
-            except:
-                continue
-            collected_notification = {
-                'url': '/notifications/{}/'.format(notif.id),
-                'date': notif.date,
-                'title': {
-                    'name': notif.name,
-                    'url': '/company_view/{}/'.format(company.id),
-                },
-                'more': {
-                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
-                                              notif.from_profile.patronymic),
-                    'url': '/{}/'.format(notif.from_profile.id)
-                },
-                'about': company.description,
-                'complited': notif.completed
-            }
-            invites.append(collected_notification)
-        elif notif.type == 'invite_command':
-            try:
-                command = Group.objects.get(key=notif.key)
-            except:
-                continue
-            collected_notification = {
-                'url': '/notifications/{}/'.format(notif.id),
-                'date': notif.date,
-                'title': {
-                    'name': notif.name,
-                    'url': '/company_view/{}/'.format(command.id),
-                },
-                'more': {
-                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
-                                              notif.from_profile.patronymic),
-                    'url': '/{}/'.format(notif.from_profile.id)
-                },
-                'about': command.description,
-                'complited': notif.completed
-            }
-            invites.append(collected_notification)
-        elif notif.type == 'alien_poll':
-            try:
-                poll = Poll.objects.get(id=notif.key)
-            except:
-                continue
-            collected_notification = {
-                'url': notif.url.format(notif.key),
-                'date': notif.date,
-                'title': notif.name,
-                'more': {
-                    'name': "{} {} {}".format(notif.from_profile.surname, notif.from_profile.name,
-                                              notif.from_profile.patronymic),
-                    'url': '/{}/'.format(notif.from_profile.id)
-                },
-                'about': poll.description,
-                'complited': notif.completed
-            }
-            polls.append(collected_notification)
-        return {
-            'polls': polls,
-            'my_polls': my_polls,
-            'invites': invites
-        }
 
 
 def get_other_profile_render(request, profile_id):
