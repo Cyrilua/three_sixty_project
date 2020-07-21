@@ -1,5 +1,6 @@
 $(function () {
-    let body = $('body');
+    const body = $('body');
+    const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     // let search = $('.search__input');
     let result = $('.result');
     let resultTeams = result.children('.teams');
@@ -56,5 +57,31 @@ $(function () {
                 }
             }
         }
+    });
+
+    // Отправка приглашения
+    body.on('click', '.button-href-async', function () {
+        let btn = $(this);
+        let href = btn.attr('data-href');
+        $.ajax({
+            url: href,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                btn.prop({
+                    'disabled': true,
+                });
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            }
+        })
     });
 });
