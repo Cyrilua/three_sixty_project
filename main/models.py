@@ -105,6 +105,7 @@ class Notifications (models.Model):
     on_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='on_profile', null=True)
     from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='from_profile', null=True)
     date = models.DateField(null=True)
+    completed = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:
