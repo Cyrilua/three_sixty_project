@@ -272,5 +272,5 @@ def edit_profile(request):
             user.email = new_email
             user.save()
         return redirect('/edit/')
-    return render(request, 'main/user/old/edit_profile.html', args)
+    return render(request, 'main/user/edit.html', args)
 
