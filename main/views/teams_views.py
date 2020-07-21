@@ -106,5 +106,34 @@ def team_user_view(request, group_id):
     return render(request, 'main/teams/old/team_view.html', args)
 
 
-def search_team_for_invite(request, user_id):
-    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', {})
+def search_team_for_invite(request, profile_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    try:
+        alien_profile = Profile.objects.get(id=profile_id)
+    except:
+        return redirect('/')
+
+    user = auth.get_user(request)
+    profile = get_user_profile(request)
+    commands = profile.groups.all()
+    if not profile_is_owner(request):
+        commands = filter(lambda x: x.owner.id == user.id, commands)
+    args = {
+        'title': "Пригласить в команду",
+        'teams': build_teams(commands)
+    }
+    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
+
+
+def build_teams(commands):
+    result = []
+    for team in commands:
+        users = team.profile_set.all()
+        collected_team = {
+            'name': team.name,
+            'about': team.description,
+            'members': len(users),
+            'url': 'team/{}/'.format(team.id)
+        }
+        result.append(collected_team)

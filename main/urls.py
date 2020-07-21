@@ -56,21 +56,17 @@ urlpatterns = [
                   path('edit/', profile_views.edit_profile, name='edit'),
                   # Загрузка аватарки
                   path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
-                  # Просмотр других пользователей
-                  # path('other_user/<int:profile_id>/', profile_views.other_profile_view, name='other_user_view'),
-                  # Поиск пользователей
-                  path('search_profile/', auxiliary_general_methods.find_user, name='search_profile'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
-                  # Создание группы команды
+                  # Создание команды
                   path('create_command/', teams_views.create_team, name='create_group'),
                   # Присоединение к команде (по ключу)
                   path('connect_to_command/', teams_views.connect_to_team_to_key, name='connect_to_group'),
                   # Присоединение к команде (по ссылке)
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
                   # Поиск команды для присоединения в нее
-                  path('<int:user_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+                  path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
@@ -150,9 +146,6 @@ urlpatterns = [
                   path('answer_poll/<int:poll_id>/', poll_views_old.answer_the_poll, name='answer_the_poll'),
                   # Результаты опроса
                   path('result_poll/<int:poll_id>/', poll_views_old.result_view, name='result_poll'),
-                  # Поик цели опроса
-                  path('search_target_poll/<int:poll_id>/', auxiliary_general_methods.find_target,
-                       name='search_target'),
                   # Выбор цели опроса
                   path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views_old.select_target,
                        name='select_target_poll'),
