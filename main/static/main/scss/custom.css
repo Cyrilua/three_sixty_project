@@ -1,4 +1,17 @@
 @charset "UTF-8";
+.unselectable, a {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */
+}
+
 * {
   font-family: "Roboto", sans-serif;
   padding: 0;
@@ -23,6 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: #2269D5;
   text-decoration-line: none;
+  cursor: pointer;
 }
 a:hover {
   text-decoration-line: underline;
@@ -572,19 +586,6 @@ button {
   border-radius: 5px;
   padding: 30px;
   height: auto;
-}
-
-.unselectable {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently not supported by any browser */
 }
 
 .substrate {
