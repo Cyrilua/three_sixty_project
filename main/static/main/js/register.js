@@ -88,7 +88,10 @@ $(function () {
                         }
                         checkBtnRegister(required);
                         checkBtnNext(required);
-                    }
+                    },
+                    error: function () {
+                        console.log('Что - то пошло не так :(');
+                    },
                 });
             },
         });
@@ -224,7 +227,10 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -256,7 +262,10 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -284,7 +293,10 @@ function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -310,7 +322,10 @@ function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -337,7 +352,10 @@ function ajaxForName(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -364,7 +382,10 @@ function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -391,7 +412,10 @@ function ajaxForPatronymic(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
@@ -417,7 +441,10 @@ function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
             }
             checkBtnRegister(required);
             // checkBtnNext(required);
-        }
+        },
+        error: function () {
+            console.log('Что - то пошло не так :(');
+        },
     });
 }
 
