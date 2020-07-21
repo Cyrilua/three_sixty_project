@@ -4,8 +4,20 @@ $(function () {
     let result = $('.result');
     let resultTeams = result.children('.teams');
     let teams = resultTeams.children('.team');
-    // let resultEmpty = result.children('.result__empty');
+    let resultEmpty = result.children('.result__empty');
     let resultNotFind = result.children('.result__not-find');
+
+    // При загрузке
+    if (teams.length < 1) {
+        if (resultTeams.hasClass('show')) {
+            resultTeams.removeClass('show');
+            resultTeams.addClass('hide');
+        }
+        if (resultEmpty.hasClass('hide')) {
+            resultEmpty.removeClass('hide');
+            resultEmpty.addClass('show');
+        }
+    }
 
     // Поиск по названию
     body.on('input', '.search__input', function () {
