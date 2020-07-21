@@ -118,7 +118,8 @@ def build_notifications(profile):
                                               notif.on_profile.patronymic),
                     'url': '/{}/'.format(notif.on_profile.id)
                 },
-                'about': '{} ответов'.format(poll.count_passed)
+                'about': '{} ответов'.format(poll.count_passed),
+                'complited': notif.complited
             }
             my_polls.append(collected_notification)
 
@@ -139,7 +140,8 @@ def build_notifications(profile):
                                               notif.from_profile.patronymic),
                     'url': '/{}/'.format(notif.from_profile.id)
                 },
-                'about': company.description
+                'about': company.description,
+                'complited': notif.complited
             }
             invites.append(collected_notification)
         elif notif.type == 'invite_command':
@@ -159,7 +161,8 @@ def build_notifications(profile):
                                               notif.from_profile.patronymic),
                     'url': '/{}/'.format(notif.from_profile.id)
                 },
-                'about': command.description
+                'about': command.description,
+                'complited': notif.complited
             }
             invites.append(collected_notification)
         elif notif.type == 'alien_poll':
@@ -176,7 +179,8 @@ def build_notifications(profile):
                                               notif.from_profile.patronymic),
                     'url': '/{}/'.format(notif.from_profile.id)
                 },
-                'about': poll.description
+                'about': poll.description,
+                'complited': notif.complited
             }
             polls.append(collected_notification)
         return {

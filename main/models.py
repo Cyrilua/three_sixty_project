@@ -202,6 +202,7 @@ class Poll(models.Model):
     respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
+    complited = models.BooleanField(default=False)
     objects = models.Manager()
     #start_date = models.DateField()
     #end_date = models.DateField()
