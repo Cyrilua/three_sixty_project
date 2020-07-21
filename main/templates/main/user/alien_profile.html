@@ -60,8 +60,8 @@
                         <div class="center-content-information-positions">
                             <h2 class="center-content-information-positions-title">Должности</h2>
                             <div class="center-content-information-positions-data">
-                                {% if alien_profile.position %}
-                                    {% for position in alien_profile.position %}
+                                {% if alien_profile.positions %}
+                                    {% for position in alien_profile.positions %}
                                         <div class="center-content-information-position _hint">
                                             <div class="role _hint-up">
                                                 {{ position }}
@@ -84,8 +84,8 @@
                         <div class="center-content-information-platforms">
                             <h2 class="center-content-information-platforms-title">Отделы</h2>
                             <div class="center-content-information-platforms-data">
-                                {% if alien_profile.platform %}
-                                    {% for platform in alien_profile.platform %}
+                                {% if alien_profile.platforms %}
+                                    {% for platform in alien_profile.platforms %}
                                         <div class="center-content-information-platform _hint">
                                             <div class="role _hint-up">
                                                 {{ platform }}
