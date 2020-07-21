@@ -61,18 +61,20 @@
                             <h2 class="center-content-information-positions-title">Должности</h2>
                             <div class="center-content-information-positions-data">
                                 {% if alien_profile.position %}
-                                    <div class="center-content-information-position _hint">
-                                        <div class="role _hint-up">
-                                            {{ alien_profile.position }}
-                                        </div>
-                                        <div class="_hint-down">
-                                            <div class="_hint-down-block">
-                                                <div class="position-information role-information">
-                                                    Должность
+                                    {% for position in alien_profile.position %}
+                                        <div class="center-content-information-position _hint">
+                                            <div class="role _hint-up">
+                                                {{ position }}
+                                            </div>
+                                            <div class="_hint-down">
+                                                <div class="_hint-down-block">
+                                                    <div class="position-information role-information">
+                                                        Должность
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {% endfor %}
                                 {% else %}
                                     <div class="center-content-information-position-empty">Нет должностей</div>
                                 {% endif %}
@@ -83,18 +85,20 @@
                             <h2 class="center-content-information-platforms-title">Отделы</h2>
                             <div class="center-content-information-platforms-data">
                                 {% if alien_profile.platform %}
-                                    <div class="center-content-information-platform _hint">
-                                        <div class="role _hint-up">
-                                            {{ alien_profile.platform }}
-                                        </div>
-                                        <div class="_hint-down">
-                                            <div class="_hint-down-block">
-                                                <div class="platform-information role-information">
-                                                    Отдел
+                                    {% for platform in alien_profile.platform %}
+                                        <div class="center-content-information-platform _hint">
+                                            <div class="role _hint-up">
+                                                {{ platform }}
+                                            </div>
+                                            <div class="_hint-down">
+                                                <div class="_hint-down-block">
+                                                    <div class="platform-information role-information">
+                                                        Отдел
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {% endfor %}
                                 {% else %}
                                     <div class="center-content-information-platform-empty">Нет должностей</div>
                                 {% endif %}
