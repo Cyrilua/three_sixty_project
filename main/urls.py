@@ -68,6 +68,8 @@ urlpatterns = [
                   path('invite/t/<str:key>/', teams_views.connect_to_team_to_link, name='connect_to_team_to_link'),
                   # Поиск команды для присоединения в нее
                   path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+                  # Отправить уведомление о приглашении
+                  path('<int:profile_id>/invite/<int:team_id>/', teams_views.send_notification_profile),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
@@ -127,8 +129,8 @@ urlpatterns = [
                   path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),
 
-                  # Уведомления
-                  path('notifications/', notifications_views.redirect_from_notifications, name='notifications'),
+                  # Выполнение уведомления
+                  path('notifications/<int:notification_id>/', notifications_views.redirect_from_notification),
 
                   # Выбор участников опроса для компании
                   path('respondent_choice_c/', poll_views_old.respondent_choice_from_company,
@@ -161,6 +163,6 @@ urlpatterns = [
 
 
                  ############ Only for debug ###############
-                 path('test/', test.create_notifications)
+                 path('test/', test.test_ajax_request)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

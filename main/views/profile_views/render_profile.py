@@ -107,7 +107,7 @@ def build_notifications(profile):
             except:
                 continue
             collected_notification = {
-                'url': notif.url.format(notif.key),
+                'url': '/notifications/{}/'.format(notif.id),
                 'date': notif.date,
                 'title': notif.name,
                 'more': {
@@ -126,7 +126,7 @@ def build_notifications(profile):
             except:
                 continue
             collected_notification = {
-                'url': notif.url.format(notif.key),
+                'url': '/notifications/{}/'.format(notif.id),
                 'date': notif.date,
                 'title': {
                     'name': notif.name,
@@ -147,7 +147,7 @@ def build_notifications(profile):
             except:
                 continue
             collected_notification = {
-                'url': notif.url.format(notif.key),
+                'url': '/notifications/{}/'.format(notif.id),
                 'date': notif.date,
                 'title': {
                     'name': notif.name,

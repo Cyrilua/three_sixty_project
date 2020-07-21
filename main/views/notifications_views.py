@@ -2,18 +2,25 @@ from main.models import Notifications
 from main.views.auxiliary_general_methods import *
 from datetime import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 
-def redirect_from_notifications(request):
+
+def redirect_from_notification(request, notification_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    profile = get_user_profile(request)
-    list_notifications = Notifications.objects.filter(profile=profile)
-    args = {
-        'title': 'Уведомления',
-        'notifications': build_notifications_list(list_notifications)
-    }
-    return render(request, 'main/notifications.html', args)
+    try:
+        notification = Notifications.objects.get(id=notification_id)
+    except ObjectDoesNotExist:
+        return redirect('/')
+
+    if get_user_profile(request).id != notification.profile.id:
+        return redirect('/')
+
+    url = notification.url.format(notification.key)
+    notification.completed = True
+    notification.save()
+    return redirect(url)
 
 
 def build_notifications_list(list_notifications):
@@ -30,7 +37,8 @@ def build_notifications_list(list_notifications):
     return result_list
 
 
-def create_notifications(profile, name: str, type_notification: str, key=None, from_profile=None, on_profile=None):
+def create_notifications(profile: Profile, name: str, type_notification: str, key=None,
+                         from_profile=None, on_profile=None) -> None:
     new_notification = Notifications()
     new_notification.url = get_url_from_type(type_notification)
     new_notification.date = datetime.today()
