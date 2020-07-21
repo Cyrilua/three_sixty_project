@@ -51,11 +51,11 @@ urlpatterns = [
                        name='password_reset_complete'),
 
                   # Просмотр профиля
-                  path('<int:profile_id>/', profile_views.profile_view, name='profile'),
+                  path('<int:profile_id>/', profile_views.render_profile.profile_view, name='profile'),
                   # Редактирование профиля
-                  path('edit/', profile_views.edit_profile, name='edit'),
+                  path('edit/', profile_views.edit_profile.edit_profile, name='edit'),
                   # Загрузка аватарки
-                  path('upload_photo/', profile_views.upload_profile_photo, name='upload_photo'),
+                  path('upload_photo/', profile_views.edit_profile.upload_profile_photo, name='upload_photo'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),

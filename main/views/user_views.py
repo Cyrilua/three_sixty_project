@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 
-from main.views.profile_views import get_user_profile
+from main.views.profile_views_old import get_user_profile
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
 from main.models import BirthDate
 
