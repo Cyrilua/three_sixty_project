@@ -740,7 +740,8 @@ button {
   background-color: transparent;
 }
 
-.hide {
+.hide,
+.hide * {
   display: none;
 }
 
