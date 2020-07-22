@@ -586,8 +586,10 @@ button {
 // Roles
 
 .role {
-  display: table-cell;
-  vertical-align: middle;
+  //display: table-cell;
+  //vertical-align: middle;
+  display: flex;
+  align-items: center;
   padding: 0 8px;
   height: 22px;
   border: 1px solid #595757;
@@ -654,6 +656,7 @@ button {
   position: absolute;
   left: calc(264px / -2 + 50%);
   top: calc(100% + 9px);
+  z-index: 500;
 
   &::before {
     content: '';
@@ -700,14 +703,16 @@ button {
 // Hint
 
 ._hint,
-._hint-wait {
+._hint-wait,
+._hint-click {
 
   ._hint-up-wait {
     cursor: pointer;
   }
 
   ._hint-down,
-  ._hint-down-wait {
+  ._hint-down-wait,
+  ._hint-down-click{
     display: none;
     position: relative;
 
@@ -744,3 +749,40 @@ button {
 }
 
 // !Other!
+
+// cross-in-circle
+
+.cross-in-circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+
+  .circle {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #000000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .line-1,
+    .line-2 {
+      width: 2px;
+      height: 10px;
+      background-color: #000000;
+
+    }
+
+    .line-1 {
+      transform: rotate(0deg);
+
+      .line-2 {
+        transform: rotate(-90deg);
+
+      }
+    }
+  }
+}
+
+// !cross-in-circle!

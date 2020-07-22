@@ -105,6 +105,7 @@
 
         .positions {
           border-right: 1px solid #E5E5E5;
+          padding-right: 30px;
         }
 
         .platforms {
@@ -130,6 +131,135 @@
             .position, .platform {
               margin-right: 5px;
               margin-bottom: 4px;
+
+              .role {
+
+                &:hover .platform__remove,
+                &:hover .position__remove, {
+
+                  .circle {
+                    border-color: #000000;
+                  }
+
+                  .line-1,
+                  .line-2 {
+                    background-color: #000000;
+                  }
+                }
+
+                .platform__remove,
+                .position__remove {
+                  background-color: #fafafa;
+                  width: 14px;
+                  height: 14px;
+                  margin-right: 6px;
+                  border-radius: 50%;
+                  transform: rotate(45deg);
+                  cursor: pointer;
+
+                  .circle {
+                    border-color: #595757;
+                  }
+
+                  .line-1,
+                  .line-2 {
+                    background-color: #595757;
+                  }
+                }
+              }
+            }
+
+            .position__substrate,
+            .platform__substrate {
+              height: 22px;
+              display: flex;
+              align-items: center;
+              margin-bottom: 4px;
+
+              .position__add,
+              .platform__add {
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 310;
+              }
+
+              .add__menu {
+                position: absolute;
+                left: -97px;
+                top: 16px;
+                z-index: 300;
+
+                &::before {
+                  content: '';
+                  top: -18px;
+                  right: 81px;
+                  position: absolute;
+                  border: 9px solid transparent;
+                  border-bottom: 9px solid #E5E5E5;
+                }
+
+                &::after {
+                  content: '';
+                  top: -16px;
+                  right: 81px;
+                  position: absolute;
+                  border: 9px solid transparent;
+                  border-bottom: 9px solid #FFFFFF;
+                }
+
+                .menu {
+                  background-color: #FFFFFF;
+                  width: 180px;
+                  min-height: calc(2px + 40px);
+                  height: auto;
+                  max-height: calc(2px + 40px + 41px * 4);
+                  border: 1px solid #E5E5E5;
+                  border-radius: 5px;
+                  overflow-y: auto;
+                  overflow-x: hidden;
+
+                  .menu__item {
+                    height: 41px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    &:last-of-type {
+                      height: 40px;
+                    }
+
+                    &:last-of-type .item__line {
+                      display: none;
+                    }
+
+                    .item__block {
+                      height: 30px;
+                      padding-left: 8px;
+                      padding-right: 8px;
+                      font-style: normal;
+                      font-weight: normal;
+                      font-size: 14px;
+                      line-height: 16px;
+                      color: #000000;
+                      margin-top: 5px;
+                      display: flex;
+                      align-items: center;
+                      cursor: pointer;
+
+                      &:hover {
+                        background-color: #F0F1F6;
+                      }
+                    }
+
+                    .item__line {
+                      height: 1px;
+                      width: 90%;
+                      background-color: #E5E5E5;
+                      margin: 5px auto 0;
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -252,18 +382,21 @@
               max-width: 300px;
               flex-direction: column;
 
-              .setting__value {
+              .setting__substrate {
                 height: 48px;
                 display: flex;
                 align-items: center;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                font-size: 18px;
-                line-height: 21px;
-                color: #595757;
-                cursor: default;
                 margin-bottom: 5px;
+
+                .setting__value {
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  font-size: 18px;
+                  line-height: 21px;
+                  color: #595757;
+                  cursor: default;
+                }
               }
 
               .setting__email {

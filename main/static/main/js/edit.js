@@ -1,7 +1,11 @@
 $(function () {
+    // let add = $('._hint-click');
+    // let addUp = add.children('._hint-up-click');
+    // let addDown = add.children('._hint-down-click');
     let body = $('body');
     let name = $('.info__name');
     let aCompany = $('.info__company');
+    let openAdd;
 
     // Расположеие ссылки на компанию возле имени
     $(function () {
@@ -33,5 +37,74 @@ $(function () {
         } else {
             throw new Error('Invalid attributes');
         }
+    });
+
+    // Открыть меню (Добавить)
+    body.on('click', '._hint-up-click', function () {
+        let addUp = $(this.closest('._hint-click'));
+        let addDown = $(addUp).children('._hint-down-click');
+        addUp.toggleClass('active');
+        addDown.toggle();
+        openAdd = $(this).parent();
+    });
+
+    // Скрыть меню (Добавить)
+    body.on('mouseup', function (el) {
+        let _ = openAdd;
+        if ($(_).children('._hint-down-click').css('display') !== 'none') {
+            if (el.target.closest('._hint-up-click') !== null &&
+                (el.target.closest('.position__add') !== null && ($(_).children('._hint-up-click')).hasClass('position__add')) ||
+                (el.target.closest('.platform__add') !== null && ($(_).children('._hint-up-click')).hasClass('platform__add'))) {
+            } else if (el.target.closest('._hint-down-click') === null || el.target.classList.contains('item__block')) {
+                $(_).toggleClass('active');
+                $(_).children('._hint-down-click').toggle();
+            }
+        }
+    });
+
+    // Добавление должностей и отделов
+    body.on('click', '.item__block', function (el) {
+        let typeSubstrate = el.target.closest('._hint-click');
+        let type;
+        if ($(typeSubstrate).hasClass('platform__substrate')) {
+            type = 'platform';
+        } else if ($(typeSubstrate).hasClass('position__substrate')) {
+            type = 'position';
+        }
+        let name = $(this).text();
+        let newEl = document.createElement('div');
+        newEl.classList.add(type);
+        let role = document.createElement('div');
+        role.classList.add('role');
+        role.innerText = name;
+        let remove = document.createElement('div');
+        remove.classList.add(`${type}__remove`);
+        let cross = document.createElement('div');
+        cross.classList.add('cross-in-circle');
+        let circle = document.createElement('div');
+        circle.classList.add('circle');
+        let line1 = document.createElement('div');
+        line1.classList.add('line-1');
+        let line2 = document.createElement('div');
+        line2.classList.add('line-2');
+        newEl.prepend(role);
+        role.prepend(remove);
+        remove.prepend(cross);
+        cross.prepend(circle);
+        circle.prepend(line1);
+        line1.prepend(line2);
+        $(typeSubstrate).before(newEl);
+    });
+
+    // Удаление должностей
+    body.on('click', '.position__remove', function () {
+        let position = $(this).parent().parent();
+        position.remove()
+    });
+
+    // Удаление отделов
+    body.on('click', '.platform__remove', function () {
+        let position = $(this).parent().parent();
+        position.remove()
     });
 });

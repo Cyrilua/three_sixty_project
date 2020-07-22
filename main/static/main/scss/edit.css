@@ -84,6 +84,7 @@
 }
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions {
   border-right: 1px solid #E5E5E5;
+  padding-right: 30px;
 }
 .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms {
   padding-left: 30px;
@@ -106,6 +107,218 @@
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform {
   margin-right: 5px;
   margin-bottom: 4px;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .platform__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .position__remove .circle {
+  border-color: #000000;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role:hover .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .platform__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role:hover .position__remove .line-2 {
+  background-color: #000000;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .position__remove, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .platform__remove,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .position__remove {
+  background-color: #fafafa;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .position__remove .circle, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .platform__remove .circle,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .position__remove .circle {
+  border-color: #595757;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position .role .position__remove .line-2, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .platform__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .platform__remove .line-2,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .position__remove .line-1,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform .role .position__remove .line-2 {
+  background-color: #595757;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .platform__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .platform__add, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .platform__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .platform__add, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .platform__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .platform__add, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .platform__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .position__add,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .platform__add {
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 310;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu {
+  position: absolute;
+  left: -97px;
+  top: 16px;
+  z-index: 300;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu::before,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu::before, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu::before,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu::before, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu::before,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu::before, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu::before,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu::before {
+  content: "";
+  top: -18px;
+  right: 81px;
+  position: absolute;
+  border: 9px solid transparent;
+  border-bottom: 9px solid #E5E5E5;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu::after,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu::after, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu::after,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu::after, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu::after,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu::after, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu::after,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu::after {
+  content: "";
+  top: -16px;
+  right: 81px;
+  position: absolute;
+  border: 9px solid transparent;
+  border-bottom: 9px solid #FFFFFF;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu {
+  background-color: #FFFFFF;
+  width: 180px;
+  min-height: calc(2px + 40px);
+  height: auto;
+  max-height: calc(2px + 40px + 41px * 4);
+  border: 1px solid #E5E5E5;
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item {
+  height: 41px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item:last-of-type,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item:last-of-type, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item:last-of-type,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item:last-of-type, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item:last-of-type,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item:last-of-type, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item:last-of-type,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item:last-of-type {
+  height: 40px;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item:last-of-type .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item:last-of-type .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item:last-of-type .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item:last-of-type .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item:last-of-type .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item:last-of-type .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item:last-of-type .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item:last-of-type .item__line {
+  display: none;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item .item__block,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item .item__block, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item .item__block,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item .item__block, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item .item__block,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item .item__block, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item .item__block,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item .item__block {
+  height: 30px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item .item__block:hover,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item .item__block:hover, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item .item__block:hover,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item .item__block:hover, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item .item__block:hover,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item .item__block:hover, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item .item__block:hover,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item .item__block:hover {
+  background-color: #F0F1F6;
+}
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .platform__substrate .add__menu .menu .menu__item .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .position__substrate .add__menu .menu .menu__item .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .positions__data .platform__substrate .add__menu .menu .menu__item .item__line, .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .position__substrate .add__menu .menu .menu__item .item__line,
+.edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .add__menu .menu .menu__item .item__line {
+  height: 1px;
+  width: 90%;
+  background-color: #E5E5E5;
+  margin: 5px auto 0;
 }
 .edit .center-content .settings {
   border-top: 1px solid #E5E5E5;
@@ -201,10 +414,13 @@
   max-width: 300px;
   flex-direction: column;
 }
-.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__value {
+.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__substrate {
   height: 48px;
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
+}
+.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__substrate .setting__value {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -212,7 +428,6 @@
   line-height: 21px;
   color: #595757;
   cursor: default;
-  margin-bottom: 5px;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__email {
   color: #2269D5;
