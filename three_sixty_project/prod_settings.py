@@ -8,7 +8,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
-DATABASES = {
+
+
+postgresql = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dbms_db',
@@ -18,6 +20,15 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+sqlite = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+DATABASES = sqlite
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
