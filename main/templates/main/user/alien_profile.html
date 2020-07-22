@@ -1,0 +1,173 @@
+{% extends 'main/wrapper.html' %}
+
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' %}
+{% endblock %}
+
+{% block content-user %}
+    {% if alien_profile %}
+        <div class="profile">
+            <div class="left-content rounded-block">
+                {% if photo and photo.url != '' %}
+                    <img src="{{ photo.url }}" alt="" class="left-content-photo">
+                {% else %}
+                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
+                {% endif %}
+                <button class="left-content-new_poll button-red button-href" data-href="#">Пригласить в команду</button>
+            </div>
+            <div class="center-content">
+                <div class="center-content-information rounded-block">
+                    <h1 class="center-content-information-name">{{ alien_profile.name }} {{ alien_profile.surname }}</h1>
+                    <div class="center-content-information-roles_n_company">
+                        {% if roles %}
+                            {% for role in roles %}
+                                <div class="center-content-information-role _hint unselectable">
+                                    <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                        {% if role == 'boss' %}
+                                            Босс
+                                        {% elif role == 'master' %}
+                                            Мастер опросов
+                                        {% elif role == 'moderator' %}
+                                            Модератор
+                                        {% endif %}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="role-information">
+                                                {% if role == 'boss' %}
+                                                    <strong>Босс</strong> - это суперюзер с полным спектром
+                                                    возможностей.
+                                                {% elif role == 'master' %}
+                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и
+                                                    по любым командам (даже по тем, в которых не состоит), а также
+                                                    выбирать о ком будет опрос.
+                                                {% elif role == 'moderator' %}
+                                                    <strong>Модератор</strong> может создавать отделы и должности а
+                                                    также менять отделы, дожности и роли участников.
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <a href="{{ alien_profile.company.url }}"
+                           class="center-content-information-company hide">{{ alien_profile.company.name }}</a>
+                    </div>
+                    <div class="center-content-information-platforms_n_positions">
+                        <div class="center-content-information-positions">
+                            <h2 class="center-content-information-positions-title">Должности</h2>
+                            <div class="center-content-information-positions-data">
+                                {% if alien_profile.positions %}
+                                    {% for position in alien_profile.positions %}
+                                        <div class="center-content-information-position _hint">
+                                            <div class="role _hint-up">
+                                                {{ position }}
+                                            </div>
+                                            <div class="_hint-down">
+                                                <div class="_hint-down-block">
+                                                    <div class="position-information role-information">
+                                                        Должность
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="center-content-information-position-empty">Нет должностей</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="center-content-information-platforms">
+                            <h2 class="center-content-information-platforms-title">Отделы</h2>
+                            <div class="center-content-information-platforms-data">
+                                {% if alien_profile.platforms %}
+                                    {% for platform in alien_profile.platforms %}
+                                        <div class="center-content-information-platform _hint">
+                                            <div class="role _hint-up">
+                                                {{ platform }}
+                                            </div>
+                                            <div class="_hint-down">
+                                                <div class="_hint-down-block">
+                                                    <div class="platform-information role-information">
+                                                        Отдел
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="center-content-information-platform-empty">Нет должностей</div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="center-content-information-more">
+                        {#                        <div class="center-content-information-more-btn unselectable">#}
+                        {#                            <span class="center-content-information-more-btn-text">Показать подробную информацию</span>#}
+                        {#                        </div>#}
+                        <div class="center-content-information-more-details">
+                            <div class="center-content-information-more-details-main">
+                                <div class="center-content-information-more-details-main-fullname">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">ФИО</h2>
+                                    <span class="center-content-information-more-details-main-fullname-text">{{ alien_profile.name }} {{ alien_profile.surname }} {{ alien_profile.patronymic }}</span>
+                                </div>
+                                <div class="center-content-information-more-details-main-birthday">
+                                    <h2 class="center-content-information-more-details-main-birthday-title">Дата
+                                        рождения</h2>
+                                    <span class="center-content-information-more-details-main-birthday-text">{{ alien_profile.birthdate }}</span>
+                                </div>
+                            </div>
+                            <div class="center-content-information-more-details-email">
+                                <h2 class="center-content-information-more-details-main-email-title">Эл. почта</h2>
+                                <a href="mailto:beast.master64@icloud.com"
+                                   class="center-content-information-more-details-main-email-text">{{ alien_profile.email }}</a>
+                            </div>
+                            <div class="center-content-information-more-details-teams">
+                                <h2 class="center-content-information-more-details-main-teams-title">Команды</h2>
+                                <div class="center-content-information-more-details-main-teams-block
+                                    {% if not alien_profile.teams %}teams-empty{% endif %}">
+                                    {% if alien_profile.teams %}
+                                        {% for team in alien_profile.teams %}
+                                            <a href="{{ team.url }}"
+                                               class="center-content-information-more-details-main-team-link">{{ team.name }}</a>
+                                        {% endfor %}
+                                    {% else %}
+                                        Нет команд
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="" style="display: flex; justify-content: center; align-items: center; height: 60vh">
+            <h1 class="" style="color: red">Что-то пошло не так</h1>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src={% static 'main/js/alien_profile.min.js' %}></script>
+    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
+    <script src="{% static 'main/js/hint.min.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/custom.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/profile.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/alien_profile.min.css' %}">
+{% endblock %}

@@ -1,0 +1,16 @@
+.profile .left-content {
+  height: 310px;
+}
+.profile .left-content .left-content-new_poll {
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 0;
+}
+.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details {
+  display: block;
+  border-top: 1px solid #E5E5E5;
+  margin-top: 0;
+  padding-top: 15px;
+}
+
+/*# sourceMappingURL=alien_profile.css.map */

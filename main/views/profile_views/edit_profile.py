@@ -4,82 +4,6 @@ from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
 from main.models import ProfilePhoto, BirthDate
 from main.views.auxiliary_general_methods import *
 
-from django.http import JsonResponse
-
-
-def profile_view(request, profile_id=-1):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    if profile_id == get_user_profile(request).id or profile_id == -1:
-        return get_render_user_profile(request)
-    return get_other_profile_render(request, profile_id)
-
-
-def get_render_user_profile(request):
-    # if request.is_ajax():
-    #     if request.method == "GET":
-    #         text = request.GET.get('button_text')
-    #         return JsonResponse({'result_1': text}, status=200)
-    #     if request.method == "POST":
-    #         span_text = request.POST.get('text')
-    #         return JsonResponse({'data_result': span_text}, status=200)
-
-    profile = get_user_profile(request)
-
-    try:
-        photo = profile.profilephoto.photo
-    except:
-        photo = None
-
-    args = {
-        "title": "Мой профиль",
-        'profile': profile,
-        'photo': photo,
-    }
-    if photo is not None:
-        args['photo_height'] = get_photo_height(photo.width, photo.height)
-    args['teams'] = profile.groups.all()
-
-    return render(request, 'main/user/old/profile.html', args)
-
-
-def get_other_profile_render(request, profile_id):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    profile = Profile.objects.get(id=profile_id)
-    args = {
-        'title': "Профиль просматриваемого пользователя",
-        'name': profile.name,
-        'surname': profile.surname,
-        'patronymic': profile.patronymic,
-        'groups': profile.groups.all(),
-    }
-
-    profile_photo = ProfilePhoto.objects.filter(profile=profile)
-    if len(profile_photo) != 0:
-        args['photo'] = profile_photo[0].photo
-        args['photo_height'] = get_photo_height(args['photo'].width, args['photo'].height)
-    else:
-        args['photo'] = None
-
-    if profile.position is not None:
-        args['position'] = profile.position.name
-    else:
-        args['position'] = 'не указано'
-
-    if profile.company is not None:
-        args['company'] = profile.company.name
-    else:
-        args['company'] = 'не указано'
-
-    if profile.platform is not None:
-        args['platform'] = profile.platform.platform.name
-    else:
-        args['platform'] = 'не указано'
-
-    return render(request, "main/alien_profile.html", args)
-
 
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
@@ -148,7 +72,4 @@ def edit_profile(request):
             user.email = new_email
             user.save()
         return redirect('/edit/')
-    return render(request, 'main/user/old/edit_profile.html', args)
-
-
-
+    return render(request, 'main/user/edit.html', args)

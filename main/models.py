@@ -11,9 +11,9 @@ class Profile (models.Model):
     surname = models.CharField(max_length=50, default='')
     patronymic = models.CharField(max_length=50, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
-    platform = models.ForeignKey('PlatformCompany', on_delete=models.CASCADE, null=True)
-    position = models.ForeignKey('Position', on_delete=models.CASCADE, null=True)
-    groups = models.ManyToManyField('Group', null=True)
+    platform = models.ManyToManyField('PlatformCompany')
+    position = models.ManyToManyField('PositionCompany')
+    groups = models.ManyToManyField('Group')
     email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
 
@@ -51,25 +51,25 @@ class NeedPassPoll(models.Model):
         db_table = "NeedPassPolls"
 
 
-class CompanyAdmins(models.Model):
+class Moderator(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     class Meta:
-        db_table = 'Admins'
+        db_table = 'Moderator'
 
     def __str__(self):
         return '{} in company \"{}\"'.format(self.profile, self.company)
 
 
-class CompanyHR(models.Model):
+class SurveyWizard(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     class Meta:
-        db_table = 'HR'
+        db_table = 'SurveyWizard'
 
     def __str__(self):
         return '{} in company \"{}\"'.format(self.profile, self.company)
@@ -88,23 +88,37 @@ class ProfilePhoto (models.Model):
 
 
 class Notifications (models.Model):
+    TYPE_CHOICES = [
+        ('my_poll', 0),
+        ('invite_command', 1),
+        ('invite_company', 2),
+        ('alien_poll', 3)
+    ]
+
+    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='my_poll')
     name = models.CharField(max_length=50, default='')
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    redirect = models.CharField(max_length=100, default='')
-    key = models.CharField(max_length=36, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
+    # url хранится в формате фоматируемой строки для возможности ставки ключа
+    url = models.CharField(max_length=100, default='')
+    key = models.CharField(max_length=100, null=True)
+    on_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='on_profile', null=True)
+    from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='from_profile', null=True)
+    date = models.DateField(null=True)
+    completed = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:
         db_table = "Notifications"
 
     def __str__(self):
-        return self.redirect
+        return self.url
 
 
 class Company(models.Model):
     name = models.CharField(max_length=20)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=36, unique=True, default='')
+    description = models.CharField(max_length=150, default='')
     objects = models.Manager()
 
     class Meta:
@@ -115,7 +129,7 @@ class Company(models.Model):
 
 
 class PlatformCompany(models.Model):
-    platform = models.ForeignKey('Platforms', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -123,22 +137,11 @@ class PlatformCompany(models.Model):
         db_table = "Platforms in company"
 
     def __str__(self):
-        return '{}'.format(self.platform)
-
-
-class Platforms (models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "Platforms"
-
-    def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
 
 class PositionCompany (models.Model):
-    position = models.ForeignKey('Position', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -146,22 +149,12 @@ class PositionCompany (models.Model):
         db_table = "Positions in company"
 
     def __str__(self):
-        return '{}'.format(self.position)
-
-
-class Position(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "Positions"
-
-    def __str__(self):
-        return self.name
+        return '{}'.format(self.name)
 
 
 class Group(models.Model):
     name = models.CharField(max_length=20, default='')
+    description = models.CharField(max_length=150, default='')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     key = models.CharField(max_length=36, default='')
     objects = models.Manager()
@@ -208,6 +201,7 @@ class Poll(models.Model):
     name_poll = models.CharField(max_length=50, default='')
     respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
+    count_passed = models.IntegerField(default=0)
     objects = models.Manager()
     #start_date = models.DateField()
     #end_date = models.DateField()

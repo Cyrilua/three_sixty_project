@@ -1,7 +1,7 @@
 import uuid
 
 from main.forms import CompanyForm
-from main.models import Company, Platforms, Position, PositionCompany, PlatformCompany, CompanyAdmins, CompanyHR
+from main.models import Company, PlatformCompany, PositionCompany, PositionCompany, PlatformCompany
 from main.views.auxiliary_general_methods import *
 
 
@@ -13,9 +13,9 @@ def add_new_platform(request):
     if request.method == "POST":
         new_platform = request.POST.get("platform", '').lower()
         try:
-            Platforms.objects.get(name=new_platform)
+            PlatformCompany.objects.get(name=new_platform)
         except:
-            platform = Platforms(name=new_platform)
+            platform = PlatformCompany(name=new_platform)
             platform.save()
             return redirect('/')
         else:
@@ -32,9 +32,9 @@ def add_new_position(request):
     if request.method == "POST":
         new_position = request.POST.get("position", '').lower()
         try:
-            Position.objects.get(name=new_position)
+            PositionCompany.objects.get(name=new_position)
         except:
-            position = Position(name=new_position)
+            position = PositionCompany(name=new_position)
             position.save()
             return redirect('/')
         else:
@@ -162,9 +162,9 @@ def add_position_in_company(request):
     if request.method == "POST":
         position_name = request.POST.get('position', '')
         try:
-            position = Position.objects.get(name=position_name)
+            position = PositionCompany.objects.get(name=position_name)
         except:
-            position = Position(name=position_name)
+            position = PositionCompany(name=position_name)
             position.save()
 
         positions_in_company = PositionCompany.objects.filter(company=company)
@@ -202,9 +202,9 @@ def add_platform_in_company(request):
     if request.method == "POST":
         platform_name = request.POST.get('platform', '')
         try:
-            platform = Platforms.objects.get(name=platform_name)
+            platform = PlatformCompany.objects.get(name=platform_name)
         except:
-            platform = Platforms(name=platform_name)
+            platform = PlatformCompany(name=platform_name)
             platform.save()
 
         platforms_in_company = PlatformCompany.objects.filter(company=company)
@@ -222,12 +222,11 @@ def add_platform_in_company(request):
     return render(request, 'main/add_new_platform.html', args)
 
 
-def company_view(request):
+def company_view(request, id_company):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    profile = get_user_profile(request)
-    company = profile.company
+    company = Company.objects.get(id=id_company)
 
     if company is None:
         return redirect('/')
@@ -258,7 +257,7 @@ def choose_position(request):
         'company': company
     }
     if company is None:
-        args['list_positions'] = Position.objects.all()
+        args['list_positions'] = PositionCompany.objects.all()
     else:
         args['list_positions'] = [i.position for i in company.positioncompany_set.all()]
 
@@ -269,7 +268,7 @@ def choose_position(request):
             profile.save()
             return redirect('/')
         try:
-            position = Position.objects.get(id=position_id)
+            position = PositionCompany.objects.get(id=position_id)
         except:
             args['error'] = 'Данной должности не существует'
             return render(request, 'main/position_choice.html', args)
@@ -297,7 +296,7 @@ def choose_platform(request):
         'company': company
     }
     if company is None:
-        args['list_platforms'] = Platforms.objects.all()
+        args['list_platforms'] = PlatformCompany.objects.all()
     else:
         args['list_platforms'] = [i.platform for i in company.platformcompany_set.all()]
     if request.method == "POST":
@@ -305,7 +304,7 @@ def choose_platform(request):
         if platform_id == -1:
             return redirect('/')
         try:
-            platform = Platforms.objects.get(id=platform_id)
+            platform = PlatformCompany.objects.get(id=platform_id)
         except:
             args['error'] = 'Данной платформы не существует'
             return render(request, 'main/platform_choice.html', args)
@@ -347,7 +346,7 @@ def add_admins(request, profile_id):
         return redirect('/')
 
     profile_new_admin = Profile.objects.get(id=profile_id)
-    new_admin = CompanyAdmins()
+    new_admin = Moderator()
     new_admin.company = company
     new_admin.profile = profile_new_admin
     new_admin.save()
@@ -357,7 +356,7 @@ def add_admins(request, profile_id):
 def user_is_admin_in_current_company(request):
     profile = get_user_profile(request)
     try:
-        result = CompanyAdmins.objects.get(profile=profile).company == profile.company
+        result = Moderator.objects.get(profile=profile).company == profile.company
     except:
         result = False
     return result
@@ -380,7 +379,7 @@ def add_hr(request, profile_id):
         return redirect('/')
 
     profile_new_hr = Profile.objects.get(id=profile_id)
-    new_hr = CompanyHR()
+    new_hr = SurveyWizard()
     new_hr.profile = profile_new_hr
     new_hr.company = company
     new_hr.save()

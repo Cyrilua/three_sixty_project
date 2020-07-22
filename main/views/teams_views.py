@@ -1,19 +1,19 @@
 import uuid
 
-from django.shortcuts import redirect
-from django.shortcuts import render
-
 from main.forms import TeamForm
 from main.models import Group
-from main.views.auxiliary_general_methods import *
+from .auxiliary_general_methods import *
+from . import notifications_views
+
+from django.http import JsonResponse
 
 
-def create_team(request):
+def create_team(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     args = {
-        'title': 'Создание новой группы',
+        'title': 'Создание новой команды',
         'team_form': TeamForm()
     }
 
@@ -31,11 +31,11 @@ def create_team(request):
 
             profile.groups.add(new_team)
             profile.groups.add()
-        return redirect('/communications/')
+        return redirect('/')
     return render(request, 'main/teams/old/add_new_team.html', args)
 
 
-def connect_to_team_to_key(request):
+def connect_to_team_to_key(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
@@ -56,54 +56,30 @@ def connect_to_team_to_key(request):
             profile.groups.add(group)
             profile.save()
 
-            return redirect('/communications/')
+            return redirect('/')
     return render(request, 'main/teams/old/connect_to_team.html', args)
 
 
-def connect_to_team_to_link(request, key):
+def connect_to_team_to_link(request, key: str) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    args = {'title': 'Присоединиться к комманде'}
     profile = get_user_profile(request)
 
     try:
         group = Group.objects.get(key=key)
         if group in profile.groups.all():
-            return redirect("/groups/{}/".format(group.id))
+            return redirect("/team/{}/".format(group.id))
     except:
-        return render(request, 'main/old/error_old.html', {
-            'error': "Этой группы не существует или ссылка введена неправильно"
-        })
+        return redirect('/')
     else:
         profile.groups.add(group)
         profile.save()
-        return redirect("/groups/{}/".format(group.id))
+
+        return redirect("/team/{}/".format(group.id))
 
 
-#Возможно не понадобится
-def teams_view(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    profile = get_user_profile(request)
-    teams = profile.groups.all()
-    args = {
-        'title': "Круги общения",
-        'teams': teams,
-        'profile': profile,
-    }
-
-    try:
-        photo = profile.profilephoto.photo
-        args['photo'] = photo
-        args['photo_height'] = get_photo_height(photo.width, photo.height)
-    except:
-        args['photo'] = None
-
-    return render(request, 'main/user/old/communications.html', args)
-
-
-def team_user_view(request, group_id):
+def team_user_view(request, group_id: int) -> render:
     args = {}
 
     if auth.get_user(request).is_anonymous:
@@ -114,7 +90,6 @@ def team_user_view(request, group_id):
         if profile not in group.profile_set.all():
             raise Exception()
     except:
-        #args['error'] = "Данной группы не существует"
         return redirect('/')
 
     args['users'] = group.profile_set.all()
@@ -128,3 +103,57 @@ def team_user_view(request, group_id):
     args['title'] = group.name
     args['group_id'] = group_id
     return render(request, 'main/teams/old/team_view.html', args)
+
+
+def search_team_for_invite(request, profile_id: int) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    try:
+        alien_profile = Profile.objects.get(id=profile_id)
+    except:
+        return redirect('/')
+    alien_commands = alien_profile.groups.all()
+
+    user = auth.get_user(request)
+    profile = get_user_profile(request)
+    commands = filter(lambda x: x not in alien_commands, profile.groups.all())
+    if not profile_is_owner(request):
+        commands = filter(lambda x: x.owner.id == user.id, commands)
+    args = {
+        'title': "Пригласить в команду",
+        'teams': build_teams(commands, profile_id)
+    }
+    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
+
+
+def build_teams(commands: filter, alien_profile_id: int) -> list:
+    result = []
+    for team in commands:
+        users = team.profile_set.all()
+        collected_team = {
+            'name': team.name,
+            'about': team.description,
+            'members': len(users),
+            'url': '/team/{}/'.format(team.id),
+            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id)
+        }
+        result.append(collected_team)
+    return result
+
+
+def send_notification_profile(request, profile_id: int, team_id: int) -> JsonResponse:
+    try:
+        alien_profile = Profile.objects.get(id=profile_id)
+        command = Group.objects.get(id=team_id)
+    except:
+        return JsonResponse({}, status=400)
+
+    profile = get_user_profile(request)
+
+    notifications_views.create_notifications(profile=alien_profile,
+                                             name=command.name,
+                                             type_notification='invite_command',
+                                             key=command.key,
+                                             from_profile=profile)
+
+    return JsonResponse({}, status=200)

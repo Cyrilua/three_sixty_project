@@ -2,9 +2,9 @@ body {
     overflow-x: hidden;
 }
 
-.scroll-top-btn-value {
-    padding-top: calc(100vh - 365px);
-}
+/*.scroll-top-btn-value {*/
+/*    padding-top: calc(100vh - 365px);*/
+/*}*/
 
 textarea {
     margin: 0;

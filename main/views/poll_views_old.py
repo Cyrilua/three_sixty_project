@@ -1,9 +1,9 @@
 import uuid
 
-from main.models import Questions, Poll, Answers, CompanyHR, AnswerChoice, Settings, TemplatesPoll, Group, \
+from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
     NeedPassPoll, CreatedPoll, Draft
 from main.views.auxiliary_general_methods import *
-from main.views.notifications_views import add_notification
+from main.views.notifications_views import create_notifications
 
 
 def type_poll(request):
@@ -17,7 +17,7 @@ def default_poll_template_view(request):
         return redirect('/')
     polls = Poll.objects.filter(template_type=0)
     try:
-        is_hr = CompanyHR.objects.get(profile=get_user_profile(request)) is not None
+        is_hr = SurveyWizard.objects.get(profile=get_user_profile(request)) is not None
     except:
         is_hr = False
     args = {
@@ -366,7 +366,7 @@ def user_is_hr_or_owner(request):
     user = auth.get_user(request)
     profile = get_user_profile(request)
     try:
-        user_is_hr = CompanyHR.objects.get(profile=profile) is not None
+        user_is_hr = SurveyWizard.objects.get(profile=profile) is not None
     except:
         user_is_hr = False
     user_is_owner = profile.company.owner.id == user.id
@@ -598,10 +598,6 @@ def respondent_choice_group(request, group_id):
         profiles = [Profile.objects.get(id=i) for i in request.POST.getlist('selectedUsers', '')]
         for profile in profiles:
             poll.respondents.add(profile.user)
-            add_notification(profile,
-                             "Вас внесли в список для прохождения опроса",
-                             'main:answer_the_poll',
-                             poll.id)
 
             need_pass_poll = NeedPassPoll()
             need_pass_poll.poll = poll
@@ -697,10 +693,6 @@ def respondent_choice_from_company(request):
         for profile in profiles:
             print(profile)
             poll.respondents.add(profile.user)
-            add_notification(profile,
-                             "Вас внесли в список для прохождения опроса",
-                             'main:answer_the_poll',
-                             poll.id)
             need_pass_poll = NeedPassPoll()
             need_pass_poll.poll = poll
             need_pass_poll.profile = profile

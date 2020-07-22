@@ -458,15 +458,16 @@
 
 {% block sidebar-nav-right %}
     {% include 'main/includes/menu_poll_editor_right.html' with menu_new_poll_view="active" %}
+    {% include 'main/includes/scroll_top.html' %}
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'main/css/scroll_top.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/poll_editor.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/poll_editor.min.css' %}">
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/jquery-ui.min.js' %}></script>
-    <script type="text/javascript" src={% static 'main/js/poll_editor.js' %}></script>
-    <script src="{% static 'main/js/scroll_top.js' %}"></script>
+    <script type="text/javascript" src={% static 'main/js/poll_editor.min.js' %}></script>
+    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
 {% endblock %}
