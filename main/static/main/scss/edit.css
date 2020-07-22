@@ -327,7 +327,6 @@
   padding-top: 0;
   padding-left: 0;
   padding-right: 0;
-  margin-bottom: 20vh;
 }
 .edit .center-content .settings .setting .setting__close .setting__mini {
   display: flex;
@@ -371,7 +370,7 @@
   color: #595757;
   cursor: default;
 }
-.edit .center-content .settings .setting .setting__close .setting__mini .setting__2-block .setting__email {
+.edit .center-content .settings .setting .setting__close .setting__mini .setting__2-block .setting__value.setting__email {
   color: #2269D5;
   cursor: pointer;
 }
@@ -429,7 +428,7 @@
   color: #595757;
   cursor: default;
 }
-.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__email {
+.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__substrate .setting__value.setting__email {
   color: #2269D5;
   cursor: pointer;
 }

@@ -431,17 +431,17 @@
 {% endblock %}
 
 {% block sidebar-nav-right %}
-    {#    {% include 'main/includes/scroll_top.html' %}#}
+        {% include 'main/includes/scroll_top.html' %}
 {% endblock %}
 
 {% block scripts %}
-    {#    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>#}
+        <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
     <script src="{% static 'main/js/hint.min.js' %}"></script>
     <script src="{% static 'main/js/edit.min.js' %}"></script>
 {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/edit.min.css' %}">
-    {#    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">#}
+        <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
     {#    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">#}
 {% endblock %}

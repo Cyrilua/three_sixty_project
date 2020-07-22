@@ -273,7 +273,7 @@
       padding-top: 0;
       padding-left: 0;
       padding-right: 0;
-      margin-bottom: 20vh;
+      //margin-bottom: 20vh;
 
       .setting {
 
@@ -323,11 +323,11 @@
                 line-height: 21px;
                 color: #595757;
                 cursor: default;
-              }
 
-              .setting__email {
-                color: #2269D5;
-                cursor: pointer;
+                &.setting__email {
+                  color: #2269D5;
+                  cursor: pointer;
+                }
               }
             }
 
@@ -396,14 +396,14 @@
                   line-height: 21px;
                   color: #595757;
                   cursor: default;
+
+                  &.setting__email {
+                    color: #2269D5;
+                    cursor: pointer;
+                  }
                 }
               }
-
-              .setting__email {
-                color: #2269D5;
-                cursor: pointer;
-              }
-
+              
               .input-field {
                 width: 228px;
                 margin-bottom: 10px;
