@@ -1,4 +1,17 @@
 @charset "UTF-8";
+.unselectable, a {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */
+}
+
 * {
   font-family: "Roboto", sans-serif;
   padding: 0;
@@ -23,6 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: #2269D5;
   text-decoration-line: none;
+  cursor: pointer;
 }
 a:hover {
   text-decoration-line: underline;
@@ -456,8 +470,8 @@ button {
 }
 
 .role {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
   padding: 0 8px;
   height: 22px;
   border: 1px solid #595757;
@@ -517,6 +531,7 @@ button {
   position: absolute;
   left: calc(264px / -2 + 50%);
   top: calc(100% + 9px);
+  z-index: 500;
 }
 .role-information::before {
   content: "";
@@ -557,13 +572,19 @@ button {
 }
 
 ._hint ._hint-up-wait,
-._hint-wait ._hint-up-wait {
+._hint-wait ._hint-up-wait,
+._hint-click ._hint-up-wait {
   cursor: pointer;
 }
 ._hint ._hint-down,
 ._hint ._hint-down-wait,
+._hint ._hint-down-click,
 ._hint-wait ._hint-down,
-._hint-wait ._hint-down-wait {
+._hint-wait ._hint-down-wait,
+._hint-wait ._hint-down-click,
+._hint-click ._hint-down,
+._hint-click ._hint-down-wait,
+._hint-click ._hint-down-click {
   display: none;
   position: relative;
 }
@@ -574,29 +595,44 @@ button {
   height: auto;
 }
 
-.unselectable {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently not supported by any browser */
-}
-
 .substrate {
   background-color: transparent;
 }
 
-.hide {
+.hide,
+.hide * {
   display: none;
 }
 
 .show {
   display: block;
+}
+
+.cross-in-circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.cross-in-circle .circle {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cross-in-circle .circle .line-1,
+.cross-in-circle .circle .line-2 {
+  width: 2px;
+  height: 10px;
+  background-color: #000000;
+}
+.cross-in-circle .circle .line-1 {
+  transform: rotate(0deg);
+}
+.cross-in-circle .circle .line-1 .line-2 {
+  transform: rotate(-90deg);
 }
 
 /*# sourceMappingURL=custom.css.map */
