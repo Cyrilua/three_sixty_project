@@ -67,7 +67,7 @@
                             <h2 class="positions__title">Должности</h2>
                             <div class="positions__data">
                                 {% for position in profile.positions %}
-                                    <div class="position" data-name="{{ platform }}">
+                                    <div class="position" data-name="{{ position.name }}" data-id="{{ position.id }}">
                                         <div class="role">
                                             <div class="position__remove">
                                                 <div class="cross-in-circle">
@@ -78,7 +78,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{ position }}
+                                            {{ position.name }}
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -95,10 +95,10 @@
                                     <div class="_hint-down-click">
                                         <div class="_hint-down-block add__menu">
                                             <div class="menu">
-                                                {% for new_position in new_positions.positions %}
+                                                {% for new_position in new_positions %}
                                                     <div class="menu__item">
                                                         <div class="item__block"
-                                                             data-name="{{ new_position }}">{{ new_position }}</div>
+                                                             data-name="{{ new_position.name }}" data-id="{{ new_position.id }}">{{ new_position.name }}</div>
                                                         <div class="item__line"></div>
                                                     </div>
                                                 {% endfor %}
@@ -112,7 +112,7 @@
                             <h2 class="platforms__title">Отделы</h2>
                             <div class="platforms__data">
                                 {% for platform in profile.platforms %}
-                                    <div class="platform" data-name="{{ platform }}">
+                                    <div class="platform" data-name="{{ platform.name }}" data-id="{{ platform.id }}">
                                         <div class="role">
                                             <div class="platform__remove">
                                                 <div class="cross-in-circle">
@@ -123,7 +123,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{ platform }}
+                                            {{ platform.name }}
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -140,10 +140,10 @@
                                     <div class="_hint-down-click">
                                         <div class="_hint-down-block add__menu">
                                             <div class="menu">
-                                                {% for new_platform in new_platforms.platforms %}
+                                                {% for new_platform in new_platforms %}
                                                     <div class="menu__item">
                                                         <div class="item__block"
-                                                             data-name="{{ new_platform }}">{{ new_platform }}</div>
+                                                             data-name="{{ new_platform.name }}" data-id="{{ new_platform.id }}">{{ new_platform.name }}</div>
                                                         <div class="item__line"></div>
                                                     </div>
                                                 {% endfor %}
