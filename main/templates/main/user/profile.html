@@ -13,7 +13,7 @@
     {% if profile %}
         <div class="profile">
             <div class="left-content rounded-block">
-                {% if photo %}
+                {% if photo and photo.url != '' %}
                     <img src="{{ photo.url }}" alt="" class="left-content-photo">
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">

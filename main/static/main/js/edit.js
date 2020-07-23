@@ -49,7 +49,7 @@ $(function () {
     });
 
     // Скрыть меню (Добавить)
-    body.on('mouseup', function (el) {
+    $(window).on('mouseup', function (el) {
         let _ = openAdd;
         if ($(_).children('._hint-down-click').css('display') !== 'none') {
             if (el.target.closest('._hint-up-click') !== null &&
