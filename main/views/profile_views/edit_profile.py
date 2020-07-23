@@ -55,7 +55,27 @@ def edit_profile(request) -> render:
         'text': birth_date,
         'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
     }
+    company = profile.company
+    if company is not None:
+        positions = company.positioncompany_set.all()
+        profile_positions = profile.positions.all()
+        args['new_positions'] = _build_objects(filter(lambda x: x not in profile_positions, positions))
+
+        platform = company.platformcompany_set.all()
+        profile_platform = profile.platforms.all()
+        args['new_platforms'] = _build_objects(filter(lambda x: x not in profile_platform, platform))
 
     if request.method == 'POST':
         print(request.POST)
     return render(request, 'main/user/edit.html', args)
+
+
+def _build_objects(list_objects: filter) -> list:
+    result = []
+    for pos in list_objects:
+        completed = {
+            'id': pos.id,
+            'name': pos.name
+        }
+        result.append(completed)
+    return result
