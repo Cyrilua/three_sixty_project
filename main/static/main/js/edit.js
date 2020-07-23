@@ -19,7 +19,7 @@ $(function () {
         aCompany.removeClass('hide')
     });
 
-    // Раскрытие настроек
+    // Раскрытие/скрытие настроек
     body.on('click', '.setting__edit', function () {
         let setting = $(this.closest('.setting'));
         let settingClose = setting.children('.setting__close');
@@ -99,12 +99,17 @@ $(function () {
     // Удаление должностей
     body.on('click', '.position__remove', function () {
         let position = $(this).parent().parent();
+        let positionName = position.attr('data-name');
+        console.log(positionName)
         position.remove()
     });
 
     // Удаление отделов
     body.on('click', '.platform__remove', function () {
-        let position = $(this).parent().parent();
-        position.remove()
+        let platform = $(this).parent().parent();
+        let platformName = platform.attr('data-name');
+        console.log(platformName)
+
+        platform.remove()
     });
 });
