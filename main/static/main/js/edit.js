@@ -1,8 +1,6 @@
 $(function () {
-    // let add = $('._hint-click');
-    // let addUp = add.children('._hint-up-click');
-    // let addDown = add.children('._hint-down-click');
     let body = $('body');
+    const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let name = $('.info__name');
     let aCompany = $('.info__company');
     let addPosition = $('.position__substrate');
@@ -71,14 +69,35 @@ $(function () {
         let typeSubstrate = el.target.closest('._hint-click');
         let type;
         let name = $(this).attr('data-name');
+        let id = $(this).attr('data-id');
         if ($(typeSubstrate).hasClass('platform__substrate')) {
             type = 'platform';
         } else if ($(typeSubstrate).hasClass('position__substrate')) {
             type = 'position';
         }
+
+        $.ajax({
+            url: `/edit/${type}/add/${id}`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                type: type,
+                id: id,
+                name: name, // На всякий случай
+            },
+            success:function (response) {
+                if (response.status) {
+                    
+                }
+            }
+        });
+
         let newEl = document.createElement('div');
         newEl.classList.add(type);
-        $(newEl).attr({'data-name': name});
+        $(newEl).attr({
+            'data-name': name,
+            'data-id': id,
+        });
         let role = document.createElement('div');
         role.classList.add('role');
         role.innerText = name;
@@ -112,11 +131,15 @@ $(function () {
         }
         let position = $(this).parent().parent();
         let positionName = position.attr('data-name');
+        let positionId = position.attr('data-id');
         let newItem = document.createElement('div');
         newItem.classList.add('menu__item');
         let itemBlock = document.createElement('div');
         itemBlock.classList.add('item__block');
-        $(itemBlock).attr({'data-name': positionName});
+        $(itemBlock).attr({
+            'data-name': positionName,
+            'data-id': positionId,
+        });
         itemBlock.innerText = positionName;
         let itemLine = document.createElement('div');
         itemLine.classList.add('item__line');
@@ -133,11 +156,15 @@ $(function () {
         }
         let platform = $(this).parent().parent();
         let platformName = platform.attr('data-name');
+        let platformId = platform.attr('data-id');
         let newItem = document.createElement('div');
         newItem.classList.add('menu__item');
         let itemBlock = document.createElement('div');
         itemBlock.classList.add('item__block');
-        $(itemBlock).attr({'data-name': platformName});
+        $(itemBlock).attr({
+            'data-name': platformName,
+            'data-id': platformId,
+        });
         itemBlock.innerText = platformName;
         let itemLine = document.createElement('div');
         itemLine.classList.add('item__line');
