@@ -85,92 +85,176 @@ $(function () {
                 id: id,
                 name: name, // На всякий случай
             },
-            success:function (response) {
-                if (response.status) {
-                    
+            success: function (response) {
+                let newEl = document.createElement('div');
+                newEl.classList.add(type);
+                $(newEl).attr({
+                    'data-name': name,
+                    'data-id': id,
+                });
+                let role = document.createElement('div');
+                role.classList.add('role');
+                role.innerText = name;
+                let remove = document.createElement('div');
+                remove.classList.add(`${type}__remove`);
+                let cross = document.createElement('div');
+                cross.classList.add('cross-in-circle');
+                let circle = document.createElement('div');
+                circle.classList.add('circle');
+                let line1 = document.createElement('div');
+                line1.classList.add('line-1');
+                let line2 = document.createElement('div');
+                line2.classList.add('line-2');
+                newEl.prepend(role);
+                role.prepend(remove);
+                remove.prepend(cross);
+                cross.prepend(circle);
+                circle.prepend(line1);
+                line1.prepend(line2);
+                $(typeSubstrate).before(newEl);
+                $(this).parent().remove();
+                if ((type === 'platform' && menuPlatform.children('.menu__item').length < 1) || (type === 'position' && menuPosition.children('.menu__item').length < 1)) {
+                    $(typeSubstrate).addClass('hide');
                 }
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
             }
         });
-
-        let newEl = document.createElement('div');
-        newEl.classList.add(type);
-        $(newEl).attr({
-            'data-name': name,
-            'data-id': id,
-        });
-        let role = document.createElement('div');
-        role.classList.add('role');
-        role.innerText = name;
-        let remove = document.createElement('div');
-        remove.classList.add(`${type}__remove`);
-        let cross = document.createElement('div');
-        cross.classList.add('cross-in-circle');
-        let circle = document.createElement('div');
-        circle.classList.add('circle');
-        let line1 = document.createElement('div');
-        line1.classList.add('line-1');
-        let line2 = document.createElement('div');
-        line2.classList.add('line-2');
-        newEl.prepend(role);
-        role.prepend(remove);
-        remove.prepend(cross);
-        cross.prepend(circle);
-        circle.prepend(line1);
-        line1.prepend(line2);
-        $(typeSubstrate).before(newEl);
-        $(this).parent().remove();
-        if ((type === 'platform' && menuPlatform.children('.menu__item').length < 1) || (type === 'position' && menuPosition.children('.menu__item').length < 1)) {
-            $(typeSubstrate).addClass('hide');
-        }
     });
 
-    // Удаление должностей
-    body.on('click', '.position__remove', function () {
-        if (menuPosition.children('.menu__item').length < 1) {
-            addPosition.removeClass('hide');
+    // Удаление должностей и отделов
+    body.on('click', '.remove-item', function () {
+        let type;
+        if ($(this).hasClass('platform__remove')) {
+            type = 'platform';
+        } else if ($(this).hasClass('position__remove')) {
+            type = 'position';
+        } else {
+            throw new Error('Unexpected values');
         }
-        let position = $(this).parent().parent();
-        let positionName = position.attr('data-name');
-        let positionId = position.attr('data-id');
-        let newItem = document.createElement('div');
-        newItem.classList.add('menu__item');
-        let itemBlock = document.createElement('div');
-        itemBlock.classList.add('item__block');
-        $(itemBlock).attr({
-            'data-name': positionName,
-            'data-id': positionId,
-        });
-        itemBlock.innerText = positionName;
-        let itemLine = document.createElement('div');
-        itemLine.classList.add('item__line');
-        newItem.prepend(itemLine);
-        newItem.prepend(itemBlock);
-        menuPosition.prepend(newItem);
-        position.remove();
+        let el = $(this).parent().parent();
+        let name = el.attr('data-name');
+        let id = el.attr('data-id');
+
+        $.ajax({
+            url: `/edit/${type}/remove/${id}`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                type: type,
+                id: id,
+                name: name, // На всякий случай
+            },
+            success: function (response) {
+                if (type === 'position' && menuPosition.children('.menu__item').length < 1) {
+                    addPosition.removeClass('hide');
+                } else if (type === 'platform' && menuPlatform.children('.menu__item').length < 1) {
+                    addPlatform.removeClass('hide');
+                }
+                let newItem = document.createElement('div');
+                newItem.classList.add('menu__item');
+                let itemBlock = document.createElement('div');
+                itemBlock.classList.add('item__block');
+                $(itemBlock).attr({
+                    'data-name': name,
+                    'data-id': id,
+                });
+                itemBlock.innerText = name;
+                let itemLine = document.createElement('div');
+                itemLine.classList.add('item__line');
+                newItem.prepend(itemLine);
+                newItem.prepend(itemBlock);
+                if (type === 'platform') {
+                    menuPlatform.prepend(newItem);
+                } else if (type === 'position') {
+                    menuPosition.prepend(newItem);
+                } else {
+                    throw new Error('Unexpected values');
+                }
+                el.remove();
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            }
+        })
     });
 
-    // Удаление отделов
-    body.on('click', '.platform__remove', function () {
-        if (menuPlatform.children('.menu__item').length < 1) {
-            addPlatform.removeClass('hide');
-        }
-        let platform = $(this).parent().parent();
-        let platformName = platform.attr('data-name');
-        let platformId = platform.attr('data-id');
-        let newItem = document.createElement('div');
-        newItem.classList.add('menu__item');
-        let itemBlock = document.createElement('div');
-        itemBlock.classList.add('item__block');
-        $(itemBlock).attr({
-            'data-name': platformName,
-            'data-id': platformId,
-        });
-        itemBlock.innerText = platformName;
-        let itemLine = document.createElement('div');
-        itemLine.classList.add('item__line');
-        newItem.prepend(itemLine);
-        newItem.prepend(itemBlock);
-        menuPlatform.prepend(newItem);
-        platform.remove();
-    });
+    // // Удаление должностей
+    // body.on('click', '.position__remove', function () {
+    //     if (menuPosition.children('.menu__item').length < 1) {
+    //         addPosition.removeClass('hide');
+    //     }
+    //     let position = $(this).parent().parent();
+    //     let positionName = position.attr('data-name');
+    //     let positionId = position.attr('data-id');
+    //     let newItem = document.createElement('div');
+    //     newItem.classList.add('menu__item');
+    //     let itemBlock = document.createElement('div');
+    //     itemBlock.classList.add('item__block');
+    //     $(itemBlock).attr({
+    //         'data-name': positionName,
+    //         'data-id': positionId,
+    //     });
+    //     itemBlock.innerText = positionName;
+    //     let itemLine = document.createElement('div');
+    //     itemLine.classList.add('item__line');
+    //     newItem.prepend(itemLine);
+    //     newItem.prepend(itemBlock);
+    //     menuPosition.prepend(newItem);
+    //     position.remove();
+    // });
+    //
+    // // Удаление отделов
+    // body.on('click', '.platform__remove', function () {
+    //     if (menuPlatform.children('.menu__item').length < 1) {
+    //         addPlatform.removeClass('hide');
+    //     }
+    //     let platform = $(this).parent().parent();
+    //     let platformName = platform.attr('data-name');
+    //     let platformId = platform.attr('data-id');
+    //     let newItem = document.createElement('div');
+    //     newItem.classList.add('menu__item');
+    //     let itemBlock = document.createElement('div');
+    //     itemBlock.classList.add('item__block');
+    //     $(itemBlock).attr({
+    //         'data-name': platformName,
+    //         'data-id': platformId,
+    //     });
+    //     itemBlock.innerText = platformName;
+    //     let itemLine = document.createElement('div');
+    //     itemLine.classList.add('item__line');
+    //     newItem.prepend(itemLine);
+    //     newItem.prepend(itemBlock);
+    //     menuPlatform.prepend(newItem);
+    //     platform.remove();
+    // });
 });
