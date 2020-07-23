@@ -5,6 +5,10 @@ $(function () {
     let body = $('body');
     let name = $('.info__name');
     let aCompany = $('.info__company');
+    let addPosition = $('.position__substrate');
+    let addPlatform = $('.platform__substrate');
+    let menuPosition = addPosition.children('._hint-down-click').children('._hint-down-block').children('.menu');
+    let menuPlatform = addPlatform.children('._hint-down-click').children('._hint-down-block').children('.menu');
     let openAdd;
 
     // Расположеие ссылки на компанию возле имени
@@ -66,14 +70,15 @@ $(function () {
     body.on('click', '.item__block', function (el) {
         let typeSubstrate = el.target.closest('._hint-click');
         let type;
+        let name = $(this).attr('data-name');
         if ($(typeSubstrate).hasClass('platform__substrate')) {
             type = 'platform';
         } else if ($(typeSubstrate).hasClass('position__substrate')) {
             type = 'position';
         }
-        let name = $(this).text();
         let newEl = document.createElement('div');
         newEl.classList.add(type);
+        $(newEl).attr({'data-name': name});
         let role = document.createElement('div');
         role.classList.add('role');
         role.innerText = name;
@@ -94,22 +99,51 @@ $(function () {
         circle.prepend(line1);
         line1.prepend(line2);
         $(typeSubstrate).before(newEl);
+        $(this).parent().remove();
+        if ((type === 'platform' && menuPlatform.children('.menu__item').length < 1) || (type === 'position' && menuPosition.children('.menu__item').length < 1)) {
+            $(typeSubstrate).addClass('hide');
+        }
     });
 
     // Удаление должностей
     body.on('click', '.position__remove', function () {
+        if (menuPosition.children('.menu__item').length < 1) {
+            addPosition.removeClass('hide');
+        }
         let position = $(this).parent().parent();
         let positionName = position.attr('data-name');
-        console.log(positionName)
-        position.remove()
+        let newItem = document.createElement('div');
+        newItem.classList.add('menu__item');
+        let itemBlock = document.createElement('div');
+        itemBlock.classList.add('item__block');
+        $(itemBlock).attr({'data-name': positionName});
+        itemBlock.innerText = positionName;
+        let itemLine = document.createElement('div');
+        itemLine.classList.add('item__line');
+        newItem.prepend(itemLine);
+        newItem.prepend(itemBlock);
+        menuPosition.prepend(newItem);
+        position.remove();
     });
 
     // Удаление отделов
     body.on('click', '.platform__remove', function () {
+        if (menuPlatform.children('.menu__item').length < 1) {
+            addPlatform.removeClass('hide');
+        }
         let platform = $(this).parent().parent();
         let platformName = platform.attr('data-name');
-        console.log(platformName)
-
-        platform.remove()
+        let newItem = document.createElement('div');
+        newItem.classList.add('menu__item');
+        let itemBlock = document.createElement('div');
+        itemBlock.classList.add('item__block');
+        $(itemBlock).attr({'data-name': platformName});
+        itemBlock.innerText = platformName;
+        let itemLine = document.createElement('div');
+        itemLine.classList.add('item__line');
+        newItem.prepend(itemLine);
+        newItem.prepend(itemBlock);
+        menuPlatform.prepend(newItem);
+        platform.remove();
     });
 });
