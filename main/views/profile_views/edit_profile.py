@@ -3,6 +3,7 @@ import datetime
 from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
 from main.models import ProfilePhoto, BirthDate
 from main.views.auxiliary_general_methods import *
+from .render_profile import build_profile_data
 
 
 def upload_profile_photo(request):
@@ -29,47 +30,32 @@ def upload_profile_photo(request):
     return render(request, "main/user/old/upload_photo.html", args)
 
 
-def edit_profile(request):
+def edit_profile(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     user = auth.get_user(request)
     profile = get_user_profile(request)
     try:
-        birth_date = BirthDate.objects.get(profile=profile)
+        photo = profile.profilephoto.photo
     except:
-        birth_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
+        photo = None
+    profile_data = build_profile_data(user, profile)
+
     args = {
-        'title': "Редактирование профия",
-        'profile_form': ProfileForm({
-            'name': profile.name,
-            'surname': profile.surname,
-            'patronymic': profile.patronymic,
-            'birthday': birth_date}),
-        'email_form': UserChangeEmailForm({'email': user.email}),
-        'profile': profile,
-        'user': user
+        'title': "Настройки",
+        'photo': photo,
+        'profile': profile_data[0],
+        'roles': profile_data[1],
     }
 
-    try:
-        photo = profile.profilephoto.photo
-        args['photo'] = photo
-        args['photo_height'] = get_photo_height(photo.width, photo.height)
-    except:
-        args['photo'] = None
+    args['profile']['login'] = user.username
+    birth_date = args['profile']['birthdate']
+    args['profile']['birthdate'] = {
+        'text': str(birth_date),
+        'date': birth_date
+    }
 
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST)
-        if profile_form.is_valid():
-            profile.name = request.POST.get('name', '')
-            profile.patronymic = request.POST.get('patronymic', '')
-            profile.surname = request.POST.get('surname', '')
-            profile.city = request.POST.get('city', '')
-            profile.save()
-        email_form = UserChangeEmailForm(request.POST)
-        if email_form.is_valid():
-            new_email = request.POST.get('email', '')
-            user.email = new_email
-            user.save()
-        return redirect('/edit/')
+        print(request.POST)
     return render(request, 'main/user/edit.html', args)
