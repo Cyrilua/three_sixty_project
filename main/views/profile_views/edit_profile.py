@@ -53,7 +53,7 @@ def edit_profile(request) -> render:
     birth_date = args['profile']['birthdate']
     args['profile']['birthdate'] = {
         'text': birth_date,
-        'date': birth_date
+        'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
     }
 
     if request.method == 'POST':
