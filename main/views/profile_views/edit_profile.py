@@ -52,7 +52,7 @@ def edit_profile(request) -> render:
     args['profile']['login'] = user.username
     birth_date = args['profile']['birthdate']
     args['profile']['birthdate'] = {
-        'text': str(birth_date),
+        'text': birth_date,
         'date': birth_date
     }
 
