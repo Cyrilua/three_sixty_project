@@ -402,6 +402,7 @@ button {
 .input-field:disabled {
   background: #FAFAFA;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
 }
 .input-field.error {
   background: rgba(255, 24, 65, 0.2);

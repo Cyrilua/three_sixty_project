@@ -98,7 +98,8 @@
                                                 {% for new_position in new_positions %}
                                                     <div class="menu__item">
                                                         <div class="item__block"
-                                                             data-name="{{ new_position.name }}" data-id="{{ new_position.id }}">{{ new_position.name }}</div>
+                                                             data-name="{{ new_position.name }}"
+                                                             data-id="{{ new_position.id }}">{{ new_position.name }}</div>
                                                         <div class="item__line"></div>
                                                     </div>
                                                 {% endfor %}
@@ -143,7 +144,8 @@
                                                 {% for new_platform in new_platforms %}
                                                     <div class="menu__item">
                                                         <div class="item__block"
-                                                             data-name="{{ new_platform.name }}" data-id="{{ new_platform.id }}">{{ new_platform.name }}</div>
+                                                             data-name="{{ new_platform.name }}"
+                                                             data-id="{{ new_platform.id }}">{{ new_platform.name }}</div>
                                                         <div class="item__line"></div>
                                                     </div>
                                                 {% endfor %}
@@ -179,13 +181,31 @@
                                     <div class="setting__substrate">
                                         <span class="setting__value">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</span>
                                     </div>
-                                    <input type="text" class="input-field" id="surname" placeholder="Фамилия"
-                                           value="{{ profile.surname }}">
-                                    <input type="text" class="input-field" id="name" placeholder="Имя"
-                                           value="{{ profile.name }}">
-                                    <input type="text" class="input-field" id="patronymic" placeholder="Отчество"
-                                           value="{{ profile.patronymic }}">
-                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="surname" placeholder="Фамилия"
+                                               value="{{ profile.surname }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="name" placeholder="Имя"
+                                               value="{{ profile.name }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="patronymic" placeholder="Отчество"
+                                               value="{{ profile.patronymic }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnName" data-part-url="name" disabled>Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -218,9 +238,15 @@
                                     <div class="setting__substrate">
                                         <span class="setting__value">{{ profile.birthdate.text }}</span>
                                     </div>
-                                    <input type="text" class="input-field" id="birthdate" placeholder="Дата рождения"
-                                           value="{{ profile.birthdate.date }}">
-                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                    <div class="form-grouping">
+                                        <input type="" class="input-field" id="birthdate" placeholder="Дата рождения"
+                                               value="{{ profile.birthdate.date }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnBirthdate" data-part-url="birthdate" disabled>Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -255,9 +281,15 @@
                                         <a href="{{ profile.email }}"
                                            class="setting__value setting__email">{{ profile.email }}</a>
                                     </div>
-                                    <input type="email" class="input-field" id="email" placeholder="E-mail"
-                                           value="{{ profile.email }}">
-                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                    <div class="form-grouping">
+                                        <input type="email" class="input-field" id="email" placeholder="E-mail"
+                                               value="{{ profile.email }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnEmail" data-part-url="email" disabled>Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -290,9 +322,15 @@
                                     <div class="setting__substrate">
                                         <span class="setting__value">{{ profile.login }}</span>
                                     </div>
-                                    <input type="text" class="input-field" id="login" placeholder="Логин"
-                                           value="{{ profile.login }}">
-                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="username" placeholder="Логин"
+                                               value="{{ profile.login }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnUsername" data-part-url="username" disabled>Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -325,15 +363,34 @@
                                     <div class="setting__substrate">
                                         <span class="setting__value">*******</span>
                                     </div>
-                                    <input type=password class="input-field" id="password_old"
-                                           placeholder="Старый пароль"
-                                           value="">
-                                    <input type="password" class="input-field" id="password1" placeholder="Новый пароль"
-                                           value="">
-                                    <input type="password" class="input-field" id="password2"
-                                           placeholder="Повторите пароль"
-                                           value="">
-                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                    <div class="form-grouping">
+                                        <input type=password class="input-field" id="password_old"
+                                               placeholder="Старый пароль"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="password" class="input-field" id="password1"
+                                               placeholder="Новый пароль"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="password" class="input-field" id="password2"
+                                               placeholder="Повторите пароль"
+                                               value="" disabled>
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnPassword" data-part-url="password">Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -712,7 +769,7 @@
                                     <div class="setting__substrate">
                                         <span class="setting__value">BeastMaster64</span>
                                     </div>
-                                    <input type="text" class="input-field" id="login" placeholder="Логин"
+                                    <input type="text" class="input-field" id="username" placeholder="Логин"
                                            value="BeastMaster64">
                                     <button class="button-red" disabled>Сохранить изменения</button>
                                 </div>
@@ -785,10 +842,12 @@
     <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
     <script src="{% static 'main/js/hint.min.js' %}"></script>
     <script src="{% static 'main/js/edit.min.js' %}"></script>
+    <script type="text/javascript" src={% static 'main/js/datepicker.min.js' %}></script>
 {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/edit.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/datepicker.min.css' %}">
     {#    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">#}
 {% endblock %}

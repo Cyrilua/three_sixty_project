@@ -479,7 +479,6 @@ function showErrors(body, el, errors, timeShow) {
         .stop().animate({
         opacity: 1,
     }, timeShow);
-
 }
 
 // Удаление ошибок
@@ -494,7 +493,6 @@ function removeErrors(el, timeShow) {
         });
         alert.children().remove();
     });
-
 }
 
 // Проверка, что все поля заполнены и кнопку "Зарегистрироваться" можно нажать
