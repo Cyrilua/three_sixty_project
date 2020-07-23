@@ -8,7 +8,7 @@
 
 {% block content-user %}
 
-    {% if profile %}
+    {% if profile1 %}
         <div class="edit">
             <div class="left-content rounded-block">
                 {% if photo and photo.url != '' %}
@@ -67,7 +67,7 @@
                             <h2 class="positions__title">Должности</h2>
                             <div class="positions__data">
                                 {% for position in profile.positions %}
-                                    <div class="position">
+                                    <div class="position" data-name="{{ platform }}">
                                         <div class="role">
                                             <div class="position__remove">
                                                 <div class="cross-in-circle">
@@ -82,39 +82,37 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                                {% if new_positions.is_have %}
-                                    <div class="position__substrate _hint-click unselectable">
-                                        <div class="position__add _hint-up-click">
-                                            <div class="cross-in-circle">
-                                                <div class="circle">
-                                                    <div class="line-1">
-                                                        <div class="line-2"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="_hint-down-click">
-                                            <div class="_hint-down-block add__menu">
-                                                <div class="menu">
-                                                    {% for new_position in new_positions.positions %}
-                                                        <div class="menu__item">
-                                                            <div class="item__block">{{ new_position }}</div>
-                                                            <div class="item__line"></div>
-                                                        </div>
-                                                    {% endfor %}
+                                <div class="position__substrate _hint-click unselectable {% if not new_positions %}hide{% endif %}">
+                                    <div class="position__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_position in new_positions.positions %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_position }}">{{ new_position }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="platforms">
                             <h2 class="platforms__title">Должности</h2>
                             <div class="platforms__data">
-
                                 {% for platform in profile.platforms %}
-                                    <div class="platform">
+                                    <div class="platform" data-name="{{ platform }}">
                                         <div class="role">
                                             <div class="platform__remove">
                                                 <div class="cross-in-circle">
@@ -129,31 +127,30 @@
                                         </div>
                                     </div>
                                 {% endfor %}
-                                {% if new_platforms.is_have %}
-                                    <div class="platform__substrate _hint-click unselectable">
-                                        <div class="platform__add _hint-up-click">
-                                            <div class="cross-in-circle">
-                                                <div class="circle">
-                                                    <div class="line-1">
-                                                        <div class="line-2"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="_hint-down-click">
-                                            <div class="_hint-down-block add__menu">
-                                                <div class="menu">
-                                                    {% for new_platform in new_platforms.platforms %}
-                                                        <div class="menu__item">
-                                                            <div class="item__block">{{ new_platform }}</div>
-                                                            <div class="item__line"></div>
-                                                        </div>
-                                                    {% endfor %}
+                                <div class="platform__substrate _hint-click unselectable {% if not new_platforms %}hide{% endif %}">
+                                    <div class="platform__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_platform in new_platforms.platforms %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_platform }}">{{ new_platform }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +181,8 @@
                                     </div>
                                     <input type="text" class="input-field" id="surname" placeholder="Фамилия"
                                            value="{{ profile.surname }}">
-                                    <input type="text" class="input-field" id="name" placeholder="Имя" value="{{ profile.name }}">
+                                    <input type="text" class="input-field" id="name" placeholder="Имя"
+                                           value="{{ profile.name }}">
                                     <input type="text" class="input-field" id="patronymic" placeholder="Отчество"
                                            value="{{ profile.patronymic }}">
                                     <button class="button-red" disabled>Сохранить изменения</button>
@@ -239,7 +237,8 @@
                                     <h2 class="setting__title">Эл. почта</h2>
                                 </div>
                                 <div class="setting__2-block">
-                                    <a href="{{ profile.email }}" class="setting__value setting__email">{{ profile.email }}</a>
+                                    <a href="{{ profile.email }}"
+                                       class="setting__value setting__email">{{ profile.email }}</a>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Изменить</a>
@@ -399,7 +398,7 @@
                         <div class="positions">
                             <h2 class="positions__title">Должности</h2>
                             <div class="positions__data">
-                                <div class="position">
+                                <div class="position" data-name="Аналитик">
                                     <div class="role">
                                         <div class="position__remove">
                                             <div class="cross-in-circle">
@@ -413,7 +412,7 @@
                                         Аналитик
                                     </div>
                                 </div>
-                                <div class="position">
+                                <div class="position" data-name="Тимлид">
                                     <div class="role">
                                         <div class="position__remove">
                                             <div class="cross-in-circle">
@@ -441,31 +440,31 @@
                                         <div class="_hint-down-block add__menu">
                                             <div class="menu">
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое</div>
+                                                    <div class="item__block" data-name="Хуе мое">Хуе мое</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 2</div>
+                                                    <div class="item__block" data-name="Хуе мое 2">Хуе мое 2</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 3</div>
+                                                    <div class="item__block" data-name="Хуе мое 3">Хуе мое 3</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 4</div>
+                                                    <div class="item__block" data-name="Хуе мое 4">Хуе мое 4</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 5</div>
+                                                    <div class="item__block" data-name="Хуе мое 5">Хуе мое 5</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 6</div>
+                                                    <div class="item__block" data-name="Хуе мое 6">Хуе мое 6</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 7</div>
+                                                    <div class="item__block" data-name="Хуе мое 7">Хуе мое 7</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                             </div>
@@ -478,7 +477,7 @@
                         <div class="platforms">
                             <h2 class="platforms__title">Должности</h2>
                             <div class="platforms__data">
-                                <div class="platform">
+                                <div class="platform" data-name="Юрики">
                                     <div class="role">
                                         <div class="platform__remove">
                                             <div class="cross-in-circle">
@@ -492,7 +491,7 @@
                                         Юрики
                                     </div>
                                 </div>
-                                <div class="platform">
+                                <div class="platform" data-name="Физики">
                                     <div class="role">
                                         <div class="platform__remove">
                                             <div class="cross-in-circle">
@@ -506,7 +505,7 @@
                                         Физики
                                     </div>
                                 </div>
-                                <div class="platform">
+                                <div class="platform" data-name="Физики">
                                     <div class="role">
                                         <div class="platform__remove">
                                             <div class="cross-in-circle">
@@ -520,7 +519,7 @@
                                         Физики
                                     </div>
                                 </div>
-                                <div class="platform">
+                                <div class="platform" data-name="Физики">
                                     <div class="role">
                                         <div class="platform__remove">
                                             <div class="cross-in-circle">
@@ -534,7 +533,7 @@
                                         Физики
                                     </div>
                                 </div>
-                                <div class="platform">
+                                <div class="platform" data-name="Физики">
                                     <div class="role">
                                         <div class="platform__remove">
                                             <div class="cross-in-circle">
@@ -562,11 +561,11 @@
                                         <div class="_hint-down-block add__menu">
                                             <div class="menu">
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое</div>
+                                                    <div class="item__block" data-name="Хуе мое">Хуе мое</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                                 <div class="menu__item">
-                                                    <div class="item__block">Хуе мое 2</div>
+                                                    <div class="item__block" data-name="Хуе мое 2">Хуе мое 2</div>
                                                     <div class="item__line"></div>
                                                 </div>
                                             </div>
