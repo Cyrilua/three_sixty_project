@@ -432,9 +432,11 @@
   color: #2269D5;
   cursor: pointer;
 }
-.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .input-field {
-  width: 228px;
+.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .form-grouping {
   margin-bottom: 10px;
+}
+.edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .form-grouping .input-field {
+  width: 228px;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .button-red {
   width: 228px;

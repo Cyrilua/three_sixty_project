@@ -403,10 +403,13 @@
                   }
                 }
               }
-              
-              .input-field {
-                width: 228px;
+
+              .form-grouping {
                 margin-bottom: 10px;
+
+                .input-field {
+                  width: 228px;
+                }
               }
 
               .button-red {
