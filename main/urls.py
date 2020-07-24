@@ -56,13 +56,13 @@ urlpatterns = [
                   # Редактирование профиля
                   path('edit/', edit_profile.edit_profile, name='edit'),
                   # Удаление платформы из профиля
-                  path('edit/platform/remove/<int:platform_id>/', edit_profile.remove_platform),
+                  path('edit/platform/remove/<int:platform_id>', edit_profile.remove_platform),
                   # Удаление должности из профиля
-                  path('edit/position/remove/<int:position_id>/', edit_profile.remove_position),
+                  path('edit/position/remove/<int:position_id>', edit_profile.remove_position),
                   # Добавление платформы
-                  path('edit/platform/add/<int:platform_id>/', edit_profile.add_platform),
+                  path('edit/platform/add/<int:platform_id>', edit_profile.add_platform),
                   # Добавление должности
-                  path('edit/position/add/<int:position_id>/', edit_profile.add_position),
+                  path('edit/position/add/<int:position_id>', edit_profile.add_position),
                   # Проверка имени
                   path('edit/check_input/name', edit_profile.check_name),
                   # Загрузка аватарки

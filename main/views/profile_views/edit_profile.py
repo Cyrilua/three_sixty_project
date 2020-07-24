@@ -119,10 +119,21 @@ def _get_result(errors: list):
                          'resultError': errors}, status=200)
 
 
+def _get_value(data):
+    key = 'values[{}]'.format(data['id'])
+    return data[key]
+
+
 def check_name(request):
     if request.is_ajax():
-        data = request.POST
-        key = 'values[{}]'.format(data['id'])
-        value = data[key]
+        value = _get_value(request.POST)
         errors = validators.validate_name(value)
         return _get_result(errors)
+
+
+def check_surname(request):
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        errors = validators.validate_surname(value)
+        return _get_result(errors)
+
