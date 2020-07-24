@@ -67,32 +67,35 @@ $(function () {
     if (birthdate.prop('type') !== 'date') {
         birthdate.datepicker({
             onSelect: function (formattedDate, date, inst) {
-                let el = birthdate;
-                $.ajax({
-                    url: '/edit/check_input/birthdate',
-                    type: 'post',
-                    data: {
-                        id: birthdate[0].id,
-                        birthday: formattedDate,
-                        csrfmiddlewaretoken: csrf,
-                    },
-                    success: function (response) {
-                        chooseValidationColor($('#id_birthday')[0], response.resultStatus);
-                        if (response.resultStatus === 'success') {
-                            required.birthdate = true;
-                            errors.birthdate = false;
-                            removeErrors(el);
-                        } else if (response.resultStatus === 'error') {
-                            required.birthdate = false;
-                            errors.birthdate = true;
-                            showErrors(el, response.resultError);
-                        }
-                        checkBtnPost(btnBirthdate, birthdate);
-                    },
-                    error: function () {
-                        console.log('Что - то пошло не так :(');
-                    },
+                ajaxForInput(birthdate, btnBirthdate, {
+                    'birthdate': formattedDate,
                 });
+                // let el = birthdate;
+                // $.ajax({
+                //     url: '/edit/check_input/birthdate',
+                //     type: 'post',
+                //     data: {
+                //         id: birthdate[0].id,
+                //         birthday: formattedDate,
+                //         csrfmiddlewaretoken: csrf,
+                //     },
+                //     success: function (response) {
+                //         chooseValidationColor($('#id_birthday')[0], response.resultStatus);
+                //         if (response.resultStatus === 'success') {
+                //             required.birthdate = true;
+                //             errors.birthdate = false;
+                //             removeErrors(el);
+                //         } else if (response.resultStatus === 'error') {
+                //             required.birthdate = false;
+                //             errors.birthdate = true;
+                //             showErrors(el, response.resultError);
+                //         }
+                //         checkBtnPost(btnBirthdate, birthdate);
+                //     },
+                //     error: function () {
+                //         console.log('Что - то пошло не так :(');
+                //     },
+                // });
             },
         });
     }
@@ -368,7 +371,7 @@ $(function () {
                 circle.prepend(line1);
                 line1.prepend(line2);
                 $(typeSubstrate).before(newEl);
-                $(this).parent().remove();
+                $(el.target).parent().remove();
                 if ((type === 'platform' && menuPlatform.children('.menu__item').length < 1) || (type === 'position' && menuPosition.children('.menu__item').length < 1)) {
                     $(typeSubstrate).addClass('hide');
                 }
