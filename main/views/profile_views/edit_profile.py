@@ -143,3 +143,14 @@ def check_patronymic(request):
         value = _get_value(request.POST)
         errors = validators.validate_patronymic(value)
         return _get_result(errors)
+
+
+def save_changes(request):
+    if request.is_ajax():
+        data = request.POST
+        profile = get_user_profile(request)
+        profile.name = data['values[name]']
+        profile.surname = data['values[surname]']
+        profile.patronymic = data['values[patronymic]']
+        profile.save()
+        return JsonResponse({'resultStatus': 'success'}, status=200)

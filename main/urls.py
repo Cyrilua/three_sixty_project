@@ -65,6 +65,12 @@ urlpatterns = [
                   path('edit/position/add/<int:position_id>', edit_profile.add_position),
                   # Проверка имени
                   path('edit/check_input/name', edit_profile.check_name),
+                  # Проверка фамилии
+                  path('edit/check_input/surname', edit_profile.check_surname),
+                  # Проверка отчества
+                  path('edit/check_input/patronymic', edit_profile.check_patronymic),
+                  # Ссохранение ФИО
+                  path('edit/edit/save/name', edit_profile.save_changes),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
