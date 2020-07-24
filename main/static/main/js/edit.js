@@ -355,7 +355,9 @@ $(function () {
                 role.classList.add('role');
                 role.innerText = name;
                 let remove = document.createElement('div');
-                remove.classList.add(`${type}__remove`);
+                let removeClassList = remove.classList;
+                removeClassList.add(`${type}__remove`);
+                removeClassList.add('remove-item');
                 let cross = document.createElement('div');
                 cross.classList.add('cross-in-circle');
                 let circle = document.createElement('div');
