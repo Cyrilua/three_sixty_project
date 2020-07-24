@@ -102,8 +102,8 @@ $(function () {
 
     // Вывод шибки при фокусе на поле
     body.on('focus', '.input-field', function () {
+        let name = $(this)[0].id;
         for (let key in errors) {
-            let name = $(this)[0].name;
             if (key === name) {
                 if (errors[key]) {
                     let popup = $(this).parent().children('.popup');
