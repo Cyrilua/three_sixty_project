@@ -137,3 +137,9 @@ def check_surname(request):
         errors = validators.validate_surname(value)
         return _get_result(errors)
 
+
+def check_patronymic(request):
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        errors = validators.validate_patronymic(value)
+        return _get_result(errors)
