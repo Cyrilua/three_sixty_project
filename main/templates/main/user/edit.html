@@ -10,6 +10,7 @@
 
     {% if profile %}
         <div class="edit">
+            {% csrf_token %}
             <div class="left-content rounded-block">
                 {% if photo and photo.url != '' %}
                     <img src="{{ photo.url }}" alt="" class="left-content__photo">

@@ -197,7 +197,7 @@ $(function () {
 
     // Сохранение изменений
     body.on('click', '.button-save', function () {
-        let partUrl = $(this).attr('data-part-url')ж
+        let partUrl = $(this).attr('data-part-url');
         $.ajax({
             url: `edit/save/${partUrl}`,
             type: 'post',
