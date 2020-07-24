@@ -1,9 +1,9 @@
-import datetime
-
-from main.forms import ProfileForm, PhotoProfileForm, UserChangeEmailForm
-from main.models import ProfilePhoto, BirthDate
+from main.forms import PhotoProfileForm
+from main.models import ProfilePhoto, PlatformCompany, PositionCompany
 from main.views.auxiliary_general_methods import *
 from .render_profile import build_profile_data
+
+from django.http import JsonResponse
 
 
 def upload_profile_photo(request):
@@ -79,3 +79,14 @@ def _build_objects(list_objects: filter) -> list:
         }
         result.append(completed)
     return result
+
+
+def remove_platform(request, platform_id: int) -> redirect:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    print('i am here')
+    if request.is_ajax():
+        print('i am here !')
+        platform = PlatformCompany.objects.get(id=platform_id)
+        platform.profile_set.remove(get_user_profile(request))
+        return JsonResponse({'resultStatus': 'success'}, status=200)
