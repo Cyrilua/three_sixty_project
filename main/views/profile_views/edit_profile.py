@@ -62,8 +62,8 @@ def edit_profile(request) -> render:
         args['new_positions'] = _build_objects(filter(lambda x: x not in profile_positions, positions))
 
         platform = company.platformcompany_set.all()
-        profile_platform = profile.platforms.all()
-        args['new_platforms'] = _build_objects(filter(lambda x: x not in profile_platform, platform))
+        profile_platforms = profile.platforms.all()
+        args['new_platforms'] = _build_objects(filter(lambda x: x not in profile_platforms, platform))
 
     if request.method == 'POST':
         print(request.POST)
@@ -94,6 +94,7 @@ def remove_position(request, position_id: int) -> redirect:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
+        print('I rem pos')
         position = PositionCompany.objects.get(id=position_id)
         position.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
@@ -113,6 +114,7 @@ def add_position(request, position_id: int) -> redirect:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
+        print('I add pos')
         profile = get_user_profile(request)
         position = PositionCompany.objects.get(id=position_id)
         position.profile_set.add(profile)
