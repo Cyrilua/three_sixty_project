@@ -52,8 +52,8 @@ def build_profile_data(user, profile):
             'name': company.name,
         }
 
-        profile_data['platforms'] = profile.platform.all()
-        profile_data['positions'] = profile.position.all()
+        profile_data['platforms'] = profile.platforms.all()
+        profile_data['positions'] = profile.positions.all()
 
     try:
         profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday

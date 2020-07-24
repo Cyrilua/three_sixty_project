@@ -55,6 +55,8 @@ urlpatterns = [
                   path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
                   path('edit/', edit_profile.edit_profile, name='edit'),
+                  # Удаление платформы
+                  path('edit/platform/remove/<int:platform_id>', edit_profile.remove_platform),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
