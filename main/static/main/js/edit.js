@@ -197,15 +197,65 @@ $(function () {
 
     // Сохранение изменений
     body.on('click', '.button-save', function () {
-        let partUrl = $(this).attr('data-part-url')ж
+        let partUrl = $(this).attr('data-part-url');
+        let values;
+        if (partUrl === 'name') {
+            values = {
+                name: name.val(),
+                surname: surname.val(),
+                patronymic: patronymic.val(),
+            }
+        } else if (partUrl === 'birthdate') {
+            values = {
+                birthdate: birthdate.val(),
+            }
+        } else if (partUrl === 'email') {
+            values = {
+                email: email.val(),
+            }
+        } else if (partUrl === 'username') {
+            values = {
+                username: username.val(),
+            }
+        } else if (partUrl === 'password') {
+            values = {
+                password_old: passwordOld.val(),
+                password1: password1.val(),
+                password2: password2.val(),
+            }
+        } else {
+            throw new Error('Unexpected argument values');
+        }
         $.ajax({
             url: `edit/save/${partUrl}`,
             type: 'post',
             data: {
-
+                csrfmiddlewaretoken: csrf,
+                values: values,
             },
             success: function (response) {
+                if (partUrl === 'name') {
 
+                } else if (partUrl === 'birthdate') {
+
+                } else if (partUrl === 'email') {
+
+                } else if (partUrl === 'username') {
+
+                } else if (partUrl === 'password') {
+                    if (response.resultStatus === 'error') {
+                        chooseValidationColor(passwordOld, response.resultStatus);
+                        passwordOld.val('');
+                        password1.val('');
+                        password2.val('');
+                        btnPassword.prop({
+                            'disabled': true,
+                        });
+                        showErrors(passwordOld, response.listErrors);
+                    }
+                } else {
+                    throw new Error('Unexpected argument values');
+                }
             },
             statusCode: {
                 400: function () {
@@ -533,7 +583,7 @@ $(function () {
     }
 
     function checkBtnName(btn) {
-        if (required.name && required.surname && required.patronymic) {
+        if (required.name || required.surname || required.patronymic) {
             btn.prop({'disabled': false});
         } else {
             btn.prop({'disabled': true});
