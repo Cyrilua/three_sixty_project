@@ -118,19 +118,19 @@ def add_position(request, position_id: int) -> redirect:
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
-def _get_result(errors: list):
+def _get_result(errors: list) -> JsonResponse:
     if len(errors) == 0:
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
 
 
-def _get_value(data):
+def _get_value(data) -> str:
     key = 'values[{}]'.format(data['id'])
     return data[key]
 
 
-def check_name(request):
+def check_name(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_name(value)
@@ -138,21 +138,21 @@ def check_name(request):
         return _get_result(errors)
 
 
-def check_surname(request):
+def check_surname(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_surname(value)
         return _get_result(errors)
 
 
-def check_patronymic(request):
+def check_patronymic(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_patronymic(value)
         return _get_result(errors)
 
 
-def save_changes_fcs(request):
+def save_changes_fcs(request) -> JsonResponse:
     if request.is_ajax():
         data = request.POST
         profile = get_user_profile(request)
@@ -163,14 +163,14 @@ def save_changes_fcs(request):
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
-def check_birth_date(request):
+def check_birth_date(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_birth_date(value)
         return _get_result(errors)
 
 
-def save_birth_date(request):
+def save_birth_date(request) -> JsonResponse:
     if request.is_ajax():
         date = request.POST['values[birthdate]']
         try:
@@ -189,7 +189,7 @@ def save_birth_date(request):
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
-def check_login(request):
+def check_login(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         if value == auth.get_user(request).username:
@@ -197,3 +197,12 @@ def check_login(request):
                                  'resultError': []}, status=200)
         errors = validators.validate_login(value)
         return _get_result(errors)
+
+
+def save_login(request) -> JsonResponse:
+    if request.is_ajax():
+        user = auth.get_user(request)
+        new_username = request.POST['values[username]']
+        user.username = new_username
+        user.save()
+        return JsonResponse({'resultStatus': 'success'}, status=200)
