@@ -51,17 +51,8 @@ $(function () {
         'birthdate': false,
     };
 
-    // Расположеие ссылки на компанию возле имени
-    $(function () {
-        if (parseFloat(infoName.width()) + parseFloat(infoName.css('margin-left')) + parseFloat(infoName.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
-            aCompany.css({
-                'position': 'absolute',
-                'right': '0',
-                'bottom': 'calc(100% + 14px)'
-            })
-        }
-        aCompany.removeClass('hide')
-    });
+    // Расположение ссылки на команду
+    positionCompany();
 
     // Кастомный календарь
     if (birthdate.prop('type') !== 'date') {
@@ -70,32 +61,6 @@ $(function () {
                 ajaxForInput(birthdate, btnBirthdate, {
                     'birthdate': formattedDate,
                 });
-                // let el = birthdate;
-                // $.ajax({
-                //     url: '/edit/check_input/birthdate',
-                //     type: 'post',
-                //     data: {
-                //         id: birthdate[0].id,
-                //         birthday: formattedDate,
-                //         csrfmiddlewaretoken: csrf,
-                //     },
-                //     success: function (response) {
-                //         chooseValidationColor($('#id_birthday')[0], response.resultStatus);
-                //         if (response.resultStatus === 'success') {
-                //             required.birthdate = true;
-                //             errors.birthdate = false;
-                //             removeErrors(el);
-                //         } else if (response.resultStatus === 'error') {
-                //             required.birthdate = false;
-                //             errors.birthdate = true;
-                //             showErrors(el, response.resultError);
-                //         }
-                //         checkBtnPost(btnBirthdate, birthdate);
-                //     },
-                //     error: function () {
-                //         console.log('Что - то пошло не так :(');
-                //     },
-                // });
             },
         });
     }
@@ -199,7 +164,7 @@ $(function () {
     });
 
     // Сохранение изменений
-    body.on('click', '.button-save', function () {
+    body.on('click', '.button-save', function (elem) {
         let partUrl = $(this).attr('data-part-url');
         let values;
         if (partUrl === 'name') {
@@ -237,23 +202,44 @@ $(function () {
                 values: values,
             },
             success: function (response) {
+                let currentSetting = $(elem.target).parent();
+                let spanMax = currentSetting.children('.setting__value');
+                let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
+                    .children('.setting__mini').children('.setting__2-block')
+                    .children('.setting__value');
                 if (partUrl === 'name') {
-
+                    name.val(response.name);
+                    surname.val(response.surname);
+                    patronymic.val(response.patronymic);
+                    infoName.text(`${response.name} ${response.surname}`);
+                    positionCompany();
+                    spanMax.text(`${response.name} ${response.surname}`);
+                    spanMin.text(`${response.name} ${response.surname}`);
                 } else if (partUrl === 'birthdate') {
-
+                    birthdate.val(response.birthdate.date);
+                    spanMax.text(`${response.birthdate.text}`);
+                    spanMin.text(`${response.birthdate.text}`);
                 } else if (partUrl === 'email') {
-
+                    email.val(response.email);
+                    spanMax.text(`${response.email}`);
+                    spanMin.text(`${response.email}`);
                 } else if (partUrl === 'username') {
+                    email.val(response.username);
+                    spanMax.text(`${response.username}`);
+                    spanMin.text(`${response.username}`);
 
                 } else if (partUrl === 'password') {
+                    passwordOld.val('');
+                    password1.val('');
+                    password2.val('');
+                    password2.prop({
+                        'disabled': true,
+                    });
+                    btnPassword.prop({
+                        'disabled': true,
+                    });
                     if (response.resultStatus === 'error') {
-                        chooseValidationColor(passwordOld, response.resultStatus);
-                        passwordOld.val('');
-                        password1.val('');
-                        password2.val('');
-                        btnPassword.prop({
-                            'disabled': true,
-                        });
+                        chooseValidationColor(passwordOld, response.resultStatus, response.listErrors);
                         showErrors(passwordOld, response.listErrors);
                     }
                 } else {
@@ -704,6 +690,22 @@ $(function () {
                 console.log('Что - то пошло не так! :(');
             },
         });
+    }
+
+    // Расположеие ссылки на компанию возле имени
+    function positionCompany() {
+        if (parseFloat(infoName.width()) + parseFloat(infoName.css('margin-left')) + parseFloat(infoName.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
+            aCompany.css({
+                'position': 'absolute',
+                'right': '0',
+                'bottom': 'calc(100% + 14px)'
+            })
+        } else {
+            aCompany.css({
+                'position': 'static',
+            })
+        }
+        aCompany.removeClass('hide')
     }
 
 });
