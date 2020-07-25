@@ -394,7 +394,7 @@
 .edit .center-content .settings .setting .setting__open .setting__max .setting__1-block {
   margin-right: 0;
   width: 150px;
-  height: 48px;
+  height: 50px;
   display: flex;
   align-items: center;
 }
@@ -413,7 +413,7 @@
   flex-direction: column;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .setting__substrate {
-  height: 48px;
+  height: 50px;
   display: flex;
   align-items: center;
   margin-bottom: 5px;
@@ -441,7 +441,7 @@
   width: 228px;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__3-block {
-  height: 48px;
+  height: 50px;
   display: flex;
   align-items: center;
 }
