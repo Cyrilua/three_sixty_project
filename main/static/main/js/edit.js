@@ -523,12 +523,12 @@ $(function () {
     // functions
 
     // Окраска поля при ошибке
-    function chooseValidationColor(element, status) {
-        if (status === 'success') {
+    function chooseValidationColor(element, status, listErrors) {
+        if (status === 'success' || listErrors.length < 1) {
             if (element.classList.contains('error')) {
                 element.classList.remove('error');
             }
-        } else if (status === 'error') {
+        } else if (status === 'error' && listErrors.length > 0) {
             element.classList.add('error');
         }
     }
@@ -549,24 +549,25 @@ $(function () {
 
     // Появление ошибок
     function showErrors(el, listErrors) {
-        // console.log(listErrors)
-        let popup = $(el).parent().children('.popup');
-        let alert = popup.children('.popup_message');
-        alert.children().remove();
-        for (let i = 0; i < listErrors.length; i++) {
-            let span = document.createElement('span');
-            span.classList.add('popup_message-text');
-            span.textContent = listErrors[i];
-            alert.append(span);
+        if (listErrors.length > 0) {
+            let popup = $(el).parent().children('.popup');
+            let alert = popup.children('.popup_message');
+            alert.children().remove();
+            for (let i = 0; i < listErrors.length; i++) {
+                let span = document.createElement('span');
+                span.classList.add('popup_message-text');
+                span.textContent = listErrors[i];
+                alert.append(span);
+            }
+            popup
+                .css({
+                    display: 'block',
+                    opacity: 0,
+                })
+                .stop().animate({
+                opacity: 1,
+            }, timeShow);
         }
-        popup
-            .css({
-                display: 'block',
-                opacity: 0,
-            })
-            .stop().animate({
-            opacity: 1,
-        }, timeShow);
     }
 
     // Можно ли нажать на кнопку сохранения изменений
@@ -648,7 +649,7 @@ $(function () {
                 values: values,
             },
             success: function (response) {
-                chooseValidationColor(elem[0], response.resultStatus);
+                chooseValidationColor(elem[0], response.resultStatus, response.resultError);
                 if (id === 'name') {
                     if (response.resultStatus === 'success') {
                         required.name = true;
@@ -656,7 +657,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.name = false;
-                        errors.name = true;
+                        errors.name = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'surname') {
@@ -666,7 +667,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.surname = false;
-                        errors.surname = true;
+                        errors.surname = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'patronymic') {
@@ -676,7 +677,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.patronymic = false;
-                        errors.patronymic = true;
+                        errors.patronymic = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'birthdate') {
@@ -686,7 +687,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.birthdate = false;
-                        errors.birthdate = true;
+                        errors.birthdate = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'email') {
@@ -696,7 +697,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.email = false;
-                        errors.email = true;
+                        errors.email = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'username') {
@@ -706,7 +707,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.username = false;
-                        errors.username = true;
+                        errors.username = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'password_old') {
