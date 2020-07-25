@@ -1,0 +1,120 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_polls="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="content">
+        <div class="templates rounded-block">
+            <div class="header">
+                <h1 class="title">Создать опрос</h1>
+                <a class="btn-link">Больше шаблонов</a>
+            </div>
+            <div class="templates-block">
+                <div class="templates-general">
+                    <div class="template-item template-new unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">Новый опрос</span>
+                        </span>
+                    </div>
+                    <div class="template-item template-grey unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">Опрос об успеваемости</span>
+                        </span>
+                    </div>
+                    <div class="template-item template-grey unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">Ежемесячный</span>
+                        </span>
+                    </div>
+                    <div class="template-item template-grey unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">Еженедельный</span>
+                        </span>
+                    </div>
+                    <div class="template-item template-grey unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">Годовой</span>
+                        </span>
+                    </div>
+                    <div class="template-item template-grey unselectable">
+                        <div class="template__main"></div>
+                        <span class="template__name">
+                            <span class="name">О себе</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="my-templates-block">
+                    <h2 class="title">Мои шаблоны</h2>
+                    <div class="my-templates">
+                        <div class="template-item template-blue unselectable">
+                            <div class="template__main"></div>
+                            <span class="template__name">
+                            <span class="name">Новый опрос</span>
+                        </span>
+                        </div>
+                        <div class="template-item template-red unselectable">
+                            <div class="template__main"></div>
+                            <span class="template__name">
+                            <span class="name">Новый опрос</span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="polls categories-block hide">
+            <div class="substrate">
+                <div class="sort rounded-block unselectable">
+                    <div class="category active-sort"
+                         data-category=".my-polls">
+                        <div class="category__title">Мои опросы
+                            <div class="category__notice hide"></div>
+                        </div>
+                    </div>
+                    <div class="category"
+                         data-category=".polls">
+                        <div class="category__title">Для прохождения
+                            <div class="category__notice hide"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="categories">
+                <div class="category-content my-polls">
+                    {#                    <div class="category-item"></div>#}
+                    {#                    <div class="category-item"></div>#}
+                    {#                    <div class="category-item"></div>#}
+                </div>
+                <div class="category-content polls">
+                    {#                    <div class="category-item"></div>#}
+                    {#                    <div class="category-item"></div>#}
+                    {#                    <div class="category-item"></div>#}
+                </div>
+                <div class="category-empty center-content-notifications-empty">
+                    {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/polls_view.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    {#    <script type="text/javascript" src={% static 'main/js/polls_view.js' %}></script>#}
+    <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
+{% endblock %}

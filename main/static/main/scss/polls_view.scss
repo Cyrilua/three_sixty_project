@@ -1,0 +1,136 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .templates {
+    padding: 0 0 30px;
+    margin-bottom: 10px;
+
+    .header {
+      height: 88px;
+      border-bottom: 1px solid #E5E5E5;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+
+      .title {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        color: #000000;
+      }
+
+      .btn-link {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    .templates-block {
+      margin: 30px 30px 0;
+
+      .templates-general {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+
+        .template-item {
+          margin: 0 30px 30px 0;
+
+          &:nth-child(4n) {
+            margin: 0 0 30px 0;
+          }
+        }
+      }
+
+      .my-templates-block {
+        .title {
+          display: flex;
+          align-items: center;
+          height: 50px;
+          border-bottom: 1px solid #E5E5E5;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 21px;
+          color: #595757;
+        }
+
+        .my-templates {
+          margin: 30px 0 0;
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+
+          .template-item {
+            margin: 0 30px 30px 0;
+
+            &:nth-child(4n) {
+              margin: 0 0 30px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.template-item {
+  width: 190px;
+  height: 170px;
+
+  //&:hover .template__main{
+  //  border: 1px solid #000000;
+  //}
+  //
+  //&:hover .template__name .name{
+  //  background-color: black;
+  //  color: #FFFFFF;
+  //}
+
+  .template__main {
+    width: 190px;
+    height: 140px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      border: 1px solid #000000;
+    }
+
+    &:hover ~ .template__name .name {
+      background-color: black;
+      color: #FFFFFF;
+    }
+  }
+
+  &.template-new {
+
+  }
+
+  .template__name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 190px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 16px;
+
+    .name {
+      height: 22px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 0 9px;
+      border-radius: 5px;
+      cursor: default;
+    }
+  }
+}
