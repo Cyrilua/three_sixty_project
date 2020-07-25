@@ -53,6 +53,7 @@ def validate_birth_date(date: str):
     except ValueError:
         result.append('Дата неправильного формата')
         return result
+
     if birth_date >= current_date or old_date >= birth_date:
         result.append('Некорректная дата')
     return result
