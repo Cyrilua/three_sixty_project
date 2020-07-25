@@ -15,7 +15,7 @@ $(function () {
         } else {
             categoryEmpty.removeClass('hide').addClass('show');
         }
-        categoriesBlock.removeClass('hide');
+        categoriesBlock.removeClass('hidden');
     });
 
     // Смена категории с уведомлениями

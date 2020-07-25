@@ -631,6 +631,11 @@ button {
   display: none;
 }
 
+.hidden,
+.hidden * {
+  opacity: 0;
+}
+
 .show {
   display: block;
 }
