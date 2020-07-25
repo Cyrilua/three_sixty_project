@@ -41,15 +41,18 @@
                                         <div class="_hint-down-block">
                                             <div class="role-information">
                                                 {% if role == 'boss' %}
-                                                    <strong>Босс</strong> - это суперюзер с полным спектром
-                                                    возможностей.
+                                                    <div class="boss__info"></div>
+                                                    {#                                                    <strong>Босс</strong> - это суперюзер с полным спектром#}
+                                                    {#                                                    возможностей.#}
                                                 {% elif role == 'master' %}
-                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и
-                                                    по любым командам (даже по тем, в которых не состоит), а также
-                                                    выбирать о ком будет опрос.
+                                                    <div class="master__info"></div>
+                                                    {#                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и#}
+                                                    {#                                                    по любым командам (даже по тем, в которых не состоит), а также#}
+                                                    {#                                                    выбирать о ком будет опрос.#}
                                                 {% elif role == 'moderator' %}
-                                                    <strong>Модератор</strong> может создавать отделы и должности а
-                                                    также менять отделы, дожности и роли участников.
+                                                    <div class="moderator__info"></div>
+                                                    {#                                                    <strong>Модератор</strong> может создавать отделы и должности а#}
+                                                    {#                                                    также менять отделы, дожности и роли участников.#}
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -73,7 +76,8 @@
                                             <div class="_hint-down">
                                                 <div class="_hint-down-block">
                                                     <div class="position-information role-information">
-                                                        Должность
+                                                        <div class="position__info"></div>
+                                                        {#                                                        Должность#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,7 +101,8 @@
                                             <div class="_hint-down">
                                                 <div class="_hint-down-block">
                                                     <div class="platform-information role-information">
-                                                        Отдел
+                                                        <div class="platform__info"></div>
+                                                        {#                                                        Отдел#}
                                                     </div>
                                                 </div>
                                             </div>

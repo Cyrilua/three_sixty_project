@@ -405,7 +405,6 @@ button {
   cursor: not-allowed;
 }
 .input-field.error {
-  background: rgba(255, 24, 65, 0.2);
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 6px 12px;
   color: #FF1841;
@@ -561,6 +560,33 @@ button {
   border-color: #FFFFFF transparent transparent #FFFFFF;
   /* red — цвет */
   transform: rotate(45deg);
+}
+.role-information .position__info::after {
+  content: "Должность";
+}
+.role-information .platform__info::after {
+  content: "Отдел";
+}
+.role-information .boss__info::before {
+  content: "Босс";
+  font-weight: bold;
+}
+.role-information .boss__info::after {
+  content: " - это суперюзер с полным спектром возможностей.";
+}
+.role-information .moderator__info::before {
+  content: "Модератор";
+  font-weight: bold;
+}
+.role-information .moderator__info::after {
+  content: " может создавать отделы и должности а также  изменять отделы, дожности и роли участников компании.";
+}
+.role-information .master__info::before {
+  content: "Мастер опросов";
+  font-weight: bold;
+}
+.role-information .master__info::after {
+  content: " может выбирать, о ком будет опрос, среди участников компании.";
 }
 
 .position-information,
