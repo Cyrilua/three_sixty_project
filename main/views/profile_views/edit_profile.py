@@ -187,3 +187,13 @@ def save_birth_date(request):
             birth_date_profile.birthday = birth_date
         birth_date_profile.save()
         return JsonResponse({'resultStatus': 'success'}, status=200)
+
+
+def check_login(request):
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        if value == auth.get_user(request).username:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
+        errors = validators.validate_login(value)
+        return _get_result(errors)

@@ -75,6 +75,8 @@ urlpatterns = [
                   path('edit/check_input/birthdate', edit_profile.check_birth_date),
                   # Сохранение даты
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
+                  # Проверка логина
+                  path('edit/check_input/username', edit_profile.check_login),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
