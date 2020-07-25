@@ -1,8 +1,11 @@
+import datetime
+
 from main.forms import PhotoProfileForm
-from main.models import ProfilePhoto, PlatformCompany, PositionCompany
+from main.models import ProfilePhoto, PlatformCompany, PositionCompany, BirthDate
 from main.views.auxiliary_general_methods import *
 from .render_profile import build_profile_data
 from main.views import validators
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import JsonResponse
 
@@ -51,11 +54,14 @@ def edit_profile(request) -> render:
     }
 
     args['profile']['login'] = user.username
-    birth_date = args['profile']['birthdate']
-    args['profile']['birthdate'] = {
-        'text': birth_date,
-        'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
-    }
+    try:
+        birth_date = args['profile']['birthdate']
+        args['profile']['birthdate'] = {
+            'text': birth_date,
+            'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
+        }
+    except KeyError:
+        pass
     company = profile.company
     if company is not None:
         positions = company.positioncompany_set.all()
@@ -128,6 +134,7 @@ def check_name(request):
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_name(value)
+        # TODO сравнивать с текущим значением в бд
         return _get_result(errors)
 
 
@@ -145,7 +152,7 @@ def check_patronymic(request):
         return _get_result(errors)
 
 
-def save_changes(request):
+def save_changes_fcs(request):
     if request.is_ajax():
         data = request.POST
         profile = get_user_profile(request)
@@ -153,4 +160,30 @@ def save_changes(request):
         profile.surname = data['values[surname]']
         profile.patronymic = data['values[patronymic]']
         profile.save()
+        return JsonResponse({'resultStatus': 'success'}, status=200)
+
+
+def check_birth_date(request):
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        errors = validators.validate_birth_date(value)
+        return _get_result(errors)
+
+
+def save_birth_date(request):
+    if request.is_ajax():
+        date = request.POST['values[birthdate]']
+        try:
+            birth_date = datetime.datetime.strptime(date, '%d.%m.%Y')
+        except ValueError:
+            return JsonResponse({'resultStatus': 'error'}, status=400)
+        profile = get_user_profile(request)
+        try:
+            birth_date_profile = BirthDate.objects.get(profile=profile)
+            birth_date_profile.birthday = birth_date
+        except ObjectDoesNotExist:
+            birth_date_profile = BirthDate()
+            birth_date_profile.profile = profile
+            birth_date_profile.birthday = birth_date
+        birth_date_profile.save()
         return JsonResponse({'resultStatus': 'success'}, status=200)
