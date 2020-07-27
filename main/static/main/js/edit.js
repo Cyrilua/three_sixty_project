@@ -8,6 +8,7 @@ $(function () {
     let password1 = $('#password1');
     let password2 = $('#password2');
     let email = $('#email');
+    let passwordForEmail = $('#password_for_email');
     let name = $('#name');
     let surname = $('#surname');
     let patronymic = $('#patronymic');
@@ -33,6 +34,7 @@ $(function () {
         'password1': false,
         'password2': false,
         'email': false,
+        'password_for_email': false,
         'name': false,
         'surname': false,
         'patronymic': false,
@@ -45,6 +47,7 @@ $(function () {
         'password1': false,
         'password2': false,
         'email': false,
+        'password_for_email': false,
         'name': false,
         'surname': false,
         'patronymic': false,
@@ -99,16 +102,24 @@ $(function () {
         });
     });
 
-    body.on('input', '#password_old', function () {
-        let popup = $(this).parent().children('.popup');
-        popup.addClass('old');
-        $(this).removeClass('error');
-        popup.stop().animate({
-            opacity: 0,
-        }, timeShow, function () {
-            $(this).remove();
-        });
-        errors.password_old = false;
+    body.on('input', '.input-field', function (el) {
+        let id = $(this)[0].id;
+        console.log(id)
+        if (id === 'password_old' || id === 'password_for_email') {
+            let popup = $(this).parent().children('.popup');
+            popup.addClass('old');
+            $(this).removeClass('error');
+            popup.stop().animate({
+                opacity: 0,
+            }, timeShow, function () {
+                $(this).remove();
+            });
+            if (id === 'password_old') {
+                errors.password_old = false;
+            } else if (id === 'password_for_email') {
+                errors.password_for_email = false;
+            }
+        }
     });
 
     // Обработка полей
@@ -130,7 +141,7 @@ $(function () {
     body.on('input', '#password1', function () {
         let elem = $(this);
         ajaxForInput(elem, btnPassword, {
-            'password_old': passwordOld.val(),
+            'password_old': passwordOld.val(), // Теперь не нужно
             'password1': elem.val(),
             'password2': password2.val(),
         });
@@ -148,6 +159,13 @@ $(function () {
         let elem = $(this);
         ajaxForInput(elem, btnEmail, {
             'email': elem.val(),
+        });
+    });
+
+    body.on('input', '#password_for_email', function () {
+        let elem = $(this);
+        ajaxForInput(elem, btnEmail, {
+            'password_for_email': elem.val(),
         });
     });
 
@@ -196,6 +214,7 @@ $(function () {
         } else if (partUrl === 'email') {
             values = {
                 email: email.val(),
+                password_for_email: passwordForEmail.val(),
             }
         } else if (partUrl === 'username') {
             values = {
@@ -250,7 +269,15 @@ $(function () {
                     spanMax.text(`${response.email}`);
                     spanMin.text(`${response.email}`);
                     required.email = false;
+                    required.password_for_email = false;
                     errors.email = false;
+                    errors.password_for_email = false;
+                    if (response.resultStatus === 'error') {
+                        errors.password_for_email = true;
+                        chooseValidationColor(passwordForEmail[0], response.resultStatus, response.listErrors.password_for_email);
+                        showErrors(passwordForEmail, response.listErrors.password_for_email);
+                        passwordForEmail.focus();
+                    }
                 } else if (partUrl === 'username') {
                     email.val(response.username);
                     spanMax.text(`${response.username}`);
@@ -270,12 +297,11 @@ $(function () {
                     errors.password_old = false;
                     errors.password1 = false;
                     errors.password2 = false;
-                    console.log('check')
                     if (response.resultStatus === 'error') {
-                        console.log(response)
                         errors.password_old = true;
                         chooseValidationColor(passwordOld[0], response.resultStatus, response.listErrors.old_password);
                         showErrors(passwordOld, response.listErrors.old_password);
+                        passwordOld.focus();
                     }
                 } else {
                     throw new Error('Unexpected argument values');
@@ -549,7 +575,7 @@ $(function () {
             checkBtnName(btn);
         } else if (idElem === 'birthdate') {
             checkBtnBirthdate(btn);
-        } else if (idElem === 'email') {
+        } else if (idElem === 'email' || idElem === 'password_for_email') {
             checkBtnEmail(btn);
         } else if (idElem === 'username') {
             checkBtnUsername(btn);
@@ -577,7 +603,7 @@ $(function () {
     }
 
     function checkBtnEmail(btn) {
-        if (required.email) {
+        if (required.email && required.password_for_email) {
             btn.prop({'disabled': false});
         } else {
             btn.prop({'disabled': true});
@@ -600,20 +626,25 @@ $(function () {
         }
     }
 
-    // Первая буква заглавная, остальные строчные
-    function formatValue(el) {
-        let element = el[0];
-        if (element.value !== '') {
-            let position = element.selectionStart;
-            element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
-            element.selectionStart = element.selectionEnd = position;
-        }
-    }
+    // // Первая буква заглавная, остальные строчные
+    // function formatValue(el) {
+    //     let element = el[0];
+    //     if (element.value !== '') {
+    //         let position = element.selectionStart;
+    //         element.value = element.value[0].toUpperCase() + element.value.slice(1).toLowerCase();
+    //         element.selectionStart = element.selectionEnd = position;
+    //     }
+    // }
 
     function ajaxForInput(elem, btn, values) {
         let id = elem[0].id;
         if (id === 'password_old') {
             required.password_old = values.password_old.length > 0;
+            // errors.password_old = !elem.val().length > 0;
+            removeErrors(elem);
+            checkBtnPost(btn, elem);
+        } else if (id === 'password_for_email') {
+            required.password_for_email = values.password_for_email.length > 0;
             // errors.password_old = !elem.val().length > 0;
             removeErrors(elem);
             checkBtnPost(btn, elem);
@@ -703,6 +734,10 @@ $(function () {
                         // }
                     } else if (id === 'password1') {
                         console.log(response)
+                        password2.val('');
+                        required.password2 = false;
+                        errors.password2 = false;
+                        removeErrors(password2);
                         if (response.resultStatus === 'success') {
                             required.password1 = true;
                             errors.password1 = false;
