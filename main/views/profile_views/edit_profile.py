@@ -238,7 +238,20 @@ def check_email(request) -> JsonResponse:
 
 
 def save_email(request) -> JsonResponse:
-    pass
+    if request.is_ajax():
+        value = request.POST['values[email]']
+        user = auth.get_user(request)
+        user.email = value
+        user.save()
+        profile = get_user_profile(request)
+        profile.email_is_validate = False
+        profile.save()
+        send_email_validate_message(request)
+        args = {
+            'email': value,
+            'resultStatus': 'success'
+        }
+        return JsonResponse(args, status=200)
 
 
 def check_login(request) -> JsonResponse:
@@ -260,16 +273,20 @@ def save_login(request) -> JsonResponse:
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
+# TODO
+############## удалить этот метод и url когда будет удален запрос на клиенте ################
 def check_old_password(request) -> JsonResponse:
     if request.is_ajax():
-        value = _get_value(request.POST)
-        user = auth.get_user(request)
-        if user.check_password(value):
-            return JsonResponse({'resultStatus': 'success'}, status=200)
-        return JsonResponse({'resultStatus': 'error',
-                             'resultError': ['Введен неверный пароль']}, status=200)
+        #value = _get_value(request.POST)
+        #user = auth.get_user(request)
+        #if user.check_password(value):
+        #    return JsonResponse({'resultStatus': 'success'}, status=200)
+        #return JsonResponse({'resultStatus': 'error',
+        #                     'resultError': ['Введен неверный пароль']}, status=200)
+        return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
+# TODO
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
         password_1 = _get_value(request.POST)
@@ -293,7 +310,7 @@ def check_new_password_2(request) -> JsonResponse:
         return _get_result(errors)
 
 
-def save_new_profile(request) -> JsonResponse:
+def save_new_password(request) -> JsonResponse:
     if request.is_ajax():
         data = {
             'old_password': request.POST['values[password_old]'],

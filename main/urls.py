@@ -90,7 +90,7 @@ urlpatterns = [
                   # Проверка нового пароля 2
                   path('edit/check_input/password2', edit_profile.check_new_password_2),
                   # Сохранение нового пароля
-                  path('edit/edit/save/password', edit_profile.save_new_profile),
+                  path('edit/edit/save/password', edit_profile.save_new_password),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 
