@@ -39,3 +39,38 @@ $(function () {
         }
     });
 });
+
+
+// EXAMPLE OF USE HTML
+//
+//<div class="polls categories-block hidden">
+//  <div class="substrate">
+//      <div class="sort rounded-block unselectable">
+//          <div class="category active-sort" data-category=".my-polls">
+//              <div class="category__title">Мои опросы
+//                  <div class="category__notice hide"></div>
+//              </div>
+//          </div>
+//          <div class="category" data-category=".polls">
+//              <div class="category__title">Для прохождения
+//                  <div class="category__notice hide"></div>
+//              </div>
+//          </div>
+//      </div>
+//  </div>
+//  <div class="categories">
+//      <div class="category-content my-polls">
+//          <div class="category-item"></div>
+//          <div class="category-item"></div>
+//          <div class="category-item"></div>
+//      </div>
+//      <div class="category-content polls">
+//          <div class="category-item"></div>
+//          <div class="category-item"></div>
+//          <div class="category-item"></div>
+//      </div>
+//      <div class="category-empty center-content-notifications-empty">
+//          {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+//      </div>
+//  </div>
+//</div>

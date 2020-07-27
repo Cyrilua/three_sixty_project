@@ -8,45 +8,66 @@
 {% block content-user %}
 
     <div class="content">
-        <div class="templates rounded-block">
+        <div class="templates few rounded-block">
             <div class="header">
                 <h1 class="title">Создать опрос</h1>
-                <a class="btn-link">Больше шаблонов</a>
+                <a class="btn-link more">Больше шаблонов</a>
             </div>
             <div class="templates-block">
                 <div class="templates-general">
                     <div class="template-item template-new unselectable">
-                        <div class="template__main"></div>
+                        <div class="template__main">
+                            <div class="plus">
+                                <div class="horizontal">
+                                    <div class="vertical"></div>
+                                </div>
+                            </div>
+                        </div>
                         <span class="template__name">
                             <span class="name">Новый опрос</span>
                         </span>
                     </div>
-                    <div class="template-item template-grey unselectable">
-                        <div class="template__main"></div>
+                    <div class="template-item unselectable">
+                        <div class="template__main">
+                            {% include 'main/includes/template_item.html' %}
+                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                        </div>
                         <span class="template__name">
                             <span class="name">Опрос об успеваемости</span>
                         </span>
                     </div>
-                    <div class="template-item template-grey unselectable">
-                        <div class="template__main"></div>
+                    <div class="template-item unselectable">
+                        <div class="template__main">
+                            {% include 'main/includes/template_item.html' %}
+                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                        </div>
                         <span class="template__name">
                             <span class="name">Ежемесячный</span>
                         </span>
                     </div>
-                    <div class="template-item template-grey unselectable">
-                        <div class="template__main"></div>
+                    <div class="template-item unselectable">
+                        <div class="template__main">
+                            {% include 'main/includes/template_item.html' %}
+                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                        </div>
                         <span class="template__name">
                             <span class="name">Еженедельный</span>
                         </span>
                     </div>
-                    <div class="template-item template-grey unselectable">
-                        <div class="template__main"></div>
+                    <div class="template-item unselectable">
+                        <div class="template__main">
+                            {% include 'main/includes/template_item.html' %}
+                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                        </div>
                         <span class="template__name">
                             <span class="name">Годовой</span>
                         </span>
                     </div>
-                    <div class="template-item template-grey unselectable">
-                        <div class="template__main"></div>
+                    <div class="template-item unselectable">
+                        <div class="template__main">
+                            {% include 'main/includes/template_item.html' %}
+                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                        </div>
                         <span class="template__name">
                             <span class="name">О себе</span>
                         </span>
@@ -55,17 +76,59 @@
                 <div class="my-templates-block">
                     <h2 class="title">Мои шаблоны</h2>
                     <div class="my-templates">
-                        <div class="template-item template-blue unselectable">
-                            <div class="template__main"></div>
+                        <div class="template-item purple unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
                             <span class="template__name">
-                            <span class="name">Новый опрос</span>
-                        </span>
+                                <span class="name">Новый опрос</span>
+                            </span>
                         </div>
-                        <div class="template-item template-red unselectable">
-                            <div class="template__main"></div>
+                        <div class="template-item blue unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
                             <span class="template__name">
-                            <span class="name">Новый опрос</span>
-                        </span>
+                                <span class="name">Новый опрос</span>
+                            </span>
+                        </div>
+                        <div class="template-item red unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
+                            <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                        </div>
+                        <div class="template-item purple unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
+                            <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                        </div>
+                        <div class="template-item blue unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
+                            <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                        </div>
+                        <div class="template-item red unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            </div>
+                            <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -108,13 +171,19 @@
 
 {% endblock %}
 
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/polls_view.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
 {% endblock %}
 
 {% block scripts %}
-    {#    <script type="text/javascript" src={% static 'main/js/polls_view.js' %}></script>#}
+    <script type="text/javascript" src={% static 'main/js/polls_view.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
 {% endblock %}
