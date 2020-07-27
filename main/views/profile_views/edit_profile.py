@@ -13,6 +13,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import JsonResponse
 
 
+from PIL import Image
+
+
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -48,6 +51,12 @@ def edit_profile(request) -> render:
     except:
         photo = None
     profile_data = build_profile_data(user, profile)
+
+    #img = Image.open(photo)
+    #img_str = img.tobytes()
+    #test = profile.profilephoto
+    #test.photo_hex = img_str
+    #test.save()
 
     args = {
         'title': "Настройки",
@@ -281,10 +290,6 @@ def save_login(request) -> JsonResponse:
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
         password_1 = _get_value(request.POST)
-        password_old = request.POST['values[password_old]']
-        if password_1 == password_old:
-            return JsonResponse({'resultStatus': 'error',
-                                 'resultError': ['Новый пароль совпадает со старым']}, status=200)
         #password_2 = request.POST['values[password2]']
         #if password_1 != password_2:
         #    return JsonResponse({'resultStatus': 'error',
