@@ -99,6 +99,18 @@ $(function () {
         });
     });
 
+    body.on('input', '#password_old', function () {
+        let popup = $(this).parent().children('.popup');
+        popup.addClass('old');
+        $(this).removeClass('error');
+        popup.stop().animate({
+            opacity: 0,
+        }, timeShow, function () {
+            $(this).remove();
+        });
+        errors.password_old = false;
+    });
+
     // Обработка полей
     body.on('input', '#username', function () {
         $(this).val($(this).val().toLowerCase());
@@ -206,6 +218,7 @@ $(function () {
                 values: values,
             },
             success: function (response) {
+                $(elem.target).prop({'disabled': true});
                 let currentSetting = $(elem.target).parent();
                 let spanMax = currentSetting.children('.setting__substrate').children('.setting__value');
                 let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
@@ -220,19 +233,30 @@ $(function () {
                     spanMax.text(`${response.surname} ${response.name} ${response.patronymic}`);
                     spanMin.text(`${response.surname} ${response.name} ${response.patronymic}`);
                     $('.head-menu-name').text(`${response.name} ${response.surname}`);
+                    required.name = false;
+                    required.surname = false;
+                    required.patronymic = false;
+                    errors.name = false;
+                    errors.surname = false;
+                    errors.patronymic = false;
                 } else if (partUrl === 'birthdate') {
                     birthdate.val(response.birthdate.date);
                     spanMax.text(`${response.birthdate.text}`);
                     spanMin.text(`${response.birthdate.text}`);
+                    required.birthdate = false;
+                    errors.birthdate = false;
                 } else if (partUrl === 'email') {
                     email.val(response.email);
                     spanMax.text(`${response.email}`);
                     spanMin.text(`${response.email}`);
+                    required.email = false;
+                    errors.email = false;
                 } else if (partUrl === 'username') {
                     email.val(response.username);
                     spanMax.text(`${response.username}`);
                     spanMin.text(`${response.username}`);
-
+                    required.username = false;
+                    errors.username = false;
                 } else if (partUrl === 'password') {
                     passwordOld.val('');
                     password1.val('');
@@ -240,12 +264,18 @@ $(function () {
                     password2.prop({
                         'disabled': true,
                     });
-                    btnPassword.prop({
-                        'disabled': true,
-                    });
+                    required.password_old = false;
+                    required.password1 = false;
+                    required.password2 = false;
+                    errors.password_old = false;
+                    errors.password1 = false;
+                    errors.password2 = false;
+                    console.log('check')
                     if (response.resultStatus === 'error') {
-                        chooseValidationColor(passwordOld, response.resultStatus, response.listErrors);
-                        showErrors(passwordOld, response.listErrors);
+                        console.log(response)
+                        errors.password_old = true;
+                        chooseValidationColor(passwordOld[0], response.resultStatus, response.listErrors.old_password);
+                        showErrors(passwordOld, response.listErrors.old_password);
                     }
                 } else {
                     throw new Error('Unexpected argument values');
@@ -507,6 +537,8 @@ $(function () {
                 .stop().animate({
                 opacity: 1,
             }, timeShow);
+        } else {
+            removeErrors(el);
         }
     }
 
@@ -529,7 +561,7 @@ $(function () {
     }
 
     function checkBtnName(btn) {
-        if (required.name || required.surname || required.patronymic) {
+        if ((required.name || required.surname || required.patronymic) && !(errors.name || errors.surname || errors.patronymic)) {
             btn.prop({'disabled': false});
         } else {
             btn.prop({'disabled': true});
@@ -580,121 +612,132 @@ $(function () {
 
     function ajaxForInput(elem, btn, values) {
         let id = elem[0].id;
-        $.ajax({
-            url: `/edit/check_input/${id}`,
-            type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-                id: id,  // При разных url не нужен
-                values: values,
-            },
-            success: function (response) {
-                chooseValidationColor(elem[0], response.resultStatus, response.resultError);
-                if (id === 'name') {
-                    if (response.resultStatus === 'success') {
-                        required.name = true;
-                        errors.name = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.name = false;
-                        errors.name = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
+        if (id === 'password_old') {
+            required.password_old = values.password_old.length > 0;
+            // errors.password_old = !elem.val().length > 0;
+            removeErrors(elem);
+            checkBtnPost(btn, elem);
+        } else {
+            $.ajax({
+                url: `/edit/check_input/${id}`,
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: csrf,
+                    id: id,  // При разных url не нужен
+                    values: values,
+                },
+                success: function (response) {
+                    if (id !== 'password_old') {
+                        chooseValidationColor(elem[0], response.resultStatus, response.resultError);
                     }
-                } else if (id === 'surname') {
-                    if (response.resultStatus === 'success') {
-                        required.surname = true;
-                        errors.surname = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.surname = false;
-                        errors.surname = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
+                    if (id === 'name') {
+                        if (response.resultStatus === 'success') {
+                            required.name = true;
+                            errors.name = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.name = false;
+                            errors.name = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'surname') {
+                        if (response.resultStatus === 'success') {
+                            required.surname = true;
+                            errors.surname = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.surname = false;
+                            errors.surname = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'patronymic') {
+                        if (response.resultStatus === 'success') {
+                            required.patronymic = true;
+                            errors.patronymic = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.patronymic = false;
+                            errors.patronymic = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'birthdate') {
+                        if (response.resultStatus === 'success') {
+                            required.birthdate = true;
+                            errors.birthdate = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.birthdate = false;
+                            errors.birthdate = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'email') {
+                        if (response.resultStatus === 'success') {
+                            required.email = true;
+                            errors.email = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.email = false;
+                            errors.email = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'username') {
+                        if (response.resultStatus === 'success') {
+                            required.username = true;
+                            errors.username = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.username = false;
+                            errors.username = response.resultError.length > 0;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else if (id === 'password_old') {
+                        console.log("Старый пароль")
+                        // if (response.resultStatus === 'success') {
+                        //     required.password_old = true;
+                        //     errors.password_old = false;
+                        //     removeErrors(elem);
+                        // } else if (response.resultStatus === 'error') {
+                        //     required.password_old = false;
+                        //     errors.password_old = true;
+                        //     showErrors(elem, response.resultError);
+                        // }
+                    } else if (id === 'password1') {
+                        console.log(response)
+                        if (response.resultStatus === 'success') {
+                            required.password1 = true;
+                            errors.password1 = false;
+                            removeErrors(elem);
+                            $('#password2').prop({
+                                'disabled': false,
+                            });
+                        } else if (response.resultStatus === 'error') {
+                            required.password1 = false;
+                            errors.password1 = true;
+                            showErrors(elem, response.resultError);
+                            $('#password2').prop({
+                                'disabled': true,
+                            });
+                        }
+                    } else if (id === 'password2') {
+                        if (response.resultStatus === 'success') {
+                            required.password2 = true;
+                            errors.password2 = false;
+                            removeErrors(elem);
+                        } else if (response.resultStatus === 'error') {
+                            required.password2 = false;
+                            errors.password2 = true;
+                            showErrors(elem, response.resultError);
+                        }
+                    } else {
+                        throw new Error('Unexpected values');
                     }
-                } else if (id === 'patronymic') {
-                    if (response.resultStatus === 'success') {
-                        required.patronymic = true;
-                        errors.patronymic = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.patronymic = false;
-                        errors.patronymic = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
-                    }
-                } else if (id === 'birthdate') {
-                    if (response.resultStatus === 'success') {
-                        required.birthdate = true;
-                        errors.birthdate = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.birthdate = false;
-                        errors.birthdate = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
-                    }
-                } else if (id === 'email') {
-                    if (response.resultStatus === 'success') {
-                        required.email = true;
-                        errors.email = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.email = false;
-                        errors.email = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
-                    }
-                } else if (id === 'username') {
-                    if (response.resultStatus === 'success') {
-                        required.username = true;
-                        errors.username = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.username = false;
-                        errors.username = response.resultError.length > 0;
-                        showErrors(elem, response.resultError);
-                    }
-                } else if (id === 'password_old') {
-                    // if (response.resultStatus === 'success') {
-                    //     required.password_old = true;
-                    //     errors.password_old = false;
-                    //     removeErrors(elem);
-                    // } else if (response.resultStatus === 'error') {
-                    //     required.password_old = false;
-                    //     errors.password_old = true;
-                    //     showErrors(elem, response.resultError);
-                    // }
-                } else if (id === 'password1') {
-                    if (response.resultStatus === 'success') {
-                        required.password1 = true;
-                        errors.password1 = false;
-                        removeErrors(elem);
-                        $('#password2').prop({
-                            'disabled': false,
-                        });
-                    } else if (response.resultStatus === 'error') {
-                        required.password1 = false;
-                        errors.password1 = true;
-                        showErrors(elem, response.resultError);
-                        $('#password2').prop({
-                            'disabled': true,
-                        });
-                    }
-                } else if (id === 'password2') {
-                    if (response.resultStatus === 'success') {
-                        required.password2 = true;
-                        errors.password2 = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.password2 = false;
-                        errors.password2 = true;
-                        showErrors(elem, response.resultError);
-                    }
-                } else {
-                    throw new Error('Unexpected values');
-                }
-                checkBtnPost(btn, elem)
-            },
-            error: function () {
-                console.log('Что - то пошло не так! :(');
-            },
-        });
+                    checkBtnPost(btn, elem)
+                },
+                error: function () {
+                    console.log('Что - то пошло не так! :(');
+                },
+            });
+        }
     }
 
     // Расположеие ссылки на компанию возле имени
