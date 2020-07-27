@@ -289,6 +289,7 @@ button {
     width: 910px;
     height: auto;
     /*margin-right: 15px;*/
+    z-index: 50;
   }
 
   .col-right {
@@ -804,6 +805,11 @@ button {
 .show {
   display: block;
 }
+
+//.height-auto,
+//.height-auto * {
+//  height: auto;
+//}
 
 // !Other!
 
