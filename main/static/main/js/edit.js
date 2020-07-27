@@ -116,15 +116,17 @@ $(function () {
     body.on('input', '#password1', function () {
         let elem = $(this);
         ajaxForInput(elem, btnPassword, {
+            'password_old': passwordOld.val(),
             'password1': elem.val(),
+            'password2': password2.val(),
         });
     });
 
     body.on('input', '#password2', function () {
         let elem = $(this);
         ajaxForInput(elem, btnPassword, {
-            'password1': elem.val(),
-            'password2': password2.val(),
+            'password1': password1.val(),
+            'password2': elem.val(),
         });
     });
 
