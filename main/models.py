@@ -78,6 +78,7 @@ class SurveyWizard(models.Model):
 
 class ProfilePhoto (models.Model):
     photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
+    photo_hex = models.BigIntegerField(null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     objects = models.Manager()
 

@@ -13,6 +13,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import JsonResponse
 
 
+from PIL import Image
+
+
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -48,6 +51,12 @@ def edit_profile(request) -> render:
     except:
         photo = None
     profile_data = build_profile_data(user, profile)
+
+    #img = Image.open(photo)
+    #img_str = img.tobytes()
+    #test = profile.profilephoto
+    #test.photo_hex = img_str
+    #test.save()
 
     args = {
         'title': "Настройки",
@@ -238,7 +247,20 @@ def check_email(request) -> JsonResponse:
 
 
 def save_email(request) -> JsonResponse:
-    pass
+    if request.is_ajax():
+        value = request.POST['values[email]']
+        user = auth.get_user(request)
+        user.email = value
+        user.save()
+        profile = get_user_profile(request)
+        profile.email_is_validate = False
+        profile.save()
+        send_email_validate_message(request)
+        args = {
+            'email': value,
+            'resultStatus': 'success'
+        }
+        return JsonResponse(args, status=200)
 
 
 def check_login(request) -> JsonResponse:
@@ -257,26 +279,17 @@ def save_login(request) -> JsonResponse:
         new_username = request.POST['values[username]']
         user.username = new_username
         user.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'username': new_username
+        }
+        return JsonResponse(args, status=200)
 
 
-def check_old_password(request) -> JsonResponse:
-    if request.is_ajax():
-        value = _get_value(request.POST)
-        user = auth.get_user(request)
-        if user.check_password(value):
-            return JsonResponse({'resultStatus': 'success'}, status=200)
-        return JsonResponse({'resultStatus': 'error',
-                             'resultError': ['Введен неверный пароль']}, status=200)
-
-
+# TODO
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
         password_1 = _get_value(request.POST)
-        password_old = request.POST['values[password_old]']
-        if password_1 == password_old:
-            return JsonResponse({'resultStatus': 'error',
-                                 'resultError': ['Новый пароль совпадает со старым']}, status=200)
         #password_2 = request.POST['values[password2]']
         #if password_1 != password_2:
         #    return JsonResponse({'resultStatus': 'error',
@@ -293,7 +306,7 @@ def check_new_password_2(request) -> JsonResponse:
         return _get_result(errors)
 
 
-def save_new_profile(request) -> JsonResponse:
+def save_new_password(request) -> JsonResponse:
     if request.is_ajax():
         data = {
             'old_password': request.POST['values[password_old]'],
