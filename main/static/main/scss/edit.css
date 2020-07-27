@@ -432,6 +432,7 @@
   cursor: pointer;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .form-grouping {
+  width: 228px;
   margin-bottom: 10px;
 }
 .edit .center-content .settings .setting .setting__open .setting__max .setting__2-block .form-grouping .input-field {

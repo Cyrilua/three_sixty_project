@@ -62,6 +62,8 @@ $(function () {
                     'birthdate': formattedDate,
                 });
             },
+            dateFormat: 'd.m.yyyy',
+            position: 'top left',
         });
     }
 
@@ -205,7 +207,7 @@ $(function () {
             },
             success: function (response) {
                 let currentSetting = $(elem.target).parent();
-                let spanMax = currentSetting.children('.setting__value');
+                let spanMax = currentSetting.children('.setting__substrate').children('.setting__value');
                 let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
                     .children('.setting__mini').children('.setting__2-block')
                     .children('.setting__value');
@@ -215,8 +217,9 @@ $(function () {
                     patronymic.val(response.patronymic);
                     infoName.text(`${response.name} ${response.surname}`);
                     positionCompany();
-                    spanMax.text(`${response.name} ${response.surname}`);
-                    spanMin.text(`${response.name} ${response.surname}`);
+                    spanMax.text(`${response.surname} ${response.name} ${response.patronymic}`);
+                    spanMin.text(`${response.surname} ${response.name} ${response.patronymic}`);
+                    $('.head-menu-name').text(`${response.name} ${response.surname}`);
                 } else if (partUrl === 'birthdate') {
                     birthdate.val(response.birthdate.date);
                     spanMax.text(`${response.birthdate.text}`);
@@ -558,7 +561,7 @@ $(function () {
     }
 
     function checkBtnPassword(btn) {
-        if (required.password1 && required.password2) {
+        if (required.password_old && required.password1 && required.password2) {
             btn.prop({'disabled': false});
         } else {
             btn.prop({'disabled': true});
@@ -648,15 +651,15 @@ $(function () {
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'password_old') {
-                    if (response.resultStatus === 'success') {
-                        required.password_old = true;
-                        errors.password_old = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.password_old = false;
-                        errors.password_old = true;
-                        showErrors(elem, response.resultError);
-                    }
+                    // if (response.resultStatus === 'success') {
+                    //     required.password_old = true;
+                    //     errors.password_old = false;
+                    //     removeErrors(elem);
+                    // } else if (response.resultStatus === 'error') {
+                    //     required.password_old = false;
+                    //     errors.password_old = true;
+                    //     showErrors(elem, response.resultError);
+                    // }
                 } else if (id === 'password1') {
                     if (response.resultStatus === 'success') {
                         required.password1 = true;
