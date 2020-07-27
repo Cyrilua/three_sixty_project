@@ -270,7 +270,11 @@ def save_login(request) -> JsonResponse:
         new_username = request.POST['values[username]']
         user.username = new_username
         user.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'username': new_username
+        }
+        return JsonResponse(args, status=200)
 
 
 # TODO
