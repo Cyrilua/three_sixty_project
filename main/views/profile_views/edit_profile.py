@@ -274,19 +274,6 @@ def save_login(request) -> JsonResponse:
 
 
 # TODO
-############## удалить этот метод и url когда будет удален запрос на клиенте ################
-def check_old_password(request) -> JsonResponse:
-    if request.is_ajax():
-        #value = _get_value(request.POST)
-        #user = auth.get_user(request)
-        #if user.check_password(value):
-        #    return JsonResponse({'resultStatus': 'success'}, status=200)
-        #return JsonResponse({'resultStatus': 'error',
-        #                     'resultError': ['Введен неверный пароль']}, status=200)
-        return JsonResponse({'resultStatus': 'success'}, status=200)
-
-
-# TODO
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
         password_1 = _get_value(request.POST)

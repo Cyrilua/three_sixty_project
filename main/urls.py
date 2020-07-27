@@ -83,8 +83,6 @@ urlpatterns = [
                   path('edit/check_input/username', edit_profile.check_login),
                   # Сохранение логина
                   path('edit/edit/save/username', edit_profile.save_login),
-                  # Проверка старого (текущего) пароля
-                  path('edit/check_input/password_old', edit_profile.check_old_password),
                   # Проверка нового пароля 1
                   path('edit/check_input/password1', edit_profile.check_new_password_1),
                   # Проверка нового пароля 2
