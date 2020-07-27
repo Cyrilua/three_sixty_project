@@ -137,7 +137,10 @@ def check_name(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_name(value)
-        # TODO сравнивать с текущим значением в бд
+        profile = get_user_profile(request)
+        if value == profile.name:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
@@ -145,6 +148,10 @@ def check_surname(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_surname(value)
+        profile = get_user_profile(request)
+        if value == profile.surname:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
@@ -152,6 +159,10 @@ def check_patronymic(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_patronymic(value)
+        profile = get_user_profile(request)
+        if value == profile.patronymic:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
@@ -163,7 +174,13 @@ def save_changes_fcs(request) -> JsonResponse:
         profile.surname = data['values[surname]']
         profile.patronymic = data['values[patronymic]']
         profile.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'name': profile.name,
+            'surname': profile.surname,
+            'patronymic': profile.patronymic
+        }
+        return JsonResponse(args, status=200)
 
 
 def check_birth_date(request) -> JsonResponse:
@@ -189,7 +206,14 @@ def save_birth_date(request) -> JsonResponse:
             birth_date_profile.profile = profile
             birth_date_profile.birthday = birth_date
         birth_date_profile.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'birthdate': {
+                'text': birth_date_profile.birthday,
+                'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
+            }
+        }
+        return JsonResponse(args, status=200)
 
 
 def check_login(request) -> JsonResponse:
