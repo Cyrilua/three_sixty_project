@@ -63,6 +63,7 @@ $(function () {
                 });
             },
             dateFormat: 'd.m.yyyy',
+            position: 'top left',
         });
     }
 
@@ -650,15 +651,15 @@ $(function () {
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'password_old') {
-                    if (response.resultStatus === 'success') {
-                        required.password_old = true;
-                        errors.password_old = false;
-                        removeErrors(elem);
-                    } else if (response.resultStatus === 'error') {
-                        required.password_old = false;
-                        errors.password_old = true;
-                        showErrors(elem, response.resultError);
-                    }
+                    // if (response.resultStatus === 'success') {
+                    //     required.password_old = true;
+                    //     errors.password_old = false;
+                    //     removeErrors(elem);
+                    // } else if (response.resultStatus === 'error') {
+                    //     required.password_old = false;
+                    //     errors.password_old = true;
+                    //     showErrors(elem, response.resultError);
+                    // }
                 } else if (id === 'password1') {
                     if (response.resultStatus === 'success') {
                         required.password1 = true;

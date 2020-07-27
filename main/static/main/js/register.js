@@ -94,6 +94,8 @@ $(function () {
                     },
                 });
             },
+            dateFormat: 'd.m.yyyy',
+            position: 'top left',
         });
     }
 
@@ -234,7 +236,7 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
     });
 }
 
-function ajaxForPassword1(el, csrf, required, errors, body, timeShow, ) {
+function ajaxForPassword1(el, csrf, required, errors, body, timeShow,) {
     let pass2 = $('#id_password2');
     $.ajax({
         url: '',
