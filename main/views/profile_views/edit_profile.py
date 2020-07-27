@@ -6,6 +6,8 @@ from main.views.auxiliary_general_methods import *
 from .render_profile import build_profile_data
 from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 from django.http import JsonResponse
 
@@ -205,4 +207,15 @@ def save_login(request) -> JsonResponse:
         new_username = request.POST['values[username]']
         user.username = new_username
         user.save()
+        return JsonResponse({'resultStatus': 'success'}, status=200)
+
+
+from django.contrib.auth.hashers import check_password
+
+
+def check_old_password(request) -> JsonResponse:
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        user = auth.get_user(request)
+        result = user.check_password(value)
         return JsonResponse({'resultStatus': 'success'}, status=200)
