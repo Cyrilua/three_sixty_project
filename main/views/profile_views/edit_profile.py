@@ -210,12 +210,32 @@ def save_login(request) -> JsonResponse:
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
-from django.contrib.auth.hashers import check_password
-
-
 def check_old_password(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         user = auth.get_user(request)
-        result = user.check_password(value)
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        if user.check_password(value):
+            return JsonResponse({'resultStatus': 'success'}, status=200)
+        return JsonResponse({'resultStatus': 'error',
+                             'resultError': ['Введен неверный пароль']}, status=200)
+
+
+def check_new_password_1(request) -> JsonResponse:
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        errors = validators.validate_password1(value)
+        return _get_result(errors)
+
+
+def check_new_password_2(request) -> JsonResponse:
+    if request.is_ajax():
+        password1 = request.POST['values[password1]']
+        password2 = request.POST['values[password2]']
+        errors = validators.validate_password2(password2, password1)
+        print(request.POST)
+        return _get_result(errors)
+
+
+def save_new_profile(request) -> JsonResponse:
+    if request.is_ajax():
+        pass
