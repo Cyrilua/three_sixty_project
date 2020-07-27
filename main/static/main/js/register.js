@@ -234,13 +234,15 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
     });
 }
 
-function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
+function ajaxForPassword1(el, csrf, required, errors, body, timeShow, ) {
+    let pass2 = $('#id_password2');
     $.ajax({
         url: '',
         type: 'post',
         data: {
             id: el[0].id,
             password1: el[0].value,
+            password2: pass2[0].value,
             csrfmiddlewaretoken: csrf,
         },
         success: function (response) {
