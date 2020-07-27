@@ -75,6 +75,10 @@ urlpatterns = [
                   path('edit/check_input/birthdate', edit_profile.check_birth_date),
                   # Сохранение даты
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
+                  # Проверка корректности ввыода почты
+                  path('edit/check_input/email', edit_profile.check_email),
+                  # Сохранение новой почты и отправка сообщения с подтверждением
+                  path('edit/edit/save/email', edit_profile.save_email),
                   # Проверка логина
                   path('edit/check_input/username', edit_profile.check_login),
                   # Сохранение логина

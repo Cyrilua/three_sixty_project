@@ -187,6 +187,16 @@ def check_birth_date(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_birth_date(value)
+        if len(errors) == 0:
+            date = datetime.datetime.strptime(value, '%d.%m.%Y')
+            try:
+                profile_date = BirthDate.objects.get(profile=get_user_profile(request)).birthday
+            except ObjectDoesNotExist:
+                pass
+            else:
+                if date.day == profile_date.day and date.month == profile_date.month and profile_date.year == date.year:
+                    return JsonResponse({'resultStatus': 'error',
+                                         'resultError': []}, status=200)
         return _get_result(errors)
 
 
@@ -214,6 +224,21 @@ def save_birth_date(request) -> JsonResponse:
             }
         }
         return JsonResponse(args, status=200)
+
+
+def check_email(request) -> JsonResponse:
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        user = auth.get_user(request)
+        if user.email == value:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
+        errors = validators.validate_email(value)
+        return _get_result(errors)
+
+
+def save_email(request) -> JsonResponse:
+    pass
 
 
 def check_login(request) -> JsonResponse:
