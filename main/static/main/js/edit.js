@@ -51,17 +51,8 @@ $(function () {
         'birthdate': false,
     };
 
-    // Расположеие ссылки на компанию возле имени
-    $(function () {
-        if (parseFloat(infoName.width()) + parseFloat(infoName.css('margin-left')) + parseFloat(infoName.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
-            aCompany.css({
-                'position': 'absolute',
-                'right': '0',
-                'bottom': 'calc(100% + 14px)'
-            })
-        }
-        aCompany.removeClass('hide')
-    });
+    // Расположение ссылки на команду
+    positionCompany();
 
     // Кастомный календарь
     if (birthdate.prop('type') !== 'date') {
@@ -70,32 +61,6 @@ $(function () {
                 ajaxForInput(birthdate, btnBirthdate, {
                     'birthdate': formattedDate,
                 });
-                // let el = birthdate;
-                // $.ajax({
-                //     url: '/edit/check_input/birthdate',
-                //     type: 'post',
-                //     data: {
-                //         id: birthdate[0].id,
-                //         birthday: formattedDate,
-                //         csrfmiddlewaretoken: csrf,
-                //     },
-                //     success: function (response) {
-                //         chooseValidationColor($('#id_birthday')[0], response.resultStatus);
-                //         if (response.resultStatus === 'success') {
-                //             required.birthdate = true;
-                //             errors.birthdate = false;
-                //             removeErrors(el);
-                //         } else if (response.resultStatus === 'error') {
-                //             required.birthdate = false;
-                //             errors.birthdate = true;
-                //             showErrors(el, response.resultError);
-                //         }
-                //         checkBtnPost(btnBirthdate, birthdate);
-                //     },
-                //     error: function () {
-                //         console.log('Что - то пошло не так :(');
-                //     },
-                // });
             },
         });
     }
@@ -199,7 +164,7 @@ $(function () {
     });
 
     // Сохранение изменений
-    body.on('click', '.button-save', function () {
+    body.on('click', '.button-save', function (elem) {
         let partUrl = $(this).attr('data-part-url');
         let values;
         if (partUrl === 'name') {
@@ -237,23 +202,44 @@ $(function () {
                 values: values,
             },
             success: function (response) {
+                let currentSetting = $(elem.target).parent();
+                let spanMax = currentSetting.children('.setting__value');
+                let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
+                    .children('.setting__mini').children('.setting__2-block')
+                    .children('.setting__value');
                 if (partUrl === 'name') {
-
+                    name.val(response.name);
+                    surname.val(response.surname);
+                    patronymic.val(response.patronymic);
+                    infoName.text(`${response.name} ${response.surname}`);
+                    positionCompany();
+                    spanMax.text(`${response.name} ${response.surname}`);
+                    spanMin.text(`${response.name} ${response.surname}`);
                 } else if (partUrl === 'birthdate') {
-
+                    birthdate.val(response.birthdate.date);
+                    spanMax.text(`${response.birthdate.text}`);
+                    spanMin.text(`${response.birthdate.text}`);
                 } else if (partUrl === 'email') {
-
+                    email.val(response.email);
+                    spanMax.text(`${response.email}`);
+                    spanMin.text(`${response.email}`);
                 } else if (partUrl === 'username') {
+                    email.val(response.username);
+                    spanMax.text(`${response.username}`);
+                    spanMin.text(`${response.username}`);
 
                 } else if (partUrl === 'password') {
+                    passwordOld.val('');
+                    password1.val('');
+                    password2.val('');
+                    password2.prop({
+                        'disabled': true,
+                    });
+                    btnPassword.prop({
+                        'disabled': true,
+                    });
                     if (response.resultStatus === 'error') {
-                        chooseValidationColor(passwordOld, response.resultStatus);
-                        passwordOld.val('');
-                        password1.val('');
-                        password2.val('');
-                        btnPassword.prop({
-                            'disabled': true,
-                        });
+                        chooseValidationColor(passwordOld, response.resultStatus, response.listErrors);
                         showErrors(passwordOld, response.listErrors);
                     }
                 } else {
@@ -469,66 +455,15 @@ $(function () {
         })
     });
 
-    // // Удаление должностей
-    // body.on('click', '.position__remove', function () {
-    //     if (menuPosition.children('.menu__item').length < 1) {
-    //         addPosition.removeClass('hide');
-    //     }
-    //     let position = $(this).parent().parent();
-    //     let positionName = position.attr('data-name');
-    //     let positionId = position.attr('data-id');
-    //     let newItem = document.createElement('div');
-    //     newItem.classList.add('menu__item');
-    //     let itemBlock = document.createElement('div');
-    //     itemBlock.classList.add('item__block');
-    //     $(itemBlock).attr({
-    //         'data-name': positionName,
-    //         'data-id': positionId,
-    //     });
-    //     itemBlock.innerText = positionName;
-    //     let itemLine = document.createElement('div');
-    //     itemLine.classList.add('item__line');
-    //     newItem.prepend(itemLine);
-    //     newItem.prepend(itemBlock);
-    //     menuPosition.prepend(newItem);
-    //     position.remove();
-    // });
-    //
-    // // Удаление отделов
-    // body.on('click', '.platform__remove', function () {
-    //     if (menuPlatform.children('.menu__item').length < 1) {
-    //         addPlatform.removeClass('hide');
-    //     }
-    //     let platform = $(this).parent().parent();
-    //     let platformName = platform.attr('data-name');
-    //     let platformId = platform.attr('data-id');
-    //     let newItem = document.createElement('div');
-    //     newItem.classList.add('menu__item');
-    //     let itemBlock = document.createElement('div');
-    //     itemBlock.classList.add('item__block');
-    //     $(itemBlock).attr({
-    //         'data-name': platformName,
-    //         'data-id': platformId,
-    //     });
-    //     itemBlock.innerText = platformName;
-    //     let itemLine = document.createElement('div');
-    //     itemLine.classList.add('item__line');
-    //     newItem.prepend(itemLine);
-    //     newItem.prepend(itemBlock);
-    //     menuPlatform.prepend(newItem);
-    //     platform.remove();
-    // });
-
-
     // functions
 
     // Окраска поля при ошибке
-    function chooseValidationColor(element, status) {
-        if (status === 'success') {
+    function chooseValidationColor(element, status, listErrors) {
+        if (status === 'success' || listErrors.length < 1) {
             if (element.classList.contains('error')) {
                 element.classList.remove('error');
             }
-        } else if (status === 'error') {
+        } else if (status === 'error' && listErrors.length > 0) {
             element.classList.add('error');
         }
     }
@@ -549,24 +484,25 @@ $(function () {
 
     // Появление ошибок
     function showErrors(el, listErrors) {
-        // console.log(listErrors)
-        let popup = $(el).parent().children('.popup');
-        let alert = popup.children('.popup_message');
-        alert.children().remove();
-        for (let i = 0; i < listErrors.length; i++) {
-            let span = document.createElement('span');
-            span.classList.add('popup_message-text');
-            span.textContent = listErrors[i];
-            alert.append(span);
+        if (listErrors.length > 0) {
+            let popup = $(el).parent().children('.popup');
+            let alert = popup.children('.popup_message');
+            alert.children().remove();
+            for (let i = 0; i < listErrors.length; i++) {
+                let span = document.createElement('span');
+                span.classList.add('popup_message-text');
+                span.textContent = listErrors[i];
+                alert.append(span);
+            }
+            popup
+                .css({
+                    display: 'block',
+                    opacity: 0,
+                })
+                .stop().animate({
+                opacity: 1,
+            }, timeShow);
         }
-        popup
-            .css({
-                display: 'block',
-                opacity: 0,
-            })
-            .stop().animate({
-            opacity: 1,
-        }, timeShow);
     }
 
     // Можно ли нажать на кнопку сохранения изменений
@@ -648,7 +584,7 @@ $(function () {
                 values: values,
             },
             success: function (response) {
-                chooseValidationColor(elem[0], response.resultStatus);
+                chooseValidationColor(elem[0], response.resultStatus, response.resultError);
                 if (id === 'name') {
                     if (response.resultStatus === 'success') {
                         required.name = true;
@@ -656,7 +592,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.name = false;
-                        errors.name = true;
+                        errors.name = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'surname') {
@@ -666,7 +602,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.surname = false;
-                        errors.surname = true;
+                        errors.surname = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'patronymic') {
@@ -676,7 +612,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.patronymic = false;
-                        errors.patronymic = true;
+                        errors.patronymic = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'birthdate') {
@@ -686,7 +622,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.birthdate = false;
-                        errors.birthdate = true;
+                        errors.birthdate = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'email') {
@@ -696,7 +632,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.email = false;
-                        errors.email = true;
+                        errors.email = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'username') {
@@ -706,7 +642,7 @@ $(function () {
                         removeErrors(elem);
                     } else if (response.resultStatus === 'error') {
                         required.username = false;
-                        errors.username = true;
+                        errors.username = response.resultError.length > 0;
                         showErrors(elem, response.resultError);
                     }
                 } else if (id === 'password_old') {
@@ -756,249 +692,20 @@ $(function () {
         });
     }
 
+    // Расположеие ссылки на компанию возле имени
+    function positionCompany() {
+        if (parseFloat(infoName.width()) + parseFloat(infoName.css('margin-left')) + parseFloat(infoName.css('margin-right')) + 30 + parseFloat(aCompany.width()) <= 680) {
+            aCompany.css({
+                'position': 'absolute',
+                'right': '0',
+                'bottom': 'calc(100% + 14px)'
+            })
+        } else {
+            aCompany.css({
+                'position': 'static',
+            })
+        }
+        aCompany.removeClass('hide')
+    }
+
 });
-
-
-// function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
-//     el[0].value = el[0].value.toLowerCase();
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             username: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.username = true;
-//                 errors.username = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.username = false;
-//                 errors.username = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForPassword1(el, csrf, required, errors, body, timeShow) {
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             password1: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.password1 = true;
-//                 errors.password1 = false;
-//                 removeErrors(el, timeShow);
-//                 $('#id_password2').prop({
-//                     'disabled': false,
-//                 });
-//             } else if (response.resultStatus === 'error') {
-//                 required.password1 = false;
-//                 errors.password1 = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//                 $('#id_password2').prop({
-//                     'disabled': true,
-//                 });
-//             }
-//             checkBtnRegister(required);
-//             checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
-//     let pass1 = $('#id_password1');
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             password1: pass1[0].value,
-//             password2: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.password2 = true;
-//                 errors.password2 = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.password2 = false;
-//                 errors.password2 = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             email: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.email = true;
-//                 errors.email = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.email = false;
-//                 errors.email = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForName(el, csrf, required, errors, body, timeShow) {
-//     formatValue(el);
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             name: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.name = true;
-//                 errors.name = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.name = false;
-//                 errors.name = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             // checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
-//     formatValue(el);
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             surname: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.surname = true;
-//                 errors.surname = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.surname = false;
-//                 errors.surname = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             // checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForPatronymic(el, csrf, required, errors, body, timeShow) {
-//     formatValue(el);
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             patronymic: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.patronymic = true;
-//                 errors.patronymic = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.patronymic = false;
-//                 errors.patronymic = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             // checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }
-//
-// function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
-//     $.ajax({
-//         url: '',
-//         type: 'post',
-//         data: {
-//             id: el[0].id,
-//             birthday: el[0].value,
-//             csrfmiddlewaretoken: csrf,
-//         },
-//         success: function (response) {
-//             chooseValidationColor(el[0], response.resultStatus);
-//             if (response.resultStatus === 'success') {
-//                 required.birthday = true;
-//                 errors.birthday = false;
-//                 removeErrors(el, timeShow);
-//             } else if (response.resultStatus === 'error') {
-//                 required.birthday = false;
-//                 errors.birthday = true;
-//                 showErrors(body, el, response.resultError, timeShow);
-//             }
-//             checkBtnRegister(required);
-//             // checkBtnNext(required);
-//         },
-//         error: function () {
-//             console.log('Что - то пошло не так :(');
-//         },
-//     });
-// }

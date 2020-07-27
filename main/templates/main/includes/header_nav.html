@@ -1,6 +1,6 @@
 {% load static %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated and not global_error %}
     {% if profile %}
         <div class="head-menu">
             <div class="head-menu-up">
@@ -50,7 +50,7 @@
             </div>
         </div>
     {% endif %}
-{% else %}
+{% elif not global_error %}
     <div class="head-menu-no-login">
         <ul class="menu-no-login">
             <li class="{{ nav_login }} menu-no-login-item">

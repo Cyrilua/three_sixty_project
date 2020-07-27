@@ -45,15 +45,18 @@
                                         <div class="_hint-down-block">
                                             <div class="role-information">
                                                 {% if role == 'boss' %}
-                                                    <strong>Босс</strong> - это суперюзер с полным спектром
-                                                    возможностей.
+                                                    <div class="boss__info"></div>
+                                                    {#                                                    <strong>Босс</strong> - это суперюзер с полным спектром#}
+                                                    {#                                                    возможностей.#}
                                                 {% elif role == 'master' %}
-                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и
-                                                    по любым командам (даже по тем, в которых не состоит), а также
-                                                    выбирать о ком будет опрос.
+                                                    <div class="master__info"></div>
+                                                    {#                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и#}
+                                                    {#                                                    по любым командам (даже по тем, в которых не состоит), а также#}
+                                                    {#                                                    выбирать о ком будет опрос.#}
                                                 {% elif role == 'moderator' %}
-                                                    <strong>Модератор</strong> может создавать отделы и должности а
-                                                    также менять отделы, дожности и роли участников.
+                                                    <div class="moderator__info"></div>
+                                                    {#                                                    <strong>Модератор</strong> может создавать отделы и должности а#}
+                                                    {#                                                    также менять отделы, дожности и роли участников.#}
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -391,7 +394,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="button-red button-save" id="btnPassword" data-part-url="password">Сохранить изменения</button>
+                                    <button class="button-red button-save" id="btnPassword" data-part-url="password" disabled>Сохранить изменения</button>
                                 </div>
                                 <div class="setting__3-block">
                                     <a class="setting__edit">Скрыть</a>
@@ -840,15 +843,15 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
-    <script src="{% static 'main/js/hint.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/hint.min.js' %}"></script>
     <script src="{% static 'main/js/edit.min.js' %}"></script>
-    <script type="text/javascript" src={% static 'main/js/datepicker.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/libraries/datepicker.min.js' %}></script>
 {% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/edit.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/datepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/datepicker.min.css' %}">
     {#    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">#}
 {% endblock %}

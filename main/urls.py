@@ -183,7 +183,7 @@ urlpatterns = [
                   path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
-                  path('poll/', create_poll.choose_poll, name='new_poll_view'),
+                  path('polls/', create_poll.choose_poll, name='new_poll_view'),
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
 
