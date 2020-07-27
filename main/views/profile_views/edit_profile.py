@@ -7,6 +7,7 @@ from .render_profile import build_profile_data
 from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 from django.http import JsonResponse
@@ -222,8 +223,16 @@ def check_old_password(request) -> JsonResponse:
 
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
-        value = _get_value(request.POST)
-        errors = validators.validate_password1(value)
+        password_1 = _get_value(request.POST)
+        password_old = request.POST['values[password_old]']
+        if password_1 == password_old:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': ['Новый пароль совпадает со старым']}, status=200)
+        #password_2 = request.POST['values[password2]']
+        #if password_1 != password_2:
+        #    return JsonResponse({'resultStatus': 'error',
+        #                        'resultError': ['Пароли не совпадают']}, status=200)
+        errors = validators.validate_password1(password_1)
         return _get_result(errors)
 
 
@@ -232,10 +241,21 @@ def check_new_password_2(request) -> JsonResponse:
         password1 = request.POST['values[password1]']
         password2 = request.POST['values[password2]']
         errors = validators.validate_password2(password2, password1)
-        print(request.POST)
         return _get_result(errors)
 
 
 def save_new_profile(request) -> JsonResponse:
     if request.is_ajax():
-        pass
+        data = {
+            'old_password': request.POST['values[password_old]'],
+            'new_password1': request.POST['values[password1]'],
+            'new_password2': request.POST['values[password2]']
+        }
+        password_change = PasswordChangeForm(request.user, data)
+        if password_change.is_valid():
+            password_change.save()
+            update_session_auth_hash(request, password_change.user)
+        else:
+            return JsonResponse({'resultStatus': 'error',
+                                 'listErrors': password_change.errors}, status=200)
+        return JsonResponse({'resultStatus': 'success'}, status=200)
