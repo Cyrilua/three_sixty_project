@@ -77,6 +77,16 @@ urlpatterns = [
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
                   # Проверка логина
                   path('edit/check_input/username', edit_profile.check_login),
+                  # Сохранение логина
+                  path('edit/edit/save/username', edit_profile.save_login),
+                  # Проверка старого (текущего) пароля
+                  path('edit/check_input/password_old', edit_profile.check_old_password),
+                  # Проверка нового пароля 1
+                  path('edit/check_input/password1', edit_profile.check_new_password_1),
+                  # Проверка нового пароля 2
+                  path('edit/check_input/password2', edit_profile.check_new_password_2),
+                  # Сохранение нового пароля
+                  path('edit/edit/save/password', edit_profile.save_new_profile),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 

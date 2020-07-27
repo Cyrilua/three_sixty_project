@@ -6,6 +6,9 @@ from main.views.auxiliary_general_methods import *
 from .render_profile import build_profile_data
 from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
 
 from django.http import JsonResponse
 
@@ -118,41 +121,52 @@ def add_position(request, position_id: int) -> redirect:
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
-def _get_result(errors: list):
+def _get_result(errors: list) -> JsonResponse:
     if len(errors) == 0:
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
 
 
-def _get_value(data):
+def _get_value(data) -> str:
     key = 'values[{}]'.format(data['id'])
     return data[key]
 
 
-def check_name(request):
+def check_name(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_name(value)
-        # TODO сравнивать с текущим значением в бд
+        profile = get_user_profile(request)
+        if value == profile.name:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
-def check_surname(request):
+def check_surname(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_surname(value)
+        profile = get_user_profile(request)
+        if value == profile.surname:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
-def check_patronymic(request):
+def check_patronymic(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_patronymic(value)
+        profile = get_user_profile(request)
+        if value == profile.patronymic:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': []}, status=200)
         return _get_result(errors)
 
 
-def save_changes_fcs(request):
+def save_changes_fcs(request) -> JsonResponse:
     if request.is_ajax():
         data = request.POST
         profile = get_user_profile(request)
@@ -160,17 +174,23 @@ def save_changes_fcs(request):
         profile.surname = data['values[surname]']
         profile.patronymic = data['values[patronymic]']
         profile.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'name': profile.name,
+            'surname': profile.surname,
+            'patronymic': profile.patronymic
+        }
+        return JsonResponse(args, status=200)
 
 
-def check_birth_date(request):
+def check_birth_date(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         errors = validators.validate_birth_date(value)
         return _get_result(errors)
 
 
-def save_birth_date(request):
+def save_birth_date(request) -> JsonResponse:
     if request.is_ajax():
         date = request.POST['values[birthdate]']
         try:
@@ -186,10 +206,17 @@ def save_birth_date(request):
             birth_date_profile.profile = profile
             birth_date_profile.birthday = birth_date
         birth_date_profile.save()
-        return JsonResponse({'resultStatus': 'success'}, status=200)
+        args = {
+            'resultStatus': 'success',
+            'birthdate': {
+                'text': birth_date_profile.birthday,
+                'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
+            }
+        }
+        return JsonResponse(args, status=200)
 
 
-def check_login(request):
+def check_login(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
         if value == auth.get_user(request).username:
@@ -197,3 +224,62 @@ def check_login(request):
                                  'resultError': []}, status=200)
         errors = validators.validate_login(value)
         return _get_result(errors)
+
+
+def save_login(request) -> JsonResponse:
+    if request.is_ajax():
+        user = auth.get_user(request)
+        new_username = request.POST['values[username]']
+        user.username = new_username
+        user.save()
+        return JsonResponse({'resultStatus': 'success'}, status=200)
+
+
+def check_old_password(request) -> JsonResponse:
+    if request.is_ajax():
+        value = _get_value(request.POST)
+        user = auth.get_user(request)
+        if user.check_password(value):
+            return JsonResponse({'resultStatus': 'success'}, status=200)
+        return JsonResponse({'resultStatus': 'error',
+                             'resultError': ['Введен неверный пароль']}, status=200)
+
+
+def check_new_password_1(request) -> JsonResponse:
+    if request.is_ajax():
+        password_1 = _get_value(request.POST)
+        password_old = request.POST['values[password_old]']
+        if password_1 == password_old:
+            return JsonResponse({'resultStatus': 'error',
+                                 'resultError': ['Новый пароль совпадает со старым']}, status=200)
+        #password_2 = request.POST['values[password2]']
+        #if password_1 != password_2:
+        #    return JsonResponse({'resultStatus': 'error',
+        #                        'resultError': ['Пароли не совпадают']}, status=200)
+        errors = validators.validate_password1(password_1)
+        return _get_result(errors)
+
+
+def check_new_password_2(request) -> JsonResponse:
+    if request.is_ajax():
+        password1 = request.POST['values[password1]']
+        password2 = request.POST['values[password2]']
+        errors = validators.validate_password2(password2, password1)
+        return _get_result(errors)
+
+
+def save_new_profile(request) -> JsonResponse:
+    if request.is_ajax():
+        data = {
+            'old_password': request.POST['values[password_old]'],
+            'new_password1': request.POST['values[password1]'],
+            'new_password2': request.POST['values[password2]']
+        }
+        password_change = PasswordChangeForm(request.user, data)
+        if password_change.is_valid():
+            password_change.save()
+            update_session_auth_hash(request, password_change.user)
+        else:
+            return JsonResponse({'resultStatus': 'error',
+                                 'listErrors': password_change.errors}, status=200)
+        return JsonResponse({'resultStatus': 'success'}, status=200)
