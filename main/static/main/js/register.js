@@ -103,28 +103,58 @@ $(function () {
         });
     }
 
-    // To step 2
+    // next-2
     body.on('click', '#next-2', function (event) {
         event.preventDefault();
         $('.step-1').addClass('hide');
         $('.step-2').removeClass('hide');
     });
 
-    // To step 1
+    // back-1
     body.on('click', '#back-1', function (event) {
         event.preventDefault();
         $('.step-2').addClass('hide');
         $('.step-1').removeClass('hide');
     });
 
-    // To step 3
+    // next-3
     body.on('click', '#next-3', function (event) {
         event.preventDefault();
-        $('.step-2').addClass('hide');
-        $('.step-3').removeClass('hide');
+        let partUrl = $(this).attr('data-part-url');
+        $.ajax({
+            url: `register/${partUrl}`,
+            type: 'post',
+            data: {
+                surname: surname.val(),
+                name: name.val(),
+                email: email.val(),
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function () {
+                $('.step-2').addClass('hide');
+                $('.step-3').removeClass('hide');
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+        })
     });
 
-    // To step 2
+    // back-2
     body.on('click', '#back-2', function (event) {
         event.preventDefault();
         $('.step-3').addClass('hide');
@@ -210,12 +240,12 @@ $(function () {
         checkBtnDone(required);
     });
 
-    body.on('mouseup', '#btn-register', function (el) {
+    body.on('mouseup', '#btn-register', function () {
+        let partUrl = $(this).attr('data-part-url');
         $.ajax({
-            url: '',
+            url: `register/${partUrl}`,
             type: 'post',
             data: {
-                id: el.id,
                 code: code.val(),
                 csrfmiddlewaretoken: csrf,
             },
