@@ -240,7 +240,7 @@ $(function () {
         checkBtnDone(required);
     });
 
-    body.on('mouseup', '#btn-register', function () {
+    body.on('mouseup', '#btn-register', function (el) {
         let partUrl = $(this).attr('data-part-url');
         $.ajax({
             url: `register/${partUrl}`,
