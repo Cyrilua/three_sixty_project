@@ -13,3 +13,18 @@
     <div class="line"></div>
     <div class="line"></div>
 </div>
+
+{% if delete %}
+    <div class="_hint delete unselectable">
+        <div class="_hint-up">
+            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+        </div>
+        <div class="_hint-down">
+            <div class="_hint-down-block">
+                <div class="black-block">
+                    <span class="text">Удалить</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

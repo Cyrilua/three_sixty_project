@@ -909,3 +909,57 @@ button {
 }
 
 // !Modal window!
+
+// Delete
+
+._hint {
+
+  &.delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  ._hint-up {
+    .delete {
+      width: 24px;
+      height: 24px;
+      filter: opacity(25%);
+      position: absolute;
+      right: 6px;
+      top: 6px;
+
+      &:hover {
+        filter: opacity(60%);
+      }
+    }
+  }
+
+  ._hint-down {
+    ._hint-down-block {
+      .black-block {
+        position: absolute;
+        bottom: -6px;
+        left: -46px;
+        background: rgba(0, 0, 0, .7);
+        border-radius: 1px;
+        width: 56px;
+        height: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .text {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 12px;
+          line-height: 14px;
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+}
+
+// !Delete!

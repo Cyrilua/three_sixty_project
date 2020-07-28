@@ -29,8 +29,7 @@
                     </div>
                     <div class="template-item unselectable">
                         <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            {% include 'main/includes/template_item.html' with delete=' ' %}
                         </div>
                         <span class="template__name">
                             <span class="name">Опрос об успеваемости</span>
@@ -38,8 +37,7 @@
                     </div>
                     <div class="template-item unselectable">
                         <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            {% include 'main/includes/template_item.html' with delete=' ' %}
                         </div>
                         <span class="template__name">
                             <span class="name">Ежемесячный</span>
@@ -47,8 +45,7 @@
                     </div>
                     <div class="template-item unselectable">
                         <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            {% include 'main/includes/template_item.html' with delete=' ' %}
                         </div>
                         <span class="template__name">
                             <span class="name">Еженедельный</span>
@@ -56,8 +53,7 @@
                     </div>
                     <div class="template-item unselectable">
                         <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            {% include 'main/includes/template_item.html' with delete=' ' %}
                         </div>
                         <span class="template__name">
                             <span class="name">Годовой</span>
@@ -65,8 +61,7 @@
                     </div>
                     <div class="template-item unselectable">
                         <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                            <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                            {% include 'main/includes/template_item.html' with delete=' ' %}
                         </div>
                         <span class="template__name">
                             <span class="name">О себе</span>
@@ -78,8 +73,7 @@
                     <div class="my-templates">
                         <div class="template-item purple unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -87,8 +81,7 @@
                         </div>
                         <div class="template-item blue unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -96,8 +89,7 @@
                         </div>
                         <div class="template-item red unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -105,8 +97,7 @@
                         </div>
                         <div class="template-item purple unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -114,8 +105,7 @@
                         </div>
                         <div class="template-item blue unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -123,8 +113,7 @@
                         </div>
                         <div class="template-item red unselectable">
                             <div class="template__main">
-                                {% include 'main/includes/template_item.html' %}
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="delete">
+                                {% include 'main/includes/template_item.html' with delete=' ' %}
                             </div>
                             <span class="template__name">
                                 <span class="name">Новый опрос</span>
@@ -153,14 +142,188 @@
             </div>
             <div class="categories">
                 <div class="category-content my-polls">
-                    {#                    <div class="category-item"></div>#}
-                    {#                    <div class="category-item"></div>#}
-                    {#                    <div class="category-item"></div>#}
+                    <div class="category-item poll-item purple unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item red unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item red unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item blue unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item purple unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item blue unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
                 </div>
                 <div class="category-content polls">
-                    {#                    <div class="category-item"></div>#}
-                    {#                    <div class="category-item"></div>#}
-                    {#                    <div class="category-item"></div>#}
+                    <div class="category-item poll-item red unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item purple unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item blue unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
+                    <div class="category-item poll-item unselectable rounded-block">
+                        <div class="poll__main">
+                            {% include 'main/includes/template_item.html' %}
+                        </div>
+                        <span class="poll__title">
+                            Ежемесячный
+                        </span>
+                        <div class="line-decoration"></div>
+                        <span class="poll_target">
+                            Иванов Иван Иванович
+                        </span>
+                        <span class="poll_details">
+                            35 ответов | 9 июля 2020
+                        </span>
+                    </div>
                 </div>
                 <div class="category-empty center-content-notifications-empty">
                     {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
@@ -186,4 +349,5 @@
     <script type="text/javascript" src={% static 'main/js/polls_view.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
     <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
 {% endblock %}
