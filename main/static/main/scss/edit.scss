@@ -435,3 +435,50 @@
     }
   }
 }
+
+.modal {
+  &.hide {
+    display: none;
+  }
+
+  .modal__window {
+
+    .title {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      margin-bottom: 5px;
+    }
+
+    .text {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #595757;
+      margin-bottom: 25px;
+
+      .part-text:nth-child(1) {
+        margin-bottom: 15px;
+      }
+    }
+
+    .form-grouping {
+      margin-bottom: 30px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      #modal_close {
+        margin-right: 12px;
+      }
+
+      #modal_success {
+
+      }
+    }
+  }
+}

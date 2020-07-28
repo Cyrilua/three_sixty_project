@@ -3,6 +3,11 @@ $(function () {
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     const timeShow = 300;
 
+    const colCenter = $('.col-center');
+    const modal = $('.modal');
+    const emailCode = $('#email_code');
+    const modalSuccess = $('#modal_success');
+
     let username = $('#username');
     let passwordOld = $('#password_old');
     let password1 = $('#password1');
@@ -35,6 +40,7 @@ $(function () {
         'password2': false,
         'email': false,
         'password_for_email': false,
+        'email_code': false,
         'name': false,
         'surname': false,
         'patronymic': false,
@@ -48,6 +54,7 @@ $(function () {
         'password2': false,
         'email': false,
         'password_for_email': false,
+        'email_code': false,
         'name': false,
         'surname': false,
         'patronymic': false,
@@ -69,6 +76,27 @@ $(function () {
             position: 'top left',
         });
     }
+
+    // Закрытие модального окна
+    body.on('click', '.modal', function (el) {
+        if ($(el.target).hasClass('modal') || el.target.id === 'modal_close') {
+            sessionStorage.removeItem('new_email');
+            modal.toggleClass('hide');
+        }
+    });
+
+    // // Обработака поля в модальном окне
+    // body.on('input', '#email_code', function (el) {
+    //     if (el.target.value.length > 0) {
+    //         modalSuccess.prop({
+    //             disabled: false,
+    //         })
+    //     } else {
+    //         modalSuccess.prop({
+    //             disabled: true,
+    //         })
+    //     }
+    // });
 
     // Вывод шибки при фокусе на поле
     body.on('focus', '.input-field', function () {
@@ -169,6 +197,13 @@ $(function () {
         });
     });
 
+    body.on('input', '#email_code', function () {
+        let elem = $(this);
+        ajaxForInput(elem, modalSuccess, {
+            'email_code': elem.val(),
+        });
+    });
+
     body.on('input', '#name', function () {
         let elem = $(this);
         ajaxForInput(elem, btnName, {
@@ -215,6 +250,11 @@ $(function () {
             values = {
                 email: email.val(),
                 password_for_email: passwordForEmail.val(),
+            }
+        } else if (partUrl === 'email_code') {
+            values = {
+                email: sessionStorage.getItem('new_email'),
+                email_code: emailCode.val(),
             }
         } else if (partUrl === 'username') {
             values = {
@@ -265,9 +305,7 @@ $(function () {
                     required.birthdate = false;
                     errors.birthdate = false;
                 } else if (partUrl === 'email') {
-                    email.val(response.email);
-                    spanMax.text(`${response.email}`);
-                    spanMin.text(`${response.email}`);
+                    passwordForEmail.val('');
                     required.email = false;
                     required.password_for_email = false;
                     errors.email = false;
@@ -277,6 +315,22 @@ $(function () {
                         chooseValidationColor(passwordForEmail[0], response.resultStatus, response.listErrors.password_for_email);
                         showErrors(passwordForEmail, response.listErrors.password_for_email);
                         passwordForEmail.focus();
+                    } else if (response.resultStatus === 'success') {
+                        sessionStorage.setItem('new_email', email.val());
+                        email.val('');
+                        modal.toggleClass('hide');
+                    }
+                } else if (partUrl === 'email_code') {
+                    if (response.resultStatus === 'error') {
+                        errors.email_code = true;
+                        chooseValidationColor(emailCode[0], response.resultStatus, response.listErrors);
+                        showErrors(emailCode, response.listErrors);
+                        passwordForEmail.focus();
+                    } else if (response.resultStatus === 'success') {
+                        spanMax.text(`${response.email}`);
+                        spanMin.text(`${response.email}`);
+                        sessionStorage.removeItem('new_email');
+                        modal.toggleClass('hide');
                     }
                 } else if (partUrl === 'username') {
                     email.val(response.username);
@@ -577,6 +631,8 @@ $(function () {
             checkBtnBirthdate(btn);
         } else if (idElem === 'email' || idElem === 'password_for_email') {
             checkBtnEmail(btn);
+        } else if (idElem === 'email_code') {
+            checkBtnEmailCode(btn);
         } else if (idElem === 'username') {
             checkBtnUsername(btn);
         } else if (idElem === 'password_old' || idElem === 'password1' || idElem === 'password2') {
@@ -604,6 +660,14 @@ $(function () {
 
     function checkBtnEmail(btn) {
         if (required.email && required.password_for_email) {
+            btn.prop({'disabled': false});
+        } else {
+            btn.prop({'disabled': true});
+        }
+    }
+
+    function checkBtnEmailCode(btn) {
+        if (required.email_code) {
             btn.prop({'disabled': false});
         } else {
             btn.prop({'disabled': true});
@@ -645,6 +709,11 @@ $(function () {
             checkBtnPost(btn, elem);
         } else if (id === 'password_for_email') {
             required.password_for_email = values.password_for_email.length > 0;
+            // errors.password_old = !elem.val().length > 0;
+            removeErrors(elem);
+            checkBtnPost(btn, elem);
+        } else if (id === 'email_code') {
+            required.email_code = values.email_code.length > 0;
             // errors.password_old = !elem.val().length > 0;
             removeErrors(elem);
             checkBtnPost(btn, elem);

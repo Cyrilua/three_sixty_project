@@ -298,7 +298,8 @@
                                         </div>
                                     </div>
                                     <div class="form-grouping">
-                                        <input type="password" class="input-field" id="password_for_email" placeholder="Введите пароль"
+                                        <input type="password" class="input-field" id="password_for_email"
+                                               placeholder="Введите пароль"
                                                value="">
                                         <div class="popup">
                                             <div class="popup_message">
@@ -427,6 +428,35 @@
             <!-- /.center-content -->
         </div>
         <!-- /.edit -->
+        <div class="modal unselectable hide">
+            <div class="modal__window rounded-block">
+                <h1 class="title">
+                    Изменение эл. почты
+                </h1>
+                <div class="text">
+                    <p class="part-text">
+                        Чтобы верифицировать новую эл. почту, введите код подтверждения, который мы на неё отправили.
+                    </p>
+                    <p class="part-text">
+                        Если Вы не получили письмо, убедитесь, что Вы ввели правильный адрес электронной почты и
+                        проверьте
+                        папку “Спам”.
+                    </p>
+                </div>
+                <div class="form-grouping">
+                    <input type="text" class="input-field" id="email_code" placeholder="Код подтверждения">
+                    <div class="popup">
+                        <div class="popup_message">
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="button-white" id="modal_close">Отмена</button>
+                    <button class="button-red button-save" id="modal_success" data-part-url="email_code" disabled>Готово</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
     {% else %}
         <div class="edit">
             <div class="left-content rounded-block">
