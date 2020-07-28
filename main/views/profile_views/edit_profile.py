@@ -261,12 +261,12 @@ def save_email(request) -> JsonResponse:
             args['resultStatus'] = 'error'
             args['listErrors'] = {'password_for_email': ['Неверный пароль']}
             return JsonResponse(args, status=200)
-        user.email = value
-        user.save()
-        profile = get_user_profile(request)
-        profile.email_is_validate = False
-        profile.save()
-        send_email_validate_message(request)
+        #user.email = value
+        #user.save()
+        #profile = get_user_profile(request)
+        #profile.email_is_validate = False
+        #profile.save()
+        #send_email_validate_message(request)
 
         return JsonResponse(args, status=200)
 
