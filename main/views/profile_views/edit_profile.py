@@ -238,6 +238,7 @@ def save_birth_date(request) -> JsonResponse:
 def check_email(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
+        print(request.POST)
         user = auth.get_user(request)
         if user.email == value:
             return JsonResponse({'resultStatus': 'error',
@@ -248,18 +249,24 @@ def check_email(request) -> JsonResponse:
 
 def save_email(request) -> JsonResponse:
     if request.is_ajax():
+        print(request.POST)
         value = request.POST['values[email]']
         user = auth.get_user(request)
+        password = request.POST['values[password_for_email]']
+        args = {
+            'email': value,
+            'resultStatus': 'success'
+        }
+        if not user.check_password(password):
+            args['resultStatus'] = 'error'
+            args['listErrors'] = {'password_for_email': ['Неверный пароль']}
         user.email = value
         user.save()
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
         send_email_validate_message(request)
-        args = {
-            'email': value,
-            'resultStatus': 'success'
-        }
+
         return JsonResponse(args, status=200)
 
 
@@ -286,14 +293,9 @@ def save_login(request) -> JsonResponse:
         return JsonResponse(args, status=200)
 
 
-# TODO
 def check_new_password_1(request) -> JsonResponse:
     if request.is_ajax():
         password_1 = _get_value(request.POST)
-        #password_2 = request.POST['values[password2]']
-        #if password_1 != password_2:
-        #    return JsonResponse({'resultStatus': 'error',
-        #                        'resultError': ['Пароли не совпадают']}, status=200)
         errors = validators.validate_password1(password_1)
         return _get_result(errors)
 
