@@ -89,6 +89,18 @@ class ProfilePhoto (models.Model):
         return "Profile: {}".format(self.profile)
 
 
+class VerificationCode (models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    code = models.CharField(max_length=100, default='')
+
+    class Meta:
+        db_table = "Verification code"
+
+    def __str__(self):
+        return self.code
+
+
+
 class Notifications (models.Model):
     TYPE_CHOICES = [
         ('my_poll', 0),
