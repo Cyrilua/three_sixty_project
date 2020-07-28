@@ -11,6 +11,7 @@ $(function () {
     let surname = $('#id_surname');
     let patronymic = $('#id_patronymic');
     let birthday = $('#id_birthday');
+    let code = $('#code');
 
     let required = {
         'username': false,
@@ -21,6 +22,7 @@ $(function () {
         'surname': false,
         'patronymic': false,
         'birthday': false,
+        'code': false,
     };
 
     let errors = {
@@ -32,6 +34,7 @@ $(function () {
         'surname': false,
         'patronymic': false,
         'birthday': false,
+        'code': false,
     };
 
     username.val('');
@@ -47,6 +50,7 @@ $(function () {
     birthday.val('');
     checkBtnNext(required);
     checkBtnRegister(required);
+    code.val('');
 
     // if (username.val() !== '')
     //     ajaxForUsername(username, csrf, required, errors, body, timeShow);
@@ -100,17 +104,31 @@ $(function () {
     }
 
     // To step 2
-    body.on('click', '.register-form-navigate-btn-next_step', function (event) {
+    body.on('click', '#next-2', function (event) {
         event.preventDefault();
         $('.step-1').addClass('hide');
         $('.step-2').removeClass('hide');
     });
 
     // To step 1
-    body.on('click', '.register-form-navigate-btn-back_step', function (event) {
+    body.on('click', '#back-1', function (event) {
         event.preventDefault();
         $('.step-2').addClass('hide');
         $('.step-1').removeClass('hide');
+    });
+
+    // To step 3
+    body.on('click', '#next-3', function (event) {
+        event.preventDefault();
+        $('.step-2').addClass('hide');
+        $('.step-3').removeClass('hide');
+    });
+
+    // To step 2
+    body.on('click', '#back-2', function (event) {
+        event.preventDefault();
+        $('.step-3').addClass('hide');
+        $('.step-2').removeClass('hide');
     });
 
     // Вывод шибки при фокусе на поле
@@ -185,6 +203,56 @@ $(function () {
         let el = $(this);
         ajaxForBirthday(el, csrf, required, errors, body, timeShow);
     });
+
+    body.on('input', '#code', function () {
+        let el = $(this);
+        required.code = el.val().length > 0;
+        checkBtnDone(required);
+    });
+
+    body.on('mouseup', '#btn-register', function (el) {
+        $.ajax({
+            url: '',
+            type: 'post',
+            data: {
+                id: el.id,
+                code: code.val(),
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                chooseValidationColor(el[0], response.resultStatus);
+                if (response.resultStatus === 'success') {
+                    el.target.type = 'submit';
+                    $(this).trigger('click');
+                } else if (response.resultStatus === 'error') {
+                    required.code = false;
+                    errors.code = true;
+                    chooseValidationColor(code[0], response.resultStatus);
+                    showErrors(body, code, response.listErrors, timeShow);
+                    code.focus();
+                    checkBtnDone(required);
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+        });
+
+    });
 });
 
 
@@ -253,9 +321,13 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow,) {
                 required.password1 = true;
                 errors.password1 = false;
                 removeErrors(el, timeShow);
-                $('#id_password2').prop({
+                let pass2 = $('#id_password2');
+                pass2.prop({
                     'disabled': false,
                 });
+                pass2.val('');
+                required.password2 = false;
+                errors.password2 = false;
             } else if (response.resultStatus === 'error') {
                 required.password1 = false;
                 errors.password1 = true;
@@ -499,37 +571,56 @@ function removeErrors(el, timeShow) {
     });
 }
 
-// Проверка, что все поля заполнены и кнопку "Зарегистрироваться" можно нажать
+// Проверка, что все поля заполнены и кнопку "Далее" (2 страница) можно нажать
 function checkBtnRegister(required) {
-    if (isTrueAllinObj(required)) {
-        $('#btn-register').prop({
-            'disabled': false,
+    if (isTrueAllinObj(required, false)) {
+        $('#next-3').prop({
+            disabled: false,
         })
     } else {
-        $('#btn-register').prop({
-            'disabled': true,
+        $('#next-3').prop({
+            disabled: true,
         })
     }
 }
 
-// Проверка, что все поля страницы 1 заполнены и кнопку "Далее" можно нажать
+// Проверка, что все поля страницы 1 заполнены и кнопку "Далее" (1 страница) можно нажать
 function checkBtnNext(required) {
     if (required.username === true && required.email === true && required.password1 === true && required.password2 === true) {
-        $('.register-form-navigate-btn-next_step').prop({
+        $('#next-2').prop({
             disabled: false
         })
     } else {
-        $('.register-form-navigate-btn-next_step').prop({
+        $('#next-2').prop({
             disabled: true
         })
     }
 }
 
+// Проверка, что все поля заполнены и кнопку "Готово" можно нажать
+function checkBtnDone(required) {
+    if (isTrueAllinObj(required, true)) {
+        $('#btn-register').prop({
+            disabled: false,
+        })
+    } else {
+        $('#btn-register').prop({
+            disabled: true,
+        })
+    }
+}
+
 //Проверка объекта (required), что все свойства true
-function isTrueAllinObj(obj) {
+function isTrueAllinObj(obj, code) {
     for (let key in obj) {
-        if (obj[key] === false) {
-            return false;
+        if (key !== 'code') {
+            if (obj[key] === false) {
+                return false;
+            }
+        } else if (code) {
+            if (obj[key] === false) {
+                return false;
+            }
         }
     }
     return true;

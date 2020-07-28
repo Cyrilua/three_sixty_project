@@ -82,15 +82,38 @@
                     </div>
                 </div>
             </div>
+            <div class="register-form-fields step-3 hide">
+                <div class="register-form-fields-text">
+                    <p class="register-form-fields-text-part">
+                        Чтобы завершить регистрацию, введите код подтверждения, который мы отправили на Вашу электронную почту.
+                    </p>
+                    <p class="register-form-fields-text-part">
+                        Если Вы не получили письмо, убедитесь, что Вы ввели правильный адрес электронной почты и проверьте папку “Спам”.
+                    </p>
+                </div>
+                <div class="form-grouping">
+                    <input type="text" class="input-field" id="code" placeholder="Код подтверждения">
+                    <div class="popup">
+                        <div class="popup_message">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="register-form-navigate">
-                <button class="button-red register-form-navigate-btn register-form-navigate-btn-next_step step-1"
+                <button id="next-2" class="button-red register-form-navigate-btn register-form-navigate-btn-next_step step-1"
                         type="button" disabled>Далее
                 </button>
-                <button class="button-white register-form-navigate-btn register-form-navigate-btn-back_step step-2 hide"
+                <button id="back-1" class="button-white register-form-navigate-btn register-form-navigate-btn-back_step step-2 hide"
                         type="button">Назад
                 </button>
-                <button id="btn-register" class="button-red register-form-navigate-btn step-2 hide"
-                        type="submit" disabled>Готово
+                <button id="next-3" class="button-red register-form-navigate-btn step-2 hide"
+                        type="button" disabled>Далее
+                </button>
+                <button id="back-2" class="button-white register-form-navigate-btn register-form-navigate-btn-back_step step-3 hide"
+                        type="button">Назад
+                </button>
+                <button id="btn-register" class="button-red register-form-navigate-btn step-3 hide"
+                        type="button" disabled>Готово
                 </button>
             </div>
         </form>
