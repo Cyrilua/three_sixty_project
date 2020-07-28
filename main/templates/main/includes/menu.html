@@ -1,14 +1,25 @@
+{% load static %}
+
 {#<div class="row">#}
 <div class="menu-left">
     <ul class="menu unselectable">
         <li class="{{ menu_profile }} menu-item">
-            <a class="menu-link" href="{% url 'main:login' %}">Главная</a>
+            <a class="menu-link" href="{% url 'main:login' %}">
+                <img src="{% static 'main/images/icon/home-24px.svg' %}" alt="" class="item__icon">
+                Главная
+            </a>
         </li>
         <li class="{{ menu_polls }} menu-item">
-            <a class="menu-link" href="{% url 'main:new_poll_view' %}">Опросы</a>
+            <a class="menu-link" href="{% url 'main:new_poll_view' %}">
+                <img src="{% static 'main/images/icon/assignment-24px.svg' %}" alt="" class="item__icon">
+                Опросы
+            </a>
         </li>
         <li class="{{ menu_settings }} menu-item">
-            <a class="menu-link" href="#">Команды</a>
+            <a class="menu-link" href="#">
+                <img src="{% static 'main/images/icon/people-24px.svg' %}" alt="" class="item__icon">
+                Команды
+            </a>
         </li>
 {#        <li class="{{ menu_settings }} menu-item">#}
 {#            <a class="menu-link" href="#">События</a>#}

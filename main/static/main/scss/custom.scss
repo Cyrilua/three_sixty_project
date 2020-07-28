@@ -334,6 +334,19 @@ button {
         background-color: #FAFAFA;
       }
 
+
+      &:hover .menu-link .item__icon {
+        filter: opacity(50%);
+      }
+
+      //&:active .menu-link .item__icon {
+      //  filter: opacity(100%);
+      //}
+
+      &.active .menu-link .item__icon {
+        filter: opacity(100%);
+      }
+
       //&.menu-item:active,
       &.menu-item.active {
         color: #000000;
@@ -355,6 +368,13 @@ button {
           padding-left: 17px;
           color: inherit;
           text-decoration: none;
+        }
+
+        .item__icon {
+          width: 19px;
+          height: 19px;
+          margin-right: 6px;
+          filter: opacity(25%);
         }
       }
     }
@@ -793,7 +813,7 @@ button {
 }
 
 .hide,
-.hide *{
+.hide * {
   display: none;
 }
 
