@@ -259,13 +259,31 @@ def save_email(request) -> JsonResponse:
             args['resultStatus'] = 'error'
             args['listErrors'] = {'password_for_email': ['Неверный пароль']}
             return JsonResponse(args, status=200)
-        #user.email = value
-        #user.save()
-        #profile = get_user_profile(request)
-        #profile.email_is_validate = False
-        #profile.save()
-        #send_email_validate_message(request)
+        user.email = value
+        user.save()
+        profile = get_user_profile(request)
+        profile.email_is_validate = False
+        profile.save()
+        code = create_verification_code(profile)
+        send_email_validate_message(request, code)
 
+        return JsonResponse(args, status=200)
+
+
+def check_email_code(request):
+    if request.is_ajax():
+        print(request.POST)
+        user = request.user
+        code = request.POST['values[email_code]']
+        result_check = check_code(code, get_user_profile(request))
+        args = {
+            'email': user.email,
+            'resultStatus': 'success'
+        }
+        if not result_check:
+            args['resultStatus'] = 'error'
+            args['listErrors'] = ['Введен неверный код подтверждения']
+            return JsonResponse(args, status=200)
         return JsonResponse(args, status=200)
 
 

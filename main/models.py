@@ -90,8 +90,9 @@ class ProfilePhoto (models.Model):
 
 
 class VerificationCode (models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    code = models.CharField(max_length=100, default='')
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    code = models.CharField(max_length=16, default='')
+    objects = models.Manager()
 
     class Meta:
         db_table = "Verification code"

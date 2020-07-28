@@ -17,9 +17,6 @@ urlpatterns = [
                   # Выход
                   path('logout/', user_views.user_logout, name='logout'),
 
-                  # Подтверждение почты
-                  path('activate/<uidb64>/<token>/', auxiliary_general_methods.activate, name='activate'),
-
                   # Сообщение об успешной смене пароля
                   path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
                       template_name='main/password/password_change_done.html'),
@@ -89,6 +86,8 @@ urlpatterns = [
                   path('edit/check_input/password2', edit_profile.check_new_password_2),
                   # Сохранение нового пароля
                   path('edit/edit/save/password', edit_profile.save_new_password),
+                  # Проверка кода из письма
+                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
 

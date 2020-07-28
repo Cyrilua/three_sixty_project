@@ -70,6 +70,8 @@ def validate_email(email: str):
         users = User.objects.filter(email=email)
         if len(users) != 0:
             result.append('Данный email уже привязан к другоу аккаунту')
+    else:
+        result.append('Введите значение')
     return result
 
 
