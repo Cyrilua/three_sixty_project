@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation, validators
 from django.core.validators import EmailValidator
+from main.models import Profile
+from .auxiliary_general_methods import check_code
 
 
 def validate_login(login: str):
@@ -75,21 +77,6 @@ def validate_email(email: str):
     return result
 
 
-def validate_fullname(name: str):
-    result = []
-    len_name = len(name)
-    if len_name < 6:
-        result.append('Слишком короткое имя')
-    if len_name > 150:
-        result.append('Слишком длинное имя')
-
-    # убрать проверку на запрещенные символы при необходимости
-    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
-    if len(reg.sub('', name)) != len(name):
-        result.append('Имя содержит запрещенные символы')
-    return result
-
-
 def validate_name(name: str):
     result = []
     len_name = len(name)
@@ -129,4 +116,12 @@ def validate_patronymic(patronymic: str):
     reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
     if len(reg.sub('', patronymic)) != len(patronymic):
         result.append('Отчество содержит запрещенные символы')
+    return result
+
+
+def validate_code(code: str, profile: Profile):
+    result = []
+    result_check = check_code(code, profile)
+    if not result_check:
+        result.append('Введен неверный код подтверждения')
     return result

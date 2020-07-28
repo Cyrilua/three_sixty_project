@@ -272,17 +272,15 @@ def save_email(request) -> JsonResponse:
 
 def check_email_code(request):
     if request.is_ajax():
-        print(request.POST)
         user = request.user
-        code = request.POST['values[email_code]']
-        result_check = check_code(code, get_user_profile(request))
+        errors = validators.validate_code(request.POST['values[email_code]'], get_user_profile(request))
         args = {
             'email': user.email,
             'resultStatus': 'success'
         }
-        if not result_check:
+        if len(errors) != 0:
             args['resultStatus'] = 'error'
-            args['listErrors'] = ['Введен неверный код подтверждения']
+            args['listErrors'] = errors
             return JsonResponse(args, status=200)
         return JsonResponse(args, status=200)
 

@@ -71,6 +71,7 @@ def request_ajax_processing(request):
         pass
     if request.method == "POST":
         date = request.POST
+        print(date)
         id_element = date['id']
 
         if id_element == 'id_username':
@@ -93,10 +94,6 @@ def request_ajax_processing(request):
            errors = validate_birth_date(date['birthday'])
            return get_result(errors)
 
-        elif id_element == 'id_fullname':
-           errors = validate_fullname(date['fullname'])
-           return get_result(errors)
-
         elif id_element == 'id_name':
             errors = validate_name(date['name'])
             return get_result(errors)
@@ -107,6 +104,11 @@ def request_ajax_processing(request):
 
         elif id_element == 'id_patronymic':
             errors = validate_patronymic(date['patronymic'])
+            return get_result(errors)
+
+        elif id_element == 'code':
+            print(request.POST)
+            errors = validate_code(date['code'], get_user_profile(request))
             return get_result(errors)
 
 
