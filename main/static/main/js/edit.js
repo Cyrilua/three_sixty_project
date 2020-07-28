@@ -306,16 +306,18 @@ $(function () {
                     errors.birthdate = false;
                 } else if (partUrl === 'email') {
                     passwordForEmail.val('');
-                    required.email = false;
                     required.password_for_email = false;
-                    errors.email = false;
                     errors.password_for_email = false;
                     if (response.resultStatus === 'error') {
+                        required.email = true;
+                        errors.email = false;
                         errors.password_for_email = true;
                         chooseValidationColor(passwordForEmail[0], response.resultStatus, response.listErrors.password_for_email);
                         showErrors(passwordForEmail, response.listErrors.password_for_email);
                         passwordForEmail.focus();
                     } else if (response.resultStatus === 'success') {
+                        required.email = false;
+                        errors.email = false;
                         sessionStorage.setItem('new_email', email.val());
                         email.val('');
                         modal.toggleClass('hide');
