@@ -61,14 +61,15 @@ def validate_birth_date(date: str):
 
 def validate_email(email: str):
     result = []
-    try:
-        email_validator = EmailValidator()
-        email_validator(email)
-    except ValidationError as error:
-        result = error.messages
-    users = User.objects.filter(email=email)
-    if len(users) != 0:
-        result.append('Данный email уже привязан к другоу аккаунту')
+    if len(email) != 0:
+        try:
+            email_validator = EmailValidator()
+            email_validator(email)
+        except ValidationError as error:
+            result = error.messages
+        users = User.objects.filter(email=email)
+        if len(users) != 0:
+            result.append('Данный email уже привязан к другоу аккаунту')
     return result
 
 

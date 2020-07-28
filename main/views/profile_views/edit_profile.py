@@ -238,7 +238,6 @@ def save_birth_date(request) -> JsonResponse:
 def check_email(request) -> JsonResponse:
     if request.is_ajax():
         value = _get_value(request.POST)
-        print(request.POST)
         user = auth.get_user(request)
         if user.email == value:
             return JsonResponse({'resultStatus': 'error',
@@ -249,7 +248,6 @@ def check_email(request) -> JsonResponse:
 
 def save_email(request) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
         value = request.POST['values[email]']
         user = auth.get_user(request)
         password = request.POST['values[password_for_email]']
