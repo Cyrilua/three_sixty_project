@@ -125,10 +125,9 @@ def send_email(request) -> JsonResponse:
 
 def check_verification_code(request) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
+        #print(request.POST)
         errors = ['Код неверен']
-        return JsonResponse({'resultStatus': 'error',
-                             'listErrors': errors}, status=200)
+        return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def user_login(request):

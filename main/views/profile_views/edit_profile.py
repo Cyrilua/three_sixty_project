@@ -40,6 +40,22 @@ def upload_profile_photo(request):
     return render(request, "main/user/old/upload_photo.html", args)
 
 
+def delete_profile_photo(request) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    args = {
+        'title': "Добавление фотографии пользователя",
+    }
+
+    try:
+        photo = ProfilePhoto.objects.get(profile=profile)
+    except ObjectDoesNotExist:
+        return redirect('edit/')
+    photo.delete()
+
+
 def edit_profile(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
