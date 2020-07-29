@@ -20,12 +20,9 @@ from PIL import Image
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    print(1)
     if request.is_ajax():
-        if request.method == "POST":
-            print('i am here')
-            print(request.POST)
-            return JsonResponse({}, status=200)
+        print(request.POST)
+        return JsonResponse({}, status=200)
 
     #if request.method == "POST":
     #    user_photo = request.FILES['photo']
@@ -42,22 +39,14 @@ def upload_profile_photo(request):
 
 
 def delete_profile_photo(request) -> render:
-    print('i am here 1')
     if request.is_ajax():
-        print('i am here 2')
-        if request.method == "POST":
-            print('i am here 3')
+        try:
+            photo = ProfilePhoto.objects.get(profile=get_user_profile(request))
+        except ObjectDoesNotExist:
             return JsonResponse({}, status=200)
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
+        else:
+            photo.delete()
 
-    profile = get_user_profile(request)
-    try:
-        photo = ProfilePhoto.objects.get(profile=profile)
-    except ObjectDoesNotExist:
-        return redirect('/edit/')
-    photo.delete()
-    return redirect('/edit/')
 
 
 def edit_profile(request) -> render:
