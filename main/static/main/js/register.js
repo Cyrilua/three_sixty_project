@@ -253,7 +253,7 @@ $(function () {
                 chooseValidationColor(el.target, response.resultStatus);
                 if (response.resultStatus === 'success') {
                     el.target.type = 'submit';
-                    $(this).trigger('click');
+                    $(el.target).trigger('click');
                 } else if (response.resultStatus === 'error') {
                     required.code = false;
                     errors.code = true;
