@@ -295,6 +295,8 @@ def check_email_code(request):
             args['resultStatus'] = 'error'
             args['listErrors'] = errors
             return JsonResponse(args, status=200)
+        profile = get_user_profile(request)
+        profile.email_is_validate = True
         return JsonResponse(args, status=200)
 
 
