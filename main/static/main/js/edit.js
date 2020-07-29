@@ -83,7 +83,7 @@ $(function () {
         event.preventDefault();
         $.ajax({
             url: 'edit/photo/delete',
-            type: 'delete',
+            type: 'post',
             data: {
                  csrfmiddlewaretoken: csrf,
             },
