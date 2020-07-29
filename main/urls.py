@@ -93,9 +93,9 @@ urlpatterns = [
                   # Проверка кода из письма
                   path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
-                  path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
+                  path('edit/edit/photo/update', edit_profile.upload_profile_photo, name='upload_photo'),
                   # Удаление аватарки
-                  path('edit/edit/photo/delete/', edit_profile.delete_profile_photo),
+                  path('edit/edit/photo/delete', edit_profile.delete_profile_photo),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),

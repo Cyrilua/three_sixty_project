@@ -26,18 +26,23 @@ def upload_profile_photo(request):
         'form': PhotoProfileForm()
     }
 
-    if request.method == "POST":
-        user_photo = request.FILES['photo']
-        try:
-            profile.profilephoto.photo = user_photo
-            profile.profilephoto.save()
-        except:
-            photo_profile = ProfilePhoto()
-            photo_profile.photo = user_photo
-            photo_profile.profile = profile
-            photo_profile.save()
-        return redirect('/')
-    return render(request, "main/user/old/upload_photo.html", args)
+    if request.is_ajax():
+        print('i am here')
+        print(request.POST)
+        return JsonResponse({}, status=200)
+
+    #if request.method == "POST":
+    #    user_photo = request.FILES['photo']
+    #    try:
+    #        profile.profilephoto.photo = user_photo
+    #        profile.profilephoto.save()
+    #    except:
+    #        photo_profile = ProfilePhoto()
+    #        photo_profile.photo = user_photo
+    #        photo_profile.profile = profile
+    #        photo_profile.save()
+    #    return redirect('/')
+    #return render(request, "main/user/old/upload_photo.html", args)
 
 
 def delete_profile_photo(request) -> render:
