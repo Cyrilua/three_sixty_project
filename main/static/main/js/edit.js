@@ -85,7 +85,7 @@ $(function () {
             url: 'edit/photo/delete',
             type: 'delete',
             data: {
-                // csrfmiddlewaretoken: csrf,
+                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
                 $(photo).attr({
