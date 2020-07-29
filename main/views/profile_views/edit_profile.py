@@ -45,15 +45,12 @@ def delete_profile_photo(request) -> render:
         return redirect('/')
 
     profile = get_user_profile(request)
-    args = {
-        'title': "Добавление фотографии пользователя",
-    }
-
     try:
         photo = ProfilePhoto.objects.get(profile=profile)
     except ObjectDoesNotExist:
-        return redirect('edit/')
+        return redirect('/edit/')
     photo.delete()
+    return redirect('/edit/')
 
 
 def edit_profile(request) -> render:

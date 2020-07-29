@@ -78,9 +78,16 @@ class SurveyWizard(models.Model):
 
 class ProfilePhoto (models.Model):
     photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
-    photo_hex = models.BigIntegerField(null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     objects = models.Manager()
+
+    def delete(self, *args, **kwargs):
+        # До удаления записи получаем необходимую информацию
+        storage, path = self.photo.storage, self.photo.path
+        # Удаляем сначала модель ( объект )
+        super(ProfilePhoto, self).delete(*args, **kwargs)
+        # Потом удаляем сам файл
+        storage.delete(path)
 
     class Meta:
         db_table = "Profile photo"
