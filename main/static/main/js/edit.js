@@ -8,6 +8,7 @@ $(function () {
     const emailCode = $('#email_code');
     const modalSuccess = $('#modal_success');
     let photo = $('.left-content__photo');
+    let updPhoto = $('.upd-photo');
 
     let username = $('#username');
     let passwordOld = $('#password_old');
@@ -89,6 +90,7 @@ $(function () {
             success: function (response) {
                 $(photo).attr({
                     'src': response.new_photo_url,
+                    // 'src': "../image/photo.svg",
                 })
             },
             statusCode: {
@@ -109,6 +111,48 @@ $(function () {
                 console.log('Что - то пошло не так :(');
             }
         })
+    });
+
+    body.on('click', '.left-content__update-photo', function (event) {
+        event.preventDefault();
+        $(updPhoto).trigger('click');
+    });
+
+    body.on('change', '.upd-photo', function () {
+        let file = this.files;
+        $.ajax({
+            url: 'edit/photo/update',
+            type: 'post',
+            data: {
+                new_photo: file,
+                csrfmiddlewaretoken: csrf,
+            },
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $(photo).attr({
+                    'src': response.new_photo_url,
+                })
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            }
+        });
     });
 
     // Закрытие модального окна

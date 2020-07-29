@@ -18,10 +18,11 @@
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content__photo">
                 {% endif %}
                 <div class="left-content__href">
-                    <a href="" class="left-content__update-photo">Обновить фотографию</a>
+                    <a href="/edit/photo/update/" class="left-content__update-photo">Обновить фотографию</a>
+                    <input type="file" class="upd-photo hide" accept="image/*">
                 </div>
                 <div class="left-content__href">
-                    <a href="" class="left-content__delete-photo">Удалить фотографию</a>
+                    <a href="/edit/photo/delete/" class="left-content__delete-photo">Удалить фотографию</a>
                 </div>
             </div>
             <!-- /.left-content -->
