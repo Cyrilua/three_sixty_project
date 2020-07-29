@@ -247,6 +247,7 @@ $(function () {
             type: 'post',
             data: {
                 code: code.val(),
+                email: email.val(),
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
