@@ -250,7 +250,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                chooseValidationColor(el[0], response.resultStatus);
+                chooseValidationColor(el.target, response.resultStatus);
                 if (response.resultStatus === 'success') {
                     el.target.type = 'submit';
                     $(this).trigger('click');
