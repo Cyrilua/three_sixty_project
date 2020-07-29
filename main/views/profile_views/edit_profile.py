@@ -24,6 +24,7 @@ def upload_profile_photo(request):
         print(request.POST)
         return JsonResponse({}, status=200)
 
+
     #if request.method == "POST":
     #    user_photo = request.FILES['photo']
     #    try:

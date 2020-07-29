@@ -85,7 +85,7 @@ $(function () {
             url: 'edit/photo/delete',
             type: 'post',
             data: {
-                 csrfmiddlewaretoken: csrf,
+                csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
                 $(photo).attr({
@@ -119,21 +119,28 @@ $(function () {
     });
 
     body.on('change', '.upd-photo', function () {
-        let file = this.files;
+        let files = this.files;
+        console.log(files)
+        // ничего не делаем если files пустой
+        if (typeof files == 'undefined') return;
+        // создадим объект данных формы
+        let data = new FormData();
+        // заполняем объект данных файлами в подходящем для отправки формате
+        $.each(files, function (key, value) {
+            data.append(key, value);
+        });
+        console.log(data)
         $.ajax({
             url: 'edit/photo/update',
             type: 'post',
-            data: {
-                new_photo: file,
-                csrfmiddlewaretoken: csrf,
-            },
+            data: data,
             cache: false,
+            // отключаем обработку передаваемых данных, пусть передаются как есть
             processData: false,
+            // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
             contentType: false,
-            success: function (response) {
-                $(photo).attr({
-                    'src': response.new_photo_url,
-                })
+            success: function (respond, status, jqXHR) {
+                console.log('nice')
             },
             statusCode: {
                 400: function () {
@@ -152,7 +159,39 @@ $(function () {
             error: function () {
                 console.log('Что - то пошло не так :(');
             }
+
         });
+
+        // $.ajax({
+        //     url: 'edit/photo/update',
+        //     type: 'post',
+        //     data: {
+        //         new_photo: file,
+        //         csrfmiddlewaretoken: csrf,
+        //     },
+        //     success: function (response) {
+        //         $(photo).attr({
+        //             'src': response.new_photo_url,
+        //         })
+        //     },
+        //     statusCode: {
+        //         400: function () {
+        //             console.log('Error 400 - Некорректный запрос');
+        //         },
+        //         403: function () {
+        //             console.log('Error 403 - Доступ запрещён');
+        //         },
+        //         404: function () {
+        //             console.log('Error 404 - Страница не найдена');
+        //         },
+        //         500: function () {
+        //             console.log('Error 500 - Внутренняя ошибка сервера');
+        //         }
+        //     },
+        //     error: function () {
+        //         console.log('Что - то пошло не так :(');
+        //     }
+        // });
     });
 
     // Закрытие модального окна
