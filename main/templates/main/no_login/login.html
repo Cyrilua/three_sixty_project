@@ -73,7 +73,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src={% static 'main/js/swiper.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/libraries/swiper.min.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/slider.min.js' %}></script>
     {% block login-script %}
         <script type="text/javascript" src="{% static 'main/js/login.min.js' %}"></script>
@@ -81,7 +81,7 @@
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'main/css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/swiper.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/login.min.css' %}">
     {% block login-css %}
     {% endblock %}

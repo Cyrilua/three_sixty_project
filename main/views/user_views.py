@@ -60,7 +60,6 @@ def request_post_method_processing(request, args):
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)
-        send_email_validate_message(request)
         return redirect('/')
     else:
         args['user_form'] = user_form
@@ -95,10 +94,6 @@ def request_ajax_processing(request):
            errors = validate_birth_date(date['birthday'])
            return get_result(errors)
 
-        elif id_element == 'id_fullname':
-           errors = validate_fullname(date['fullname'])
-           return get_result(errors)
-
         elif id_element == 'id_name':
             errors = validate_name(date['name'])
             return get_result(errors)
@@ -117,6 +112,24 @@ def get_result(errors: list):
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
+
+
+def send_email(request) -> JsonResponse:
+    if request.is_ajax():
+        email = request.POST['email']
+        name = request.POST['name']
+        surname = request.POST['surname']
+        code = create_verification_code(email)
+        send_email_validate_message(name, surname, email, code)
+        return JsonResponse({}, status=200)
+
+
+def check_verification_code(request) -> JsonResponse:
+    if request.is_ajax():
+        code = request.POST['code']
+        errors = validate_code(code)
+        return JsonResponse({'resultStatus': 'error',
+                             'listErrors': errors}, status=200)
 
 
 def user_login(request):

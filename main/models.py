@@ -11,8 +11,8 @@ class Profile (models.Model):
     surname = models.CharField(max_length=50, default='')
     patronymic = models.CharField(max_length=50, default='')
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
-    platform = models.ManyToManyField('PlatformCompany')
-    position = models.ManyToManyField('PositionCompany')
+    platforms = models.ManyToManyField('PlatformCompany')
+    positions = models.ManyToManyField('PositionCompany')
     groups = models.ManyToManyField('Group')
     email_is_validate = models.BooleanField(default=False)
     objects = models.Manager()
@@ -80,11 +80,32 @@ class ProfilePhoto (models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     objects = models.Manager()
 
+    def delete(self, *args, **kwargs):
+        # До удаления записи получаем необходимую информацию
+        storage, path = self.photo.storage, self.photo.path
+        # Удаляем сначала модель ( объект )
+        super(ProfilePhoto, self).delete(*args, **kwargs)
+        # Потом удаляем сам файл
+        storage.delete(path)
+
     class Meta:
         db_table = "Profile photo"
 
     def __str__(self):
         return "Profile: {}".format(self.profile)
+
+
+class VerificationCode (models.Model):
+    email = models.EmailField(default='')
+    code = models.CharField(max_length=16, default='')
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Verification code"
+
+    def __str__(self):
+        return self.code
+
 
 
 class Notifications (models.Model):

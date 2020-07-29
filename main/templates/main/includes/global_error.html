@@ -1,0 +1,21 @@
+{% load static %}
+
+{#<div class="content">#}
+    <div class="content_error">
+        <div class="global_error">
+            <img src="{% static 'main/images/sadSmiley.svg' %}" alt="" class="smiley">
+            <span class="error-number">{{ global_error }}</span>
+        </div>
+        <div class="error__info">{{ global_error_info }}</div>
+        {% if home_page %}
+            <a href="/" class="home-page">На главную</a>
+        {% elif text %}
+            <span class="text">{{ text }}</span>
+        {% endif %}
+    </div>
+{#</div>#}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/global_error.min.css' %}">
+{% endblock %}

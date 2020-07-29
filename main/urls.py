@@ -12,13 +12,14 @@ app_name = "main"
 urlpatterns = [
                   # Регистрация
                   path('register/', user_views.user_register, name='register'),
+                  # Отправка кода подтверждения
+                  path('register/register/send_email', user_views.send_email),
+                  # Проверка кода
+                  path('register/register/complete', user_views.check_verification_code),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
                   path('logout/', user_views.user_logout, name='logout'),
-
-                  # Подтверждение почты
-                  path('activate/<uidb64>/<token>/', auxiliary_general_methods.activate, name='activate'),
 
                   # Сообщение об успешной смене пароля
                   path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
@@ -55,8 +56,46 @@ urlpatterns = [
                   path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
                   path('edit/', edit_profile.edit_profile, name='edit'),
+                  # Удаление платформы из профиля
+                  path('edit/platform/remove/<int:platform_id>', edit_profile.remove_platform),
+                  # Удаление должности из профиля
+                  path('edit/position/remove/<int:position_id>', edit_profile.remove_position),
+                  # Добавление платформы
+                  path('edit/platform/add/<int:platform_id>', edit_profile.add_platform),
+                  # Добавление должности
+                  path('edit/position/add/<int:position_id>', edit_profile.add_position),
+                  # Проверка имени
+                  path('edit/check_input/name', edit_profile.check_name),
+                  # Проверка фамилии
+                  path('edit/check_input/surname', edit_profile.check_surname),
+                  # Проверка отчества
+                  path('edit/check_input/patronymic', edit_profile.check_patronymic),
+                  # Сохранение ФИО
+                  path('edit/edit/save/name', edit_profile.save_changes_fcs),
+                  # Проверка даты
+                  path('edit/check_input/birthdate', edit_profile.check_birth_date),
+                  # Сохранение даты
+                  path('edit/edit/save/birthdate', edit_profile.save_birth_date),
+                  # Проверка корректности ввыода почты
+                  path('edit/check_input/email', edit_profile.check_email),
+                  # Сохранение новой почты и отправка сообщения с подтверждением
+                  path('edit/edit/save/email', edit_profile.save_email),
+                  # Проверка логина
+                  path('edit/check_input/username', edit_profile.check_login),
+                  # Сохранение логина
+                  path('edit/edit/save/username', edit_profile.save_login),
+                  # Проверка нового пароля 1
+                  path('edit/check_input/password1', edit_profile.check_new_password_1),
+                  # Проверка нового пароля 2
+                  path('edit/check_input/password2', edit_profile.check_new_password_2),
+                  # Сохранение нового пароля
+                  path('edit/edit/save/password', edit_profile.save_new_password),
+                  # Проверка кода из письма
+                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
+                  # Удаление аватарки
+                  path('delete_photo/', edit_profile.delete_profile_photo, name='delete_photo'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
@@ -157,7 +196,7 @@ urlpatterns = [
                   path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
-                  path('poll/', create_poll.choose_poll, name='new_poll_view'),
+                  path('polls/', create_poll.choose_poll, name='new_poll_view'),
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
 
