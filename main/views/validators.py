@@ -25,10 +25,11 @@ def validate_login(login: str):
         result.append('Логин должен начинаться с буквы')
 
     reg = re.compile('[^a-z0-9_]')
-    if len(reg.sub('', login)) != len(login):
+    if len(reg.sub('', login)) != len(login) or bool(emoji.get_emoji_regexp().search(login)):
         result.append('Логин содержит запрещенные символы')
     return result
 
+import emoji
 
 def validate_password1(password: str):
     result = []
@@ -36,6 +37,8 @@ def validate_password1(password: str):
         password_validation.validate_password(password)
     except ValidationError as error:
         result = error.messages
+    if bool(emoji.get_emoji_regexp().search(password)):
+        result.append('Пароль содержит запрещенные символы')
     return result
 
 
@@ -121,8 +124,7 @@ def validate_patronymic(patronymic: str):
 
 def validate_code(code: str, email: str):
     result = []
-    result_check = check_code(code, profile)
+    result_check = check_code(code, email)
     if not result_check:
         result.append('Введен неверный код подтверждения')
-    profile.email_is_validate = True
     return result

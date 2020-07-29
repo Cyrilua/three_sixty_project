@@ -40,6 +40,19 @@ def upload_profile_photo(request):
     return render(request, "main/user/old/upload_photo.html", args)
 
 
+def delete_profile_photo(request) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    profile = get_user_profile(request)
+    try:
+        photo = ProfilePhoto.objects.get(profile=profile)
+    except ObjectDoesNotExist:
+        return redirect('/edit/')
+    photo.delete()
+    return redirect('/edit/')
+
+
 def edit_profile(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -282,6 +295,8 @@ def check_email_code(request):
             args['resultStatus'] = 'error'
             args['listErrors'] = errors
             return JsonResponse(args, status=200)
+        profile = get_user_profile(request)
+        profile.email_is_validate = True
         return JsonResponse(args, status=200)
 
 

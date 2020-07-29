@@ -58,7 +58,6 @@ def request_post_method_processing(request, args):
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)
-        send_email_validate_message(request)
         return redirect('/')
     else:
         args['user_form'] = user_form
@@ -125,8 +124,8 @@ def send_email(request) -> JsonResponse:
 
 def check_verification_code(request) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
-        errors = ['Код неверен']
+        code = request.POST['code']
+        errors = validate_code(code)
         return JsonResponse({'resultStatus': 'error',
                              'listErrors': errors}, status=200)
 

@@ -12,9 +12,9 @@ app_name = "main"
 urlpatterns = [
                   # Регистрация
                   path('register/', user_views.user_register, name='register'),
-                  #
+                  # Отправка кода подтверждения
                   path('register/register/send_email', user_views.send_email),
-                  #
+                  # Проверка кода
                   path('register/register/complete', user_views.check_verification_code),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
@@ -94,6 +94,8 @@ urlpatterns = [
                   path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
+                  # Удаление аватарки
+                  path('delete_photo/', edit_profile.delete_profile_photo, name='delete_photo'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
