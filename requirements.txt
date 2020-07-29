@@ -1,0 +1,11 @@
+asgiref==3.2.7
+Django==3.0.8
+django-widget-tweaks==1.4.8
+django-xappy==0.1
+gunicorn==20.0.4
+Pillow==7.0.0
+pkg-resources==0.0.0
+pytz==2019.3
+regex==2020.2.20
+sqlparse==0.3.1
+xappy==0.5
