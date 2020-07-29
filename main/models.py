@@ -90,7 +90,7 @@ class ProfilePhoto (models.Model):
 
 
 class VerificationCode (models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    email = models.EmailField(default='')
     code = models.CharField(max_length=16, default='')
     objects = models.Manager()
 

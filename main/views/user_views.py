@@ -71,7 +71,6 @@ def request_ajax_processing(request):
         pass
     if request.method == "POST":
         date = request.POST
-        print(date)
         id_element = date['id']
 
         if id_element == 'id_username':
@@ -106,17 +105,30 @@ def request_ajax_processing(request):
             errors = validate_patronymic(date['patronymic'])
             return get_result(errors)
 
-        elif id_element == 'code':
-            print(request.POST)
-            errors = validate_code(date['code'], get_user_profile(request))
-            return get_result(errors)
-
 
 def get_result(errors: list):
     if len(errors) == 0:
         return JsonResponse({'resultStatus': 'success'}, status=200)
     return JsonResponse({'resultStatus': 'error',
                          'resultError': errors}, status=200)
+
+
+def send_email(request) -> JsonResponse:
+    if request.is_ajax():
+        email = request.POST['email']
+        name = request.POST['name']
+        surname = request.POST['surname']
+        code = create_verification_code(email)
+        send_email_validate_message(name, surname, email, code)
+        return JsonResponse({}, status=200)
+
+
+def check_verification_code(request) -> JsonResponse:
+    if request.is_ajax():
+        print(request.POST)
+        errors = ['Код неверен']
+        return JsonResponse({'resultStatus': 'error',
+                             'listErrors': errors}, status=200)
 
 
 def user_login(request):

@@ -264,8 +264,8 @@ def save_email(request) -> JsonResponse:
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
-        code = create_verification_code(profile)
-        send_email_validate_message(request, code)
+        code = create_verification_code(user.email)
+        send_email_validate_message(profile.name, profile.surname, user.email, code)
 
         return JsonResponse(args, status=200)
 

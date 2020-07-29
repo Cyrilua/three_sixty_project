@@ -12,6 +12,10 @@ app_name = "main"
 urlpatterns = [
                   # Регистрация
                   path('register/', user_views.user_register, name='register'),
+                  #
+                  path('register/register/send_email', user_views.send_email),
+                  #
+                  path('register/register/complete', user_views.check_verification_code),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
