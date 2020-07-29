@@ -119,9 +119,10 @@ def validate_patronymic(patronymic: str):
     return result
 
 
-def validate_code(code: str, profile: Profile):
+def validate_code(code: str, email: str):
     result = []
     result_check = check_code(code, profile)
     if not result_check:
         result.append('Введен неверный код подтверждения')
+    profile.email_is_validate = True
     return result

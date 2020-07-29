@@ -30,28 +30,25 @@ def get_photo_height(width, height):
     return result
 
 
-def send_email_validate_message(request, code: str) -> None:
-    user = request.user
-    profile = get_user_profile(request)
+def send_email_validate_message(name: str, surname: str, email: str, code: str) -> None:
     mail_subject = 'Код подтверждения'
     message = render_to_string('main/validate_email.html', {
         'profile': {
-            'name': profile.name,
-            'surname': profile.surname
+            'name': name,
+            'surname': surname
         },
         'code': code
     })
-    to_email = user.email
     email = EmailMessage(
-        mail_subject, message, to=[to_email]
+        mail_subject, message, to=[email]
     )
     email.send()
 
 
-def check_code(code: str, profile: Profile) -> bool:
+def check_code(code: str, email: str) -> bool:
     code_md5 = _get_md5_code(code)
     try:
-        verification_code = VerificationCode.objects.get(profile=profile)
+        verification_code = VerificationCode.objects.get(email=email)
     except ObjectDoesNotExist:
         return False
     return verification_code.code == code_md5
@@ -66,12 +63,12 @@ def _get_md5_code(code: str) -> str:
     return result
 
 
-def create_verification_code(profile: Profile) -> str:
+def create_verification_code(email: str) -> str:
     try:
-        verification_code = VerificationCode.objects.get(profile=profile)
+        verification_code = VerificationCode.objects.get(email=email)
     except ObjectDoesNotExist:
         verification_code = VerificationCode()
-        verification_code.profile = profile
+        verification_code.email = email
     code = random.randint(10000, 99999)
     code_str = str(code)
     code_md5 = _get_md5_code(code_str)
