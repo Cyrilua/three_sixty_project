@@ -93,7 +93,7 @@ urlpatterns = [
                   # Проверка кода из письма
                   path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
-                  path('edit/edit/photo/update', edit_profile.upload_profile_photo, name='upload_photo'),
+                  path('edit/edit/photo/update', edit_profile.upload_profile_photo),
                   # Удаление аватарки
                   path('edit/edit/photo/delete', edit_profile.delete_profile_photo),
 
