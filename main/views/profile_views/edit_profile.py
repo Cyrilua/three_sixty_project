@@ -23,8 +23,9 @@ def upload_profile_photo(request):
     print(1)
     if request.is_ajax():
         if request.method == "POST":
+            print(request.FILES)
             print('i am here')
-            print(request.POST)
+            print(request)
             return JsonResponse({}, status=200)
 
     #if request.method == "POST":
