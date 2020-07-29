@@ -7,6 +7,7 @@ $(function () {
     const modal = $('.modal');
     const emailCode = $('#email_code');
     const modalSuccess = $('#modal_success');
+    let photo = $('.left-content__photo');
 
     let username = $('#username');
     let passwordOld = $('#password_old');
@@ -76,6 +77,39 @@ $(function () {
             position: 'top left',
         });
     }
+
+    body.on('click', '.left-content__delete-photo', function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: 'edit/photo/delete',
+            type: 'delete',
+            data: {
+                // csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                $(photo).attr({
+                    'src': response.new_photo_url,
+                })
+            },
+            statusCode: {
+                400: function () {
+                    console.log('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    console.log('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    console.log('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    console.log('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                console.log('Что - то пошло не так :(');
+            }
+        })
+    });
 
     // Закрытие модального окна
     body.on('click', '.modal', function (el) {
