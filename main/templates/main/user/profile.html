@@ -13,7 +13,7 @@
     {% if profile %}
         <div class="profile">
             <div class="left-content rounded-block">
-                {% if photo %}
+                {% if photo and photo.url != '' %}
                     <img src="{{ photo.url }}" alt="" class="left-content-photo">
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
@@ -41,15 +41,18 @@
                                         <div class="_hint-down-block">
                                             <div class="role-information">
                                                 {% if role == 'boss' %}
-                                                    <strong>Босс</strong> - это суперюзер с полным спектром
-                                                    возможностей.
+                                                    <div class="boss__info"></div>
+                                                    {#                                                    <strong>Босс</strong> - это суперюзер с полным спектром#}
+                                                    {#                                                    возможностей.#}
                                                 {% elif role == 'master' %}
-                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и
-                                                    по любым командам (даже по тем, в которых не состоит), а также
-                                                    выбирать о ком будет опрос.
+                                                    <div class="master__info"></div>
+                                                    {#                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и#}
+                                                    {#                                                    по любым командам (даже по тем, в которых не состоит), а также#}
+                                                    {#                                                    выбирать о ком будет опрос.#}
                                                 {% elif role == 'moderator' %}
-                                                    <strong>Модератор</strong> может создавать отделы и должности а
-                                                    также менять отделы, дожности и роли участников.
+                                                    <div class="moderator__info"></div>
+                                                    {#                                                    <strong>Модератор</strong> может создавать отделы и должности а#}
+                                                    {#                                                    также менять отделы, дожности и роли участников.#}
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -73,7 +76,8 @@
                                             <div class="_hint-down">
                                                 <div class="_hint-down-block">
                                                     <div class="position-information role-information">
-                                                        Должность
+                                                        <div class="position__info"></div>
+                                                        {#                                                        Должность#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,7 +101,8 @@
                                             <div class="_hint-down">
                                                 <div class="_hint-down-block">
                                                     <div class="platform-information role-information">
-                                                        Отдел
+                                                        <div class="platform__info"></div>
+                                                        {#                                                        Отдел#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,37 +153,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="center-content-notifications">
+                <div class="categories-block center-content-notifications hidden">
                     <div class="notifications-sort-substrate substrate">
-                        <div class="center-content-notifications-sort rounded-block unselectable">
-                            <div class="center-content-notifications-sort-category active-sort"
+                        <div class="sort rounded-block unselectable">
+                            <div class="category active-sort"
                                  data-category=".center-content-notifications-polls">
-                                <div class="center-content-notifications-sort-category-title">Для прохождения
-                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                <div class="category__title">Для прохождения
+                                    <div class="category__notice hide"></div>
                                 </div>
                             </div>
-                            <div class="center-content-notifications-sort-category"
+                            <div class="category"
                                  data-category=".center-content-notifications-my_polls">
-                                <div class="center-content-notifications-sort-category-title">Мои опросы
-                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                <div class="category__title">Мои опросы
+                                    <div class="category__notice hide"></div>
                                 </div>
-
                             </div>
-                            <div class="center-content-notifications-sort-category"
+                            <div class="category"
                                  data-category=".center-content-notifications-invites">
-                                <div class="center-content-notifications-sort-category-title">Приглашения
-                                    <div class="center-content-notifications-sort-category-notice hide"></div>
+                                <div class="category__title">Приглашения
+                                    <div class="category__notice hide"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="center-content-notifications-categories">
-                        <div class="center-content-notifications-polls hide">
+                    <div class="categories center-content-notifications-categories">
+                        <div class="category-content center-content-notifications-polls">
                             {% if notifications.polls %}
                                 {% for notif in notifications.polls %}
-                                    <div class="center-content-notification rounded-block">
+                                    <div class="category-item center-content-notification rounded-block">
                                         <div class="notification-image">
                                             <img src="{% static 'main/images/newPoll.svg' %}" alt=""
                                                  class="notification-image-img">
@@ -225,10 +229,10 @@
                         </div>
 
 
-                        <div class="center-content-notifications-my_polls hide">
+                        <div class="category-content center-content-notifications-my_polls">
                             {% if notifications.my_polls %}
                                 {% for notif in notifications.my_polls %}
-                                    <div class="center-content-notification rounded-block">
+                                    <div class="category-item center-content-notification rounded-block">
                                         <div class="notification-image">
                                             <img src="{% static 'main/images/pollDone.svg' %}" alt=""
                                                  class="notification-image-img">
@@ -274,10 +278,10 @@
                         </div>
 
 
-                        <div class="center-content-notifications-invites hide">
+                        <div class="category-content center-content-notifications-invites">
                             {% if notifications.invites %}
                                 {% for notif in notifications.invites %}
-                                    <div class="center-content-notification rounded-block">
+                                    <div class="category-item center-content-notification rounded-block">
                                         <div class="notification-image">
                                             <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""
                                                  class="notification-image-img">
@@ -329,16 +333,7 @@
 
                         </div>
 
-                        <div class="center-content-notifications-empty hide">
-                            {#                            <div class="center-content-notifications-empty-substrate">#}
-                            {#                                <div class="center-content-notifications-empty-block">#}
-                            {#                                    <img src="{% static 'main/images/sadSmiley.svg' %}" alt=""#}
-                            {#                                         class="center-content-notifications-empty-block-img">#}
-                            {#                                    <div class="center-content-notifications-empty-block-text">#}
-                            {#                                        Сейчас уведомлений&nbsp;нет#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
+                        <div class="category-empty center-content-notifications-empty">
                             {% include 'main/includes/bad_search.html' with text="Сейчас<br>уведомлений нет" only %}
                         </div>
                     </div>
@@ -1125,12 +1120,13 @@
 
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/profile.min.js' %}></script>
-    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>
-    <script src="{% static 'main/js/hint.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/topMenu.min.js' %}"></script>
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/profile.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
 {% endblock %}

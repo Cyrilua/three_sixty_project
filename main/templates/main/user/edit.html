@@ -8,18 +8,898 @@
 
 {% block content-user %}
 
+    {% if profile %}
+        <div class="edit">
+            {% csrf_token %}
+            <div class="left-content rounded-block">
+                {% if photo and photo.url != '' %}
+                    <img src="{{ photo.url }}" alt="" class="left-content__photo">
+                {% else %}
+                    <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content__photo">
+                {% endif %}
+                <div class="left-content__href">
+                    <a href="#" class="left-content__update-photo">Обновить фотографию</a>
+                </div>
+                <div class="left-content__href">
+                    <a href="/delete_photo/" class="left-content__delete-photo">Удалить фотографию</a>
+                </div>
+            </div>
+            <!-- /.left-content -->
+            <div class="center-content">
+                <div class="info-n-edit rounded-block">
+                    <h1 class="info__name">{{ profile.name }} {{ profile.surname }}</h1>
+                    <div class="info__role-n-company">
+                        {% if roles %}
+                            {% for role in roles %}
+                                <div class="info__role _hint unselectable">
+                                    <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                        {% if role == 'boss' %}
+                                            Босс
+                                        {% elif role == 'master' %}
+                                            Мастер опросов
+                                        {% elif role == 'moderator' %}
+                                            Модератор
+                                        {% endif %}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="role-information">
+                                                {% if role == 'boss' %}
+                                                    <div class="boss__info"></div>
+                                                    {#                                                    <strong>Босс</strong> - это суперюзер с полным спектром#}
+                                                    {#                                                    возможностей.#}
+                                                {% elif role == 'master' %}
+                                                    <div class="master__info"></div>
+                                                    {#                                                    <strong>Мастер опросов</strong> может проводить опросы по компании и#}
+                                                    {#                                                    по любым командам (даже по тем, в которых не состоит), а также#}
+                                                    {#                                                    выбирать о ком будет опрос.#}
+                                                {% elif role == 'moderator' %}
+                                                    <div class="moderator__info"></div>
+                                                    {#                                                    <strong>Модератор</strong> может создавать отделы и должности а#}
+                                                    {#                                                    также менять отделы, дожности и роли участников.#}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <a href="#" class="info__company hide">ООО Крутая компания</a>
+                    </div>
+                    <div class="edit__platforms-n-positions">
+                        <div class="positions">
+                            <h2 class="positions__title">Должности</h2>
+                            <div class="positions__data">
+                                {% for position in profile.positions %}
+                                    <div class="position" data-name="{{ position.name }}" data-id="{{ position.id }}">
+                                        <div class="role">
+                                            <div class="position__remove remove-item">
+                                                <div class="cross-in-circle">
+                                                    <div class="circle">
+                                                        <div class="line-1">
+                                                            <div class="line-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{ position.name }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="position__substrate _hint-click unselectable {% if not new_positions %}hide{% endif %}">
+                                    <div class="position__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_position in new_positions %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_position.name }}"
+                                                             data-id="{{ new_position.id }}">{{ new_position.name }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="platforms">
+                            <h2 class="platforms__title">Отделы</h2>
+                            <div class="platforms__data">
+                                {% for platform in profile.platforms %}
+                                    <div class="platform" data-name="{{ platform.name }}" data-id="{{ platform.id }}">
+                                        <div class="role">
+                                            <div class="platform__remove remove-item">
+                                                <div class="cross-in-circle">
+                                                    <div class="circle">
+                                                        <div class="line-1">
+                                                            <div class="line-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{ platform.name }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="platform__substrate _hint-click unselectable {% if not new_platforms %}hide{% endif %}">
+                                    <div class="platform__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_platform in new_platforms %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_platform.name }}"
+                                                             data-id="{{ new_platform.id }}">{{ new_platform.name }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings rounded-block">
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">ФИО</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">ФИО</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">{{ profile.surname }} {{ profile.name }} {{ profile.patronymic }}</span>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="surname" placeholder="Фамилия"
+                                               value="{{ profile.surname }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="name" placeholder="Имя"
+                                               value="{{ profile.name }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="patronymic" placeholder="Отчество"
+                                               value="{{ profile.patronymic }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnName" data-part-url="name" disabled>
+                                        Сохранить изменения
+                                    </button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Дата рождения</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">{{ profile.birthdate.text }}</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Дата рождения</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">{{ profile.birthdate.text }}</span>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="" class="input-field" id="birthdate" placeholder="Дата рождения"
+                                               value="{{ profile.birthdate.date }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnBirthdate" data-part-url="birthdate"
+                                            disabled>Сохранить изменения
+                                    </button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Эл. почта</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <a href="mailto:{{ profile.email }}"
+                                       class="setting__value setting__email">{{ profile.email }}</a>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Эл. почта</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <a href="mailto:{{ profile.email }}"
+                                           class="setting__value setting__email">{{ profile.email }}</a>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="email" class="input-field" id="email" placeholder="Новый E-mail"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="password" class="input-field" id="password_for_email"
+                                               placeholder="Введите пароль"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnEmail" data-part-url="email" disabled>
+                                        Сохранить изменения
+                                    </button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Логин</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">{{ profile.login }}</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Логин</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">{{ profile.login }}</span>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="text" class="input-field" id="username" placeholder="Логин"
+                                               value="{{ profile.login }}">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnUsername" data-part-url="username"
+                                            disabled>Сохранить изменения
+                                    </button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Пароль</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">*******</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Пароль</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">*******</span>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type=password class="input-field" id="password_old"
+                                               placeholder="Старый пароль"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="password" class="input-field" id="password1"
+                                               placeholder="Новый пароль"
+                                               value="">
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-grouping">
+                                        <input type="password" class="input-field" id="password2"
+                                               placeholder="Повторите пароль"
+                                               value="" disabled>
+                                        <div class="popup">
+                                            <div class="popup_message">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button-red button-save" id="btnPassword" data-part-url="password"
+                                            disabled>Сохранить изменения
+                                    </button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+                </div>
+                <!-- /.settings -->
+            </div>
+            <!-- /.center-content -->
+        </div>
+        <!-- /.edit -->
+        <div class="modal unselectable hide">
+            <div class="modal__window rounded-block">
+                <h1 class="title">
+                    Изменение эл. почты
+                </h1>
+                <div class="text">
+                    <p class="part-text">
+                        Чтобы верифицировать новую эл. почту, введите код подтверждения, который мы на неё отправили.
+                    </p>
+                    <p class="part-text">
+                        Если Вы не получили письмо, убедитесь, что Вы ввели правильный адрес электронной почты и
+                        проверьте
+                        папку “Спам”.
+                    </p>
+                </div>
+                <div class="form-grouping">
+                    <input type="text" class="input-field" id="email_code" placeholder="Код подтверждения">
+                    <div class="popup">
+                        <div class="popup_message">
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="button-white" id="modal_close">Отмена</button>
+                    <button class="button-red button-save" id="modal_success" data-part-url="email_code" disabled>Готово</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+    {% else %}
+        <div class="edit">
+            <div class="left-content rounded-block">
+                <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content__photo">
+                <div class="left-content__href">
+                    <a href="#" class="left-content__update-photo">Обновить фотографию</a>
+                </div>
+                <div class="left-content__href">
+                    <a href="#" class="left-content__delete-photo">Удалить фотографию</a>
+                </div>
+            </div>
+            <!-- /.left-content -->
+            <div class="center-content">
+                <div class="info-n-edit rounded-block">
+                    <h1 class="info__name">Александр Александров</h1>
+                    <div class="info__role-n-company">
+                        <div class="info__role _hint unselectable">
+                            <div class="role role-boss _hint-up">
+                                Босс
+                            </div>
+                            <div class="_hint-down">
+                                <div class="_hint-down-block">
+                                    <div class="role-information">
+                                        <strong>Босс</strong> - это суперюзер с полным спектром возможностей.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info__role _hint unselectable">
+                            <div class="role role-master _hint-up">
+                                Мастер опросов
+                            </div>
+                            <div class="_hint-down">
+                                <div class="_hint-down-block">
+                                    <div class="role-information">
+                                        <strong>Мастер опросов</strong> может проводить опросы по компании и по
+                                        любым
+                                        командам (даже по тем, в которых не состоит), а также выбирать о ком
+                                        будет
+                                        опрос.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="info__company hide">ООО Крутая компания</a>
+                    </div>
+                    <div class="edit__platforms-n-positions">
+                        <div class="positions">
+                            <h2 class="positions__title">Должности</h2>
+                            <div class="positions__data">
+                                <div class="position" data-name="Аналитик">
+                                    <div class="role">
+                                        <div class="position__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Аналитик
+                                    </div>
+                                </div>
+                                <div class="position" data-name="Тимлид">
+                                    <div class="role">
+                                        <div class="position__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Тимлид
+                                    </div>
+                                </div>
+                                <div class="position__substrate _hint-click unselectable">
+                                    <div class="position__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое">Хуе мое</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 2">Хуе мое 2</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 3">Хуе мое 3</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 4">Хуе мое 4</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 5">Хуе мое 5</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 6">Хуе мое 6</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 7">Хуе мое 7</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="platforms">
+                            <h2 class="platforms__title">Отделы</h2>
+                            <div class="platforms__data">
+                                <div class="platform" data-name="Юрики">
+                                    <div class="role">
+                                        <div class="platform__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Юрики
+                                    </div>
+                                </div>
+                                <div class="platform" data-name="Физики">
+                                    <div class="role">
+                                        <div class="platform__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Физики
+                                    </div>
+                                </div>
+                                <div class="platform" data-name="Физики">
+                                    <div class="role">
+                                        <div class="platform__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Физики
+                                    </div>
+                                </div>
+                                <div class="platform" data-name="Физики">
+                                    <div class="role">
+                                        <div class="platform__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Физики
+                                    </div>
+                                </div>
+                                <div class="platform" data-name="Физики">
+                                    <div class="role">
+                                        <div class="platform__remove">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        Физики
+                                    </div>
+                                </div>
+                                <div class="platform__substrate _hint-click unselectable">
+                                    <div class="platform__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое">Хуе мое</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                                <div class="menu__item">
+                                                    <div class="item__block" data-name="Хуе мое 2">Хуе мое 2</div>
+                                                    <div class="item__line"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="settings rounded-block">
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">ФИО</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">Иванов Иван Иванович-Ивановиииич</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">ФИО</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">Иванов Иван Иванович-Ивановиииич</span>
+                                    </div>
+                                    <input type="text" class="input-field" id="surname" placeholder="Фамилия"
+                                           value="Иванов">
+                                    <input type="text" class="input-field" id="name" placeholder="Имя" value="Иван">
+                                    <input type="text" class="input-field" id="patronymic" placeholder="Отчество"
+                                           value="Иванович-Ивановиииич">
+                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Дата рождения</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">12 января 1982 г.</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Дата рождения</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">12 января 1982 г.</span>
+                                    </div>
+                                    <input type="" class="input-field" id="birthdate" placeholder="Дата рождения"
+                                           value="12.01.1982">
+                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Эл. почта</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <a href="mailto:beast.master64@icloud.com" class="setting__value setting__email">beast.master64@icloud.com</a>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Эл. почта</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <a href="mailto:beast.master64@icloud.com"
+                                           class="setting__value setting__email">beast.master64@icloud.com</a>
+                                    </div>
+                                    <input type="email" class="input-field" id="email" placeholder="E-mail"
+                                           value="beast.master64@icloud.com">
+                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Логин</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">BeastMaster64</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Логин</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">BeastMaster64</span>
+                                    </div>
+                                    <input type="text" class="input-field" id="username" placeholder="Логин"
+                                           value="BeastMaster64">
+                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+
+                    <div class="setting">
+                        <div class="setting__close show">
+                            <div class="setting__mini">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Пароль</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <span class="setting__value">*******</span>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Изменить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting__open hide">
+                            <div class="setting__max">
+                                <div class="setting__1-block">
+                                    <h2 class="setting__title">Пароль</h2>
+                                </div>
+                                <div class="setting__2-block">
+                                    <div class="setting__substrate">
+                                        <span class="setting__value">*******</span>
+                                    </div>
+                                    <input type=password class="input-field" id="password_old"
+                                           placeholder="Старый пароль"
+                                           value="">
+                                    <input type="password" class="input-field" id="password1" placeholder="Новый пароль"
+                                           value="">
+                                    <input type="password" class="input-field" id="password2"
+                                           placeholder="Повторите пароль"
+                                           value="">
+                                    <button class="button-red" disabled>Сохранить изменения</button>
+                                </div>
+                                <div class="setting__3-block">
+                                    <a class="setting__edit">Скрыть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.setting -->
+                </div>
+                <!-- /.settings -->
+
+            </div>
+            <!-- /.center-content -->
+        </div>
+        <!-- /.edit -->
+    {% endif %}
+
+
+
 {% endblock %}
 
 {% block sidebar-nav-right %}
-{#    {% include 'main/includes/scroll_top.html' %}#}
+    {% include 'main/includes/scroll_top.html' %}
 {% endblock %}
 
 {% block scripts %}
-{#    <script src="{% static 'main/js/scroll_top.min.js' %}"></script>#}
-{#    <script src="{% static 'main/js/hint.min.js' %}"></script>#}
+    <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script src="{% static 'main/js/edit.min.js' %}"></script>
+    <script type="text/javascript" src={% static 'main/js/libraries/datepicker.min.js' %}></script>
 {% endblock %}
 
 {% block css %}
-{#    <link rel="stylesheet" href="{% static 'main/css/scroll_top.min.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'main/scss/edit.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/datepicker.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">#}
 {% endblock %}

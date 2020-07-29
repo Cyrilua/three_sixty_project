@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation, validators
 from django.core.validators import EmailValidator
+from main.models import Profile
+from .auxiliary_general_methods import check_code
 
 
 def validate_login(login: str):
@@ -23,10 +25,11 @@ def validate_login(login: str):
         result.append('Логин должен начинаться с буквы')
 
     reg = re.compile('[^a-z0-9_]')
-    if len(reg.sub('', login)) != len(login):
+    if len(reg.sub('', login)) != len(login) or bool(emoji.get_emoji_regexp().search(login)):
         result.append('Логин содержит запрещенные символы')
     return result
 
+import emoji
 
 def validate_password1(password: str):
     result = []
@@ -34,6 +37,8 @@ def validate_password1(password: str):
         password_validation.validate_password(password)
     except ValidationError as error:
         result = error.messages
+    if bool(emoji.get_emoji_regexp().search(password)):
+        result.append('Пароль содержит запрещенные символы')
     return result
 
 
@@ -53,6 +58,7 @@ def validate_birth_date(date: str):
     except ValueError:
         result.append('Дата неправильного формата')
         return result
+
     if birth_date >= current_date or old_date >= birth_date:
         result.append('Некорректная дата')
     return result
@@ -60,29 +66,17 @@ def validate_birth_date(date: str):
 
 def validate_email(email: str):
     result = []
-    try:
-        email_validator = EmailValidator()
-        email_validator(email)
-    except ValidationError as error:
-        result = error.messages
-    users = User.objects.filter(email=email)
-    if len(users) != 0:
-        result.append('Данный email уже привязан к другоу аккаунту')
-    return result
-
-
-def validate_fullname(name: str):
-    result = []
-    len_name = len(name)
-    if len_name < 6:
-        result.append('Слишком короткое имя')
-    if len_name > 150:
-        result.append('Слишком длинное имя')
-
-    # убрать проверку на запрещенные символы при необходимости
-    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
-    if len(reg.sub('', name)) != len(name):
-        result.append('Имя содержит запрещенные символы')
+    if len(email) != 0:
+        try:
+            email_validator = EmailValidator()
+            email_validator(email)
+        except ValidationError as error:
+            result = error.messages
+        users = User.objects.filter(email=email)
+        if len(users) != 0:
+            result.append('Данный email уже привязан к другоу аккаунту')
+    else:
+        result.append('Введите значение')
     return result
 
 
@@ -125,4 +119,12 @@ def validate_patronymic(patronymic: str):
     reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _]')
     if len(reg.sub('', patronymic)) != len(patronymic):
         result.append('Отчество содержит запрещенные символы')
+    return result
+
+
+def validate_code(code: str, email: str):
+    result = []
+    result_check = check_code(code, email)
+    if not result_check:
+        result.append('Введен неверный код подтверждения')
     return result

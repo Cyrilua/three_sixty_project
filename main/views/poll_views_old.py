@@ -780,7 +780,7 @@ def choose_poll(request):
     #    }
     #    return JsonResponse(data, status=200)
 
-    return render(request, 'main/poll/new_poll_view.html', args)
+    return render(request, 'main/poll/polls_view.html', args)
 
 
 def build_company(request):

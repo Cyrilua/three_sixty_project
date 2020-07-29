@@ -1,6 +1,5 @@
 {% autoescape off %}  
-Hi {{ user.username }},  
-Please click on the link to confirm your email,
-http://{{ domain }}{% url 'main:activate' uidb64=uid token=token %}
-If you think, it's not you, then just ignore this email.  
+Здравствуйте {{ profile.name }} {{ profile.surname }}!
+Ваш код подтверждения {{ code }}
+С уважением, команда ПРОЕКТ360
 {% endautoescape %}
