@@ -41,6 +41,10 @@ def upload_profile_photo(request):
 
 
 def delete_profile_photo(request) -> render:
+    if request.is_ajax():
+        if request.method == "DELETE":
+            print('i am here')
+            return JsonResponse({}, status=200)
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 

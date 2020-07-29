@@ -95,7 +95,7 @@ urlpatterns = [
                   # Загрузка аватарки
                   path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
                   # Удаление аватарки
-                  path('delete_photo/', edit_profile.delete_profile_photo, name='delete_photo'),
+                  path('edit/edit/photo/delete/', edit_profile.delete_profile_photo),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
