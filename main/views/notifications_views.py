@@ -1,7 +1,7 @@
 from main.models import Notifications, Poll, Group, Company
 from main.views.auxiliary_general_methods import *
 from datetime import datetime
-
+from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 

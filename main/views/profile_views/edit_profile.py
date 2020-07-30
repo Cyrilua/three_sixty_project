@@ -1,6 +1,5 @@
 import datetime
 
-from main.forms import PhotoProfileForm
 from main.models import ProfilePhoto, PlatformCompany, PositionCompany, BirthDate
 from main.views.auxiliary_general_methods import *
 from .render_profile import build_profile_data
@@ -8,15 +7,9 @@ from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-
-
-from PIL import Image
-
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 
 
 @csrf_exempt
@@ -24,7 +17,6 @@ def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        #print(request.FILES)
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
         try:
@@ -39,7 +31,6 @@ def upload_profile_photo(request):
         photo_profile.save()
 
         result = photo_profile.photo.url
-        print(result)
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 
@@ -66,13 +57,6 @@ def edit_profile(request) -> render:
     except:
         photo = None
     profile_data = build_profile_data(user, profile)
-
-    #img = Image.open(photo)
-    #img_str = img.tobytes()
-    #test = profile.profilephoto
-    #test.photo_hex = img_str
-    #test.save()
-
     args = {
         'title': "Настройки",
         'photo': photo,

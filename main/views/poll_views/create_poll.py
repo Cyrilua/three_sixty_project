@@ -1,5 +1,6 @@
 from main.views.auxiliary_general_methods import *
 from main.models import Poll, Draft
+from django.shortcuts import render, redirect
 
 
 def choose_poll(request):

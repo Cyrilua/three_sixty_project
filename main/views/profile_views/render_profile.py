@@ -1,8 +1,9 @@
 import datetime
 
-from main.models import BirthDate, Notifications, Poll, Company, Group
+from main.models import BirthDate, SurveyWizard, Moderator
 from main.views.auxiliary_general_methods import *
 from main.views import notifications_views
+from django.shortcuts import render, redirect
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -29,7 +30,6 @@ def get_render_user_profile(request):
         'photo': photo,
         'profile': profile_data[0],
         'roles': profile_data[1],
-        #'notifications': build_notifications(profile)
         'notifications': notifications_views.build_notifications(profile)
     }
     return render(request, 'main/user/profile.html', args)
