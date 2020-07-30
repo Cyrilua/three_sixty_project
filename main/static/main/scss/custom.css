@@ -769,7 +769,7 @@ button {
   right: 0;
   top: 0;
 }
-._hint ._hint-up .delete {
+._hint ._hint-up .delete-img {
   width: 24px;
   height: 24px;
   filter: opacity(25%);
@@ -777,7 +777,7 @@ button {
   right: 6px;
   top: 6px;
 }
-._hint ._hint-up .delete:hover {
+._hint ._hint-up .delete-img:hover {
   filter: opacity(60%);
 }
 ._hint ._hint-down ._hint-down-block .black-block {

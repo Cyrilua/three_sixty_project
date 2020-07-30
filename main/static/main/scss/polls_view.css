@@ -1,13 +1,20 @@
+:root {
+  --mdc-theme-primary: #001aff;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   width: 100%;
   z-index: 50;
 }
+.content .templates,
+.content .polls {
+  z-index: 50;
+}
 .content .templates {
   padding: 0;
   margin-bottom: 10px;
-  z-index: 50;
   overflow: hidden;
 }
 .content .templates.few {
@@ -74,6 +81,21 @@
 }
 .content .polls .substrate .sort {
   margin-bottom: 20px;
+  overflow: visible;
+}
+.content .polls .substrate .sort .sortable {
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+.content .polls .substrate .sort .sortable > .width-245 {
+  width: 245px;
+}
+.content .polls .substrate .sort .sortable > .mdc-select > .width-245 {
+  width: 245px;
+}
+.content .polls .substrate .sort .sortable > .mdc-select > .height-40 {
+  height: 40px;
 }
 .content .polls .categories .my-polls,
 .content .polls .categories .polls {
