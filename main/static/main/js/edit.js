@@ -139,8 +139,11 @@ $(function () {
             processData: false,
             // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
             contentType: false,
-            success: function (respond, status, jqXHR) {
+            success: function (response) {
                 console.log('nice')
+                $(photo).attr({
+                    'src': response.new_photo_url,
+                })
             },
             statusCode: {
                 400: function () {
