@@ -24,7 +24,7 @@ def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        print(request.FILES)
+        #print(request.FILES)
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
         try:
@@ -38,25 +38,9 @@ def upload_profile_photo(request):
         photo_profile.photo = user_photo
         photo_profile.save()
 
-        fs = FileSystemStorage()
-        filename = fs.save(user_photo.name, user_photo)
-        uploaded_file_url = fs.url(filename)
-        print(uploaded_file_url)
-        return JsonResponse({'new_photo_url': uploaded_file_url}, status=200)
-
-
-    #if request.method == "POST":
-    #    user_photo = request.FILES['photo']
-    #    try:
-    #        profile.profilephoto.photo = user_photo
-    #        profile.profilephoto.save()
-    #    except:
-    #        photo_profile = ProfilePhoto()
-    #        photo_profile.photo = user_photo
-    #        photo_profile.profile = profile
-    #        photo_profile.save()
-    #    return redirect('/')
-    #return render(request, "main/user/old/upload_photo.html", args)
+        result = photo_profile.photo.url
+        print(result)
+        return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 
 def delete_profile_photo(request) -> render:
@@ -67,7 +51,7 @@ def delete_profile_photo(request) -> render:
             return JsonResponse({}, status=200)
         else:
             photo.delete()
-
+        return JsonResponse({}, status=200)
 
 
 def edit_profile(request) -> render:
