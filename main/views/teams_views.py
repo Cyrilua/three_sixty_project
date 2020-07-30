@@ -4,6 +4,7 @@ from main.forms import TeamForm
 from main.models import Group
 from .auxiliary_general_methods import *
 from . import notifications_views
+from . import auxiliary_general_methods
 
 from django.http import JsonResponse
 
