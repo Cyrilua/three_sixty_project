@@ -88,6 +88,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
+                console.log(response.new_photo_url)
                 $(photo).attr({
                     'src': response.new_photo_url,
                     // 'src': "../image/photo.svg",
@@ -140,7 +141,7 @@ $(function () {
             // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
             contentType: false,
             success: function (response) {
-                console.log('nice')
+                console.log(response.new_photo_url)
                 $(photo).attr({
                     'src': response.new_photo_url,
                 })
