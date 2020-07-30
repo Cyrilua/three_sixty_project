@@ -123,30 +123,6 @@ urlpatterns = [
                   # Возвращает список пользователей в компани
                   path('get_all_companies_users/', company_views.get_all_users_in_company,
                        name='get_all_companies_users'),
-                  # Добавление новой платформы (может сделать человек, не состоящий в компании)
-                  path('add_new_platform/', company_views.add_new_platform, name='add_new_platform'),
-                  # Добавление новой должности (может сделать человек, не состоящий в компании)
-                  path('add_new_position/', company_views.add_new_position, name='add_new_position'),
-                  # Добавление новой должности в компанию (если должности не существует - она будет создана)
-                  path('add_new_position_in_company/', company_views.add_position_in_company,
-                       name="add_new_position_in_company"),
-                  # Добавление новой платформы в компанию (если платформы не существует - она будет создана)
-                  path('add_new_platform_in_company/', company_views.add_platform_in_company,
-                       name="add_new_platform_in_company"),
-                  # Сохраняет конкретную должность для пользователя
-                  path('choose_position/', company_views.choose_position,
-                       name='position_choice'),
-                  # Сохраняет конкретную платформу для пользователя
-                  path('choose_platform/', company_views.choose_platform,
-                       name="platform_choice"),
-                  # Поиск пользователя для назначения его админом
-                  path('search_admin/', company_views.search_admins, name='search_admins_and_redirect_to_add_method'),
-                  # Контроллер, на который ссылается поиск админа
-                  path('add_admin/<int:profile_id>', company_views.add_admins, name='add_admin_method'),
-                  # Поиск пользователя для назначения его HR
-                  path('search_hr/', company_views.search_hr, name='search_hr_and_redirect_to_add_method'),
-                  # Контроллер, на который ссылается поиск HR
-                  path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
 
                   # Создание опроса
                   path('create_poll/', poll_views_old.create_pool, name='create_pool'),
@@ -162,8 +138,6 @@ urlpatterns = [
                   path('type_poll/', poll_views_old.type_poll, name='choose_type_poll'),
                   # Список стандартных опросов
                   path('default_poll_list/', poll_views_old.default_poll_template_view, name='list_default_poll'),
-                  # Выбор цели опроса (только для HR)
-                  path('default_poll/<int:poll>', poll_views_old.search_target_poll, name='select_respondents'),
                   # Выбор области опрашиваемых
                   path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),
