@@ -51,7 +51,8 @@ def delete_profile_photo(request) -> render:
             return JsonResponse({}, status=200)
         else:
             photo.delete()
-        return JsonResponse({}, status=200)
+        none_photo = '/static/main/images/photo.svg'
+        return JsonResponse({'new_photo_url': none_photo}, status=200)
 
 
 def edit_profile(request) -> render:

@@ -1,21 +1,15 @@
-import random, hashlib
+import hashlib
+import random
 
 from django.contrib import auth
-from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import EmailMessage
-from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from main.models import Profile, VerificationCode
+from django.shortcuts import render, redirect
 
 UserModel = get_user_model()
-
-from main.models import Profile, Moderator, SurveyWizard, VerificationCode
 
 
 def get_user_profile(request):
