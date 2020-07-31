@@ -710,7 +710,7 @@ button {
   color: #595757;
   border-bottom-color: #595757;
 }
-.categories-block > .substrate .sort .category:active, .categories-block > .substrate .sort .category.active-sort, .categories-block > .substrate .sort .category:active > .category__title, .categories-block > .substrate .sort .category.active-sort > .category__title {
+.categories-block > .substrate .sort .category:active, .categories-block > .substrate .sort .category.active-sort, .categories-block > .substrate .sort .category:active > .category__title, .categories-block > .substrate .sort .category.active-sort > .category__title, .categories-block > .substrate .sort .category.category-sort--active > .category__title, .categories-block > .substrate .sort .category.category-sort--active {
   color: #001AFF;
   border-bottom-color: #001AFF;
 }
