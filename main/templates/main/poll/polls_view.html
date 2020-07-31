@@ -7,144 +7,286 @@
 
 {% block content-user %}
 
-    <div class="content">
-        <div class="templates few rounded-block">
-            <div class="header">
-                <h1 class="title">Создать опрос</h1>
-                <a class="btn-link more">Больше шаблонов</a>
+    {% if data %}
+        <div class="content">
+            <div class="templates few rounded-block">
+                <div class="header">
+                    <h1 class="title">Создать опрос</h1>
+                    <a class="btn-link more">Больше шаблонов</a>
+                </div>
+                <div class="templates-block">
+                    <div class="templates-general">
+                        <div class="template-item template-new unselectable">
+                            <div class="template__main">
+                                <div class="plus">
+                                    <div class="horizontal">
+                                        <div class="vertical"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                        </div>
+                        {% for template in data.templates.general %}
+                            <div class="template-item unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' %}
+                                </div>
+                                <span class="template__name">
+                                    <span class="name">Опрос об успеваемости</span>
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="my-templates-block {% if not data.templates.my %}hide{% endif %}">
+                        <h2 class="title">Мои шаблоны</h2>
+                        <div class="my-templates">
+                            {% for templates in data.templates.my %}
+                                <div class="template-item purple unselectable">
+                                    <div class="template__main">
+                                        {% include 'main/includes/template_item.html' with delete=' ' %}
+                                    </div>
+                                    <span class="template__name">
+                                        <span class="name">Новый опрос</span>
+                                    </span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="templates-block">
-                <div class="templates-general">
-                    <div class="template-item template-new unselectable">
-                        <div class="template__main">
-                            <div class="plus">
-                                <div class="horizontal">
-                                    <div class="vertical"></div>
+            <div class="polls categories-block hidden">
+                <div class="substrate">
+                    <div class="sort rounded-block unselectable">
+                        <div class="category active-sort"
+                             data-category=".my-polls">
+                            <div class="category__title">Мои опросы
+                                <div class="category__notice hide">{{ data.new.my_polls }}</div>
+                            </div>
+                        </div>
+                        <div class="category"
+                             data-category=".polls">
+                            <div class="category__title">Для прохождения
+                                <div class="category__notice hide">{{ data.new.polls }}</div>
+                            </div>
+                        </div>
+                        <div class="sortable">
+                            <div class="mdc-select mdc-select--outlined width-245">
+                                <div class="mdc-select__anchor height-40" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
+                                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-inactive"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 10 12 15 17 10">
+                                            </polygon>
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-active"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 15 12 10 17 15">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+{#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
+                                </div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-245">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="date">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По дате</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="name">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По названию</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="quantity">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По количеству ответов</span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        <span class="template__name">
-                            <span class="name">Новый опрос</span>
-                        </span>
-                    </div>
-                    <div class="template-item unselectable">
-                        <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="template__name">
-                            <span class="name">Опрос об успеваемости</span>
-                        </span>
-                    </div>
-                    <div class="template-item unselectable">
-                        <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="template__name">
-                            <span class="name">Ежемесячный</span>
-                        </span>
-                    </div>
-                    <div class="template-item unselectable">
-                        <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="template__name">
-                            <span class="name">Еженедельный</span>
-                        </span>
-                    </div>
-                    <div class="template-item unselectable">
-                        <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="template__name">
-                            <span class="name">Годовой</span>
-                        </span>
-                    </div>
-                    <div class="template-item unselectable">
-                        <div class="template__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="template__name">
-                            <span class="name">О себе</span>
-                        </span>
                     </div>
                 </div>
-                <div class="my-templates-block">
-                    <h2 class="title">Мои шаблоны</h2>
-                    <div class="my-templates">
-                        <div class="template-item purple unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
+                <div class="categories">
+                    <div class="category-content my-polls">
+                        {% for poll in data.polls.my %}
+                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block">
+                                <div class="poll__main">
+                                    {% include 'main/includes/template_item.html' %}
+                                </div>
+                                <span class="poll__title">
+                                    {{ poll.title }}
+                                </span>
+                                <div class="line-decoration"></div>
+                                <span class="poll_target">
+                                    {{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}
+                                </span>
+                                <span class="poll_details">
+                                    {{ poll.answers_count }} ответов | {{ poll.date }}
+                                </span>
                             </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
-                        <div class="template-item blue unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
-                            </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
-                        <div class="template-item red unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
-                            </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
-                        <div class="template-item purple unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
-                            </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
-                        <div class="template-item blue unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
-                            </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
-                        <div class="template-item red unselectable">
-                            <div class="template__main">
-                                {% include 'main/includes/template_item.html' with delete=' ' %}
-                            </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
-                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="category-content polls">
+
+                    </div>
+                    <div class="category-empty center-content-notifications-empty">
+                        {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="polls categories-block hidden">
-            <div class="substrate">
-                <div class="sort rounded-block unselectable">
-                    <div class="category active-sort"
-                         data-category=".my-polls">
-                        <div class="category__title">Мои опросы
-                            <div class="category__notice hide"></div>
+    {% else %}
+        <div class="content">
+            <div class="templates few rounded-block">
+                <div class="header">
+                    <h1 class="title">Создать опрос</h1>
+                    <a class="btn-link more">Больше шаблонов</a>
+                </div>
+                <div class="templates-block">
+                    <div class="templates-general">
+                        <div class="template-item template-new unselectable">
+                            <div class="template__main">
+                                <div class="plus">
+                                    <div class="horizontal">
+                                        <div class="vertical"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="template__name">
+                            <span class="name">Новый опрос</span>
+                        </span>
+                        </div>
+                        <div class="template-item unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="template__name">
+                            <span class="name">Опрос об успеваемости</span>
+                        </span>
+                        </div>
+                        <div class="template-item unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="template__name">
+                            <span class="name">Ежемесячный</span>
+                        </span>
+                        </div>
+                        <div class="template-item unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="template__name">
+                            <span class="name">Еженедельный</span>
+                        </span>
+                        </div>
+                        <div class="template-item unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="template__name">
+                            <span class="name">Годовой</span>
+                        </span>
+                        </div>
+                        <div class="template-item unselectable">
+                            <div class="template__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="template__name">
+                            <span class="name">О себе</span>
+                        </span>
                         </div>
                     </div>
-                    <div class="category"
-                         data-category=".polls">
-                        <div class="category__title">Для прохождения
-                            <div class="category__notice hide"></div>
+                    <div class="my-templates-block">
+                        <h2 class="title">Мои шаблоны</h2>
+                        <div class="my-templates">
+                            <div class="template-item purple unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
+                            <div class="template-item blue unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
+                            <div class="template-item red unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
+                            <div class="template-item purple unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
+                            <div class="template-item blue unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
+                            <div class="template-item red unselectable">
+                                <div class="template__main">
+                                    {% include 'main/includes/template_item.html' with delete=' ' %}
+                                </div>
+                                <span class="template__name">
+                                <span class="name">Новый опрос</span>
+                            </span>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="polls categories-block hidden">
+                <div class="substrate">
+                    <div class="sort rounded-block unselectable">
+                        <div class="category active-sort"
+                             data-category=".my-polls">
+                            <div class="category__title">Мои опросы
+                                <div class="category__notice hide"></div>
+                            </div>
+                        </div>
+                        <div class="category"
+                             data-category=".polls">
+                            <div class="category__title">Для прохождения
+                                <div class="category__notice hide"></div>
+                            </div>
+                        </div>
 
-                    <div class="sortable">
+                        <div class="sortable">
 
-                        <div class="mdc-select mdc-select--outlined width-245">
-                            <div class="mdc-select__anchor height-40" aria-labelledby="outlined-select-label">
-                                <span id="" class="mdc-select__selected-text"></span>
-                                <span class="mdc-select__dropdown-icon">
+                            <div class="mdc-select mdc-select--outlined width-245">
+                                <div class="mdc-select__anchor height-40" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
                                     <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
                                         <polygon
                                                 class="mdc-select__dropdown-icon-inactive"
@@ -160,228 +302,229 @@
                                         </polygon>
                                     </svg>
                                 </span>
-                                <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline">
                                     <span class="mdc-notched-outline__leading"></span>
                                     <span class="mdc-notched-outline__notch">
 {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
                                     </span>
                                     <span class="mdc-notched-outline__trailing"></span>
                                 </span>
+                                </div>
+
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-245">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="date">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По дате</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="name">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По названию</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="quantity">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">По количеству ответов</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
 
-                            <div class="mdc-select__menu mdc-menu mdc-menu-surface width-245">
-                                <ul class="mdc-list">
-                                    <li class="mdc-list-item mdc-list-item--selected" data-value="date">
-                                        <span class="mdc-list-item__ripple"></span>
-                                        <span class="mdc-list-item__text">По дате</span>
-                                    </li>
-                                    <li class="mdc-list-item" data-value="name">
-                                        <span class="mdc-list-item__ripple"></span>
-                                        <span class="mdc-list-item__text">По названию</span>
-                                    </li>
-                                    <li class="mdc-list-item" data-value="quantity">
-                                        <span class="mdc-list-item__ripple"></span>
-                                        <span class="mdc-list-item__text">По количеству ответов</span>
-                                    </li>
-                                </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="categories">
+                    <div class="category-content my-polls">
+                        <div class="category-item poll-item purple unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
                             </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="categories">
-                <div class="category-content my-polls">
-                    <div class="category-item poll-item purple unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
-                        </div>
-                        <span class="poll__title">
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
-                            35 ответов | 9 июля 2020
+                            <span class="poll_details">
+                            Ответов: 12 | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
-                            35 ответов | 9 июля 2020
+                            <span class="poll_details">
+                            9 июля 2020 | Ответов: 12
                         </span>
-                    </div>
-                    <div class="category-item poll-item red unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item red unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
-                            35 ответов | 9 июля 2020
+                            <span class="poll_details">
+                            12 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item red unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item red unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item blue unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item blue unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item purple unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item purple unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item blue unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item blue unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                </div>
-                <div class="category-content polls">
-                    <div class="category-item poll-item red unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                    </div>
+                    <div class="category-content polls">
+                        <div class="category-item poll-item red unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item purple unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item purple unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item blue unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item blue unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
-                    </div>
-                    <div class="category-item poll-item unselectable rounded-block">
-                        <div class="poll__main">
-                            {% include 'main/includes/template_item.html' %}
                         </div>
-                        <span class="poll__title">
+                        <div class="category-item poll-item unselectable rounded-block">
+                            <div class="poll__main">
+                                {% include 'main/includes/template_item.html' %}
+                            </div>
+                            <span class="poll__title">
                             Ежемесячный
                         </span>
-                        <div class="line-decoration"></div>
-                        <span class="poll_target">
+                            <div class="line-decoration"></div>
+                            <span class="poll_target">
                             Иванов Иван Иванович
                         </span>
-                        <span class="poll_details">
+                            <span class="poll_details">
                             35 ответов | 9 июля 2020
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="category-empty center-content-notifications-empty">
-                    {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                    <div class="category-empty center-content-notifications-empty">
+                        {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}
 

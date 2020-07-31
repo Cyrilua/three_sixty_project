@@ -1,4 +1,6 @@
 $(function () {
+    let body = $('body');
+    let templates = $('.templates');
     let currentSortable = 'date';
     let myTemplates = $('.my-templates');
     let myTemplatesBlock = $('.my-templates-block');
@@ -14,10 +16,6 @@ $(function () {
         });
     }
 
-
-    let body = $('body');
-    let templates = $('.templates');
-
     // Больше шаблонов
     body.on('click', '.more', function (el) {
         if (templates.hasClass('few')) {
@@ -31,6 +29,7 @@ $(function () {
         templates.toggleClass('many');
     });
 
+    // Удаление шаблонов
     body.on('click', '.delete', function () {
         $(this).parent().parent().remove();
         if (myTemplates.children('.template-item').length < 1) {
