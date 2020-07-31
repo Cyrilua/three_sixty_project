@@ -34,22 +34,7 @@ class BirthDate(models.Model):
         db_table = 'BirthDate'
 
 
-class CreatedPoll(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
-    objects = models.Manager()
 
-    class Meta:
-        db_table = "Created polls"
-
-
-class NeedPassPoll(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "NeedPassPolls"
 
 
 class Moderator(models.Model):
@@ -207,11 +192,9 @@ class TemplatesPoll(models.Model):
 
 
 class Poll(models.Model):
-    key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name_poll = models.CharField(max_length=50, default='')
-    respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
     creation_date = models.DateField(null=True)
@@ -223,6 +206,30 @@ class Poll(models.Model):
 
     def __str__(self):
         return self.name_poll
+
+
+class RespondentPoll(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    is_viewed = models.BooleanField()
+
+    class Meta:
+        db_table = "RespondentPoll"
+
+    def __str__(self):
+        return 'Опрос: {}, Пользователь: {}, Просмотрен: {}'.format(self.poll, self.profile, self.is_viewed)
+
+
+class CreatedPoll(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Created polls"
+
+    def __str__(self):
+        return 'Опрос: {}, Пользователь: {}'.format(self.poll, self.profile)
 
 
 class Questions(models.Model):

@@ -1,7 +1,7 @@
 import uuid
 
 from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
-    NeedPassPoll, CreatedPoll, SurveyWizard
+    CreatedPoll, SurveyWizard
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import create_notifications
 from django.shortcuts import redirect, render
@@ -590,11 +590,6 @@ def respondent_choice_group(request, group_id):
         for profile in profiles:
             poll.respondents.add(profile.user)
 
-            need_pass_poll = NeedPassPoll()
-            need_pass_poll.poll = poll
-            need_pass_poll.profile = profile
-            need_pass_poll.save()
-
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -684,10 +679,6 @@ def respondent_choice_from_company(request):
         for profile in profiles:
             print(profile)
             poll.respondents.add(profile.user)
-            need_pass_poll = NeedPassPoll()
-            need_pass_poll.poll = poll
-            need_pass_poll.profile = profile
-            need_pass_poll.save()
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -699,21 +690,9 @@ def walkthrough_polls_view(request):
         return redirect('/')
     args = {
         'title': "Вопросы для прохождения",
-        'polls': build_need_pass_poll(request)
     }
     return render(request, 'main/poll/old/walkthrough_polls_view.html', args)
 
-
-def build_need_pass_poll(request):
-    result = []
-    profile = get_user_profile(request)
-    polls = [i.poll for i in NeedPassPoll.objects.filter(profile=profile)]
-    for poll in polls:
-        result.append({
-            'name': poll.name_poll,
-            'url': '/answer_poll/{}/'.format(poll.id)
-        })
-    return result
 
 
 def results_polls_view(request):
