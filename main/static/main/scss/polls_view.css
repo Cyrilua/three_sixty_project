@@ -97,6 +97,12 @@
 .content .polls .substrate .sort .sortable > .mdc-select > .height-40 {
   height: 40px;
 }
+.content .polls .substrate .sort .sortable > .mdc-select > .mdc-select__anchor > .mdc-select__selected-text {
+  color: #595757;
+}
+.content .polls .substrate .sort .sortable > .mdc-select:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading, .content .polls .substrate .sort .sortable > .mdc-select:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+  border-color: #C8C8C8;
+}
 .content .polls .categories .my-polls,
 .content .polls .categories .polls {
   display: flex;
