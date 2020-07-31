@@ -101,7 +101,9 @@ $(function () {
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
-                data: {},
+                data: {
+                    count: 10,
+                },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
                     categoryContentBlock.removeClass('loading');
