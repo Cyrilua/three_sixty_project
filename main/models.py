@@ -215,7 +215,7 @@ class Poll(models.Model):
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
     creation_date = models.DateField(null=True)
-    color = models.CharField(max_length=20, null=True)
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue
     objects = models.Manager()
 
     class Meta:
