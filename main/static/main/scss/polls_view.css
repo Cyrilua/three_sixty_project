@@ -106,6 +106,7 @@
 .content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 100px;
 }
 .content .polls .categories .category-content.hide {
   display: none;

@@ -5,6 +5,12 @@ $(function () {
     let myTemplates = $('.my-templates');
     let myTemplatesBlock = $('.my-templates-block');
 
+    let categoryContentBlock = $('.category-content');
+    let countLoadedPolls = categoryContentBlock.children('.category-item');
+
+    let scrollHeight;
+    let currentScrollHeight;
+
     let sortable = $('.sort');
 
     let pollsNotif = $('#polls-notif');
@@ -62,7 +68,7 @@ $(function () {
             },
             statusCode: {
                 400: function () {
-                     throw new Error('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
                     throw new Error('Error 403 - Доступ запрещён');
@@ -79,4 +85,53 @@ $(function () {
             },
         });
     }, 1000);
+
+    // Подгрузка данных
+    $(window).scroll(function () {
+        scrollHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        currentScrollHeight = window.pageYOffset;
+        if (currentScrollHeight + document.documentElement.clientHeight + 75 > scrollHeight && !categoryContentBlock.hasClass('loading')) {
+            console.log(true)
+            console.log('---')
+            categoryContentBlock.addClass('loading');
+            $.ajax({
+                url: `loading/${countLoadedPolls}/`,
+                type: 'get',
+                data: {},
+                success: function (response) {
+                    categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
+                    categoryContentBlock.removeClass('loading');
+                },
+                statusCode: {
+                    400: function () {
+                        categoryContentBlock.removeClass('loading');
+                        throw new Error('Error 400 - Некорректный запрос');
+                    },
+                    403: function () {
+                        categoryContentBlock.removeClass('loading');
+                        throw new Error('Error 403 - Доступ запрещён');
+                    },
+                    404: function () {
+                        categoryContentBlock.removeClass('loading');
+                        throw new Error('Error 404 - Страница не найдена');
+                    },
+                    500: function () {
+                        categoryContentBlock.removeClass('loading');
+                        throw new Error('Error 500 - Внутренняя ошибка сервера');
+                    }
+                },
+                error: function () {
+                    categoryContentBlock.removeClass('loading');
+                    throw new Error('Что - то пошло не так :(');
+                },
+            })
+        }
+        // console.log(document.body.scrollHeight, document.documentElement.scrollHeight,
+        //     document.body.offsetHeight, document.documentElement.offsetHeight,
+        //     document.body.clientHeight, document.documentElement.clientHeight, currentScrollHeight, currentScrollHeight + document.documentElement.clientHeight)
+    });
 });

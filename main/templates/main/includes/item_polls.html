@@ -1,0 +1,18 @@
+{% for poll in data.polls %}
+    <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href {% if poll.is_new %}new-poll{% endif %}"
+         data-href="{{ poll.url }}">
+        <div class="poll__main">
+            {% include 'main/includes/template_item.html' %}
+        </div>
+        <span class="poll__title">
+            {{ poll.title }}
+        </span>
+        <div class="line-decoration"></div>
+        <span class="poll_target">
+            {{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}
+        </span>
+        <span class="poll_details">
+            {{ poll.answers_count }} ответов | {{ poll.date }}
+        </span>
+    </div>
+{% endfor %}

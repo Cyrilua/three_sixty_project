@@ -11,7 +11,7 @@ def polls_view(request) -> render:
     args = {
         'title': "Опросы",
         'data': {
-            'my_polls': _build_my_polls(profile),
+            'polls': _build_my_polls(profile),
         },
     }
     return render(request, 'main/poll/polls_view.html', args)
