@@ -8,6 +8,8 @@ $(function () {
     let categoryContentBlock = $('.category-content');
     let countLoadedPolls = categoryContentBlock.children('.category-item').length;
 
+    let sortType;
+
     let scrollHeight;
     let currentScrollHeight;
 
@@ -26,10 +28,12 @@ $(function () {
     // Сортировка
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
+        sortType = sortable.value;
         sortable.listen('MDCSelect:change', () => {
             if (currentSortable !== sortable.value) {
                 currentSortable = sortable.value;
                 console.log(sortable.value)
+                sortType = sortable.value;
             }
         });
     }
@@ -99,11 +103,15 @@ $(function () {
             console.log('---')
             console.log(countLoadedPolls)
             categoryContentBlock.addClass('loading');
+            console.log(sortType)
+            let category = $('.category-sort--active').attr('data-category');
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
                 data: {
                     count: 9,
+                    type: category,
+                    sort: sortType,
                 },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
