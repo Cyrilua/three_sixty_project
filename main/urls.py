@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
-from .views.poll_views import create_poll
+from .views.poll_views import create_poll, polls_view
 from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
@@ -194,7 +194,7 @@ urlpatterns = [
                   path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
-                  path('polls/', create_poll.choose_poll, name='new_poll_view'),
+                  path('polls/', polls_view.polls_view, name='new_poll_view'),
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
 
