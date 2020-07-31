@@ -6,7 +6,7 @@ $(function () {
     let myTemplatesBlock = $('.my-templates-block');
 
     let categoryContentBlock = $('.category-content');
-    let countLoadedPolls = categoryContentBlock.children('.category-item');
+    let countLoadedPolls = categoryContentBlock.children('.category-item').length;
 
     let scrollHeight;
     let currentScrollHeight;
