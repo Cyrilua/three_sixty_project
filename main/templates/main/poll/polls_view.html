@@ -26,18 +26,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <span class="template__name">
-                                <span class="name">Новый опрос</span>
-                            </span>
+                            <div class="template__name">
+                                <div class="name"><span>Новый опрос</span></div>
+                            </div>
                         </div>
                         {% for template in data.templates.general %}
                             <div class="template-item unselectable">
                                 <div class="template__main button-href" data-href="{{ template.url }}">
                                     {% include 'main/includes/template_item.html' %}
                                 </div>
-                                <span class="template__name">
-                                    <span class="name">{{ template.name }}</span>
-                                </span>
+                                <div class="template__name">
+                                    <div class="name" title="{{ template.name }}">{{ template.name }}</div>
+                                </div>
                             </div>
                         {% endfor %}
                     </div>
@@ -49,9 +49,9 @@
                                     <div class="template__main button-href" data-href="{{ template.url }}">
                                         {% include 'main/includes/template_item.html' with delete=' ' %}
                                     </div>
-                                    <span class="template__name">
-                                        <span class="name">{{ template.name }}</span>
-                                    </span>
+                                    <div class="template__name">
+                                        <div class="name" title="{{ template.name }}">{{ template.name }}</div>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -63,12 +63,13 @@
                     <div class="sort rounded-block unselectable">
                         <div class="category category-sort--active" data-category="myPolls">
                             <div class="category__title">Мои опросы
-{#                                <div class="category__notice hide"></div>#}
+                                {#                                <div class="category__notice hide"></div>#}
                             </div>
                         </div>
                         <div class="category" data-category="polls">
                             <div class="category__title">Для прохождения
-                                <div class="category__notice{% if data.new.polls == 0 %} hide{% endif %}" id="polls-notif">{{ data.new.polls }}</div>
+                                <div class="category__notice{% if data.new.polls == 0 %} hide{% endif %}"
+                                     id="polls-notif">{{ data.new.polls }}</div>
                             </div>
                         </div>
                         <div class="sortable">

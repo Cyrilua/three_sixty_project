@@ -232,6 +232,7 @@
   height: 30px;
   font-size: 14px;
   line-height: 16px;
+  max-width: 190px;
 }
 .template-item .template__name .name {
   height: 22px;
@@ -239,9 +240,15 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  max-width: 190px;
   padding: 0 9px;
   border-radius: 5px;
   cursor: default;
+}
+.template-item .template__name .name > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .poll-item {
@@ -313,6 +320,9 @@
   line-height: 21px;
   color: #000000;
   margin-top: 53px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .poll-item .line-decoration {
   height: 1px;
@@ -326,6 +336,9 @@
   line-height: 16px;
   color: #000000;
   margin-top: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .poll-item .poll_details {
   font-style: normal;

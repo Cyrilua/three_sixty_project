@@ -221,7 +221,6 @@
     }
   }
 
-
   &.red > .template__main > .template_img > .line {
     background-color: #FF1841;
   }
@@ -319,6 +318,10 @@
     }
   }
 
+  //overflow: hidden;
+  //white-space: nowrap;
+  //text-overflow: ellipsis;
+
   .template__name {
     display: flex;
     flex-direction: row;
@@ -328,6 +331,10 @@
     height: 30px;
     font-size: 14px;
     line-height: 16px;
+    max-width: 190px;
+    //overflow: hidden;
+    //white-space: nowrap;
+    //text-overflow: ellipsis;
 
     .name {
       height: 22px;
@@ -335,9 +342,16 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      max-width: 190px;
       padding: 0 9px;
       border-radius: 5px;
       cursor: default;
+
+      & > span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
@@ -427,6 +441,9 @@
     line-height: 21px;
     color: #000000;
     margin-top: 53px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .line-decoration {
@@ -442,6 +459,9 @@
     line-height: 16px;
     color: #000000;
     margin-top: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .poll_details {
@@ -452,5 +472,8 @@
     color: #595757;
     margin-top: 9px;
     margin-bottom: auto;
+    //overflow: hidden;
+    //white-space: nowrap;
+    //text-overflow: ellipsis;
   }
 }
