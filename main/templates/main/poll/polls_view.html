@@ -17,7 +17,7 @@
                 <div class="templates-block">
                     <div class="templates-general">
                         <div class="template-item template-new unselectable">
-                            <div class="template__main">
+                            <div class="template__main button-href" data-href="#">
                                 <div class="plus">
                                     <div class="horizontal">
                                         <div class="vertical"></div>
@@ -30,11 +30,11 @@
                         </div>
                         {% for template in data.templates.general %}
                             <div class="template-item unselectable">
-                                <div class="template__main">
+                                <div class="template__main button-href" data-href="{{ template.url }}">
                                     {% include 'main/includes/template_item.html' %}
                                 </div>
                                 <span class="template__name">
-                                    <span class="name">Опрос об успеваемости</span>
+                                    <span class="name">{{ template.name }}</span>
                                 </span>
                             </div>
                         {% endfor %}
@@ -42,13 +42,13 @@
                     <div class="my-templates-block {% if not data.templates.my %}hide{% endif %}">
                         <h2 class="title">Мои шаблоны</h2>
                         <div class="my-templates">
-                            {% for templates in data.templates.my %}
-                                <div class="template-item purple unselectable">
-                                    <div class="template__main">
+                            {% for template in data.templates.my %}
+                                <div class="template-item {{ template.color }} unselectable">
+                                    <div class="template__main button-href" data-href="{{ template.url }}">
                                         {% include 'main/includes/template_item.html' with delete=' ' %}
                                     </div>
                                     <span class="template__name">
-                                        <span class="name">Новый опрос</span>
+                                        <span class="name">{{ template.name }}</span>
                                     </span>
                                 </div>
                             {% endfor %}
@@ -122,7 +122,7 @@
                 <div class="categories">
                     <div class="category-content my-polls">
                         {% for poll in data.polls.my %}
-                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block">
+                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href" data-href="{{ poll.url }}">
                                 <div class="poll__main">
                                     {% include 'main/includes/template_item.html' %}
                                 </div>
@@ -158,7 +158,7 @@
                 <div class="templates-block">
                     <div class="templates-general">
                         <div class="template-item template-new unselectable">
-                            <div class="template__main">
+                            <div class="template__main button-href" data-href="#">
                                 <div class="plus">
                                     <div class="horizontal">
                                         <div class="vertical"></div>
@@ -335,7 +335,7 @@
                 </div>
                 <div class="categories">
                     <div class="category-content my-polls">
-                        <div class="category-item poll-item purple unselectable rounded-block">
+                        <div class="category-item poll-item purple unselectable rounded-block button-href" data-href="#">
                             <div class="poll__main">
                                 {% include 'main/includes/template_item.html' %}
                             </div>
