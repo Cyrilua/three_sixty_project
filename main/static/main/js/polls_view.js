@@ -8,6 +8,9 @@ $(function () {
     let categoryContentBlock = $('.category-content');
     let countLoadedPolls = categoryContentBlock.children('.category-item').length;
 
+    let sortType;
+    let category = $('.category-sort--active').attr('data-category');
+
     let scrollHeight;
     let currentScrollHeight;
 
@@ -15,21 +18,24 @@ $(function () {
 
     let pollsNotif = $('#polls-notif');
 
-    // Смена категории с уведомлениями
+    // Смена категории
     body.on('click', '.category', function () {
         if (!$(this).hasClass('category-sort--active')) {
             sortable.children('.category-sort--active').removeClass('category-sort--active');
             $(this).addClass('category-sort--active');
+            category = $(this).attr('data-category');
         }
     });
 
     // Сортировка
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
+        sortType = sortable.value;
         sortable.listen('MDCSelect:change', () => {
             if (currentSortable !== sortable.value) {
                 currentSortable = sortable.value;
                 console.log(sortable.value)
+                sortType = sortable.value;
             }
         });
     }
@@ -99,15 +105,19 @@ $(function () {
             console.log('---')
             console.log(countLoadedPolls)
             categoryContentBlock.addClass('loading');
+            console.log(sortType)
+            let countNewEl = 9;
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
                 data: {
-                    count: 9,
+                    count: countNewEl,
+                    type: category,
+                    sort: sortType,
                 },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
-                    countLoadedPolls += 9;
+                    countLoadedPolls += countNewEl;
                     categoryContentBlock.removeClass('loading');
                 },
                 statusCode: {
