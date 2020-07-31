@@ -9,6 +9,7 @@ $(function () {
     let countLoadedPolls = categoryContentBlock.children('.category-item').length;
 
     let sortType;
+    let category = $('.category-sort--active').attr('data-category');
 
     let scrollHeight;
     let currentScrollHeight;
@@ -17,11 +18,12 @@ $(function () {
 
     let pollsNotif = $('#polls-notif');
 
-    // Смена категории с уведомлениями
+    // Смена категории
     body.on('click', '.category', function () {
         if (!$(this).hasClass('category-sort--active')) {
             sortable.children('.category-sort--active').removeClass('category-sort--active');
             $(this).addClass('category-sort--active');
+            category = $(this).attr('data-category');
         }
     });
 
@@ -64,11 +66,15 @@ $(function () {
         $.ajax({
             url: 'new_notif',
             type: 'get',
-            data: {},
+            data: {
+                category: category,
+            },
             success: function (response) {
                 if (response.notifications > 0) {
                     pollsNotif.text(response.notifications);
                     pollsNotif.removeClass('hide');
+                    console.log(response.newPolls)
+                    // TODO
                 } else {
                     pollsNotif.addClass('hide');
                 }
@@ -107,7 +113,6 @@ $(function () {
             console.log(countLoadedPolls)
             categoryContentBlock.addClass('loading');
             console.log(sortType)
-            let category = $('.category-sort--active').attr('data-category');
             let countNewEl = 9;
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
