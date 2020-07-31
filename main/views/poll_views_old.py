@@ -1,9 +1,10 @@
 import uuid
 
 from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
-    NeedPassPoll, CreatedPoll, Draft
+    NeedPassPoll, CreatedPoll, Draft, SurveyWizard
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import create_notifications
+from django.shortcuts import redirect, render
 
 
 def type_poll(request):
@@ -26,16 +27,6 @@ def default_poll_template_view(request):
         'access': is_hr
     }
     return render(request, 'main/default_polls.html', args)
-
-
-def search_target_poll(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    result = find_user(request,
-                       action_with_selected_user='main:select_survey_area',
-                       limited_access=True,
-                       function_determining_access=user_is_hr_or_owner)
-    return result
 
 
 def select_survey_area(request):

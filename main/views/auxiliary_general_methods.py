@@ -7,7 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from main.models import Profile, VerificationCode
-from django.shortcuts import render, redirect
 
 UserModel = get_user_model()
 

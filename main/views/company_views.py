@@ -1,5 +1,6 @@
 import uuid
 
+from django.shortcuts import redirect, render
 from main.forms import CompanyForm
 from main.models import Company, PlatformCompany, PositionCompany, PositionCompany, PlatformCompany
 from main.views.auxiliary_general_methods import *

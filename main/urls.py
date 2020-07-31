@@ -162,8 +162,6 @@ urlpatterns = [
                   path('type_poll/', poll_views_old.type_poll, name='choose_type_poll'),
                   # Список стандартных опросов
                   path('default_poll_list/', poll_views_old.default_poll_template_view, name='list_default_poll'),
-                  # Выбор цели опроса (только для HR)
-                  path('default_poll/<int:poll>', poll_views_old.search_target_poll, name='select_respondents'),
                   # Выбор области опрашиваемых
                   path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),

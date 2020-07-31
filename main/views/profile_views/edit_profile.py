@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 
 
