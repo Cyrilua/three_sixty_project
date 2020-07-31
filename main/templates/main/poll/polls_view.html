@@ -61,16 +61,14 @@
             <div class="polls categories-block hidden">
                 <div class="substrate">
                     <div class="sort rounded-block unselectable">
-                        <div class="category active-sort"
-                             data-category=".my-polls">
+                        <div class="category active-sort">
                             <div class="category__title">Мои опросы
-                                <div class="category__notice hide">{{ data.new.my_polls }}</div>
+                                <div class="category__notice hide"></div>
                             </div>
                         </div>
-                        <div class="category"
-                             data-category=".polls">
+                        <div class="category">
                             <div class="category__title">Для прохождения
-                                <div class="category__notice hide">{{ data.new.polls }}</div>
+                                <div class="category__notice{% if data.new.polls == 0 %} hide{% endif %}">{{ data.new.polls }}</div>
                             </div>
                         </div>
                         <div class="sortable">
@@ -122,31 +120,31 @@
                     </div>
                 </div>
                 <div class="categories">
-                    <div class="category-content my-polls">
-                        {% for poll in data.polls.my %}
-                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href"
-                                 data-href="{{ poll.url }}">
-                                <div class="poll__main">
-                                    {% include 'main/includes/template_item.html' %}
+                    <div class="category-content">
+                        {% if data.my_polls %}
+                            {% for poll in data.my_polls %}
+                                <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href"
+                                     data-href="{{ poll.url }}">
+                                    <div class="poll__main">
+                                        {% include 'main/includes/template_item.html' %}
+                                    </div>
+                                    <span class="poll__title">
+                                        {{ poll.title }}
+                                    </span>
+                                    <div class="line-decoration"></div>
+                                    <span class="poll_target">
+                                        {{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}
+                                    </span>
+                                    <span class="poll_details">
+                                        {{ poll.answers_count }} ответов | {{ poll.date }}
+                                    </span>
                                 </div>
-                                <span class="poll__title">
-                                    {{ poll.title }}
-                                </span>
-                                <div class="line-decoration"></div>
-                                <span class="poll_target">
-                                    {{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}
-                                </span>
-                                <span class="poll_details">
-                                    {{ poll.answers_count }} ответов | {{ poll.date }}
-                                </span>
+                            {% endfor %}
+                        {% else %}
+                            <div class="category-empty center-content-notifications-empty">
+                                {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
                             </div>
-                        {% endfor %}
-                    </div>
-                    <div class="category-content polls">
-
-                    </div>
-                    <div class="category-empty center-content-notifications-empty">
-                        {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -268,17 +266,15 @@
                     </div>
                 </div>
             </div>
-            <div class="polls categories-block hidden">
+            <div class="polls categories-block">
                 <div class="substrate">
                     <div class="sort rounded-block unselectable">
-                        <div class="category active-sort"
-                             data-category=".my-polls">
+                        <div class="category active-sort">
                             <div class="category__title">Мои опросы
                                 <div class="category__notice hide"></div>
                             </div>
                         </div>
-                        <div class="category"
-                             data-category=".polls">
+                        <div class="category">
                             <div class="category__title">Для прохождения
                                 <div class="category__notice hide"></div>
                             </div>
@@ -548,7 +544,7 @@
 {% block scripts %}
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <script type="text/javascript" src={% static 'main/js/polls_view.min.js' %}></script>
-    <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
+    {#    <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>#}
     <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
 {% endblock %}
