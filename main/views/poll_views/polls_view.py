@@ -27,7 +27,7 @@ def _build_my_polls(profile: Profile) -> list:
             'title': poll.name_poll,
             'answers_count': poll.count_passed,
             'date': poll.creation_date,
-            'url': 'poll/result/{}/'.format(poll.id)
+            'url': '/poll/result/{}/'.format(poll.id)
         }
         if poll.color is not None:
             collected_poll['color'] = poll.color
