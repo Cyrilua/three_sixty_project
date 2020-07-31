@@ -1,6 +1,7 @@
 from main.views.auxiliary_general_methods import *
 from main.models import CreatedPoll
 from django.shortcuts import redirect, render
+from django.template.response import SimpleTemplateResponse
 
 
 def polls_view(request) -> render:
@@ -14,6 +15,8 @@ def polls_view(request) -> render:
             'polls': _build_my_polls(profile),
         },
     }
+    #res = SimpleTemplateResponse('main/poll/polls_view.html', args)
+    #print(res.rendered_content)
     return render(request, 'main/poll/polls_view.html', args)
 
 
