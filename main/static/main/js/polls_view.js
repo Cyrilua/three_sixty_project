@@ -68,6 +68,9 @@ $(function () {
             success: function (response) {
                 if (response.notifications > 0) {
                     pollsNotif.text(response.notifications);
+                    pollsNotif.removeClass('hide');
+                } else {
+                    pollsNotif.addClass('hide');
                 }
             },
             statusCode: {
@@ -105,17 +108,18 @@ $(function () {
             categoryContentBlock.addClass('loading');
             console.log(sortType)
             let category = $('.category-sort--active').attr('data-category');
+            let countNewEl = 9;
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
                 data: {
-                    count: 9,
+                    count: countNewEl,
                     type: category,
                     sort: sortType,
                 },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
-                    countLoadedPolls += 9;
+                    countLoadedPolls += countNewEl;
                     categoryContentBlock.removeClass('loading');
                 },
                 statusCode: {
