@@ -2,6 +2,7 @@ from main.views.auxiliary_general_methods import *
 from main.models import CreatedPoll, Poll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
+from django.http import JsonResponse
 
 
 def polls_view(request) -> render:
@@ -21,7 +22,12 @@ def polls_view(request) -> render:
 def _build_my_polls(profile: Profile) -> list:
     created_polls = CreatedPoll.objects.filter(profile=profile)
     result_polls = []
+    count_loaded_polls = 9
     for created_poll in created_polls:
+        if count_loaded_polls > 0:
+            count_loaded_polls -= 1
+        else:
+            break
         collected_poll = _build_poll(created_poll.poll)
         result_polls.append(collected_poll)
     return result_polls
@@ -45,8 +51,36 @@ def _build_poll(poll: Poll):
     return collected_poll
 
 
-def _pre_render_item_polls(poll: Poll) -> str:
-    collected_poll = _build_poll(poll)
-    response = SimpleTemplateResponse('main/includes/item_polls.html', collected_poll)
+def loading_polls(request, count_polls: int) -> JsonResponse:
+    if request.is_ajax():
+        try:
+            count_will_loaded_polls = int(request.GET['count'])
+        except TypeError:
+            return JsonResponse({}, status=400)
+        print('i am here')
+        response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
+        print(response)
+        return JsonResponse({'newElems': response}, status=200)
+
+
+def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_loaded_polls) -> str:
+    args = {
+        'data': {
+            'polls': []
+        }
+    }
+    created_polls = CreatedPoll.objects.filter(profile=profile)
+    for created_poll in created_polls:
+        if count_loaded_polls > 0:
+            count_loaded_polls -= 1
+            continue
+        else:
+            if count_will_loaded_polls > 0:
+                count_will_loaded_polls -= 1
+            else:
+                break
+        collected_poll = _build_poll(created_poll.poll)
+        args['data']['polls'].append(collected_poll)
+    response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
