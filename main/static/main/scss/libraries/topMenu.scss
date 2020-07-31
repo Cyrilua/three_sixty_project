@@ -36,7 +36,9 @@
         &:active,
         &.active-sort,
         &:active > .category__title,
-        &.active-sort > .category__title {
+        &.active-sort > .category__title,
+        &.category-sort--active > .category__title,
+        &.category-sort--active {
           color: #001AFF;
           border-bottom-color: #001AFF;;
         }
