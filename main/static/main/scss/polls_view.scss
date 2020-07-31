@@ -1,13 +1,21 @@
+:root {
+  --mdc-theme-primary: #001aff;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   width: 100%;
   z-index: 50;
 
+  .templates,
+  .polls {
+    z-index: 50;
+  }
+
   .templates {
     padding: 0;
     margin-bottom: 10px;
-    z-index: 50;
     overflow: hidden;
 
     &.few {
@@ -92,6 +100,7 @@
     .substrate {
       .sort {
         margin-bottom: 20px;
+        overflow: visible;
 
         .category {
           .category__title {
@@ -100,6 +109,28 @@
             }
           }
         }
+
+        .sortable {
+          margin: 0 0 0 auto;
+          display: flex;
+          align-items: center;
+
+          & > .width-245 {
+            width: 245px;
+          }
+
+          & > .mdc-select > .width-245 {
+            width: 245px;
+          }
+
+          & > .mdc-select > .height-40 {
+            height: 40px;
+          }
+        }
+
+        //& > .mdc-select .mdc-floating-label  {
+        //  top: 75%;
+        //}
       }
     }
 

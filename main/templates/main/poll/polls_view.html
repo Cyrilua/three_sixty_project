@@ -138,10 +138,58 @@
                             <div class="category__notice hide"></div>
                         </div>
                     </div>
-                </div>
-                <div class="sortable">
 
+                    <div class="sortable">
+
+                        <div class="mdc-select mdc-select--outlined width-245">
+                            <div class="mdc-select__anchor height-40" aria-labelledby="outlined-select-label">
+                                <span id="" class="mdc-select__selected-text"></span>
+                                <span class="mdc-select__dropdown-icon">
+                                    <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                        <polygon
+                                                class="mdc-select__dropdown-icon-inactive"
+                                                stroke="none"
+                                                fill-rule="evenodd"
+                                                points="7 10 12 15 17 10">
+                                        </polygon>
+                                        <polygon
+                                                class="mdc-select__dropdown-icon-active"
+                                                stroke="none"
+                                                fill-rule="evenodd"
+                                                points="7 15 12 10 17 15">
+                                        </polygon>
+                                    </svg>
+                                </span>
+                                <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+{#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
+                            </div>
+
+                            <div class="mdc-select__menu mdc-menu mdc-menu-surface width-245">
+                                <ul class="mdc-list">
+                                    <li class="mdc-list-item mdc-list-item--selected" data-value="date">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">По дате</span>
+                                    </li>
+                                    <li class="mdc-list-item" data-value="name">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">По названию</span>
+                                    </li>
+                                    <li class="mdc-list-item" data-value="quantity">
+                                        <span class="mdc-list-item__ripple"></span>
+                                        <span class="mdc-list-item__text">По количеству ответов</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
             <div class="categories">
                 <div class="category-content my-polls">
@@ -342,13 +390,16 @@
 {% endblock %}
 
 
-{% block css %}
-    <link rel="stylesheet" href="{% static 'main/scss/polls_view.min.css' %}">
+{% block css %}>
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'main/scss/polls_view.min.css' %}">
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <script type="text/javascript" src={% static 'main/js/polls_view.min.js' %}></script>
     <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
     <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>

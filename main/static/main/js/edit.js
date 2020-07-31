@@ -9,6 +9,7 @@ $(function () {
     const modalSuccess = $('#modal_success');
     let photo = $('.left-content__photo');
     let updPhoto = $('.upd-photo');
+    let headPhoto = $('.head-menu-img');
 
     let username = $('#username');
     let passwordOld = $('#password_old');
@@ -92,7 +93,10 @@ $(function () {
                 $(photo).attr({
                     'src': response.new_photo_url,
                     // 'src': "../image/photo.svg",
-                })
+                });
+                $(headPhoto).attr({
+                    'src': response.new_photo_url,
+                });
             },
             statusCode: {
                 400: function () {
@@ -144,7 +148,10 @@ $(function () {
                 console.log(response.new_photo_url)
                 $(photo).attr({
                     'src': response.new_photo_url,
-                })
+                });
+                $(headPhoto).attr({
+                    'src': response.new_photo_url,
+                });
             },
             statusCode: {
                 400: function () {
