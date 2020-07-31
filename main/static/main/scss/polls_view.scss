@@ -131,11 +131,27 @@
             & > .mdc-select__anchor > .mdc-select__selected-text {
               color: #595757;
             }
-            
-            &:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading,
-            &:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
-              border-color: #C8C8C8;
+
+            &:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading,
+            &:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+              border-color: #595757;
             }
+
+            //&:hover > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading,
+            //&.mdc-select--focused > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing,
+            //&.mdc-select--focused:hover > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+            //  border-color: #001aff;
+            //}
+
+            //&:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading,
+            //&:not(.mdc-select--activated) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+            //  border-color: #C8C8C8;
+            //}
+            //
+            //&.mdc-select--activated > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading,
+            //&.mdc-select--activated > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+            //  border-color: #001aff;
+            //}
           }
         }
 
