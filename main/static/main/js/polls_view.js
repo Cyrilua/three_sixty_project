@@ -52,7 +52,7 @@ $(function () {
     // Проверка новых опросов (каждую сеекунду)
     setInterval(function () {
         $.ajax({
-            url: 'have_new_notif',
+            url: 'new_notif',
             type: 'get',
             data: {},
             success: function (response) {
