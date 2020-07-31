@@ -103,22 +103,18 @@
 .content .polls .substrate .sort .sortable > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading, .content .polls .substrate .sort .sortable > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
   border-color: #595757;
 }
-.content .polls .categories .my-polls,
-.content .polls .categories .polls {
+.content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
 }
-.content .polls .categories .my-polls.hide,
-.content .polls .categories .polls.hide {
+.content .polls .categories .category-content.hide {
   display: none;
 }
-.content .polls .categories .my-polls .poll-item,
-.content .polls .categories .polls .poll-item {
+.content .polls .categories .category-content .poll-item {
   margin-bottom: 20px;
   margin-right: 20px;
 }
-.content .polls .categories .my-polls .poll-item:nth-child(3n),
-.content .polls .categories .polls .poll-item:nth-child(3n) {
+.content .polls .categories .category-content .poll-item:nth-child(3n) {
   margin-right: 0;
 }
 

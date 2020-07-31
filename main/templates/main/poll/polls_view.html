@@ -123,7 +123,7 @@
                     <div class="category-content">
                         {% if data.my_polls %}
                             {% for poll in data.my_polls %}
-                                <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href"
+                                <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href {% if poll.is_new %}new-poll{% endif %}"
                                      data-href="{{ poll.url }}">
                                     <div class="poll__main">
                                         {% include 'main/includes/template_item.html' %}

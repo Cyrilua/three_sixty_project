@@ -162,8 +162,7 @@
     }
 
     .categories {
-      .my-polls,
-      .polls {
+      .category-content {
         display: flex;
         flex-wrap: wrap;
 
