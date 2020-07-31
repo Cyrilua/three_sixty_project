@@ -97,15 +97,17 @@ $(function () {
         if (currentScrollHeight + document.documentElement.clientHeight + 75 > scrollHeight && !categoryContentBlock.hasClass('loading')) {
             console.log(true)
             console.log('---')
+            console.log(countLoadedPolls)
             categoryContentBlock.addClass('loading');
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
                 data: {
-                    count: 10,
+                    count: 9,
                 },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
+                    countLoadedPolls += 9;
                     categoryContentBlock.removeClass('loading');
                 },
                 statusCode: {
