@@ -7,9 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from main.models import Profile, VerificationCode
-
-
-
+from django.core.mail import send_mail
+from django.conf import settings
 UserModel = get_user_model()
 
 
@@ -34,10 +33,12 @@ def send_email_validate_message(name: str, surname: str, email: str, code: str) 
         },
         'code': code
     })
-    email = EmailMessage(
-        mail_subject, message, to=[email]
-    )
-    email.send()
+    #email = EmailMessage(
+    #    mail_subject, message, to=[email]
+    #)
+    #email.send()
+    email_from = settings.EMAIL_HOST_USER
+    send_mail(mail_subject, message, email_from, [email,])
 
 
 def check_code(code: str, email: str) -> bool:
