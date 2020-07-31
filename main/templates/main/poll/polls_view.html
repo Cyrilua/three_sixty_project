@@ -12,7 +12,9 @@
             <div class="templates few rounded-block">
                 <div class="header">
                     <h1 class="title">Создать опрос</h1>
-                    <a class="btn-link more">Больше шаблонов</a>
+                    {% if data.quatity.templates.general > 3 or data.quatity.templates.my > 0 %}
+                        <a class="btn-link more">Больше шаблонов</a>
+                    {% endif %}
                 </div>
                 <div class="templates-block">
                     <div class="templates-general">
@@ -122,7 +124,8 @@
                 <div class="categories">
                     <div class="category-content my-polls">
                         {% for poll in data.polls.my %}
-                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href" data-href="{{ poll.url }}">
+                            <div class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href"
+                                 data-href="{{ poll.url }}">
                                 <div class="poll__main">
                                     {% include 'main/includes/template_item.html' %}
                                 </div>
@@ -335,7 +338,8 @@
                 </div>
                 <div class="categories">
                     <div class="category-content my-polls">
-                        <div class="category-item poll-item purple unselectable rounded-block button-href" data-href="#">
+                        <div class="category-item poll-item purple unselectable rounded-block button-href"
+                             data-href="#">
                             <div class="poll__main">
                                 {% include 'main/includes/template_item.html' %}
                             </div>
