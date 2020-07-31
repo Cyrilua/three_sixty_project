@@ -6,7 +6,7 @@ $(function () {
     let myTemplatesBlock = $('.my-templates-block');
 
     let categoryContentBlock = $('.category-content');
-    let countLoadedPolls = categoryContentBlock.children('.category-item');
+    let countLoadedPolls = categoryContentBlock.children('.category-item').length;
 
     let scrollHeight;
     let currentScrollHeight;
@@ -101,7 +101,9 @@ $(function () {
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
-                data: {},
+                data: {
+                    count: 10,
+                },
                 success: function (response) {
                     categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
                     categoryContentBlock.removeClass('loading');

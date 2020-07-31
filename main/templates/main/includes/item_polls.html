@@ -4,15 +4,15 @@
         <div class="poll__main">
             {% include 'main/includes/template_item.html' %}
         </div>
-        <span class="poll__title">
+        <span class="poll__title" title="{{ poll.title }}">
             {{ poll.title }}
         </span>
         <div class="line-decoration"></div>
-        <span class="poll_target">
+        <span class="poll_target" title="{{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}">
             {{ poll.target.name }} {{ poll.target.surname }} {{ poll.target.patronymic }}
         </span>
         <span class="poll_details">
-            {{ poll.answers_count }} ответов | {{ poll.date }}
+            {{ poll.answers_count }} ответов&nbsp;| {{ poll.date.day }}&nbsp;{{ poll.date.month }}&nbsp;{{ poll.date.year }}
         </span>
     </div>
 {% endfor %}
