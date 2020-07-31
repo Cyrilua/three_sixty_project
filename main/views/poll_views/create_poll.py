@@ -1,5 +1,5 @@
 from main.views.auxiliary_general_methods import *
-from main.models import Poll, Draft
+from main.models import Poll
 from django.shortcuts import redirect, render
 
 
@@ -114,36 +114,14 @@ def build_questions(questions):
 
 
 def poll_create_redirect(request):
+    # TODO
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    profile = get_user_profile(request)
-    try:
-        draft_polls = list(Draft.objects.get(profile=profile).poll.all())
-    except:
-        poll = create_new_poll(request)
-        return redirect('/poll/editor/{}/'.format(poll.id))
 
-    if len(draft_polls) == 0:
-        poll = create_new_poll(request)
-        return redirect('/poll/editor/{}/'.format(poll.id))
 
     # Пока не созданы черновики всегда будет возвращаться первый недосозданный опрос
-    return redirect('/poll/editor/{}/'.format(draft_polls[0].id))
+    return redirect('/poll/editor/1/')
 
 
-def create_new_poll(request):
-    profile = get_user_profile(request)
 
-    poll = Poll()
-    poll.initiator = auth.get_user(request)
-    poll.save()
-
-    draft = Draft()
-    draft.profile = profile
-    draft.save()
-
-    draft.poll.add(poll)
-    draft.save()
-
-    return poll

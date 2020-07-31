@@ -1,7 +1,7 @@
 import uuid
 
 from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
-    NeedPassPoll, CreatedPoll, Draft, SurveyWizard
+    NeedPassPoll, CreatedPoll, SurveyWizard
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import create_notifications
 from django.shortcuts import redirect, render
@@ -873,22 +873,10 @@ def build_questions(questions):
 
 
 def poll_create_redirect(request):
+    # TODO
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     profile = get_user_profile(request)
-    draft_polls = list(Draft.objects.get(profile=profile).poll.all())
-    if len(draft_polls) == 0:
-        poll = Poll()
-        poll.initiator = auth.get_user(request)
-        poll.save()
 
-        draft = Draft()
-        draft.profile = profile
-        draft.save()
-
-        draft.poll.add(poll)
-        draft.save()
-        return redirect('/poll/editor/{}/'.format(poll.id))
-
-    return redirect('/poll/editor/{}/'.format(draft_polls[0].id))
+    return redirect('/poll/editor/1/')

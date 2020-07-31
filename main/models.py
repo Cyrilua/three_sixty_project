@@ -206,15 +206,6 @@ class TemplatesPoll(models.Model):
         return self.name_poll
 
 
-class Draft(models.Model):
-    poll = models.ManyToManyField('Poll')
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = 'Draft'
-
-
 class Poll(models.Model):
     key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
@@ -223,9 +214,9 @@ class Poll(models.Model):
     respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
+    creation_date = models.DateField(null=True)
+    color = models.CharField(max_length=20, null=True)
     objects = models.Manager()
-    creation_date = models.DateField()
-    color = models.CharField()
 
     class Meta:
         db_table = "Poll"
