@@ -116,7 +116,7 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
-                    categoryContentBlock.insertAdjacentHTML('beforeend', response.newElems);
+                    categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                     countLoadedPolls += countNewEl;
                     categoryContentBlock.removeClass('loading');
                 },
