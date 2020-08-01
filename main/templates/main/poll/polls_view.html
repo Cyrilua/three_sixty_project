@@ -122,10 +122,12 @@
                 </div>
                 <div class="categories">
                     <div class="category-content">
-                        {% if data.polls %}
+                        {% if data.polls1 %}
                             {% include 'main/includes/item_polls.html' %}
                         {% else %}
-                            {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                            <div class="category-empty">
+                                {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}
+                            </div>
                         {% endif %}
                     </div>
                 </div>

@@ -118,6 +118,11 @@
 .content .polls .categories .category-content .poll-item:nth-child(3n) {
   margin-right: 0;
 }
+.content .polls .categories .category-content .category-empty {
+  display: flex;
+  width: 910px;
+  height: 200px;
+}
 
 .template-item {
   width: 190px;
