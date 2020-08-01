@@ -199,6 +199,7 @@ urlpatterns = [
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
                   path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
                   path('polls/loading/<int:count_polls>/', polls_view.loading_polls),
+                  path('polls/new_notif/', polls_view.load_notification_new_poll),
 
                  ############ Only for debug ###############
                  path('test/', test.test_ajax_request)

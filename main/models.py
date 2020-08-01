@@ -212,6 +212,7 @@ class RespondentPoll(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_viewed = models.BooleanField()
+    objects = models.Manager()
 
     class Meta:
         db_table = "RespondentPoll"

@@ -1,5 +1,5 @@
 from main.views.auxiliary_general_methods import *
-from main.models import CreatedPoll, Poll
+from main.models import CreatedPoll, Poll, RespondentPoll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
@@ -16,6 +16,7 @@ def polls_view(request) -> render:
             'polls': _build_my_polls(profile),
         },
     }
+    print('i started')
     return render(request, 'main/poll/polls_view.html', args)
 
 
@@ -84,3 +85,14 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
+
+
+def load_notification_new_poll(request) -> JsonResponse:
+    if request.is_ajax():
+        profile = get_user_profile(request)
+        polls = RespondentPoll.objects.filter(profile=profile, is_viewed=True)
+        len_polls = len(polls)
+        print(len_polls)
+        if len_polls > 0:
+            return JsonResponse({'notifications': len_polls})
+        return JsonResponse({}, status=200)
