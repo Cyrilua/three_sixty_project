@@ -106,7 +106,6 @@
 .content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 100px;
 }
 .content .polls .categories .category-content.hide {
   display: none;
@@ -353,6 +352,57 @@
   color: #595757;
   margin-top: 9px;
   margin-bottom: auto;
+}
+
+._preloader {
+  height: calc(100vh - 90px - 45px);
+  padding-top: 50px;
+}
+._preloader.small {
+  height: 100px;
+}
+._preloader ._preloader__sub {
+  display: flex;
+  justify-content: center;
+}
+._preloader ._preloader__sub ._loader {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  border-radius: 50%;
+  animation: 0.5s linear 0s infinite alternate load;
+  transform: translateY(-50%);
+}
+
+@keyframes load {
+  from {
+    width: 50px;
+    height: 50px;
+  }
+  to {
+    width: 10px;
+    height: 10px;
+  }
+}
+._updater {
+  width: 30px;
+  height: 30px;
+  margin: auto auto auto 20px;
+}
+._updater .update {
+  width: 30px;
+  height: 30px;
+  animation: 0.8s linear 0s infinite reverse looping;
+}
+
+@keyframes looping {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=polls_view.css.map */

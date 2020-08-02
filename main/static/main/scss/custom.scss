@@ -826,6 +826,11 @@ button {
   display: block;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
 //.height-auto,
 //.height-auto * {
 //  height: auto;
