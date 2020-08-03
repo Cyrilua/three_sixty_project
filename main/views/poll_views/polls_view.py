@@ -5,6 +5,7 @@ from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 
 def polls_view(request) -> render:
@@ -25,6 +26,7 @@ def polls_view(request) -> render:
             'my': len(args['data']['templates']['my'])
         }
     }
+    print(args['data']['templates']['my'])
     return render(request, 'main/poll/polls_view.html', args)
 
 
@@ -158,11 +160,17 @@ def load_notification_new_poll(request) -> JsonResponse:
         return JsonResponse({}, status=200)
 
 
-def remove_template(request, template_id) -> JsonResponse:
+@csrf_exempt
+def remove_template(request) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     if request.is_ajax():
+        print(request.POST)
+        try:
+            template_id = int(request.POST['id'])
+        except ValueError:
+            return JsonResponse({}, status=400)
         profile = get_user_profile(request)
         try:
             template: TemplatesPoll = TemplatesPoll.objects.get(id=template_id)
