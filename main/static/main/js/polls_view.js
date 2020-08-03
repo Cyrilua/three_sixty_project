@@ -31,6 +31,8 @@ $(function () {
 
     const showNews = $('.show-new-poll');
 
+    let unshowPolls = $('.unshow-polls');
+
     // Первый запуск
     run();
 
@@ -186,7 +188,7 @@ $(function () {
                     if (response.newElems && category === 'polls') {
                         showNews.removeClass('hide');
                         emptyBlock.addClass('hide');
-                        categoryContentBlock[0].insertAdjacentHTML('afterbegin', response.newElems);
+                        unshowPolls[0].insertAdjacentHTML('afterbegin', response.newElems);
                     }
                 } else {
                     pollsNotif.addClass('hide');
@@ -215,8 +217,9 @@ $(function () {
     // Показать новые опросы
     body.on('click', '.show-new-poll', function () {
         $(this).addClass('hide');
+        let newElems = unshowPolls.children('.poll-item');
+        categoryContentBlock[0].prepend(newElems);
         let newPolls = $('.new-poll');
-        newPolls.addClass('poll-item');
         newPolls.removeClass('new-poll');
 
     });
