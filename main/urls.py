@@ -194,12 +194,21 @@ urlpatterns = [
                   path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
+                  # Страница просмотра опросов и шаблонов
                   path('polls/', polls_view.polls_view, name='new_poll_view'),
+                  #
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
+                  #
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
+                  # Просмотр результата опроса
                   path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
+                  # Динамическая подгрузка опросов
                   path('polls/loading/<int:count_polls>/', polls_view.loading_polls),
+                  # Маячок о новом опросе для прохождения
                   path('polls/new_notif/', polls_view.load_notification_new_poll),
+                  # Создание нового опроса через шаблон
+                  path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
+                       name='create_poll_from_template'),
 
                  ############ Only for debug ###############
                  path('test/', test.test_ajax_request)

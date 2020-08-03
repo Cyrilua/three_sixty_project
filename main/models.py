@@ -176,7 +176,9 @@ class TemplatesPoll(models.Model):
     name_poll = models.CharField(max_length=50)
     description = models.CharField(max_length=500, null=True)
     is_general = models.BooleanField(default=False)
+    owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue
     objects = models.Manager()
 
     class Meta:

@@ -1,7 +1,7 @@
 from datetime import date
 
 from main.views.auxiliary_general_methods import *
-from main.models import CreatedPoll, Poll, NeedPassPoll
+from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
@@ -16,9 +16,36 @@ def polls_view(request) -> render:
         'title': "Опросы",
         'data': {
             'polls': _build_my_polls(profile),
+            'templates': _build_templates(profile)
         },
     }
+    args['data']['quatity'] = {
+        'templates': {
+            'general': len(args['data']['templates']['general']),
+            'my': len(args['data']['templates']['my'])
+        }
+    }
     return render(request, 'main/poll/polls_view.html', args)
+
+
+def _build_templates(profile: Profile) -> dict:
+    result = {
+        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True)],
+        'my': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=False,
+                                                                                        owner=profile)]
+    }
+    return result
+
+
+def _collect_template(template: TemplatesPoll):
+    collected_template = {
+        'name': template.name_poll,
+        'url': "/poll/editor/template/{}/".format(template.id),
+        'id': template.id
+    }
+    if not template.is_general:
+        collected_template['color']: template.color
+    return collected_template
 
 
 def _build_my_polls(profile: Profile) -> list:
