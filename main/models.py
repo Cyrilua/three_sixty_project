@@ -173,14 +173,9 @@ class Group(models.Model):
 
 
 class TemplatesPoll(models.Model):
-    TYPE_CHOICES = [
-        ('default', 0),
-        ('company', 1),
-        ('team', 2)
-    ]
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='default')
     name_poll = models.CharField(max_length=50)
     description = models.CharField(max_length=500, null=True)
+    is_general = models.BooleanField(default=False)
     questions = models.ManyToManyField('Questions')
     objects = models.Manager()
 
@@ -199,6 +194,7 @@ class Poll(models.Model):
     count_passed = models.IntegerField(default=0)
     creation_date = models.DateField(null=True)
     color = models.CharField(max_length=20, null=True)  # purple, red, blue
+    questions = models.ManyToManyField('Questions')
     objects = models.Manager()
 
     class Meta:
@@ -208,7 +204,7 @@ class Poll(models.Model):
         return self.name_poll
 
 
-class RespondentPoll(models.Model):
+class NeedPassPoll(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_viewed = models.BooleanField()
@@ -234,7 +230,6 @@ class CreatedPoll(models.Model):
 
 
 class Questions(models.Model):
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     objects = models.Manager()
