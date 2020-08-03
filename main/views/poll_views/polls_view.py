@@ -160,13 +160,11 @@ def load_notification_new_poll(request) -> JsonResponse:
         return JsonResponse({}, status=200)
 
 
-@csrf_exempt
 def remove_template(request) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     if request.is_ajax():
-        print(request.POST)
         try:
             template_id = int(request.POST['id'])
         except ValueError:
