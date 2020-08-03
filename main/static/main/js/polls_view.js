@@ -59,6 +59,7 @@ $(function () {
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
         sortType = sortable.value;
+        console.log(sortType)
         sortable.listen('MDCSelect:change', () => {
             if (currentSortable !== sortable.value) {
                 currentSortable = sortable.value;
@@ -321,6 +322,7 @@ $(function () {
                 // preloader.removeClass('hidden');
                 // preloader.addClass('small');
             }
+            console.log(sortType)
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
