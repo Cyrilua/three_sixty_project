@@ -415,14 +415,13 @@
   cursor: pointer;
 }
 .show-new-poll:hover .label .up {
-  transition: 500ms up;
+  animation: 0.5s linear infinite up;
 }
 .show-new-poll .label {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 @keyframes up {
   from {
     transform: translateY(0);
