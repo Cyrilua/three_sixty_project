@@ -29,6 +29,8 @@ $(function () {
     const preloader = $('._preloader');
     const updater = $('._updater');
 
+    const showNews = $('.show-new-poll');
+
     // Первый запуск
     run();
 
@@ -161,6 +163,12 @@ $(function () {
         })
     });
 
+    // body.on('click', '.poll-item', function () {
+    //     $(this).removeClass('poll-item')
+    //     $(this).addClass('new-poll')
+    //     // $(this).remove()
+    // })
+
     // Проверка новых опросов для прохождения (каждую сеекунду)
     setInterval(function () {
         $.ajax({
@@ -174,7 +182,9 @@ $(function () {
                     pollsNotif.text(response.notifications);
                     pollsNotif.removeClass('hide');
                     console.log(response.newElems)
-                    if (response.newElems) {
+                    if (response.newElems && category === 'polls') {
+                        showNews.removeClass('hide');
+                        emptyBlock.addClass('hide');
                         categoryContentBlock[0].insertAdjacentHTML('afterbegin', response.newElems);
                     }
                 } else {
@@ -200,6 +210,15 @@ $(function () {
             },
         });
     }, 1000);
+
+    // Показать новые опросы
+    body.on('click', '.show-new-poll', function () {
+        $(this).addClass('hide');
+        let newPolls = $('.new-poll');
+        newPolls.addClass('poll-item');
+        newPolls.removeClass('new-poll');
+
+    });
 
     // Подгрузка данных при изменении размера экрана (частный случай)
     $(window).resize(function () {
