@@ -121,6 +121,8 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         except TypeError:
             return JsonResponse({}, status=400)
         response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
+        print(response)
+
         return JsonResponse({'newElems': response}, status=200)
 
 
@@ -131,6 +133,7 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
         }
     }
     created_polls = CreatedPoll.objects.filter(profile=profile)
+    print(len(created_polls))
     for created_poll in created_polls:
         if count_loaded_polls > 0:
             count_loaded_polls -= 1
