@@ -106,16 +106,16 @@
 .content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 .content .polls .categories .category-content.hide {
   display: none;
 }
 .content .polls .categories .category-content .poll-item {
   margin-bottom: 20px;
-  margin-right: 20px;
 }
-.content .polls .categories .category-content .poll-item:nth-child(3n) {
-  margin-right: 0;
+.content .polls .categories .category-content .poll-item.new-poll {
+  display: none;
 }
 .content .polls .categories .category-content .category-empty {
   display: flex;
