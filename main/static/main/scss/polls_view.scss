@@ -539,3 +539,37 @@
     transform: rotate(360deg);
   }
 }
+
+.show-new-poll {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover {
+    .label {
+      .up {
+        transition: 500ms up;
+      }
+    }
+  }
+
+  .label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@keyframes up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}

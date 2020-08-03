@@ -127,7 +127,15 @@
                     </div>
                 </div>
                 <div class="categories">
+                    <div class="show-new-poll rounded-block">
+                        <div class="label">
+                            <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
+                            <span class="text">Показать новые опросы</span>
+                            <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
+                        </div>
+                    </div>
                     <div class="category-content{% if not data.polls %}full{% endif %}">
+
                         {% if data.polls %}
                             {% include 'main/includes/item_polls.html' %}
                         {% else %}
