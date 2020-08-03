@@ -116,6 +116,7 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
+        print(request.GET)
         try:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:

@@ -329,7 +329,7 @@ $(function () {
                 data: {
                     count: countNewEl,
                     type: category,
-                    sorted: sortType,
+                    sort: sortType,
                 },
                 success: function (response) {
                     if (response.newElems !== '') {
