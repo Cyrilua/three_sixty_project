@@ -1,5 +1,7 @@
+from datetime import date
+
 from main.views.auxiliary_general_methods import *
-from main.models import CreatedPoll, Poll, RespondentPoll
+from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
@@ -14,10 +16,38 @@ def polls_view(request) -> render:
         'title': "Опросы",
         'data': {
             'polls': _build_my_polls(profile),
+            'templates': _build_templates(profile)
         },
     }
-    print('i started')
+    args['data']['quatity'] = {
+        'templates': {
+            'general': len(args['data']['templates']['general']),
+            'my': len(args['data']['templates']['my'])
+        }
+    }
+    print(args['data']['templates']['my'])
     return render(request, 'main/poll/polls_view.html', args)
+
+
+def _build_templates(profile: Profile) -> dict:
+    result = {
+        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True)],
+        'my': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=False,
+                                                                                        owner=profile)]
+    }
+    return result
+
+
+def _collect_template(template: TemplatesPoll):
+    collected_template = {
+        'name': template.name_poll,
+        'url': "/poll/editor/template/{}/".format(template.id),
+        'id': template.id
+    }
+    print(template.is_general)
+    if not template.is_general:
+        collected_template['color'] = template.color
+    return collected_template
 
 
 def _build_my_polls(profile: Profile) -> list:
@@ -38,7 +68,7 @@ def _build_poll(poll: Poll):
     collected_poll = {
         'title': poll.name_poll,
         'answers_count': poll.count_passed,
-        'date': poll.creation_date,
+        'date': _build_date(poll.creation_date),
         'url': '/poll/result/{}/'.format(poll.id)
     }
     if poll.color is not None:
@@ -49,7 +79,36 @@ def _build_poll(poll: Poll):
         'surname': target.surname,
         'patronymic': target.patronymic
     }
+    _build_date(poll.creation_date)
     return collected_poll
+
+
+def _build_date(poll_date: date) -> dict:
+    months = {
+        1: "января",
+        2: "февраля",
+        3: "марта",
+        4: "апреля",
+        5: "мая",
+        6: "июня",
+        7: "июля",
+        8: "августа",
+        9: "сентября",
+        10: "октября",
+        11: "ноября",
+        12: "декабря"
+    }
+
+    try:
+        month = months[poll_date.month]
+    except:
+        return None
+    result = {
+        'day': poll_date.day,
+        'month': month,
+        'year': poll_date.year
+    }
+    return result
 
 
 def loading_polls(request, count_polls: int) -> JsonResponse:
@@ -58,9 +117,7 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:
             return JsonResponse({}, status=400)
-        print('i am here')
         response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
-        print(response)
         return JsonResponse({'newElems': response}, status=200)
 
 
@@ -90,9 +147,8 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
 def load_notification_new_poll(request) -> JsonResponse:
     if request.is_ajax():
         profile = get_user_profile(request)
-        polls = RespondentPoll.objects.filter(profile=profile, is_viewed=True)
+        polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=True)
         len_polls = len(polls)
-        print(len_polls)
         if len_polls > 0:
             return JsonResponse({'notifications': len_polls})
         return JsonResponse({}, status=200)
