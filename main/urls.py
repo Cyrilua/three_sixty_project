@@ -209,6 +209,8 @@ urlpatterns = [
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
                        name='create_poll_from_template'),
+                  # Удаление шаблона
+                  path('polls/template/remove/', polls_view.remove_template),
 
                  ############ Only for debug ###############
                  path('test/', test.test_ajax_request)
