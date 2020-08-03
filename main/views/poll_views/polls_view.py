@@ -116,13 +116,16 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
+        print(request.GET)
         try:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:
             return JsonResponse({}, status=400)
-        response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
-        print(response)
 
+        type = request.GET['type']  # polls, myPolls
+        sort = request.GET['sort']  # date, name, quantity
+
+        response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
         return JsonResponse({'newElems': response}, status=200)
 
 
@@ -133,7 +136,6 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
         }
     }
     created_polls = CreatedPoll.objects.filter(profile=profile)
-    print(len(created_polls))
     for created_poll in created_polls:
         if count_loaded_polls > 0:
             count_loaded_polls -= 1
@@ -148,6 +150,23 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
+
+
+def _sort_NeedPassPoll_by_type(polls: NeedPassPoll, type):
+    def sort_by_date(poll):
+        return poll.creation_date
+
+    def sort_by_name(poll):
+        return poll.name_poll
+
+    def sort_by_quantity(poll):
+        return poll.count_passed
+
+    choose_type = {
+        'date': sort_by_date(),
+    }
+
+    polls.sort()
 
 
 def load_notification_new_poll(request) -> JsonResponse:
