@@ -25,6 +25,7 @@ def polls_view(request) -> render:
             'my': len(args['data']['templates']['my'])
         }
     }
+    print(args['data']['templates']['my'])
     return render(request, 'main/poll/polls_view.html', args)
 
 
@@ -43,8 +44,9 @@ def _collect_template(template: TemplatesPoll):
         'url': "/poll/editor/template/{}/".format(template.id),
         'id': template.id
     }
+    print(template.is_general)
     if not template.is_general:
-        collected_template['color']: template.color
+        collected_template['color'] = template.color
     return collected_template
 
 
