@@ -105,7 +105,7 @@ $(function () {
                 id: id,
             },
             success: function () {
-                $(el.target).parent().parent().remove();
+                $(el.target).parent().parent().parent().parent().remove();
                 if (myTemplates.children('.template-item').length < 1) {
                     myTemplatesBlock.addClass('hide');
                 }

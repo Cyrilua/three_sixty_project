@@ -123,6 +123,7 @@ $(function () {
         $(updPhoto).trigger('click');
     });
 
+    // Обновление фото
     body.on('change', '.upd-photo', function () {
         let files = this.files;
         console.log(files)
@@ -138,7 +139,10 @@ $(function () {
         $.ajax({
             url: 'edit/photo/update',
             type: 'post',
-            data: data,
+            data: {
+                data: data,
+                csrfmiddlewaretoken: csrf,
+            },
             cache: false,
             // отключаем обработку передаваемых данных, пусть передаются как есть
             processData: false,
