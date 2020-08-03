@@ -98,9 +98,11 @@ $(function () {
     body.on('click', '.delete', function (el) {
         let id = this.getAttribute('data-id');
         $.ajax({
-            url: `template/${id}/remove/`,
+            url: `template//remove/`,
             type: 'post',
-            data: {},
+            data: {
+                id: id,
+            },
             success: function () {
                 $(el.target).parent().parent().remove();
                 if (myTemplates.children('.template-item').length < 1) {
