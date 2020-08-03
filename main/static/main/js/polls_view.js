@@ -96,11 +96,12 @@ $(function () {
 
     // Удаление шаблонов
     body.on('click', '.delete', function (el) {
-        let id = this.getAttribute('data-id');
+        let id = $(this).parent().attr('data-id');
         $.ajax({
             url: `template/remove/`,
             type: 'post',
             data: {
+                csrfmiddlewaretoken: csrf,
                 id: id,
             },
             success: function () {
@@ -129,11 +130,14 @@ $(function () {
         });
     });
 
+    // Создание нового опроса/шаблона
     body.on('click', '.template-new', function () {
         $.ajax({
             url: 'poll/create/',
             type: 'post',
-            data: {},
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
             success: function (response) {
                 window.location.href = response.urlNewPoll;
             },
