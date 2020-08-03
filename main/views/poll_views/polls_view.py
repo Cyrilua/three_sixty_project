@@ -26,7 +26,6 @@ def polls_view(request) -> render:
             'my': len(args['data']['templates']['my'])
         }
     }
-    print(args['data']['templates']['my'])
     return render(request, 'main/poll/polls_view.html', args)
 
 
@@ -116,16 +115,18 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
+        profile = get_user_profile(request)
         print(request.GET)
         try:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:
             return JsonResponse({}, status=400)
 
-        type = request.GET['type']  # polls, myPolls
-        sort = request.GET['sort']  # date, name, quantity
-
-        response = _pre_render_item_polls(get_user_profile(request), count_polls, count_will_loaded_polls)
+        #type = request.GET['type']  # polls, myPolls
+        #sort = request.GET['sort']  # date, name, quantity
+        #polls = [i.poll for i in CreatedPoll.objects.filter(profile=profile)]
+        #result = _sort_CreatedPoll_by_type(polls, sort)
+        response = _pre_render_item_polls(profile, count_polls, count_will_loaded_polls)
         return JsonResponse({'newElems': response}, status=200)
 
 
@@ -152,21 +153,25 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
     return result
 
 
-def _sort_NeedPassPoll_by_type(polls: NeedPassPoll, type):
-    def sort_by_date(poll):
+def _sort_CreatedPoll_by_type(polls: list, type) -> list:
+    def sort_by_date(poll: Poll):
         return poll.creation_date
 
-    def sort_by_name(poll):
+    def sort_by_name(poll: Poll):
         return poll.name_poll
 
-    def sort_by_quantity(poll):
+    def sort_by_quantity(poll: Poll):
         return poll.count_passed
 
     choose_type = {
-        'date': sort_by_date(),
+        'date': sort_by_date,
+        'name': sort_by_name,
+        'quantity': sort_by_quantity
     }
-
-    polls.sort()
+    res = polls.sort(key=choose_type[type])
+    print(polls)
+    print(res)
+    return polls
 
 
 def load_notification_new_poll(request) -> JsonResponse:

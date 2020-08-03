@@ -203,7 +203,7 @@ class Poll(models.Model):
         db_table = "Poll"
 
     def __str__(self):
-        return self.name_poll
+        return "{} : {}".format(self.name_poll, self.creation_date)
 
 
 class NeedPassPoll(models.Model):
