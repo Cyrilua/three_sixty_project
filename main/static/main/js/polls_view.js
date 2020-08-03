@@ -98,7 +98,7 @@ $(function () {
     body.on('click', '.delete', function (el) {
         let id = this.getAttribute('data-id');
         $.ajax({
-            url: `template//remove/`,
+            url: `template/remove/`,
             type: 'post',
             data: {
                 id: id,
