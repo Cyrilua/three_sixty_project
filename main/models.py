@@ -22,7 +22,7 @@ class Profile (models.Model):
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {}'.format(self.fullname)
+        return 'Profile for user {}'.format(self.user.username)
 
 
 class BirthDate(models.Model):
