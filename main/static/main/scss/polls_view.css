@@ -106,21 +106,26 @@
 .content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .content .polls .categories .category-content.hide {
   display: none;
 }
 .content .polls .categories .category-content .poll-item {
   margin-bottom: 20px;
+  margin-right: 20px;
 }
-.content .polls .categories .category-content .poll-item.new-poll {
-  display: none;
+.content .polls .categories .category-content .poll-item:nth-child(3n) {
+  margin-right: 0;
 }
 .content .polls .categories .category-content .category-empty {
   display: flex;
   width: 910px;
   height: 200px;
+}
+
+.new-poll {
+  display: none;
 }
 
 .template-item {
@@ -413,6 +418,9 @@
   margin-bottom: 20px;
   padding: 0;
   cursor: pointer;
+}
+.show-new-poll.hide {
+  display: none;
 }
 .show-new-poll:hover .label .up {
   animation: 0.5s linear infinite up;

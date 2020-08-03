@@ -165,7 +165,7 @@
       .category-content {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-start;
         //margin-bottom: 100px;
 
         &.hide {
@@ -174,10 +174,13 @@
 
         .poll-item {
           margin-bottom: 20px;
+          margin-right: 20px;
 
-          &.new-poll {
-            display: none;
+          &:nth-child(3n) {
+            margin-right: 0;
           }
+
+
         }
 
         .category-empty {
@@ -188,6 +191,10 @@
       }
     }
   }
+}
+
+.new-poll {
+  display: none;
 }
 
 .template-item {
@@ -549,6 +556,10 @@
   margin-bottom: 20px;
   padding: 0;
   cursor: pointer;
+
+  &.hide {
+    display: none;
+  }
 
   &:hover {
     .label {

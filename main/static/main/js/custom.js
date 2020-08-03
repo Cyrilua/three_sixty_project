@@ -106,6 +106,5 @@ $(function () {
             let href = $(this).attr('data-href');
             $(location).attr({'href': href});
         }
-
     })
 });
