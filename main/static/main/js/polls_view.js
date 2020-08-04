@@ -22,7 +22,7 @@ $(function () {
     let sortable = $('.sort');
     let startPositionSortable = sortable[0].getBoundingClientRect().y;
     let scrollSortable = startPositionSortable;
-    window.scrollTo(0, prevScroll);
+    // window.scrollTo(0, prevScroll);
 
     let pollsNotif = $('#polls-notif');
 
@@ -447,26 +447,31 @@ $(function () {
     function run() {
         // console.log('cehck')
 
+        // Загрузка первоначальных опросов
+        let heightClient = document.documentElement.clientHeight;
+        let firstPartPolls = Math.ceil(heightClient / 370) + 9;
+        loading(firstPartPolls);
+
         // Подгрузка данных, если был скролл и перезагрузка страницы (f5)
-        scrollHeight = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        prevScrollHeight = currentScrollHeight;
-        currentScrollHeight = window.pageYOffset;
-        console.log(prevScrollHeight < currentScrollHeight, prevScrollHeight, currentScrollHeight)
-        if (prevScrollHeight < currentScrollHeight &&
-            currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
-            !categoryContentBlock.hasClass('loading') &&
-            !categoryContentBlock.hasClass('full')) {
-            console.log(true)
-            console.log('---')
-            console.log(countLoadedPolls)
-            console.log(sortType)
-            console.log(category)
-            loading(9);
-        }
+        // scrollHeight = Math.max(
+        //     document.body.scrollHeight, document.documentElement.scrollHeight,
+        //     document.body.offsetHeight, document.documentElement.offsetHeight,
+        //     document.body.clientHeight, document.documentElement.clientHeight
+        // );
+        // prevScrollHeight = currentScrollHeight;
+        // currentScrollHeight = window.pageYOffset;
+        // console.log(prevScrollHeight < currentScrollHeight, prevScrollHeight, currentScrollHeight)
+        // if (prevScrollHeight < currentScrollHeight &&
+        //     currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
+        //     !categoryContentBlock.hasClass('loading') &&
+        //     !categoryContentBlock.hasClass('full')) {
+        //     console.log(true)
+        //     console.log('---')
+        //     console.log(countLoadedPolls)
+        //     console.log(sortType)
+        //     console.log(category)
+        //     loading(9);
+        // }
 
         // Просмотр нового опроса
         if (category === 'polls') {

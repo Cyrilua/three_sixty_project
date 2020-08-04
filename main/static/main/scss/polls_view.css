@@ -115,13 +115,15 @@
   margin-bottom: 20px;
   margin-right: 20px;
 }
-.content .polls .categories .category-content .poll-item:nth-child(3n) {
+.content .polls .categories .category-content .poll-item:nth-of-type(3n) {
   margin-right: 0;
 }
 .content .polls .categories .category-content .category-empty {
-  display: flex;
   width: 910px;
   height: 200px;
+}
+.content .polls .categories .category-content .category-empty .hide {
+  display: none;
 }
 
 .new-poll {
