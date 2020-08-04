@@ -58,9 +58,6 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:
             return JsonResponse({}, status=400)
-
-        count_will_loaded_polls = 9
-
         type_polls = request.GET['type']  # polls, myPolls
         sort = request.GET['sort']  # date, name, quantity
         response = _get_render_sorted_polls_or_bad_search(profile, type_polls, sort, count_polls,
@@ -175,7 +172,6 @@ def load_notification_new_poll(request) -> JsonResponse:
         profile = get_user_profile(request)
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
-        print(count_polls)
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls})
         return JsonResponse({}, status=200)
