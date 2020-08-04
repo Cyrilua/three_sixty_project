@@ -59,8 +59,8 @@ $(function () {
                 categoryContentBlock.removeClass('full');
                 let heightClient = document.documentElement.clientHeight;
                 let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-                console.log(partPolls)
-                loading(partPolls);
+                // console.log(partPolls)
+                loading(partPolls, scroll);
             }
         });
     }
@@ -87,7 +87,7 @@ $(function () {
             categoryContentBlock.removeClass('full');
             let heightClient = document.documentElement.clientHeight;
             let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-            loading(partPolls);
+            loading(partPolls, scroll);
         }
     });
 
@@ -326,7 +326,9 @@ $(function () {
             sortable.addClass('disabled');
             updater.removeClass('hide');
             // preloader.removeClass('hide');
+            // console.log(scroll)
             if (scroll) {
+                // console.log("chech")
                 preloader.removeClass('hide');
                 window.scrollTo(0, 0);
                 window.scrollTo(0, scroll);
@@ -344,7 +346,7 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
-                    console.log(response.newElems)
+                    // console.log(response.newElems)
                     if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         // countLoadedPolls += response.countNewElems;
