@@ -17,7 +17,7 @@ $(function () {
     let currentScrollHeight = 0;
     let prevScrollHeight = window.scrollY;
 
-    let prevScroll = window.scrollY;
+    // let prevScroll = window.scrollY;
     window.scrollTo(0, 0);
     let sortable = $('.sort');
     let startPositionSortable = sortable[0].getBoundingClientRect().y;
