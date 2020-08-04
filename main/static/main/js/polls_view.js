@@ -57,7 +57,9 @@ $(function () {
                 let scroll = startPositionSortable - scrollSortable;
 
                 categoryContentBlock.removeClass('full');
-                loading(9, scroll);
+                let heightClient = document.documentElement.clientHeight;
+                let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+                loading(partPolls);
             }
         });
     }
@@ -82,7 +84,9 @@ $(function () {
             let scroll = startPositionSortable - scrollSortable;
 
             categoryContentBlock.removeClass('full');
-            loading(9, scroll);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
     });
 
