@@ -50,7 +50,7 @@ def _collect_template(template: TemplatesPoll) -> dict:
 
 def _build_my_polls(profile: Profile) -> list:
     count_loaded_polls = 9
-    created_polls = CreatedPoll.objects.filter(profile=profile).order_by('-poll__creation_date')[:count_loaded_polls]
+    created_polls = CreatedPoll.objects.filter(profile=profile).order_by('poll__creation_date')[:count_loaded_polls]
     result_polls = []
     for created_poll in created_polls:
         collected_poll = _build_poll(created_poll.poll)
@@ -118,10 +118,16 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
             return JsonResponse({}, status=400)
 
         type = request.GET['type']  # polls, myPolls
-        sort = request.GET['sort']  # date, name, quantity
-        polls = [i.poll for i in CreatedPoll.objects.filter(profile=profile)]
-        sorted_result = _sort_poll_by_type(polls, sort)
-        response = _pre_render_item_polls(sorted_result, count_polls, count_will_loaded_polls)
+        try:
+            sort = request.GET['sort']  # date, name, quantity
+        except KeyError:
+            pass
+            #polls = CreatedPoll.objects.filter(profile=profile).order_by('poll__creation_date')[count_polls:count_will_loaded_polls]
+        else:
+            pass
+        polls = CreatedPoll.objects.filter(profile=profile).order_by('poll__creation_date')[
+                count_polls:count_will_loaded_polls]
+        response = _pre_render_item_polls(polls, count_polls, count_will_loaded_polls)
         return JsonResponse({'newElems': response}, status=200)
 
 
@@ -131,16 +137,8 @@ def _pre_render_item_polls(polls: list, count_loaded_polls, count_will_loaded_po
             'polls': []
         }
     }
-    for poll in polls:
-        if count_loaded_polls > 0:
-            count_loaded_polls -= 1
-            continue
-        else:
-            if count_will_loaded_polls > 0:
-                count_will_loaded_polls -= 1
-            else:
-                break
-        collected_poll = _build_poll(poll)
+    for poll in polls[count_loaded_polls:count_will_loaded_polls]:
+        collected_poll = _build_poll(poll.poll)
         args['data']['polls'].append(collected_poll)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
@@ -172,7 +170,8 @@ def load_notification_new_poll(request) -> JsonResponse:
 
     if request.is_ajax():
         profile = get_user_profile(request)
-        count_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
+        polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
+        count_polls = polls.count()
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls})
         return JsonResponse({}, status=200)
