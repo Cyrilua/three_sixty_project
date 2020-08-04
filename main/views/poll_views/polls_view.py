@@ -71,17 +71,15 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
 def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, sort: str, count_loaded_polls: int,
                                            count_will_loaded_polls: int) -> JsonResponse:
     choose_parameter_ordering = {
-        'date': "poll__creation_date",
+        'date': "-poll__creation_date",
         'name': "poll__name_poll",
-        'quantity': "poll__count_passed"
+        'quantity': "-poll__count_passed"
     }
 
     try:
         parameter_ordering = choose_parameter_ordering[sort]
     except KeyError:
         return JsonResponse({}, status=400)
-    print(count_loaded_polls)
-    print(count_will_loaded_polls)
     if type_polls == 'myPolls':
         polls = CreatedPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
                 count_loaded_polls:count_will_loaded_polls + count_loaded_polls]
@@ -102,8 +100,6 @@ def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, so
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
 
     result = _pre_render_item_polls(polls)
-    print(count_polls < count_will_loaded_polls - 1)
-    print(count_polls)
     if count_polls < count_will_loaded_polls - 1:
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
     return JsonResponse({'newElems': result, 'is_last': False}, status=200)
@@ -179,6 +175,7 @@ def load_notification_new_poll(request) -> JsonResponse:
         profile = get_user_profile(request)
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
+        print(count_polls)
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls})
         return JsonResponse({}, status=200)
