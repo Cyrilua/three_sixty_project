@@ -212,7 +212,7 @@ urlpatterns = [
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   #
-                  path('polls/viewing/<int:poll_id>/', polls_view.mark_as_viewed),
+                  path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
                  path('test/', test.test_ajax_request)
