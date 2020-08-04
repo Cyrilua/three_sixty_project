@@ -59,6 +59,7 @@ $(function () {
                 categoryContentBlock.removeClass('full');
                 let heightClient = document.documentElement.clientHeight;
                 let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+                console.log(partPolls)
                 loading(partPolls);
             }
         });
