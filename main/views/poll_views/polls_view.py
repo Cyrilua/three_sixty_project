@@ -5,7 +5,6 @@ from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 
 def polls_view(request) -> render:
@@ -50,14 +49,10 @@ def _collect_template(template: TemplatesPoll) -> dict:
 
 
 def _build_my_polls(profile: Profile) -> list:
-    created_polls = CreatedPoll.objects.filter(profile=profile)
-    result_polls = []
     count_loaded_polls = 9
+    created_polls = CreatedPoll.objects.filter(profile=profile).order_by('-poll__creation_date')[:count_loaded_polls]
+    result_polls = []
     for created_poll in created_polls:
-        if count_loaded_polls > 0:
-            count_loaded_polls -= 1
-        else:
-            break
         collected_poll = _build_poll(created_poll.poll)
         result_polls.append(collected_poll)
     return result_polls
@@ -100,7 +95,7 @@ def _build_date(poll_date: date) -> dict:
 
     try:
         month = months[poll_date.month]
-    except:
+    except KeyError:
         return None
     result = {
         'day': poll_date.day,
@@ -122,22 +117,21 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         except TypeError:
             return JsonResponse({}, status=400)
 
-        #type = request.GET['type']  # polls, myPolls
-        #sort = request.GET['sort']  # date, name, quantity
-        #polls = [i.poll for i in CreatedPoll.objects.filter(profile=profile)]
-        #result = _sort_CreatedPoll_by_type(polls, sort)
-        response = _pre_render_item_polls(profile, count_polls, count_will_loaded_polls)
+        type = request.GET['type']  # polls, myPolls
+        sort = request.GET['sort']  # date, name, quantity
+        polls = [i.poll for i in CreatedPoll.objects.filter(profile=profile)]
+        sorted_result = _sort_poll_by_type(polls, sort)
+        response = _pre_render_item_polls(sorted_result, count_polls, count_will_loaded_polls)
         return JsonResponse({'newElems': response}, status=200)
 
 
-def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_loaded_polls) -> str:
+def _pre_render_item_polls(polls: list, count_loaded_polls, count_will_loaded_polls) -> str:
     args = {
         'data': {
             'polls': []
         }
     }
-    created_polls = CreatedPoll.objects.filter(profile=profile)
-    for created_poll in created_polls:
+    for poll in polls:
         if count_loaded_polls > 0:
             count_loaded_polls -= 1
             continue
@@ -146,14 +140,14 @@ def _pre_render_item_polls(profile: Profile, count_loaded_polls, count_will_load
                 count_will_loaded_polls -= 1
             else:
                 break
-        collected_poll = _build_poll(created_poll.poll)
+        collected_poll = _build_poll(poll)
         args['data']['polls'].append(collected_poll)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
 
 
-def _sort_CreatedPoll_by_type(polls: list, type) -> list:
+def _sort_poll_by_type(polls: list, sorting_type) -> list:
     def sort_by_date(poll: Poll):
         return poll.creation_date
 
@@ -168,9 +162,7 @@ def _sort_CreatedPoll_by_type(polls: list, type) -> list:
         'name': sort_by_name,
         'quantity': sort_by_quantity
     }
-    res = polls.sort(key=choose_type[type])
-    print(polls)
-    print(res)
+    polls.sort(key=choose_type[sorting_type])
     return polls
 
 
@@ -180,10 +172,9 @@ def load_notification_new_poll(request) -> JsonResponse:
 
     if request.is_ajax():
         profile = get_user_profile(request)
-        polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=True)
-        len_polls = len(polls)
-        if len_polls > 0:
-            return JsonResponse({'notifications': len_polls})
+        count_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
+        if count_polls > 0:
+            return JsonResponse({'notifications': count_polls})
         return JsonResponse({}, status=200)
 
 
