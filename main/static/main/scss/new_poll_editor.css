@@ -41,6 +41,7 @@
 .editor .editor__category .substrate .color {
   display: flex;
   flex-direction: row;
+  margin: auto 0 auto auto;
 }
 .editor .editor__category .substrate .color .color__variable {
   width: 35px;
