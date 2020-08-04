@@ -173,8 +173,8 @@ def load_notification_new_poll(request) -> JsonResponse:
         profile = get_user_profile(request)
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
-        print(count_polls)
         rendered_polls = _render_new_not_viewed_polls(polls)
+        print(rendered_polls)
 
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls, 'newElems': rendered_polls}, status=200)
