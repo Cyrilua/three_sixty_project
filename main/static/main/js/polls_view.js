@@ -339,8 +339,8 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
-                    // console.log(response.newElems)
-                    if (response.newElems !== '') {
+                    console.log(response.newElems)
+                    if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         // countLoadedPolls += response.countNewElems;
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
