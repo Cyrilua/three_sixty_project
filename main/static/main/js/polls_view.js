@@ -37,11 +37,11 @@ $(function () {
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
         sortType = sortable.value;
-        console.log(sortType)
+        // console.log(sortType)
         sortable.listen('MDCSelect:change', () => {
             if (currentSortable !== sortable.value) {
                 currentSortable = sortable.value;
-                console.log(sortable.value)
+                // console.log(sortable.value)
 
                 // prevScrollSortable = scrollSortable;
 
@@ -85,7 +85,6 @@ $(function () {
             loading(9, scroll);
         }
     });
-
 
     // Больше шаблонов
     body.on('click', '.more', function (el) {
@@ -240,11 +239,11 @@ $(function () {
             currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
             !categoryContentBlock.hasClass('loading') &&
             !categoryContentBlock.hasClass('full')) {
-            console.log(true)
-            console.log('---')
-            console.log(countLoadedPolls)
-            console.log(sortType)
-            console.log(category)
+            // console.log(true)
+            // console.log('---')
+            // console.log(countLoadedPolls)
+            // console.log(sortType)
+            // console.log(category)
             loading(9);
         }
     });
@@ -262,11 +261,11 @@ $(function () {
             currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
             !categoryContentBlock.hasClass('loading') &&
             !categoryContentBlock.hasClass('full')) {
-            console.log(true)
-            console.log('---')
-            console.log(countLoadedPolls)
-            console.log(sortType)
-            console.log(category)
+            // console.log(true)
+            // console.log('---')
+            // console.log(countLoadedPolls)
+            // console.log(sortType)
+            // console.log(category)
             loading(9);
         }
         // console.log(document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -290,7 +289,7 @@ $(function () {
                 // console.log(noViewed[i])
                 visible(noViewed[i]);
             }
-            console.log('----------------------------------')
+            // console.log('----------------------------------')
         }
     });
     $(window).resize(function () {
@@ -302,7 +301,7 @@ $(function () {
                 // console.log(noViewed[i])
                 visible(noViewed[i]);
             }
-            console.log('----------------------------------')
+            // console.log('----------------------------------')
         }
     });
 
@@ -336,23 +335,24 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
+                    // console.log(response.newElems)
                     if (response.newElems !== '') {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         // countLoadedPolls += response.countNewElems;
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
                     }
-                    console.log(response.is_last)
-                    console.log(response.is_empty)
+                    // console.log(response.is_last)
+                    // console.log(response.is_empty)
                     if (response.is_last) {
                         categoryContentBlock.addClass('full');
                     } else {
                         categoryContentBlock.remove('full');
                     }
-                    if (response.is_empty) {
-                        emptyBlock.removeClass('hide');
-                    } else {
-                        emptyBlock.addClass('hide');
-                    }
+                    // if (response.is_empty) {
+                    //     emptyBlock.removeClass('hide');
+                    // } else {
+                    //     emptyBlock.addClass('hide');
+                    // }
                 },
                 complete: function () {
                     categoryContentBlock.removeClass('loading');
