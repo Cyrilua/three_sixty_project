@@ -53,7 +53,6 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
 
     if request.is_ajax():
         profile = get_user_profile(request)
-        print(request.GET)
         try:
             count_will_loaded_polls = int(request.GET['count'])
         except TypeError:
@@ -111,6 +110,8 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
     for rendered_poll in rendered_polls:
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
+        if type(rendered_poll) == 'main.models.NeedPassPoll':
+            collected_poll['is_viewed'] = rendered_poll.is_viewed
         args['data']['polls'].append(collected_poll)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
@@ -122,7 +123,7 @@ def _build_poll(poll: Poll) -> dict:
         'title': poll.name_poll,
         'answers_count': poll.count_passed,
         'date': _build_date(poll.creation_date),
-        'url': '/poll/result/{}/'.format(poll.id)
+        'url': '/poll/result/{}/'.format(poll.id),
     }
     if poll.color is not None:
         collected_poll['color'] = poll.color
@@ -172,9 +173,34 @@ def load_notification_new_poll(request) -> JsonResponse:
         profile = get_user_profile(request)
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
+        print(count_polls)
+        rendered_polls = _render_new_not_viewed_polls(polls)
+
         if count_polls > 0:
-            return JsonResponse({'notifications': count_polls})
+            return JsonResponse({'notifications': count_polls, 'newElems': rendered_polls}, status=200)
         return JsonResponse({}, status=200)
+
+
+def _render_new_not_viewed_polls(rendered_polls):
+    args = {
+        'data': {
+            'polls': []
+        }
+    }
+    for rendered_poll in rendered_polls.filter(is_rendered=False):
+        rendered_poll: NeedPassPoll
+
+        poll = rendered_poll.poll
+        collected_poll = _build_poll(poll)
+        collected_poll['is_viewed'] = rendered_poll.is_viewed
+        collected_poll['is_new'] = True
+        args['data']['polls'].append(collected_poll)
+
+        rendered_poll.is_rendered = True
+        rendered_poll.save()
+    response = SimpleTemplateResponse('main/includes/item_polls.html', args)
+    result = response.rendered_content
+    return result
 
 
 def remove_template(request) -> JsonResponse:
