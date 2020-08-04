@@ -117,51 +117,50 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         except TypeError:
             return JsonResponse({}, status=400)
 
-        type = request.GET['type']  # polls, myPolls
-        try:
-            sort = request.GET['sort']  # date, name, quantity
-        except KeyError:
-            pass
-            #polls = CreatedPoll.objects.filter(profile=profile).order_by('poll__creation_date')[count_polls:count_will_loaded_polls]
-        else:
-            pass
-        polls = CreatedPoll.objects.filter(profile=profile).order_by('poll__creation_date')[
-                count_polls:count_will_loaded_polls]
-        response = _pre_render_item_polls(polls, count_polls, count_will_loaded_polls)
+        type_polls = request.GET['type']  # polls, myPolls
+        sort = request.GET['sort']  # date, name, quantity
+        response = _get_render_sorted_polls(profile, type_polls, sort, count_polls, count_will_loaded_polls)
         return JsonResponse({'newElems': response}, status=200)
 
 
-def _pre_render_item_polls(polls: list, count_loaded_polls, count_will_loaded_polls) -> str:
+def _get_render_sorted_polls(profile: Profile, type_polls: str, sort: str, count_loaded_polls: int,
+                             count_will_loaded_polls: int) -> str:
+    choose_parameter_ordering = {
+        'date': "poll__creation_date",
+        'name': "poll__name_poll",
+        'quantity': "poll__count_passed"
+    }
+
+    try:
+        parameter_ordering = choose_parameter_ordering[sort]
+    except KeyError:
+        raise KeyError("Ошибка типа сортировки")
+
+    if type_polls == 'polls':
+        polls = CreatedPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
+                count_loaded_polls:count_will_loaded_polls]
+    elif type_polls == 'myPolls':
+        polls = NeedPassPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
+                count_loaded_polls:count_will_loaded_polls]
+    else:
+        return None
+    result = _pre_render_item_polls(polls)
+    return result
+
+
+def _pre_render_item_polls(rendered_polls: list) -> str:
     args = {
         'data': {
             'polls': []
         }
     }
-    for poll in polls[count_loaded_polls:count_will_loaded_polls]:
-        collected_poll = _build_poll(poll.poll)
+    for rendered_poll in rendered_polls:
+        poll = rendered_poll.poll
+        collected_poll = _build_poll(poll)
         args['data']['polls'].append(collected_poll)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
-
-
-def _sort_poll_by_type(polls: list, sorting_type) -> list:
-    def sort_by_date(poll: Poll):
-        return poll.creation_date
-
-    def sort_by_name(poll: Poll):
-        return poll.name_poll
-
-    def sort_by_quantity(poll: Poll):
-        return poll.count_passed
-
-    choose_type = {
-        'date': sort_by_date,
-        'name': sort_by_name,
-        'quantity': sort_by_quantity
-    }
-    polls.sort(key=choose_type[sorting_type])
-    return polls
 
 
 def load_notification_new_poll(request) -> JsonResponse:
