@@ -224,7 +224,7 @@ $(function () {
         $(this).addClass('hide');
         let elems = unshowPolls.children('.poll-item');
         let newElems = unshowPolls.html();
-        categoryContentBlock[0].prepend(newElems);
+        categoryContentBlock[0].insertAdjacentHTML('afterbegin', newElems);
         elems.remove();
         let newPolls = $('.new-poll');
         newPolls.removeClass('new-poll');
