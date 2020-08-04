@@ -244,7 +244,9 @@ $(function () {
             // console.log(countLoadedPolls)
             // console.log(sortType)
             // console.log(category)
-            loading(9);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
     });
 
@@ -266,7 +268,9 @@ $(function () {
             // console.log(countLoadedPolls)
             // console.log(sortType)
             // console.log(category)
-            loading(9);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
         // console.log(document.body.scrollHeight, document.documentElement.scrollHeight,
         //     document.body.offsetHeight, document.documentElement.offsetHeight,
