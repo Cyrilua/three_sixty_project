@@ -244,7 +244,9 @@ $(function () {
             // console.log(countLoadedPolls)
             // console.log(sortType)
             // console.log(category)
-            loading(9);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
     });
 
@@ -266,7 +268,9 @@ $(function () {
             // console.log(countLoadedPolls)
             // console.log(sortType)
             // console.log(category)
-            loading(9);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
         // console.log(document.body.scrollHeight, document.documentElement.scrollHeight,
         //     document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -325,7 +329,7 @@ $(function () {
                 // preloader.removeClass('hidden');
                 // preloader.addClass('small');
             }
-            console.log(sortType)
+            console.log(countNewEl)
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
@@ -450,7 +454,7 @@ $(function () {
 
         // Загрузка первоначальных опросов
         let heightClient = document.documentElement.clientHeight;
-        let firstPartPolls = Math.ceil(heightClient / 370) + 9;
+        let firstPartPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(firstPartPolls);
 
         // Подгрузка данных, если был скролл и перезагрузка страницы (f5)
