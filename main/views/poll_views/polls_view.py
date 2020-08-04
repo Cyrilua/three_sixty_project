@@ -59,12 +59,13 @@ def loading_polls(request, count_polls: int) -> JsonResponse:
         except TypeError:
             return JsonResponse({}, status=400)
 
+        count_will_loaded_polls = 9
+
         type_polls = request.GET['type']  # polls, myPolls
         sort = request.GET['sort']  # date, name, quantity
         response = _get_render_sorted_polls_or_bad_search(profile, type_polls, sort, count_polls,
                                                           count_will_loaded_polls)
         return response
-        #return JsonResponse({'newElems': response, 'is_last': False}, status=200)
 
 
 def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, sort: str, count_loaded_polls: int,
@@ -79,26 +80,30 @@ def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, so
         parameter_ordering = choose_parameter_ordering[sort]
     except KeyError:
         return JsonResponse({}, status=400)
-
+    print(count_loaded_polls)
+    print(count_will_loaded_polls)
     if type_polls == 'myPolls':
         polls = CreatedPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
-                count_loaded_polls:count_will_loaded_polls]
+                count_loaded_polls:count_will_loaded_polls + count_loaded_polls]
     elif type_polls == 'polls':
         polls = NeedPassPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
-                count_loaded_polls:count_will_loaded_polls]
+                count_loaded_polls:count_will_loaded_polls + count_loaded_polls]
     else:
         return JsonResponse({}, status=400)
 
     count_polls = polls.count()
-    if count_polls == 0:
+    if count_polls == 0 and count_loaded_polls == 0:
         text_choose = {
             'myPolls': "Вы не провели ни одного опроса",
             'polls': "Сейчас нет опросов для прохождения"
         }
         result = SimpleTemplateResponse('main/includes/bad_search.html', {'text': text_choose[type_polls]})
+        result = result.rendered_content
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
 
     result = _pre_render_item_polls(polls)
+    print(count_polls < count_will_loaded_polls - 1)
+    print(count_polls)
     if count_polls < count_will_loaded_polls - 1:
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
     return JsonResponse({'newElems': result, 'is_last': False}, status=200)
