@@ -325,7 +325,7 @@ $(function () {
                 // preloader.removeClass('hidden');
                 // preloader.addClass('small');
             }
-            console.log(sortType)
+            console.log(countNewEl)
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
@@ -450,7 +450,7 @@ $(function () {
 
         // Загрузка первоначальных опросов
         let heightClient = document.documentElement.clientHeight;
-        let firstPartPolls = Math.ceil(heightClient / 370) + 9;
+        let firstPartPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(firstPartPolls);
 
         // Подгрузка данных, если был скролл и перезагрузка страницы (f5)
