@@ -1,0 +1,61 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_polls="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="editor">
+        <div class="editor__head rounded-block">
+            <div class="head__main">
+                <h2 class="head__title">Создание опроса (Шаг 1)</h2>
+                <span class="head__text">Отредактируйте содержание и оформление опроса.</span>
+                <a href="#" class="head__href">Сохранить как шаблон</a>
+            </div>
+            <div class="head__move">
+                <button class="button-white button-href" data-href="#">Отмена</button>
+                <button class="button-white button-href" data-href="#">Далее</button>
+            </div>
+        </div>
+        <div class="editor__category categories-block">
+            <div class="substrate">
+                <div class="sort rounded-block unselectable">
+                    <div class="category active-sort" data-category="myPolls">
+                        <div class="category__title">Мои опросы
+                            {#                                <div class="category__notice hide"></div>#}
+                        </div>
+                    </div>
+                    <div class="category" data-category="polls">
+                        <div class="category__title">Для прохождения
+                            {#                            <div class="category__notice hide"></div>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="categories">
+                <div class="category-content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {#    {% include 'main/includes/menu_poll_editor_right.html' with menu_new_poll_view="active" %}#}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/poll_editor.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src={% static 'main/js/libraries/jquery-ui.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/poll_editor.min.js' %}></script>
+    <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+{% endblock %}

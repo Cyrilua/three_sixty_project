@@ -7,453 +7,453 @@
 
 {% block content-user %}
 
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="poll-container_move">
 
-                <div class="poll_editor">
-                    <div class="poll-head rounded-block">
-                        {% if poll %}
-                            {#                            {% if poll.status == 'create' %}#}
-                            {#                                <div class="poll-head-text">#}
-                            {#                                    <textarea class="poll-head-name" name="" id="" rows="1"#}
-                            {#                                              placeholder="Название опроса"></textarea>#}
-                            {#                                    <textarea class="poll-head-about" name="" id="" rows="1"#}
-                            {#                                              placeholder="Описание"></textarea>#}
-                            {#                                </div>#}
-                            {#                            {% elif poll.status == 'edit' %}#}
-                            <div class="poll-head-text">
+    <div class="poll-container_move">
+
+        <div class="poll_editor">
+
+            <div class="poll-head rounded-block">
+                {% if poll1 %}
+                    {#                            {% if poll.status == 'create' %}#}
+                    {#                                <div class="poll-head-text">#}
+                    {#                                    <textarea class="poll-head-name" name="" id="" rows="1"#}
+                    {#                                              placeholder="Название опроса"></textarea>#}
+                    {#                                    <textarea class="poll-head-about" name="" id="" rows="1"#}
+                    {#                                              placeholder="Описание"></textarea>#}
+                    {#                                </div>#}
+                    {#                            {% elif poll.status == 'edit' %}#}
+                    <div class="poll-head-text">
                                     <textarea class="poll-head-name" name="" id="" rows="1"
                                               placeholder="Название опроса">{{ poll.data.head.name }}</textarea>
-                                <textarea class="poll-head-about" name="" id="" rows="1"
-                                          placeholder="Описание">{{ poll.data.head.about }}</textarea>
-                            </div>
-                            {#                            {% endif %}#}
-                        {% else %}
-                            <div class="poll-head-text">
+                        <textarea class="poll-head-about" name="" id="" rows="1"
+                                  placeholder="Описание">{{ poll.data.head.about }}</textarea>
+                    </div>
+                    {#                            {% endif %}#}
+                {% else %}
+                    <div class="poll-head-text">
                                 <textarea class="poll-head-name" name="" id="" rows="1"
                                           placeholder="Название опроса">Вот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
-                                <textarea class="poll-head-about" name="" id="" rows="1" placeholder="Описание">Вот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
-                            </div>
-                        {% endif %}
-                        <a href="{% url 'main:new_poll_view' %}" class="poll-head-remove">Отменить создание</a>
-                        <div class="poll-head-navigation text-right">
-                            <button class="poll-head-navigation-next-page btn btn-primary">Далее</button>
-                        </div>
+                        <textarea class="poll-head-about" name="" id="" rows="1" placeholder="Описание">Вот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательноВот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
                     </div>
-                    <!-- /.poll-head -->
-                    <div class="poll_questions">
+                {% endif %}
+                <a href="{% url 'main:new_poll_view' %}" class="poll-head-remove">Отменить создание</a>
+                <div class="poll-head-navigation text-right">
+                    <button class="poll-head-navigation-next-page btn btn-primary">Далее</button>
+                </div>
+            </div>
+            <!-- /.poll-head -->
 
-                        {% if poll %}
-                            {#                            {% if poll.status == 'create' %}#}
-                            {##}
-                            {#                                <div class="question question-radio rounded-block">#}
-                            {#                                    <div class="question-move">#}
-                            {#                                        <div class="question-move-platform">#}
-                            {#                                            <img src="{% static 'main/images/move.svg' %}" alt=""#}
-                            {#                                                 class="question-move-platform-img">#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="question-main">#}
-                            {#                                        <textarea name="" id="" rows="1" class="question-main-name"#}
-                            {#                                                  placeholder="Вопрос"></textarea>#}
-                            {#                                        <div class="question-main-answers">#}
-                            {#                                            <div class="question-main-answers-answer">#}
-                            {#                                                <span class="question-radio-main-answer"></span>#}
-                            {#                                                <span class="question-checkbox-main-answer"></span>#}
-                            {#                                                <textarea name="" id="" rows="1" class="question-main-answer"#}
-                            {#                                                          placeholder="Вариант 1" data-number_answer="1"></textarea>#}
-                            {#                                                <button class="question-main-answer-remove">#}
-                            {#                                                    <img class="question-main-answer-remove-img"#}
-                            {#                                                         src="{% static 'main/images/cross.svg' %}" alt="">#}
-                            {#                                                </button>#}
-                            {#                                            </div>#}
-                            {#                                        </div>#}
-                            {#                                        <a href="#" class="question-main-add">Добавить еще вариант</a>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="question-settings">#}
-                            {#                                        <select name="type_question" id="type_question"#}
-                            {#                                                class="question-settings-type_question">#}
-                            {#                                            <option value="radio" class="question-settings-type_question-option"#}
-                            {#                                                    selected>#}
-                            {#                                                Один из списка#}
-                            {#                                            </option>#}
-                            {#                                            <option value="checkbox" class="question-settings-type_question-option">#}
-                            {#                                                Несколько из списка#}
-                            {#                                            </option>#}
-                            {#                                            <option value="range" class="question-settings-type_question-option">#}
-                            {#                                                Шкала#}
-                            {#                                            </option>#}
-                            {#                                            <option value="open_question"#}
-                            {#                                                    class="question-settings-type_question-option">#}
-                            {#                                                Развернутый ответ#}
-                            {#                                            </option>#}
-                            {#                                        </select>#}
-                            {#                                    </div>#}
-                            {#                                    <div class="question-navigate text-right">#}
-                            {#                                        <button class="question-navigate-remove_question">#}
-                            {#                                            <img class="question-navigate-remove_question-img"#}
-                            {#                                                 src="{% static 'main/images/remove2.svg' %}" alt="">#}
-                            {#                                        </button>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                                <!-- /.question -->#}
-                            {##}
-                            {#                            {% elif poll.status == 'edit' %}#}
+            <div class="poll_questions">
 
-                            {% for question in poll.data.questions %}
+                {% if poll1 %}
+                    {#                            {% if poll.status == 'create' %}#}
+                    {##}
+                    {#                                <div class="question question-radio rounded-block">#}
+                    {#                                    <div class="question-move">#}
+                    {#                                        <div class="question-move-platform">#}
+                    {#                                            <img src="{% static 'main/images/move.svg' %}" alt=""#}
+                    {#                                                 class="question-move-platform-img">#}
+                    {#                                        </div>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="question-main">#}
+                    {#                                        <textarea name="" id="" rows="1" class="question-main-name"#}
+                    {#                                                  placeholder="Вопрос"></textarea>#}
+                    {#                                        <div class="question-main-answers">#}
+                    {#                                            <div class="question-main-answers-answer">#}
+                    {#                                                <span class="question-radio-main-answer"></span>#}
+                    {#                                                <span class="question-checkbox-main-answer"></span>#}
+                    {#                                                <textarea name="" id="" rows="1" class="question-main-answer"#}
+                    {#                                                          placeholder="Вариант 1" data-number_answer="1"></textarea>#}
+                    {#                                                <button class="question-main-answer-remove">#}
+                    {#                                                    <img class="question-main-answer-remove-img"#}
+                    {#                                                         src="{% static 'main/images/cross.svg' %}" alt="">#}
+                    {#                                                </button>#}
+                    {#                                            </div>#}
+                    {#                                        </div>#}
+                    {#                                        <a href="#" class="question-main-add">Добавить еще вариант</a>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="question-settings">#}
+                    {#                                        <select name="type_question" id="type_question"#}
+                    {#                                                class="question-settings-type_question">#}
+                    {#                                            <option value="radio" class="question-settings-type_question-option"#}
+                    {#                                                    selected>#}
+                    {#                                                Один из списка#}
+                    {#                                            </option>#}
+                    {#                                            <option value="checkbox" class="question-settings-type_question-option">#}
+                    {#                                                Несколько из списка#}
+                    {#                                            </option>#}
+                    {#                                            <option value="range" class="question-settings-type_question-option">#}
+                    {#                                                Шкала#}
+                    {#                                            </option>#}
+                    {#                                            <option value="open_question"#}
+                    {#                                                    class="question-settings-type_question-option">#}
+                    {#                                                Развернутый ответ#}
+                    {#                                            </option>#}
+                    {#                                        </select>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="question-navigate text-right">#}
+                    {#                                        <button class="question-navigate-remove_question">#}
+                    {#                                            <img class="question-navigate-remove_question-img"#}
+                    {#                                                 src="{% static 'main/images/remove2.svg' %}" alt="">#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                                <!-- /.question -->#}
+                    {##}
+                    {#                            {% elif poll.status == 'edit' %}#}
 
-                                <div class="question {% if question.type == 'radio' %}question-radio{% elif question.type == 'checkbox' %}question-checkbox{% elif question.type == 'range' %}question-range{% elif question.type == 'open_question' %}question-open_question{% endif %} rounded-block">
-                                    <div class="question-move">
-                                        <div class="question-move-platform">
-                                            <img src="{% static 'main/images/move.svg' %}" alt=""
-                                                 class="question-move-platform-img">
-                                        </div>
-                                    </div>
-                                    <div class="question-main">
+                    {% for question in poll.data.questions %}
+
+                        <div class="question {% if question.type == 'radio' %}question-radio{% elif question.type == 'checkbox' %}question-checkbox{% elif question.type == 'range' %}question-range{% elif question.type == 'open_question' %}question-open_question{% endif %} rounded-block">
+                            <div class="question-move">
+                                <div class="question-move-platform">
+                                    <img src="{% static 'main/images/move.svg' %}" alt=""
+                                         class="question-move-platform-img">
+                                </div>
+                            </div>
+                            <div class="question-main">
                                         <textarea name="" id="" rows="1" class="question-main-name"
                                                   placeholder="Вопрос">{{ question.text }}</textarea>
-                                        <div class="question-main-answers">
-                                            {% if question.type == 'radio' or question.type == 'checkbox' %}
-                                                {% for answer in question.answers %}
-                                                    <div class="question-main-answers-answer">
-                                                        <span class="question-radio-main-answer"></span>
-                                                        <span class="question-checkbox-main-answer"></span>
-                                                        <textarea name="" id="" rows="1"
-                                                                  class="question-main-answer"
-                                                                  placeholder="Вариант {{ answer.number }}"
-                                                                  data-number_answer="{{ answer.number }}">{{ answer.text }}</textarea>
-                                                        <button class="question-main-answer-remove">
-                                                            <img class="question-main-answer-remove-img"
-                                                                 src="{% static 'main/images/cross.svg' %}" alt="">
-                                                        </button>
-                                                    </div>
-                                                {% endfor %}
-                                            {% elif question.type == 'range' %}
-                                                <div class="question-main-answers-answer">
-                                                    <div class="question-main-answers-answer-range-box">
-                                                        <div class="question-main-answers-answer-range"></div>
-                                                        <div class="question-main-answers-answer-range-settings">
-                                                            <input type="text"
-                                                                   class="question-main-answers-answer-range-settings-min"
-                                                                   placeholder="От" maxlength="5"
-                                                                   value="{{ question.range.min }}">
-                                                            <div class="question-main-answers-answer-range-settings-step-box">
-                                                                <span class="question-main-answers-answer-range-settings-before-step">С шагом:</span>
-                                                                <input type="text"
-                                                                       class="question-main-answers-answer-range-settings-step"
-                                                                       maxlength="5" autocomplete="off"
-                                                                       value="question.range.min">
-                                                            </div>
-                                                            <input type="text"
-                                                                   class="question-main-answers-answer-range-settings-max"
-                                                                   placeholder="До" maxlength="5"
-                                                                   value="question.range.max">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            {% elif question.type == 'open_question' %}
-                                                <div class="question-main-answers-answer">
-                                                    <span class="question-main-answers-answer-open_question">Текстовое поле</span>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                        <a href="#" class="question-main-add">Добавить еще вариант</a>
-                                    </div>
-                                    <div class="question-settings">
-                                        <select name="type_question" id="type_question"
-                                                class="question-settings-type_question">
-                                            <option value="radio" class="question-settings-type_question-option"
-                                                    {% if question.type == 'radio' %}selected{% endif %}>
-                                                Один из списка
-                                            </option>
-                                            <option value="checkbox" class="question-settings-type_question-option"
-                                                    {% if question.type == 'checkbox' %}selected{% endif %}>
-                                                Несколько из списка
-                                            </option>
-                                            <option value="range" class="question-settings-type_question-option"
-                                                    {% if question.type == 'range' %}selected{% endif %}>
-                                                Шкала
-                                            </option>
-                                            <option value="open_question"
-                                                    class="question-settings-type_question-option"
-                                                    {% if question.type == 'open_question' %}selected{% endif %}>
-                                                Открытый вопрос
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="question-navigate text-right">
-                                        <button class="question-navigate-remove_question">
-                                            <img class="question-navigate-remove_question-img"
-                                                 src="{% static 'main/images/remove2.svg' %}" alt="">
-                                        </button>
-                                    </div>
-                                </div>
-                                <!-- /.question -->
-
-                            {% endfor %}
-
-                            {#                            {% endif %}#}
-                        {% else %}
-                            <div class="question question-radio rounded-block">
-                                <div class="question-move">
-                                    <div class="question-move-platform">
-                                        <img src="{% static 'main/images/move.svg' %}" alt=""
-                                             class="question-move-platform-img">
-                                    </div>
-                                </div>
-                                <div class="question-main">
-                            <textarea name="" id="" rows="1" class="question-main-name"
-                                      placeholder="Вопрос">Вот такой вот интересный вопрос для примера, смотрим внимательно?</textarea>
-                                    <div class="question-main-answers">
-                                        <div class="question-main-answers-answer">
-                                            <span class="question-radio-main-answer"></span>
-                                            <span class="question-checkbox-main-answer"></span>
-                                            <textarea name="" id="" rows="1" class="question-main-answer"
-                                                      placeholder="Вариант 1" data-number_answer="1">Вот такой вот интересный вопрос для примера, смотрим внимательно?Вот такой вот интересный вопрос для примера, смотрим внимательно?Вот такой вот интересный вопрос для примера, смотрим внимательно?</textarea>
-                                            <button class="question-main-answer-remove">
-                                                <img class="question-main-answer-remove-img"
-                                                     src="{% static 'main/images/cross.svg' %}" alt="">
-                                            </button>
-                                        </div>
-                                        <!-- /.question-main-answers-answer -->
-                                        <div class="question-main-answers-answer">
-                                            <span class="question-radio-main-answer"></span>
-                                            <span class="question-checkbox-main-answer"></span>
-                                            <textarea name="" id="" rows="1" class="question-main-answer"
-                                                      placeholder="Вариант 2" data-number_answer="2">Вот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
-                                            <button class="question-main-answer-remove">
-                                                <img class="question-main-answer-remove-img"
-                                                     src="{% static 'main/images/cross.svg' %}" alt="">
-                                            </button>
-                                        </div>
-                                        <!-- /.question-main-answers-answer -->
-                                    </div>
-                                    <!-- /.question-main-answers -->
-                                    <a href="#" class="question-main-add">Добавить еще вариант</a>
-                                </div>
-                                <!-- /.question-main -->
-                                <div class="question-settings">
-                                    <select name="type_question" id="type_question"
-                                            class="question-settings-type_question">
-                                        <option value="radio" class="question-settings-type_question-option" selected>
-                                            Один
-                                            из
-                                            списка
-                                        </option>
-                                        <option value="checkbox" class="question-settings-type_question-option">
-                                            Несколько из
-                                            списка
-                                        </option>
-                                        <option value="range" class="question-settings-type_question-option">Шкала
-                                        </option>
-                                        <option value="open_question" class="question-settings-type_question-option">
-                                            Развернутый ответ
-                                        </option>
-                                    </select>
-                                </div>
-                                <!-- /.question-settings -->
-                                <div class="question-navigate text-right">
-                                    <button class="question-navigate-remove_question">
-                                        <img class="question-navigate-remove_question-img"
-                                             src="{% static 'main/images/remove2.svg' %}" alt="">
-                                    </button>
-                                </div>
-                                <!-- /.question-navigate -->
-                            </div>
-                            <!-- /.question -->
-
-                            <div class="question question-checkbox rounded-block">
-                                <div class="question-move">
-                                    <div class="question-move-platform">
-                                        <img src="{% static 'main/images/move.svg' %}" alt=""
-                                             class="question-move-platform-img">
-                                    </div>
-                                </div>
-                                <div class="question-main">
-                            <textarea name="" id="" rows="1" class="question-main-name"
-                                      placeholder="Вопрос"></textarea>
-                                    <div class="question-main-answers">
-                                        <div class="question-main-answers-answer">
-                                            <span class="question-radio-main-answer"></span>
-                                            <span class="question-checkbox-main-answer"></span>
-                                            <textarea name="" id="" rows="1" class="question-main-answer"
-                                                      placeholder="Вариант 1" data-number_answer="1"></textarea>
-                                            <button class="question-main-answer-remove">
-                                                <img class="question-main-answer-remove-img"
-                                                     src="{% static 'main/images/cross.svg' %}" alt="">
-                                            </button>
-                                        </div>
-                                        <!-- /.question-main-answers-answer -->
-                                    </div>
-                                    <!-- /.question-main-answers -->
-                                    <a href="#" class="question-main-add">Добавить еще вариант</a>
-                                </div>
-                                <!-- /.question-main -->
-                                <div class="question-settings">
-                                    <select name="type_question" id="type_question"
-                                            class="question-settings-type_question">
-                                        <option value="radio" class="question-settings-type_question-option">Один из
-                                            списка
-                                        </option>
-                                        <option value="checkbox" class="question-settings-type_question-option"
-                                                selected>
-                                            Несколько из
-                                            списка
-                                        </option>
-                                        <option value="range" class="question-settings-type_question-option">Шкала
-                                        </option>
-                                        <option value="open_question" class="question-settings-type_question-option">
-                                            Открытый
-                                            вопрос
-                                        </option>
-                                    </select>
-                                </div>
-                                <!-- /.question-settings -->
-                                <div class="question-navigate text-right">
-                                    <button class="question-navigate-remove_question">
-                                        <img class="question-navigate-remove_question-img"
-                                             src="{% static 'main/images/remove2.svg' %}" alt="">
-                                    </button>
-                                </div>
-                                <!-- /.question-navigate -->
-                            </div>
-                            <!-- /.question -->
-
-                            <div class="question question-open_question rounded-block">
-                                <div class="question-move">
-                                    <div class="question-move-platform">
-                                        <img src="{% static 'main/images/move.svg' %}" alt=""
-                                             class="question-move-platform-img">
-                                    </div>
-                                </div>
-                                <div class="question-main">
-                                    <textarea name="" id="" rows="1" class="question-main-name"
-                                              placeholder="Вопрос"></textarea>
-                                    <div class="question-main-answers">
-                                        <div class="question-main-answers-answer">
-                                            <span class="question-main-answers-answer-open_question">Текстовое поле</span>
-                                        </div>
-                                        <!-- /.question-main-answers-answer -->
-                                    </div>
-                                    <!-- /.question-main-answers -->
-                                </div>
-                                <!-- /.question-main -->
-                                <div class="question-settings">
-                                    <select name="type_question" id="type_question"
-                                            class="question-settings-type_question">
-                                        <option value="radio" class="question-settings-type_question-option">Один из
-                                            списка
-                                        </option>
-                                        <option value="checkbox" class="question-settings-type_question-option">
-                                            Несколько из
-                                            списка
-                                        </option>
-                                        <option value="range" class="question-settings-type_question-option">Шкала
-                                        </option>
-                                        <option value="open_question" class="question-settings-type_question-option"
-                                                selected>
-                                            Открытый вопрос
-                                        </option>
-                                    </select>
-                                </div>
-                                <!-- /.question-settings -->
-                                <div class="question-navigate text-right">
-                                    <button class="question-navigate-remove_question">
-                                        <img class="question-navigate-remove_question-img"
-                                             src="{% static 'main/images/remove2.svg' %}" alt="">
-                                    </button>
-                                </div>
-                                <!-- /.question-navigate -->
-                            </div>
-                            <!-- /.question -->
-
-                            <div class="question question-range rounded-block">
-                                <div class="question-move">
-                                    <div class="question-move-platform">
-                                        <img src="{% static 'main/images/move.svg' %}" alt=""
-                                             class="question-move-platform-img">
-                                    </div>
-                                </div>
-                                <div class="question-main">
-                            <textarea name="" id="" rows="1" class="question-main-name"
-                                      placeholder="Вопрос"></textarea>
-                                    <div class="question-main-answers">
+                                <div class="question-main-answers">
+                                    {% if question.type == 'radio' or question.type == 'checkbox' %}
+                                        {% for answer in question.answers %}
+                                            <div class="question-main-answers-answer">
+                                                <span class="question-radio-main-answer"></span>
+                                                <span class="question-checkbox-main-answer"></span>
+                                                <textarea name="" id="" rows="1"
+                                                          class="question-main-answer"
+                                                          placeholder="Вариант {{ answer.number }}"
+                                                          data-number_answer="{{ answer.number }}">{{ answer.text }}</textarea>
+                                                <button class="question-main-answer-remove">
+                                                    <img class="question-main-answer-remove-img"
+                                                         src="{% static 'main/images/cross.svg' %}" alt="">
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% elif question.type == 'range' %}
                                         <div class="question-main-answers-answer">
                                             <div class="question-main-answers-answer-range-box">
                                                 <div class="question-main-answers-answer-range"></div>
                                                 <div class="question-main-answers-answer-range-settings">
                                                     <input type="text"
                                                            class="question-main-answers-answer-range-settings-min"
-                                                           placeholder="От" maxlength="5" value="">
+                                                           placeholder="От" maxlength="5"
+                                                           value="{{ question.range.min }}">
                                                     <div class="question-main-answers-answer-range-settings-step-box">
                                                         <span class="question-main-answers-answer-range-settings-before-step">С шагом:</span>
                                                         <input type="text"
                                                                class="question-main-answers-answer-range-settings-step"
-                                                               maxlength="5" autocomplete="off" value="1">
+                                                               maxlength="5" autocomplete="off"
+                                                               value="question.range.min">
                                                     </div>
                                                     <input type="text"
                                                            class="question-main-answers-answer-range-settings-max"
-                                                           placeholder="До" maxlength="5" value="">
+                                                           placeholder="До" maxlength="5"
+                                                           value="question.range.max">
                                                 </div>
-                                                <!-- /.question-main-answers-answer-range-settings -->
                                             </div>
-                                            <!-- /.question-main-answers-answer-range-box -->
                                         </div>
-                                        <!-- /.question-main-answers-answer -->
-                                    </div>
-                                    <!-- /.question-main-answers -->
+                                    {% elif question.type == 'open_question' %}
+                                        <div class="question-main-answers-answer">
+                                            <span class="question-main-answers-answer-open_question">Текстовое поле</span>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                <!-- /.question-main -->
-                                <div class="question-settings">
-                                    <select name="type_question" id="type_question"
-                                            class="question-settings-type_question">
-                                        <option value="radio" class="question-settings-type_question-option">Один из
-                                            списка
-                                        </option>
-                                        <option value="checkbox" class="question-settings-type_question-option">
-                                            Несколько из
-                                            списка
-                                        </option>
-                                        <option value="range" class="question-settings-type_question-option" selected>
-                                            Шкала
-                                        </option>
-                                        <option value="open_question" class="question-settings-type_question-option">
-                                            Открытый
-                                            вопрос
-                                        </option>
-                                    </select>
-                                </div>
-                                <!-- /.question-settings -->
-                                <div class="question-navigate text-right">
-                                    <button class="question-navigate-remove_question">
-                                        <img class="question-navigate-remove_question-img"
-                                             src="{% static 'main/images/remove2.svg' %}" alt="">
+                                <a href="#" class="question-main-add">Добавить еще вариант</a>
+                            </div>
+                            <div class="question-settings">
+                                <select name="type_question" id="type_question"
+                                        class="question-settings-type_question">
+                                    <option value="radio" class="question-settings-type_question-option"
+                                            {% if question.type == 'radio' %}selected{% endif %}>
+                                        Один из списка
+                                    </option>
+                                    <option value="checkbox" class="question-settings-type_question-option"
+                                            {% if question.type == 'checkbox' %}selected{% endif %}>
+                                        Несколько из списка
+                                    </option>
+                                    <option value="range" class="question-settings-type_question-option"
+                                            {% if question.type == 'range' %}selected{% endif %}>
+                                        Шкала
+                                    </option>
+                                    <option value="open_question"
+                                            class="question-settings-type_question-option"
+                                            {% if question.type == 'open_question' %}selected{% endif %}>
+                                        Открытый вопрос
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="question-navigate text-right">
+                                <button class="question-navigate-remove_question">
+                                    <img class="question-navigate-remove_question-img"
+                                         src="{% static 'main/images/remove2.svg' %}" alt="">
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.question -->
+
+                    {% endfor %}
+
+                    {#                            {% endif %}#}
+                {% else %}
+                    <div class="question question-radio rounded-block">
+                        <div class="question-move">
+                            <div class="question-move-platform">
+                                <img src="{% static 'main/images/move.svg' %}" alt=""
+                                     class="question-move-platform-img">
+                            </div>
+                        </div>
+                        <div class="question-main">
+                            <textarea name="" id="" rows="1" class="question-main-name"
+                                      placeholder="Вопрос">Вот такой вот интересный вопрос для примера, смотрим внимательно?</textarea>
+                            <div class="question-main-answers">
+                                <div class="question-main-answers-answer">
+                                    <span class="question-radio-main-answer"></span>
+                                    <span class="question-checkbox-main-answer"></span>
+                                    <textarea name="" id="" rows="1" class="question-main-answer"
+                                              placeholder="Вариант 1" data-number_answer="1">Вот такой вот интересный вопрос для примера, смотрим внимательно?Вот такой вот интересный вопрос для примера, смотрим внимательно?Вот такой вот интересный вопрос для примера, смотрим внимательно?</textarea>
+                                    <button class="question-main-answer-remove">
+                                        <img class="question-main-answer-remove-img"
+                                             src="{% static 'main/images/cross.svg' %}" alt="">
                                     </button>
                                 </div>
-                                <!-- /.question-navigate -->
+                                <!-- /.question-main-answers-answer -->
+                                <div class="question-main-answers-answer">
+                                    <span class="question-radio-main-answer"></span>
+                                    <span class="question-checkbox-main-answer"></span>
+                                    <textarea name="" id="" rows="1" class="question-main-answer"
+                                              placeholder="Вариант 2" data-number_answer="2">Вот такой вот интересный вопрос для примера, смотрим внимательно</textarea>
+                                    <button class="question-main-answer-remove">
+                                        <img class="question-main-answer-remove-img"
+                                             src="{% static 'main/images/cross.svg' %}" alt="">
+                                    </button>
+                                </div>
+                                <!-- /.question-main-answers-answer -->
                             </div>
-                            <!-- /.question -->
-                        {% endif %}
+                            <!-- /.question-main-answers -->
+                            <a href="#" class="question-main-add">Добавить еще вариант</a>
+                        </div>
+                        <!-- /.question-main -->
+                        <div class="question-settings">
+                            <select name="type_question" id="type_question"
+                                    class="question-settings-type_question">
+                                <option value="radio" class="question-settings-type_question-option" selected>
+                                    Один
+                                    из
+                                    списка
+                                </option>
+                                <option value="checkbox" class="question-settings-type_question-option">
+                                    Несколько из
+                                    списка
+                                </option>
+                                <option value="range" class="question-settings-type_question-option">Шкала
+                                </option>
+                                <option value="open_question" class="question-settings-type_question-option">
+                                    Развернутый ответ
+                                </option>
+                            </select>
+                        </div>
+                        <!-- /.question-settings -->
+                        <div class="question-navigate text-right">
+                            <button class="question-navigate-remove_question">
+                                <img class="question-navigate-remove_question-img"
+                                     src="{% static 'main/images/remove2.svg' %}" alt="">
+                            </button>
+                        </div>
+                        <!-- /.question-navigate -->
                     </div>
-                    <!-- /.poll_questions -->
-                    <div class="poll_questions-navigate d-flex flex-column align-items-center">
-                        <button class="btn btn-primary poll_questions-navigate-add_question">
-                            <img src="{% static 'main/images/plus.svg' %}" alt=""
-                                 class="poll_questions-navigate-add_question-img">
-                            Добавить еще вопрос
-                        </button>
-                        <!-- /.poll_questions-navigate-add_question -->
-                        <a href="#" class="poll_questions-navigate-save_in_favorite">Сохранить в избранном</a>
-                    </div>
-                    <!-- /.poll_questions-navigate -->
-                </div>
-                <!-- /.poll_editor -->
+                    <!-- /.question -->
 
+                    <div class="question question-checkbox rounded-block">
+                        <div class="question-move">
+                            <div class="question-move-platform">
+                                <img src="{% static 'main/images/move.svg' %}" alt=""
+                                     class="question-move-platform-img">
+                            </div>
+                        </div>
+                        <div class="question-main">
+                            <textarea name="" id="" rows="1" class="question-main-name"
+                                      placeholder="Вопрос"></textarea>
+                            <div class="question-main-answers">
+                                <div class="question-main-answers-answer">
+                                    <span class="question-radio-main-answer"></span>
+                                    <span class="question-checkbox-main-answer"></span>
+                                    <textarea name="" id="" rows="1" class="question-main-answer"
+                                              placeholder="Вариант 1" data-number_answer="1"></textarea>
+                                    <button class="question-main-answer-remove">
+                                        <img class="question-main-answer-remove-img"
+                                             src="{% static 'main/images/cross.svg' %}" alt="">
+                                    </button>
+                                </div>
+                                <!-- /.question-main-answers-answer -->
+                            </div>
+                            <!-- /.question-main-answers -->
+                            <a href="#" class="question-main-add">Добавить еще вариант</a>
+                        </div>
+                        <!-- /.question-main -->
+                        <div class="question-settings">
+                            <select name="type_question" id="type_question"
+                                    class="question-settings-type_question">
+                                <option value="radio" class="question-settings-type_question-option">Один из
+                                    списка
+                                </option>
+                                <option value="checkbox" class="question-settings-type_question-option"
+                                        selected>
+                                    Несколько из
+                                    списка
+                                </option>
+                                <option value="range" class="question-settings-type_question-option">Шкала
+                                </option>
+                                <option value="open_question" class="question-settings-type_question-option">
+                                    Открытый
+                                    вопрос
+                                </option>
+                            </select>
+                        </div>
+                        <!-- /.question-settings -->
+                        <div class="question-navigate text-right">
+                            <button class="question-navigate-remove_question">
+                                <img class="question-navigate-remove_question-img"
+                                     src="{% static 'main/images/remove2.svg' %}" alt="">
+                            </button>
+                        </div>
+                        <!-- /.question-navigate -->
+                    </div>
+                    <!-- /.question -->
+
+                    <div class="question question-open_question rounded-block">
+                        <div class="question-move">
+                            <div class="question-move-platform">
+                                <img src="{% static 'main/images/move.svg' %}" alt=""
+                                     class="question-move-platform-img">
+                            </div>
+                        </div>
+                        <div class="question-main">
+                                    <textarea name="" id="" rows="1" class="question-main-name"
+                                              placeholder="Вопрос"></textarea>
+                            <div class="question-main-answers">
+                                <div class="question-main-answers-answer">
+                                    <span class="question-main-answers-answer-open_question">Текстовое поле</span>
+                                </div>
+                                <!-- /.question-main-answers-answer -->
+                            </div>
+                            <!-- /.question-main-answers -->
+                        </div>
+                        <!-- /.question-main -->
+                        <div class="question-settings">
+                            <select name="type_question" id="type_question"
+                                    class="question-settings-type_question">
+                                <option value="radio" class="question-settings-type_question-option">Один из
+                                    списка
+                                </option>
+                                <option value="checkbox" class="question-settings-type_question-option">
+                                    Несколько из
+                                    списка
+                                </option>
+                                <option value="range" class="question-settings-type_question-option">Шкала
+                                </option>
+                                <option value="open_question" class="question-settings-type_question-option"
+                                        selected>
+                                    Открытый вопрос
+                                </option>
+                            </select>
+                        </div>
+                        <!-- /.question-settings -->
+                        <div class="question-navigate text-right">
+                            <button class="question-navigate-remove_question">
+                                <img class="question-navigate-remove_question-img"
+                                     src="{% static 'main/images/remove2.svg' %}" alt="">
+                            </button>
+                        </div>
+                        <!-- /.question-navigate -->
+                    </div>
+                    <!-- /.question -->
+
+                    <div class="question question-range rounded-block">
+                        <div class="question-move">
+                            <div class="question-move-platform">
+                                <img src="{% static 'main/images/move.svg' %}" alt=""
+                                     class="question-move-platform-img">
+                            </div>
+                        </div>
+                        <div class="question-main">
+                            <textarea name="" id="" rows="1" class="question-main-name"
+                                      placeholder="Вопрос"></textarea>
+                            <div class="question-main-answers">
+                                <div class="question-main-answers-answer">
+                                    <div class="question-main-answers-answer-range-box">
+                                        <div class="question-main-answers-answer-range"></div>
+                                        <div class="question-main-answers-answer-range-settings">
+                                            <input type="text"
+                                                   class="question-main-answers-answer-range-settings-min"
+                                                   placeholder="От" maxlength="5" value="">
+                                            <div class="question-main-answers-answer-range-settings-step-box">
+                                                <span class="question-main-answers-answer-range-settings-before-step">С шагом:</span>
+                                                <input type="text"
+                                                       class="question-main-answers-answer-range-settings-step"
+                                                       maxlength="5" autocomplete="off" value="1">
+                                            </div>
+                                            <input type="text"
+                                                   class="question-main-answers-answer-range-settings-max"
+                                                   placeholder="До" maxlength="5" value="">
+                                        </div>
+                                        <!-- /.question-main-answers-answer-range-settings -->
+                                    </div>
+                                    <!-- /.question-main-answers-answer-range-box -->
+                                </div>
+                                <!-- /.question-main-answers-answer -->
+                            </div>
+                            <!-- /.question-main-answers -->
+                        </div>
+                        <!-- /.question-main -->
+                        <div class="question-settings">
+                            <select name="type_question" id="type_question"
+                                    class="question-settings-type_question">
+                                <option value="radio" class="question-settings-type_question-option">Один из
+                                    списка
+                                </option>
+                                <option value="checkbox" class="question-settings-type_question-option">
+                                    Несколько из
+                                    списка
+                                </option>
+                                <option value="range" class="question-settings-type_question-option" selected>
+                                    Шкала
+                                </option>
+                                <option value="open_question" class="question-settings-type_question-option">
+                                    Открытый
+                                    вопрос
+                                </option>
+                            </select>
+                        </div>
+                        <!-- /.question-settings -->
+                        <div class="question-navigate text-right">
+                            <button class="question-navigate-remove_question">
+                                <img class="question-navigate-remove_question-img"
+                                     src="{% static 'main/images/remove2.svg' %}" alt="">
+                            </button>
+                        </div>
+                        <!-- /.question-navigate -->
+                    </div>
+                    <!-- /.question -->
+                {% endif %}
             </div>
-            <!-- /.poll-container_move -->
+            <!-- /.poll_questions -->
+            <div class="poll_questions-navigate d-flex flex-column align-items-center">
+                <button class="btn btn-primary poll_questions-navigate-add_question">
+                    <img src="{% static 'main/images/plus.svg' %}" alt=""
+                         class="poll_questions-navigate-add_question-img">
+                    Добавить еще вопрос
+                </button>
+                <!-- /.poll_questions-navigate-add_question -->
+                <a href="#" class="poll_questions-navigate-save_in_favorite">Сохранить в избранном</a>
+            </div>
+            <!-- /.poll_questions-navigate -->
         </div>
+        <!-- /.poll_editor -->
+
     </div>
+    <!-- /.poll-container_move -->
+
 {% endblock %}
 
 {% block sidebar-nav-right %}
