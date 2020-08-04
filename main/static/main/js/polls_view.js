@@ -33,30 +33,6 @@ $(function () {
 
     let unshowPolls = $('.unshow-polls');
 
-    // Первый запуск
-    run();
-
-    // Смена категории
-    body.on('click', '.category', function () {
-        if (!$(this).hasClass('category-sort--active')) {
-            sortable.children('.category-sort--active').removeClass('category-sort--active');
-            $(this).addClass('category-sort--active');
-            category = $(this).attr('data-category');
-
-            categoryContentBlock.children().remove();
-            countLoadedPolls = categoryContentBlock.children('.category-item').length;
-            // console.log('---')
-            // console.log(countLoadedPolls)
-            // console.log(sortType)
-            // console.log(category)
-            // console.log(scrollSortable)
-            let scroll = startPositionSortable - scrollSortable;
-
-            categoryContentBlock.removeClass('full');
-            loading(9, scroll);
-        }
-    });
-
     // Сортировка
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
@@ -85,6 +61,31 @@ $(function () {
             }
         });
     }
+
+    // Первый запуск
+    run();
+
+    // Смена категории
+    body.on('click', '.category', function () {
+        if (!$(this).hasClass('category-sort--active')) {
+            sortable.children('.category-sort--active').removeClass('category-sort--active');
+            $(this).addClass('category-sort--active');
+            category = $(this).attr('data-category');
+
+            categoryContentBlock.children().remove();
+            countLoadedPolls = categoryContentBlock.children('.category-item').length;
+            // console.log('---')
+            // console.log(countLoadedPolls)
+            // console.log(sortType)
+            // console.log(category)
+            // console.log(scrollSortable)
+            let scroll = startPositionSortable - scrollSortable;
+
+            categoryContentBlock.removeClass('full');
+            loading(9, scroll);
+        }
+    });
+
 
     // Больше шаблонов
     body.on('click', '.more', function (el) {
