@@ -41,12 +41,15 @@
 .editor .editor__category .substrate .color {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin: auto 0 auto auto;
+  width: 185px;
 }
 .editor .editor__category .substrate .color .color__variable {
   width: 35px;
   height: 35px;
   background-color: #C4C4C4;
+  border-radius: 50%;
 }
 
 /*# sourceMappingURL=new_poll_editor.css.map */
