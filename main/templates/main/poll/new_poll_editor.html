@@ -15,8 +15,8 @@
                 <a href="#" class="head__href">Сохранить как шаблон</a>
             </div>
             <div class="head__move">
-                <button class="button-white button-href" data-href="#">Отмена</button>
-                <button class="button-white button-href" data-href="#">Далее</button>
+                <button class="button-white button-href head__btn" data-href="#">Отмена</button>
+                <button class="button-white button-href head__btn" data-href="#">Далее</button>
             </div>
         </div>
         <div class="editor__category categories-block">
@@ -31,6 +31,12 @@
                         <div class="category__title">Просмотр
                             {#                            <div class="category__notice hide"></div>#}
                         </div>
+                    </div>
+                    <div class="color">
+                        <div class="color__variable color__variable--select"></div>
+                        <div class="color__variable purple"></div>
+                        <div class="color__variable blue"></div>
+                        <div class="color__variable red"></div>
                     </div>
                 </div>
             </div>
@@ -51,11 +57,12 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/poll_editor.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/new_poll_editor.min.css' %}">
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src={% static 'main/js/libraries/jquery-ui.min.js' %}></script>
-    <script type="text/javascript" src={% static 'main/js/poll_editor.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/new_poll_editor.min.js' %}></script>
     <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src={% static 'main/js/libraries/topMenu.min.js' %}></script>
 {% endblock %}
