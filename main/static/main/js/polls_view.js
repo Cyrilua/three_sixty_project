@@ -223,7 +223,7 @@ $(function () {
     body.on('click', '.show-new-poll', function () {
         $(this).addClass('hide');
         let elems = unshowPolls.children('.poll-item');
-        let newElems = elems.html();
+        let newElems = unshowPolls.html();
         categoryContentBlock[0].prepend(newElems);
         elems.remove();
         let newPolls = $('.new-poll');
