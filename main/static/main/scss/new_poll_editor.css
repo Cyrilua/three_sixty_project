@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .editor {
   display: flex;
   flex-direction: column;
@@ -50,6 +51,33 @@
   height: 35px;
   background-color: #C4C4C4;
   border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.15s transform;
+}
+.editor .editor__category .substrate .color .color__variable.color__variable--select:before {
+  content: "";
+  /*вместо того, чтобы создавать div с фоном и позиционировать внутри родительского блока*/
+  position: absolute;
+  top: 4px;
+  left: 7px;
+  width: 35px;
+  height: 35px;
+  background: url("../images/icon/check-mark.svg") no-repeat;
+  background-size: 22px;
+}
+.editor .editor__category .substrate .color .color__variable.color__variable--select {
+  transform: scale(1.2);
+}
+.editor .editor__category .substrate .color .color__variable.purple {
+  background-color: #DB00FF;
+}
+.editor .editor__category .substrate .color .color__variable.blue {
+  background-color: #001AFF;
+}
+.editor .editor__category .substrate .color .color__variable.red {
+  background-color: #FF1841;
 }
 
 /*# sourceMappingURL=new_poll_editor.css.map */

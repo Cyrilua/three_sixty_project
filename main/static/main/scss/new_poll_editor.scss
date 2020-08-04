@@ -62,21 +62,38 @@
           height: 35px;
           background-color: #C4C4C4;
           border-radius: 50%;
+          position: relative;
+          cursor: pointer;
+          transform: scale(1);
+          transition: .15s transform;
+
+          &.color__variable--select:before {
+            content: ""; /*вместо того, чтобы создавать div с фоном и позиционировать внутри родительского блока*/
+            position: absolute;
+            //z-index: -1;
+            top: 4px;
+            left: 7px;
+            width: 35px;
+            height: 35px;
+            background: url('../images/icon/check-mark.svg') no-repeat;
+            background-size: 22px;
+            //background-repeat: ;
+          }
 
           &.color__variable--select {
-
+            transform: scale(1.2);
           }
 
           &.purple {
-
+            background-color: #DB00FF;
           }
 
           &.blue {
-
+            background-color: #001AFF;
           }
 
           &.red {
-
+            background-color: #FF1841;
           }
         }
       }
