@@ -57,7 +57,9 @@ $(function () {
                 let scroll = startPositionSortable - scrollSortable;
 
                 categoryContentBlock.removeClass('full');
-                loading(9, scroll);
+                let heightClient = document.documentElement.clientHeight;
+                let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+                loading(partPolls);
             }
         });
     }
@@ -82,7 +84,9 @@ $(function () {
             let scroll = startPositionSortable - scrollSortable;
 
             categoryContentBlock.removeClass('full');
-            loading(9, scroll);
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
         }
     });
 
@@ -339,8 +343,8 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
-                    // console.log(response.newElems)
-                    if (response.newElems !== '') {
+                    console.log(response.newElems)
+                    if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         // countLoadedPolls += response.countNewElems;
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
