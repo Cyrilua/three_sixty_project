@@ -106,3 +106,77 @@
     }
   }
 }
+
+.poll-editor {
+  .poll-editor__header {
+    border-top: 20px solid #C4C4C4;
+    transition: .15s border-top-color;
+    margin-bottom: 10px;
+
+    &.purple {
+      border-top-color: #DB00FF;
+    }
+
+    &.blue {
+      border-top-color: #001AFF;
+    }
+
+    &.red {
+      border-top-color: #FF1841;
+    }
+
+    .poll__name {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      color: #000000;
+      margin-bottom: 20px;
+    }
+
+    .poll__target {
+      display: inline-block;
+      font-style: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #595757;
+      margin-bottom: 20px;
+    }
+
+    .poll__description {
+
+    }
+  }
+
+  .question {
+    .question__main {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .question__name {
+        width: 566px;
+      }
+
+      .question__type {
+        .width-264 {
+          width: 264px;
+        }
+
+        .height-50 {
+          height: 50px;
+        }
+
+        & > .mdc-select {
+          & > .width-264 {
+            width: 264px;
+          }
+
+          & > .height-50 {
+            height: 50px;
+          }
+        }
+      }
+    }
+  }
+}
