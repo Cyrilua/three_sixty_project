@@ -115,7 +115,7 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
         if type(rendered_poll) == NeedPassPoll:
-            collected_poll['is_viewed'] = rendered_poll.is_viewed
+            collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
         args['data']['polls'].append(collected_poll)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
@@ -198,7 +198,7 @@ def _render_new_not_viewed_polls(rendered_polls):
 
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
-        collected_poll['is_viewed'] = rendered_poll.is_viewed
+        collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
         collected_poll['is_new'] = True
         args['data']['polls'].append(collected_poll)
         rendered_poll.is_rendered = True
