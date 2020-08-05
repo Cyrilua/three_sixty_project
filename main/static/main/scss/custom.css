@@ -431,6 +431,13 @@ button {
   padding: 5px 11px;
 }
 
+.input-transparent {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  text-align: center;
+}
+
 .popup {
   display: none;
   opacity: 0;

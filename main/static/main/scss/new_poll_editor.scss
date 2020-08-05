@@ -1,5 +1,7 @@
 :root {
   --mdc-theme-primary: #C4C4C4;
+  --mdc-theme-secondary: #C4C4C4;
+  --mdc-theme-text-primary-on-dark: black;
 }
 
 .editor {
@@ -54,6 +56,8 @@
 
   .editor__category {
     .substrate {
+      z-index: 2;
+
       .color {
         display: flex;
         flex-direction: row;
@@ -245,6 +249,23 @@
           &:hover {
             filter: opacity(.7);
           }
+        }
+      }
+
+      .open-question {
+        margin-top: 30px;
+        margin-bottom: 50px;
+      }
+
+      .slider-range {
+        width: 500px;
+        margin: 20px auto 50px;
+
+        .slider-range__settings {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
         }
       }
     }
