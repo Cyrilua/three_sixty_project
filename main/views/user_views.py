@@ -5,8 +5,7 @@ from main.views.auxiliary_general_methods import *
 
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 

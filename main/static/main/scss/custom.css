@@ -652,6 +652,11 @@ button {
   display: block;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .cross-in-circle {
   width: 14px;
   height: 14px;
@@ -710,7 +715,7 @@ button {
   color: #595757;
   border-bottom-color: #595757;
 }
-.categories-block > .substrate .sort .category:active, .categories-block > .substrate .sort .category.active-sort, .categories-block > .substrate .sort .category:active > .category__title, .categories-block > .substrate .sort .category.active-sort > .category__title {
+.categories-block > .substrate .sort .category:active, .categories-block > .substrate .sort .category.active-sort, .categories-block > .substrate .sort .category:active > .category__title, .categories-block > .substrate .sort .category.active-sort > .category__title, .categories-block > .substrate .sort .category.category-sort--active > .category__title, .categories-block > .substrate .sort .category.category-sort--active {
   color: #001AFF;
   border-bottom-color: #001AFF;
 }
@@ -769,7 +774,7 @@ button {
   right: 0;
   top: 0;
 }
-._hint ._hint-up .delete {
+._hint ._hint-up .delete-img {
   width: 24px;
   height: 24px;
   filter: opacity(25%);
@@ -777,7 +782,7 @@ button {
   right: 6px;
   top: 6px;
 }
-._hint ._hint-up .delete:hover {
+._hint ._hint-up .delete-img:hover {
   filter: opacity(60%);
 }
 ._hint ._hint-down ._hint-down-block .black-block {
@@ -799,6 +804,21 @@ button {
   font-size: 12px;
   line-height: 14px;
   color: #FFFFFF;
+}
+
+.textarea-line {
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
 }
 
 /*# sourceMappingURL=custom.css.map */

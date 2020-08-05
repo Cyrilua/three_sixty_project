@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
-from .views.poll_views import create_poll
+from .views.poll_views import create_poll, polls_view, result_poll
 from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
@@ -76,10 +76,12 @@ urlpatterns = [
                   path('edit/check_input/birthdate', edit_profile.check_birth_date),
                   # Сохранение даты
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
-                  # Проверка корректности ввыода почты
+                  # Проверка корректности ввода почты
                   path('edit/check_input/email', edit_profile.check_email),
                   # Сохранение новой почты и отправка сообщения с подтверждением
                   path('edit/edit/save/email', edit_profile.save_email),
+                  # Проверка кода из письма
+                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Проверка логина
                   path('edit/check_input/username', edit_profile.check_login),
                   # Сохранение логина
@@ -90,12 +92,10 @@ urlpatterns = [
                   path('edit/check_input/password2', edit_profile.check_new_password_2),
                   # Сохранение нового пароля
                   path('edit/edit/save/password', edit_profile.save_new_password),
-                  # Проверка кода из письма
-                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
-                  path('upload_photo/', edit_profile.upload_profile_photo, name='upload_photo'),
+                  path('edit/edit/photo/update', edit_profile.upload_profile_photo),
                   # Удаление аватарки
-                  path('delete_photo/', edit_profile.delete_profile_photo, name='delete_photo'),
+                  path('edit/edit/photo/delete', edit_profile.delete_profile_photo),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
@@ -162,8 +162,6 @@ urlpatterns = [
                   path('type_poll/', poll_views_old.type_poll, name='choose_type_poll'),
                   # Список стандартных опросов
                   path('default_poll_list/', poll_views_old.default_poll_template_view, name='list_default_poll'),
-                  # Выбор цели опроса (только для HR)
-                  path('default_poll/<int:poll>', poll_views_old.search_target_poll, name='select_respondents'),
                   # Выбор области опрашиваемых
                   path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
                        name='select_survey_area'),
@@ -196,12 +194,27 @@ urlpatterns = [
                   path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
-                  path('polls/', create_poll.choose_poll, name='new_poll_view'),
+                  # Страница просмотра опросов и шаблонов
+                  path('polls/', polls_view.polls_view, name='new_poll_view'),
+                  #
                   path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
+                  #
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
-
+                  # Просмотр результата опроса
+                  path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
+                  # Динамическая подгрузка опросов
+                  path('polls/loading/<int:count_polls>/', polls_view.loading_polls),
+                  # Маячок о новом опросе для прохождения
+                  path('polls/new_notif/', polls_view.load_notification_new_poll),
+                  # Создание нового опроса через шаблон
+                  path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
+                       name='create_poll_from_template'),
+                  # Удаление шаблона
+                  path('polls/template/remove/', polls_view.remove_template),
+                  #
+                  path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
-                 path('test/', test.test_ajax_request)
+                 path('test/', test.code_verifications_test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,9 +1,10 @@
 import uuid
 
 from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
-    NeedPassPoll, CreatedPoll, Draft
+    CreatedPoll, SurveyWizard
 from main.views.auxiliary_general_methods import *
 from main.views.notifications_views import create_notifications
+from django.shortcuts import redirect, render
 
 
 def type_poll(request):
@@ -26,16 +27,6 @@ def default_poll_template_view(request):
         'access': is_hr
     }
     return render(request, 'main/default_polls.html', args)
-
-
-def search_target_poll(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    result = find_user(request,
-                       action_with_selected_user='main:select_survey_area',
-                       limited_access=True,
-                       function_determining_access=user_is_hr_or_owner)
-    return result
 
 
 def select_survey_area(request):
@@ -599,11 +590,6 @@ def respondent_choice_group(request, group_id):
         for profile in profiles:
             poll.respondents.add(profile.user)
 
-            need_pass_poll = NeedPassPoll()
-            need_pass_poll.poll = poll
-            need_pass_poll.profile = profile
-            need_pass_poll.save()
-
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -693,10 +679,6 @@ def respondent_choice_from_company(request):
         for profile in profiles:
             print(profile)
             poll.respondents.add(profile.user)
-            need_pass_poll = NeedPassPoll()
-            need_pass_poll.poll = poll
-            need_pass_poll.profile = profile
-            need_pass_poll.save()
         poll.save()
         return redirect('/new_poll/{}/'.format(poll.id))
 
@@ -708,21 +690,9 @@ def walkthrough_polls_view(request):
         return redirect('/')
     args = {
         'title': "Вопросы для прохождения",
-        'polls': build_need_pass_poll(request)
     }
     return render(request, 'main/poll/old/walkthrough_polls_view.html', args)
 
-
-def build_need_pass_poll(request):
-    result = []
-    profile = get_user_profile(request)
-    polls = [i.poll for i in NeedPassPoll.objects.filter(profile=profile)]
-    for poll in polls:
-        result.append({
-            'name': poll.name_poll,
-            'url': '/answer_poll/{}/'.format(poll.id)
-        })
-    return result
 
 
 def results_polls_view(request):
@@ -882,22 +852,10 @@ def build_questions(questions):
 
 
 def poll_create_redirect(request):
+    # TODO
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
     profile = get_user_profile(request)
-    draft_polls = list(Draft.objects.get(profile=profile).poll.all())
-    if len(draft_polls) == 0:
-        poll = Poll()
-        poll.initiator = auth.get_user(request)
-        poll.save()
 
-        draft = Draft()
-        draft.profile = profile
-        draft.save()
-
-        draft.poll.add(poll)
-        draft.save()
-        return redirect('/poll/editor/{}/'.format(poll.id))
-
-    return redirect('/poll/editor/{}/'.format(draft_polls[0].id))
+    return redirect('/poll/editor/1/')

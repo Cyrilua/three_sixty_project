@@ -21,7 +21,7 @@ class Profile (models.Model):
         db_table = "Profile"
 
     def __str__(self):
-        return 'Profile for user {}'.format(self.name)
+        return 'Profile for user {}'.format(self.user.username)
 
 
 class BirthDate(models.Model):
@@ -33,22 +33,7 @@ class BirthDate(models.Model):
         db_table = 'BirthDate'
 
 
-class CreatedPoll(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
-    objects = models.Manager()
 
-    class Meta:
-        db_table = "Created polls"
-
-
-class NeedPassPoll(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = "NeedPassPolls"
 
 
 class Moderator(models.Model):
@@ -97,7 +82,7 @@ class ProfilePhoto (models.Model):
 
 class VerificationCode (models.Model):
     email = models.EmailField(default='')
-    code = models.CharField(max_length=16, default='')
+    code = models.CharField(max_length=100, default='')
     objects = models.Manager()
 
     class Meta:
@@ -105,7 +90,6 @@ class VerificationCode (models.Model):
 
     def __str__(self):
         return self.code
-
 
 
 class Notifications (models.Model):
@@ -188,15 +172,12 @@ class Group(models.Model):
 
 
 class TemplatesPoll(models.Model):
-    TYPE_CHOICES = [
-        ('default', 0),
-        ('company', 1),
-        ('team', 2)
-    ]
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='default')
     name_poll = models.CharField(max_length=50)
     description = models.CharField(max_length=500, null=True)
+    is_general = models.BooleanField(default=False)
+    owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue
     objects = models.Manager()
 
     class Meta:
@@ -206,36 +187,51 @@ class TemplatesPoll(models.Model):
         return self.name_poll
 
 
-class Draft(models.Model):
-    poll = models.ManyToManyField('Poll')
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
-    objects = models.Manager()
-
-    class Meta:
-        db_table = 'Draft'
-
-
 class Poll(models.Model):
-    key = models.CharField(max_length=36, default='')
     initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name_poll = models.CharField(max_length=50, default='')
-    respondents = models.ManyToManyField(User)
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
+    creation_date = models.DateField(null=True)
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue
+    questions = models.ManyToManyField('Questions')
     objects = models.Manager()
-    #start_date = models.DateField()
-    #end_date = models.DateField()
 
     class Meta:
         db_table = "Poll"
 
     def __str__(self):
-        return self.name_poll
+        return "{} : {}".format(self.name_poll, self.creation_date)
+
+
+class NeedPassPoll(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    is_viewed = models.BooleanField(default=False)
+    is_rendered = models.BooleanField(default=False)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "RespondentPoll"
+
+    def __str__(self):
+        return 'Опрос: {}, Пользователь: {}, Просмотрен: {}'.format(self.poll, self.profile, self.is_viewed)
+
+
+class CreatedPoll(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "Created polls"
+
+    def __str__(self):
+        return 'Опрос: {}, Пользователь: {}'.format(self.poll, self.profile)
 
 
 class Questions(models.Model):
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     objects = models.Manager()
@@ -287,3 +283,10 @@ class Answers(models.Model):
 
     class Meta:
         db_table = "Answer"
+
+
+class TestTable(models.Model):
+    code = models.CharField(max_length=100, default='')
+
+    class Meta:
+        db_table = "TestTable"

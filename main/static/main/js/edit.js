@@ -7,6 +7,9 @@ $(function () {
     const modal = $('.modal');
     const emailCode = $('#email_code');
     const modalSuccess = $('#modal_success');
+    let photo = $('.left-content__photo');
+    let updPhoto = $('.upd-photo');
+    let headPhoto = $('.head-menu-img');
 
     let username = $('#username');
     let passwordOld = $('#password_old');
@@ -76,6 +79,134 @@ $(function () {
             position: 'top left',
         });
     }
+
+    body.on('click', '.left-content__delete-photo', function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: 'edit/photo/delete',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            success: function (response) {
+                console.log(response.new_photo_url)
+                $(photo).attr({
+                    'src': response.new_photo_url,
+                    // 'src': "../image/photo.svg",
+                });
+                $(headPhoto).attr({
+                    'src': response.new_photo_url,
+                });
+            },
+            statusCode: {
+                400: function () {
+                    throw new Error('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    throw new Error('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    throw new Error('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                throw new Error('Что - то пошло не так :(');
+            }
+        })
+    });
+
+    body.on('click', '.left-content__update-photo', function (event) {
+        event.preventDefault();
+        $(updPhoto).trigger('click');
+    });
+
+    // Обновление фото
+    body.on('change', '.upd-photo', function () {
+        let files = this.files;
+        console.log(files)
+        // ничего не делаем если files пустой
+        if (typeof files == 'undefined') return;
+        // создадим объект данных формы
+        let data = new FormData();
+        // заполняем объект данных файлами в подходящем для отправки формате
+        $.each(files, function (key, value) {
+            data.append(key, value);
+        });
+        console.log(data)
+        $.ajax({
+            url: 'edit/photo/update',
+            type: 'post',
+            data: {
+                data: data,
+                csrfmiddlewaretoken: csrf,
+            },
+            cache: false,
+            // отключаем обработку передаваемых данных, пусть передаются как есть
+            processData: false,
+            // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
+            contentType: false,
+            success: function (response) {
+                console.log(response.new_photo_url)
+                $(photo).attr({
+                    'src': response.new_photo_url,
+                });
+                $(headPhoto).attr({
+                    'src': response.new_photo_url,
+                });
+            },
+            statusCode: {
+                400: function () {
+                    throw new Error('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    throw new Error('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    throw new Error('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                throw new Error('Что - то пошло не так :(');
+            }
+        });
+
+        // $.ajax({
+        //     url: 'edit/photo/update',
+        //     type: 'post',
+        //     data: {
+        //         new_photo: file,
+        //         csrfmiddlewaretoken: csrf,
+        //     },
+        //     success: function (response) {
+        //         $(photo).attr({
+        //             'src': response.new_photo_url,
+        //         })
+        //     },
+        //     statusCode: {
+        //         400: function () {
+        //             console.log('Error 400 - Некорректный запрос');
+        //         },
+        //         403: function () {
+        //             console.log('Error 403 - Доступ запрещён');
+        //         },
+        //         404: function () {
+        //             console.log('Error 404 - Страница не найдена');
+        //         },
+        //         500: function () {
+        //             console.log('Error 500 - Внутренняя ошибка сервера');
+        //         }
+        //     },
+        //     error: function () {
+        //         console.log('Что - то пошло не так :(');
+        //     }
+        // });
+    });
 
     // Закрытие модального окна
     body.on('click', '.modal', function (el) {
@@ -365,20 +496,20 @@ $(function () {
             },
             statusCode: {
                 400: function () {
-                    console.log('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    console.log('Error 403 - Доступ запрещён');
+                    throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    console.log('Error 404 - Страница не найдена');
+                    throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    console.log('Error 500 - Внутренняя ошибка сервера');
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
             error: function () {
-                console.log('Что - то пошло не так :(');
+                throw new Error('Что - то пошло не так :(');
             }
         })
     });
@@ -483,20 +614,20 @@ $(function () {
             },
             statusCode: {
                 400: function () {
-                    console.log('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    console.log('Error 403 - Доступ запрещён');
+                    throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    console.log('Error 404 - Страница не найдена');
+                    throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    console.log('Error 500 - Внутренняя ошибка сервера');
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
             error: function () {
-                console.log('Что - то пошло не так :(');
+                throw new Error('Что - то пошло не так :(');
             }
         });
     });
@@ -554,20 +685,20 @@ $(function () {
             },
             statusCode: {
                 400: function () {
-                    console.log('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    console.log('Error 403 - Доступ запрещён');
+                    throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    console.log('Error 404 - Страница не найдена');
+                    throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    console.log('Error 500 - Внутренняя ошибка сервера');
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
             error: function () {
-                console.log('Что - то пошло не так :(');
+                throw new Error('Что - то пошло не так :(');
             }
         })
     });
@@ -839,9 +970,23 @@ $(function () {
                     }
                     checkBtnPost(btn, elem)
                 },
-                error: function () {
-                    console.log('Что - то пошло не так! :(');
+                statusCode: {
+                    400: function () {
+                        throw new Error('Error 400 - Некорректный запрос');
+                    },
+                    403: function () {
+                        throw new Error('Error 403 - Доступ запрещён');
+                    },
+                    404: function () {
+                        throw new Error('Error 404 - Страница не найдена');
+                    },
+                    500: function () {
+                        throw new Error('Error 500 - Внутренняя ошибка сервера');
+                    }
                 },
+                error: function () {
+                    throw new Error('Что - то пошло не так :(');
+                }
             });
         }
     }
