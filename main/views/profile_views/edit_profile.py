@@ -8,49 +8,51 @@ from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-
-
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 
 
 from PIL import Image
 
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
+
+#@csrf_exempt
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-
-    profile = get_user_profile(request)
-    args = {
-        'title': "Добавление фотографии пользователя",
-        'form': PhotoProfileForm()
-    }
-
-    if request.method == "POST":
-        user_photo = request.FILES['photo']
+    if request.is_ajax():
+        #print(request.FILES)
+        user_photo = request.FILES['0']
+        profile = get_user_profile(request)
         try:
-            profile.profilephoto.photo = user_photo
-            profile.profilephoto.save()
-        except:
-            photo_profile = ProfilePhoto()
-            photo_profile.photo = user_photo
-            photo_profile.profile = profile
-            photo_profile.save()
-        return redirect('/')
-    return render(request, "main/user/old/upload_photo.html", args)
+            photo_profile = ProfilePhoto.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            pass
+        else:
+            photo_profile.delete()
+        photo_profile = ProfilePhoto()
+        photo_profile.profile = profile
+        photo_profile.photo = user_photo
+        photo_profile.save()
+
+        result = photo_profile.photo.url
+        print(result)
+        return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 
 def delete_profile_photo(request) -> render:
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    profile = get_user_profile(request)
-    try:
-        photo = ProfilePhoto.objects.get(profile=profile)
-    except ObjectDoesNotExist:
-        return redirect('/edit/')
-    photo.delete()
-    return redirect('/edit/')
+    if request.is_ajax():
+        try:
+            photo = ProfilePhoto.objects.get(profile=get_user_profile(request))
+        except ObjectDoesNotExist:
+            return JsonResponse({}, status=200)
+        else:
+            photo.delete()
+        none_photo = '/static/main/images/photo.svg'
+        return JsonResponse({'new_photo_url': none_photo}, status=200)
 
 
 def edit_profile(request) -> render:
@@ -261,24 +263,23 @@ def check_email(request) -> JsonResponse:
 
 def save_email(request) -> JsonResponse:
     if request.is_ajax():
-        value = request.POST['values[email]']
+        email = request.POST['values[email]']
         user = auth.get_user(request)
         password = request.POST['values[password_for_email]']
         args = {
-            'email': value,
+            'email': email,
             'resultStatus': 'success'
         }
         if not user.check_password(password):
             args['resultStatus'] = 'error'
             args['listErrors'] = {'password_for_email': ['Неверный пароль']}
             return JsonResponse(args, status=200)
-        user.email = value
-        user.save()
+
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
-        code = create_verification_code(user.email)
-        send_email_validate_message(profile.name, profile.surname, user.email, code)
+        code = create_verification_code(email)
+        send_email_validate_message(profile.name, profile.surname, email, code)
 
         return JsonResponse(args, status=200)
 
@@ -286,9 +287,10 @@ def save_email(request) -> JsonResponse:
 def check_email_code(request):
     if request.is_ajax():
         user = request.user
-        errors = validators.validate_code(request.POST['values[email_code]'], get_user_profile(request))
+        email = request.POST['values[email]']
+        errors = validators.validate_code(request.POST['values[email_code]'], email)
         args = {
-            'email': user.email,
+            'email': email,
             'resultStatus': 'success'
         }
         if len(errors) != 0:
@@ -297,6 +299,8 @@ def check_email_code(request):
             return JsonResponse(args, status=200)
         profile = get_user_profile(request)
         profile.email_is_validate = True
+        user.email = email
+        user.save()
         return JsonResponse(args, status=200)
 
 

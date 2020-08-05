@@ -1,8 +1,9 @@
 import datetime
 
-from main.models import BirthDate, Notifications, Poll, Company, Group
+from main.models import BirthDate, SurveyWizard, Moderator
 from main.views.auxiliary_general_methods import *
 from main.views import notifications_views
+from django.shortcuts import redirect, render
 
 from django.core.exceptions import ObjectDoesNotExist
 

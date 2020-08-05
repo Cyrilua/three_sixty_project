@@ -1,13 +1,20 @@
+:root {
+  --mdc-theme-primary: #001aff;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   width: 100%;
   z-index: 50;
 }
+.content .templates,
+.content .polls {
+  z-index: 50;
+}
 .content .templates {
   padding: 0;
   margin-bottom: 10px;
-  z-index: 50;
   overflow: hidden;
 }
 .content .templates.few {
@@ -74,24 +81,53 @@
 }
 .content .polls .substrate .sort {
   margin-bottom: 20px;
+  overflow: visible;
 }
-.content .polls .categories .my-polls,
-.content .polls .categories .polls {
+.content .polls .substrate .sort .sortable {
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+.content .polls .substrate .sort .sortable > .width-245 {
+  width: 245px;
+}
+.content .polls .substrate .sort .sortable > .mdc-select > .width-245 {
+  width: 245px;
+}
+.content .polls .substrate .sort .sortable > .mdc-select > .height-40 {
+  height: 40px;
+}
+.content .polls .substrate .sort .sortable > .mdc-select > .mdc-select__anchor > .mdc-select__selected-text {
+  color: #595757;
+}
+.content .polls .substrate .sort .sortable > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading, .content .polls .substrate .sort .sortable > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+  border-color: #595757;
+}
+.content .polls .categories .category-content {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
-.content .polls .categories .my-polls.hide,
-.content .polls .categories .polls.hide {
+.content .polls .categories .category-content.hide {
   display: none;
 }
-.content .polls .categories .my-polls .poll-item,
-.content .polls .categories .polls .poll-item {
+.content .polls .categories .category-content .poll-item {
   margin-bottom: 20px;
   margin-right: 20px;
 }
-.content .polls .categories .my-polls .poll-item:nth-child(3n),
-.content .polls .categories .polls .poll-item:nth-child(3n) {
+.content .polls .categories .category-content .poll-item:nth-of-type(3n) {
   margin-right: 0;
+}
+.content .polls .categories .category-content .category-empty {
+  width: 910px;
+  height: 200px;
+}
+.content .polls .categories .category-content .category-empty .hide {
+  display: none;
+}
+
+.new-poll {
+  display: none;
 }
 
 .template-item {
@@ -207,6 +243,7 @@
   height: 30px;
   font-size: 14px;
   line-height: 16px;
+  max-width: 190px;
 }
 .template-item .template__name .name {
   height: 22px;
@@ -214,9 +251,15 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  max-width: 190px;
   padding: 0 9px;
   border-radius: 5px;
   cursor: default;
+}
+.template-item .template__name .name > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .poll-item {
@@ -288,6 +331,9 @@
   line-height: 21px;
   color: #000000;
   margin-top: 53px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .poll-item .line-decoration {
   height: 1px;
@@ -301,6 +347,9 @@
   line-height: 16px;
   color: #000000;
   margin-top: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .poll-item .poll_details {
   font-style: normal;
@@ -310,6 +359,86 @@
   color: #595757;
   margin-top: 9px;
   margin-bottom: auto;
+}
+
+._preloader {
+  height: calc(100vh - 90px - 45px);
+  padding-top: 50px;
+}
+._preloader.small {
+  height: 100px;
+}
+._preloader ._preloader__sub {
+  display: flex;
+  justify-content: center;
+}
+._preloader ._preloader__sub ._loader {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+  border-radius: 50%;
+  animation: 0.5s linear 0s infinite alternate load;
+  transform: translateY(-50%);
+}
+
+@keyframes load {
+  from {
+    width: 50px;
+    height: 50px;
+  }
+  to {
+    width: 10px;
+    height: 10px;
+  }
+}
+._updater {
+  width: 30px;
+  height: 30px;
+  margin: auto auto auto 20px;
+}
+._updater .update {
+  width: 30px;
+  height: 30px;
+  animation: 0.8s linear 0s infinite reverse looping;
+}
+
+@keyframes looping {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.show-new-poll {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0;
+  cursor: pointer;
+}
+.show-new-poll.hide {
+  display: none;
+}
+.show-new-poll:hover .label .up {
+  animation: 0.5s linear infinite up;
+}
+.show-new-poll .label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@keyframes up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15px);
+  }
 }
 
 /*# sourceMappingURL=polls_view.css.map */

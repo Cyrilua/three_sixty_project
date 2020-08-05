@@ -101,8 +101,10 @@ $(function () {
     });
 
     // Переход на другие страницы по кнопкам (как ссылки)
-    body.on('click', '.button-href', function () {
-        let href = $(this).attr('data-href');
-        $(location).attr({'href':href});
+    body.on('click', '.button-href', function (el) {
+        if (!$(el.target).hasClass('delete-img')) {
+            let href = $(this).attr('data-href');
+            $(location).attr({'href': href});
+        }
     })
 });
