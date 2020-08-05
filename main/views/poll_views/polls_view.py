@@ -71,11 +71,11 @@ def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, so
         'name': "poll__name_poll",
         'quantity': "-poll__count_passed"
     }
-
     try:
         parameter_ordering = choose_parameter_ordering[sort]
     except KeyError:
         return JsonResponse({}, status=400)
+
     if type_polls == 'myPolls':
         polls = CreatedPoll.objects.filter(profile=profile).order_by(parameter_ordering)[
                 count_loaded_polls:count_will_loaded_polls + count_loaded_polls]
@@ -87,18 +87,22 @@ def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, so
 
     count_polls = polls.count()
     if count_polls == 0 and count_loaded_polls == 0:
-        text_choose = {
-            'myPolls': "Вы не провели ни одного опроса",
-            'polls': "Сейчас нет опросов для прохождения"
-        }
-        result = SimpleTemplateResponse('main/includes/bad_search.html', {'text': text_choose[type_polls]})
-        result = result.rendered_content
-        return JsonResponse({'newElems': result, 'is_last': True}, status=200)
+        return _render_page_no_polls(type_polls)
 
     result = _pre_render_item_polls(polls)
     if count_polls < count_will_loaded_polls - 1:
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
     return JsonResponse({'newElems': result, 'is_last': False}, status=200)
+
+
+def _render_page_no_polls(type_polls: str) -> JsonResponse:
+    text_choose = {
+        'myPolls': "Вы не провели ни одного опроса",
+        'polls': "Сейчас нет опросов для прохождения"
+    }
+    result = SimpleTemplateResponse('main/includes/bad_search.html', {'text': text_choose[type_polls]})
+    result = result.rendered_content
+    return JsonResponse({'newElems': result, 'is_last': True}, status=200)
 
 
 def _pre_render_item_polls(rendered_polls: list) -> str:
@@ -111,12 +115,8 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
         if type(rendered_poll) == NeedPassPoll:
-            collected_poll['is_viewed'] = not rendered_poll.is_viewed
-            print(rendered_poll.is_viewed)
-            #collected_poll['is_viewed'] = True
+            collected_poll['is_viewed'] = rendered_poll.is_viewed
         args['data']['polls'].append(collected_poll)
-
-    print(args)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
@@ -161,7 +161,9 @@ def _build_date(poll_date: date) -> dict:
     try:
         month = months[poll_date.month]
     except KeyError:
-        return None
+        return {'day': poll_date.day,
+        'month': poll_date.month,
+        'year': poll_date.year}
     result = {
         'day': poll_date.day,
         'month': month,
@@ -196,8 +198,7 @@ def _render_new_not_viewed_polls(rendered_polls):
 
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
-        # TODO
-        collected_poll['is_viewed'] = not rendered_poll.is_viewed
+        collected_poll['is_viewed'] = rendered_poll.is_viewed
         collected_poll['is_new'] = True
         args['data']['polls'].append(collected_poll)
         rendered_poll.is_rendered = True
