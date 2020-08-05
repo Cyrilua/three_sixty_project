@@ -284,3 +284,10 @@ class Answers(models.Model):
 
     class Meta:
         db_table = "Answer"
+
+
+class TestTable(models.Model):
+    code = models.CharField(max_length=100, default='')
+
+    class Meta:
+        db_table = "TestTable"
