@@ -279,7 +279,6 @@ def save_email(request) -> JsonResponse:
         profile.email_is_validate = False
         profile.save()
         code = create_verification_code(email)
-        print(code)
         send_email_validate_message(profile.name, profile.surname, email, code)
 
         return JsonResponse(args, status=200)
