@@ -110,9 +110,13 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
     for rendered_poll in rendered_polls:
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
-        if type(rendered_poll) == 'main.models.NeedPassPoll':
-            collected_poll['is_viewed'] = rendered_poll.is_viewed
+        if type(rendered_poll) == NeedPassPoll:
+            collected_poll['is_viewed'] = not rendered_poll.is_viewed
+            print(rendered_poll.is_viewed)
+            #collected_poll['is_viewed'] = True
         args['data']['polls'].append(collected_poll)
+
+    print(args)
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
@@ -192,10 +196,10 @@ def _render_new_not_viewed_polls(rendered_polls):
 
         poll = rendered_poll.poll
         collected_poll = _build_poll(poll)
-        collected_poll['is_viewed'] = rendered_poll.is_viewed
+        # TODO
+        collected_poll['is_viewed'] = not rendered_poll.is_viewed
         collected_poll['is_new'] = True
         args['data']['polls'].append(collected_poll)
-
         rendered_poll.is_rendered = True
         rendered_poll.save()
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
@@ -227,7 +231,15 @@ def remove_template(request) -> JsonResponse:
 
 def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
-        print()
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!')
-        print()
+        try:
+            poll: Poll = Poll.objects.get(id=poll_id)
+            need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll)
+        except ObjectDoesNotExist:
+            return JsonResponse({}, status=400)
+
+        if need_pass_poll.profile != get_user_profile(request):
+            return JsonResponse({}, status=400)
+
+        need_pass_poll.is_viewed = True
+        need_pass_poll.save()
         return JsonResponse({}, status=200)

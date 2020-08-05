@@ -415,7 +415,7 @@ $(function () {
             right: document.documentElement.clientWidth,
             bottom: document.documentElement.clientHeight
         };
-        // console.log(targetPosition, windowPosition)
+        console.log(targetPosition, windowPosition)
         if (click ||
             (targetPosition.bottom < windowPosition.bottom &&
                 targetPosition.top > windowPosition.top &&
