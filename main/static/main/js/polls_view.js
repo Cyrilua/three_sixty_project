@@ -17,12 +17,10 @@ $(function () {
     let currentScrollHeight = 0;
     let prevScrollHeight = window.scrollY;
 
-    // let prevScroll = window.scrollY;
     window.scrollTo(0, 0);
     let sortable = $('.sort');
     let startPositionSortable = sortable[0].getBoundingClientRect().y;
     let scrollSortable = startPositionSortable;
-    // window.scrollTo(0, prevScroll);
 
     let pollsNotif = $('#polls-notif');
 
@@ -37,42 +35,11 @@ $(function () {
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
         sortType = sortable.value;
-        // console.log(sortType)
         sortable.listen('MDCSelect:change', () => {
             if (currentSortable !== sortable.value) {
                 currentSortable = sortable.value;
-                // console.log(sortable.value)
-
-                // prevScrollSortable = scrollSortable;
-
                 sortType = sortable.value;
-
-                categoryContentBlock.children().remove();
-                countLoadedPolls = categoryContentBlock.children('.category-item').length;
-                // console.log('---')
-                // console.log(countLoadedPolls)
-                // console.log(sortType)
-                // console.log(category)
-
-                let scroll = startPositionSortable - scrollSortable;
-
-                categoryContentBlock.removeClass('full');
-                let heightClient = document.documentElement.clientHeight;
-                let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-                // console.log(partPolls)
-                loading(partPolls, scroll);
-
-                // Просмотр нового опроса
-                if (category === 'polls') {
-                    // console.log('qwe')
-                    let noViewed = $('.no-viewed');
-                    // visible(noViewed[2]);
-                    for (let i = 0; i < noViewed.length; i++) {
-                        // console.log(noViewed[i])
-                        visible(noViewed[i]);
-                    }
-                    // console.log('----------------------------------')
-                }
+                rerender();
             }
         });
     }
@@ -86,32 +53,7 @@ $(function () {
             sortable.children('.category-sort--active').removeClass('category-sort--active');
             $(this).addClass('category-sort--active');
             category = $(this).attr('data-category');
-
-            categoryContentBlock.children().remove();
-            countLoadedPolls = categoryContentBlock.children('.category-item').length;
-            // console.log('---')
-            // console.log(countLoadedPolls)
-            // console.log(sortType)
-            // console.log(category)
-            // console.log(scrollSortable)
-            let scroll = startPositionSortable - scrollSortable;
-
-            categoryContentBlock.removeClass('full');
-            let heightClient = document.documentElement.clientHeight;
-            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-            loading(partPolls, scroll);
-
-            // Просмотр нового опроса
-            if (category === 'polls') {
-                // console.log('qwe')
-                let noViewed = $('.no-viewed');
-                // visible(noViewed[2]);
-                for (let i = 0; i < noViewed.length; i++) {
-                    // console.log(noViewed[i])
-                    visible(noViewed[i]);
-                }
-                // console.log('----------------------------------')
-            }
+            rerender();
         }
     });
 
@@ -195,12 +137,6 @@ $(function () {
         })
     });
 
-    // body.on('click', '.poll-item', function () {
-    //     $(this).removeClass('poll-item')
-    //     $(this).addClass('new-poll')
-    //     // $(this).remove()
-    // })
-
     // Проверка новых опросов для прохождения (каждую сеекунду)
     setInterval(function () {
         $.ajax({
@@ -213,7 +149,6 @@ $(function () {
                 if (response.notifications > 0) {
                     pollsNotif.text(response.notifications);
                     pollsNotif.removeClass('hide');
-                    console.log(response.newElems)
                     if (response.newElems && category === 'polls') {
                         showNews.removeClass('hide');
                         emptyBlock.addClass('hide');
@@ -252,105 +187,30 @@ $(function () {
         elems.remove();
         let newPolls = $('.new-poll');
         newPolls.removeClass('new-poll');
-
         // Просмотр нового опроса
-        if (category === 'polls') {
-            // console.log('qwe')
-            let noViewed = $('.no-viewed');
-            // visible(noViewed[2]);
-            for (let i = 0; i < noViewed.length; i++) {
-                // console.log(noViewed[i])
-                visible(noViewed[i]);
-            }
-            // console.log('----------------------------------')
-        }
+        checkView();
     });
 
-    // Подгрузка данных при изменении размера экрана (частный случай)
+
     $(window).resize(function () {
-        // console.log('test')
-
-        scrollHeight = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        prevScrollHeight = currentScrollHeight;
-        currentScrollHeight = window.pageYOffset;
-        if (prevScrollHeight < currentScrollHeight &&
-            currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
-            !categoryContentBlock.hasClass('loading') &&
-            !categoryContentBlock.hasClass('full')) {
-            // console.log(true)
-            // console.log('---')
-            // console.log(countLoadedPolls)
-            // console.log(sortType)
-            // console.log(category)
-            let heightClient = document.documentElement.clientHeight;
-            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-            loading(partPolls);
-        }
-    });
-
-    // Подгрузка данных при скролле
-    $(window).scroll(function () {
-        scrollHeight = Math.max(
-            document.body.scrollHeight, document.documentElement.scrollHeight,
-            document.body.offsetHeight, document.documentElement.offsetHeight,
-            document.body.clientHeight, document.documentElement.clientHeight
-        );
-        prevScrollHeight = currentScrollHeight;
-        currentScrollHeight = window.pageYOffset;
-        if (prevScrollHeight < currentScrollHeight &&
-            currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
-            !categoryContentBlock.hasClass('loading') &&
-            !categoryContentBlock.hasClass('full')) {
-            // console.log(true)
-            // console.log('---')
-            // console.log(countLoadedPolls)
-            // console.log(sortType)
-            // console.log(category)
-            let heightClient = document.documentElement.clientHeight;
-            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
-            loading(partPolls);
-        }
-        // console.log(document.body.scrollHeight, document.documentElement.scrollHeight,
-        //     document.body.offsetHeight, document.documentElement.offsetHeight,
-        //     document.body.clientHeight, document.documentElement.clientHeight, currentScrollHeight, currentScrollHeight + document.documentElement.clientHeight)
+        console.log('resize')
+        // Подгрузка данных при изменении размера экрана (частный случай)
+        loadingPolls();
+        // Просмотр нового опроса
+        checkView();
     });
 
 
-    // Измерение скролла вниз
     $(window).scroll(function () {
+        // Измерение скролла вниз
         scrollSortable = sortable[0].getBoundingClientRect().y;
+        // Подгрузка данных при скролле
+        loadingPolls();
+        // Просмотр нового опроса
+        checkView();
     });
 
-    // Просмотр нового опроса
-    $(window).scroll(function () {
-        if (category === 'polls') {
-            // console.log('qwe')
-            let noViewed = $('.no-viewed');
-            // visible(noViewed[2]);
-            for (let i = 0; i < noViewed.length; i++) {
-                // console.log(noViewed[i])
-                visible(noViewed[i]);
-            }
-            // console.log('----------------------------------')
-        }
-    });
-    $(window).resize(function () {
-        if (category === 'polls') {
-            // console.log('qwe')
-            let noViewed = $('.no-viewed');
-            // visible(noViewed[2]);
-            for (let i = 0; i < noViewed.length; i++) {
-                // console.log(noViewed[i])
-                visible(noViewed[i]);
-            }
-            // console.log('----------------------------------')
-        }
-    });
-
+    // Просмотр опроса на клик
     body.on('click', '.no-viewed', function () {
         visible(this, true)
     });
@@ -362,18 +222,12 @@ $(function () {
             categoryContentBlock.addClass('loading');
             sortable.addClass('disabled');
             updater.removeClass('hide');
-            // preloader.removeClass('hide');
-            // console.log(scroll)
             if (scroll) {
-                // console.log("chech")
                 preloader.removeClass('hide');
                 window.scrollTo(0, 0);
                 window.scrollTo(0, scroll);
             } else {
-                // preloader.removeClass('hidden');
-                // preloader.addClass('small');
             }
-            console.log(countNewEl)
             $.ajax({
                 url: `loading/${countLoadedPolls}/`,
                 type: 'get',
@@ -383,37 +237,25 @@ $(function () {
                     sort: sortType,
                 },
                 success: function (response) {
-                    // console.log(response.newElems)
                     if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
-                        // countLoadedPolls += response.countNewElems;
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
                     }
-                    // console.log(response.is_last)
-                    // console.log(response.is_empty)
                     if (response.is_last) {
                         categoryContentBlock.addClass('full');
                     } else {
                         categoryContentBlock.remove('full');
                     }
-                    // if (response.is_empty) {
-                    //     emptyBlock.removeClass('hide');
-                    // } else {
-                    //     emptyBlock.addClass('hide');
-                    // }
                 },
                 complete: function () {
                     categoryContentBlock.removeClass('loading');
                     sortable.removeClass('disabled');
                     updater.addClass('hide');
-                    // preloader.addClass('hide');
                     if (scroll) {
                         preloader.addClass('hide');
                         window.scrollTo(0, 0);
                         window.scrollTo(0, scroll);
                     } else {
-                        // preloader.addClass('hidden');
-                        // preloader.removeClass('small');
                     }
                 },
                 statusCode: {
@@ -451,15 +293,12 @@ $(function () {
             right: document.documentElement.clientWidth,
             bottom: document.documentElement.clientHeight
         };
-        console.log(targetPosition, windowPosition)
         if (!$(target).hasClass('visible-load') && (click ||
             (targetPosition.bottom < windowPosition.bottom &&
                 targetPosition.top > windowPosition.top &&
                 targetPosition.right < windowPosition.right &&
                 targetPosition.left > windowPosition.left))) {
-            // console.log('Вы видите элемент :)' );
             let id = target.getAttribute('data-id');
-            // console.log(id)
             $.ajax({
                 url: `viewing/${id}`,
                 type: 'post',
@@ -500,44 +339,52 @@ $(function () {
 
     // Дейчаствия при первом запуске
     function run() {
-        // console.log('cehck')
-
         // Загрузка первоначальных опросов
         let heightClient = document.documentElement.clientHeight;
         let firstPartPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(firstPartPolls);
+        // Проверка непросмотренный опросов на просмотр
+        checkView();
+    }
 
-        // Подгрузка данных, если был скролл и перезагрузка страницы (f5)
-        // scrollHeight = Math.max(
-        //     document.body.scrollHeight, document.documentElement.scrollHeight,
-        //     document.body.offsetHeight, document.documentElement.offsetHeight,
-        //     document.body.clientHeight, document.documentElement.clientHeight
-        // );
-        // prevScrollHeight = currentScrollHeight;
-        // currentScrollHeight = window.pageYOffset;
-        // console.log(prevScrollHeight < currentScrollHeight, prevScrollHeight, currentScrollHeight)
-        // if (prevScrollHeight < currentScrollHeight &&
-        //     currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
-        //     !categoryContentBlock.hasClass('loading') &&
-        //     !categoryContentBlock.hasClass('full')) {
-        //     console.log(true)
-        //     console.log('---')
-        //     console.log(countLoadedPolls)
-        //     console.log(sortType)
-        //     console.log(category)
-        //     loading(9);
-        // }
-
-        // Просмотр нового опроса
+    // Просмотр нового опроса
+    function checkView() {
         if (category === 'polls') {
-            // console.log('qwe')
             let noViewed = $('.no-viewed');
-            // visible(noViewed[2]);
             for (let i = 0; i < noViewed.length; i++) {
-                // console.log(noViewed[i])
                 visible(noViewed[i]);
             }
-            // console.log('----------------------------------')
         }
+    }
+
+    // Подгрузка данных (scroll/resize)
+    function loadingPolls() {
+        scrollHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        prevScrollHeight = currentScrollHeight;
+        currentScrollHeight = window.pageYOffset;
+        if (prevScrollHeight <= currentScrollHeight &&
+            currentScrollHeight + document.documentElement.clientHeight + 150 > scrollHeight &&
+            !categoryContentBlock.hasClass('loading') &&
+            !categoryContentBlock.hasClass('full')) {
+            let heightClient = document.documentElement.clientHeight;
+            let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+            loading(partPolls);
+        }
+    }
+
+    // Перерисовка опросов
+    function rerender() {
+        categoryContentBlock.children().remove();
+        countLoadedPolls = categoryContentBlock.children('.category-item').length;
+        let scroll = startPositionSortable - scrollSortable;
+        categoryContentBlock.removeClass('full');
+        let heightClient = document.documentElement.clientHeight;
+        let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
+        loading(partPolls, scroll);
+        checkView();
     }
 });
