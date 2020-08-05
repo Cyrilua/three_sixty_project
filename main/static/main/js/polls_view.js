@@ -452,11 +452,11 @@ $(function () {
             bottom: document.documentElement.clientHeight
         };
         console.log(targetPosition, windowPosition)
-        if (click ||
+        if (!$(target).hasClass('visible-load') && (click ||
             (targetPosition.bottom < windowPosition.bottom &&
                 targetPosition.top > windowPosition.top &&
                 targetPosition.right < windowPosition.right &&
-                targetPosition.left > windowPosition.left)) {
+                targetPosition.left > windowPosition.left))) {
             // console.log('Вы видите элемент :)' );
             let id = target.getAttribute('data-id');
             // console.log(id)
@@ -467,14 +467,14 @@ $(function () {
                     csrfmiddlewaretoken: csrf,
                 },
                 beforeSend: function () {
-                    $(target).addClass('visible-load')
+                    $(target).addClass('visible-load');
                 },
                 success: function (response) {
                     $(target).removeClass('no-viewed');
                     $(target).removeClass('new-poll');
                 },
                 complete: function () {
-                    $(target).removeClass('visible-load')
+                    $(target).removeClass('visible-load');
                 },
                 statusCode: {
                     400: function () {
