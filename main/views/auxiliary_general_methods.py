@@ -33,12 +33,8 @@ def send_email_validate_message(name: str, surname: str, email: str, code: str) 
         },
         'code': code
     })
-    #email = EmailMessage(
-    #    mail_subject, message, to=[email]
-    #)
-    #email.send()
     email_from = settings.EMAIL_HOST_USER
-    send_mail(mail_subject, message, email_from, [email,])
+    send_mail(mail_subject, message, email_from, [email])
 
 
 def check_code(code: str, email: str) -> bool:
@@ -56,6 +52,8 @@ def _get_md5_code(code: str) -> str:
     code_md5 = hashlib.md5()
     code_md5.update(code.encode('utf-8'))
     result = str(code_md5.digest())
+    print(code)
+    print(result)
     return result
 
 

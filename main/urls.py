@@ -176,6 +176,6 @@ urlpatterns = [
 
 
                  ############ Only for debug ###############
-                 path('test/', test.test_ajax_request)
+                 path('test/', test.test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
