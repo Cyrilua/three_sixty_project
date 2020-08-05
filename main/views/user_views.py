@@ -120,6 +120,8 @@ def send_email(request) -> JsonResponse:
         name = request.POST['name']
         surname = request.POST['surname']
         code = create_verification_code(email)
+        print(code)
+        print(len(code))
         send_email_validate_message(name, surname, email, code)
         return JsonResponse({}, status=200)
 

@@ -97,7 +97,7 @@ class ProfilePhoto (models.Model):
 
 class VerificationCode (models.Model):
     email = models.EmailField(default='')
-    code = models.CharField(max_length=16, default='')
+    code = models.CharField(max_length=100, default='')
     objects = models.Manager()
 
     class Meta:
