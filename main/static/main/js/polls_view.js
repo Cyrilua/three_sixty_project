@@ -61,6 +61,18 @@ $(function () {
                 let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
                 // console.log(partPolls)
                 loading(partPolls, scroll);
+
+                // Просмотр нового опроса
+                if (category === 'polls') {
+                    // console.log('qwe')
+                    let noViewed = $('.no-viewed');
+                    // visible(noViewed[2]);
+                    for (let i = 0; i < noViewed.length; i++) {
+                        // console.log(noViewed[i])
+                        visible(noViewed[i]);
+                    }
+                    // console.log('----------------------------------')
+                }
             }
         });
     }
@@ -88,6 +100,18 @@ $(function () {
             let heightClient = document.documentElement.clientHeight;
             let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
             loading(partPolls, scroll);
+
+            // Просмотр нового опроса
+            if (category === 'polls') {
+                // console.log('qwe')
+                let noViewed = $('.no-viewed');
+                // visible(noViewed[2]);
+                for (let i = 0; i < noViewed.length; i++) {
+                    // console.log(noViewed[i])
+                    visible(noViewed[i]);
+                }
+                // console.log('----------------------------------')
+            }
         }
     });
 
@@ -228,6 +252,18 @@ $(function () {
         elems.remove();
         let newPolls = $('.new-poll');
         newPolls.removeClass('new-poll');
+
+        // Просмотр нового опроса
+        if (category === 'polls') {
+            // console.log('qwe')
+            let noViewed = $('.no-viewed');
+            // visible(noViewed[2]);
+            for (let i = 0; i < noViewed.length; i++) {
+                // console.log(noViewed[i])
+                visible(noViewed[i]);
+            }
+            // console.log('----------------------------------')
+        }
     });
 
     // Подгрузка данных при изменении размера экрана (частный случай)
@@ -430,9 +466,15 @@ $(function () {
                 data: {
                     csrfmiddlewaretoken: csrf,
                 },
+                beforeSend: function () {
+                    $(target).addClass('visible-load')
+                },
                 success: function (response) {
                     $(target).removeClass('no-viewed');
                     $(target).removeClass('new-poll');
+                },
+                complete: function () {
+                    $(target).removeClass('visible-load')
                 },
                 statusCode: {
                     400: function () {
@@ -495,7 +537,7 @@ $(function () {
                 // console.log(noViewed[i])
                 visible(noViewed[i]);
             }
-            console.log('----------------------------------')
+            // console.log('----------------------------------')
         }
     }
 });
