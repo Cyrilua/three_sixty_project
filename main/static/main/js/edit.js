@@ -414,6 +414,11 @@ $(function () {
                 let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
                     .children('.setting__mini').children('.setting__2-block')
                     .children('.setting__value');
+                if (partUrl === 'email_code') {
+                    let setting = $('.setting__email');
+                    spanMax = $(setting[1]);
+                    spanMin = $(setting[0]);
+                }
                 if (partUrl === 'name') {
                     name.val(response.name);
                     surname.val(response.surname);
@@ -451,6 +456,7 @@ $(function () {
                         errors.email = false;
                         sessionStorage.setItem('new_email', email.val());
                         email.val('');
+                        // console.log('show')
                         modal.toggleClass('hide');
                     }
                 } else if (partUrl === 'email_code') {
