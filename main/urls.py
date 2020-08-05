@@ -76,10 +76,12 @@ urlpatterns = [
                   path('edit/check_input/birthdate', edit_profile.check_birth_date),
                   # Сохранение даты
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
-                  # Проверка корректности ввыода почты
+                  # Проверка корректности ввода почты
                   path('edit/check_input/email', edit_profile.check_email),
                   # Сохранение новой почты и отправка сообщения с подтверждением
                   path('edit/edit/save/email', edit_profile.save_email),
+                  # Проверка кода из письма
+                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Проверка логина
                   path('edit/check_input/username', edit_profile.check_login),
                   # Сохранение логина
@@ -90,8 +92,6 @@ urlpatterns = [
                   path('edit/check_input/password2', edit_profile.check_new_password_2),
                   # Сохранение нового пароля
                   path('edit/edit/save/password', edit_profile.save_new_password),
-                  # Проверка кода из письма
-                  path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Загрузка аватарки
                   path('edit/edit/photo/update', edit_profile.upload_profile_photo),
                   # Удаление аватарки
@@ -215,6 +215,6 @@ urlpatterns = [
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
-                 path('test/', test.test_ajax_request)
+                 path('test/', test.code_verifications_test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

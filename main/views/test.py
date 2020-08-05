@@ -2,18 +2,20 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from . import notifications_views
 from .auxiliary_general_methods import *
-from main.models import Profile
+from main.models import TestTable
 from django.http import JsonResponse
 
 
-def create_notifications(request):
-    key = '78d0a42e-4224-47c2-9479-a5c411fd1a12'
-    profile = Profile.objects.get(id=95)
-    notifications_views.create_notifications(get_user_profile(request), 'Тестовое уведомление', 'invite_command',
-                                             key=key, from_profile=profile)
-    return redirect('/')
-
-
-def test_ajax_request(request):
-    print('i am here')
-    return JsonResponse({}, status=200)
+def code_verifications_test(request):
+    code = '98765'
+    code_md5 = hashlib.md5()
+    code_md5.update(code.encode('utf-8'))
+    result = code_md5.digest()
+    print(result)
+    test_table = TestTable()
+    test_table.code = str(result)
+    test_table.save()
+    get: TestTable = TestTable.objects.get(id=3)
+    print(get.code)
+    print(type(get.code))
+    return render(request, 'main/test.html')

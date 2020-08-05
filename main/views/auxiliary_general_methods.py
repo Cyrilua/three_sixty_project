@@ -49,7 +49,7 @@ def check_code(code: str, email: str) -> bool:
 
 def _get_md5_code(code: str) -> str:
     if type(code) != str:
-        return None
+        code = str(code)
     code_md5 = hashlib.md5()
     code_md5.update(code.encode('utf-8'))
     result = str(code_md5.digest())

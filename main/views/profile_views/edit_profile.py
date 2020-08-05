@@ -263,24 +263,24 @@ def check_email(request) -> JsonResponse:
 
 def save_email(request) -> JsonResponse:
     if request.is_ajax():
-        value = request.POST['values[email]']
+        email = request.POST['values[email]']
         user = auth.get_user(request)
         password = request.POST['values[password_for_email]']
         args = {
-            'email': value,
+            'email': email,
             'resultStatus': 'success'
         }
         if not user.check_password(password):
             args['resultStatus'] = 'error'
             args['listErrors'] = {'password_for_email': ['Неверный пароль']}
             return JsonResponse(args, status=200)
-        user.email = value
-        user.save()
+
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
-        code = create_verification_code(user.email)
-        send_email_validate_message(profile.name, profile.surname, user.email, code)
+        code = create_verification_code(email)
+        print(code)
+        send_email_validate_message(profile.name, profile.surname, email, code)
 
         return JsonResponse(args, status=200)
 
@@ -288,9 +288,10 @@ def save_email(request) -> JsonResponse:
 def check_email_code(request):
     if request.is_ajax():
         user = request.user
-        errors = validators.validate_code(request.POST['values[email_code]'], get_user_profile(request))
+        email = request.POST['values[email]']
+        errors = validators.validate_code(request.POST['values[email_code]'], email)
         args = {
-            'email': user.email,
+            'email': email,
             'resultStatus': 'success'
         }
         if len(errors) != 0:
@@ -299,6 +300,8 @@ def check_email_code(request):
             return JsonResponse(args, status=200)
         profile = get_user_profile(request)
         profile.email_is_validate = True
+        user.email = email
+        user.save()
         return JsonResponse(args, status=200)
 
 
