@@ -278,10 +278,19 @@ def save_email(request) -> JsonResponse:
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
-        code = create_verification_code(email)
-        send_email_validate_message(profile.name, profile.surname, email, code)
-
+        #code = create_verification_code(email)
+        #send_email_validate_message(profile.name, profile.surname, email, code)
         return JsonResponse(args, status=200)
+
+
+def create_and_send_code(request, profile_id: int, email: str):
+    try:
+        profile = Profile.objects.get(id=profile_id)
+    except ObjectDoesNotExist:
+        # TODO Кидать на страницу с ошибкой
+        return redirect('/')
+    code = create_verification_code(email)
+    send_email_validate_message(profile.name, profile.surname, email, code)
 
 
 def check_email_code(request):
