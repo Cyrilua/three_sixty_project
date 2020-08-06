@@ -74,6 +74,7 @@ $(function () {
         el.style.height = (el.scrollHeight + delta) + 'px';
     }
 
+    // Первый запуск
     function run() {
         $('.question').each(function (key, el) {
             // Инициализация типа вопроса
