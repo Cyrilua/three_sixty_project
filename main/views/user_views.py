@@ -31,6 +31,7 @@ def user_register(request):
             return result_ajax
 
     if request.method == 'POST':
+        print('ia m here')
         result_post = request_post_method_processing(request, args)
         if result_post is not None:
             return result_post
@@ -129,7 +130,6 @@ def check_verification_code(request) -> JsonResponse:
         email = request.POST['email']
         errors = validate_code(code, email)
         return get_result(errors)
-
 
 
 def user_login(request):

@@ -1,4 +1,10 @@
 @charset "UTF-8";
+:root {
+  --mdc-theme-primary: #C4C4C4;
+  --mdc-theme-secondary: #C4C4C4;
+  --mdc-theme-text-primary-on-dark: black;
+}
+
 .editor {
   display: flex;
   flex-direction: column;
@@ -38,6 +44,9 @@
 }
 .editor .editor__head .head__move .head__btn:first-child {
   margin-right: 12px;
+}
+.editor .editor__category .substrate {
+  z-index: 2;
 }
 .editor .editor__category .substrate .color {
   display: flex;
@@ -79,6 +88,9 @@
 .editor .editor__category .substrate .color .color__variable.red {
   background-color: #FF1841;
 }
+.poll-editor {
+  padding-bottom: 150px;
+}
 .poll-editor .poll-editor__header {
   border-top: 20px solid #C4C4C4;
   transition: 0.15s border-top-color;
@@ -100,14 +112,22 @@
   line-height: 42px;
   color: #000000;
   margin-bottom: 20px;
+  height: 47px;
 }
 .poll-editor .poll-editor__header .poll__target {
   display: inline-block;
   font-style: normal;
   font-size: 14px;
   line-height: 16px;
-  color: #595757;
+  color: #C4C4C4;
   margin-bottom: 20px;
+}
+.poll-editor .poll-editor__header .poll__target > b {
+  color: #595757;
+}
+.poll-editor .question {
+  padding-bottom: 0;
+  margin-bottom: 10px;
 }
 .poll-editor .question .question__main {
   display: flex;
@@ -117,17 +137,88 @@
 .poll-editor .question .question__main .question__name {
   width: 566px;
 }
-.poll-editor .question .question__main .question__type .width-264 {
+.poll-editor .question .question__main .question__type > .width-264 {
   width: 264px;
-}
-.poll-editor .question .question__main .question__type .height-50 {
-  height: 50px;
 }
 .poll-editor .question .question__main .question__type > .mdc-select > .width-264 {
   width: 264px;
 }
 .poll-editor .question .question__main .question__type > .mdc-select > .height-50 {
   height: 50px;
+}
+.poll-editor .question .question__main .question__type > .mdc-select > .mdc-select__anchor > .mdc-select__selected-text {
+  color: #595757;
+}
+.poll-editor .question .question__main .question__type > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__leading, .poll-editor .question .question__main .question__type > .mdc-select:hover:not(.mdc-select--activated):not(.mdc-select--focused) > .mdc-select__anchor > .mdc-notched-outline.mdc-notched-outline--no-label > .mdc-notched-outline__trailing {
+  color: #595757;
+}
+.poll-editor .question .question__answers {
+  display: flex;
+  flex-direction: column;
+}
+.poll-editor .question .question__answers .answer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.poll-editor .question .question__answers .answer .answer__icon {
+  margin-left: -10px;
+  filter: opacity(0.5);
+}
+.poll-editor .question .question__answers .answer .answer__text {
+  width: 809px;
+  margin: 13px 0 0;
+}
+.poll-editor .question .question__answers .answer .answer__clear {
+  width: 24px;
+  height: 24px;
+  margin-right: -4px;
+  margin-top: 9px;
+  cursor: pointer;
+  filter: opacity(0.2);
+  transition: 0.2s filter;
+}
+.poll-editor .question .question__answers .answer .answer__clear:hover {
+  filter: opacity(0.7);
+}
+.poll-editor .question .question__answers .open-question {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+.poll-editor .question .question__answers .slider-range {
+  width: 500px;
+  margin: 20px auto 50px;
+}
+.poll-editor .question .question__answers .slider-range .slider-range__settings {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.poll-editor .question .new-answer__btn {
+  display: inline-block;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+.poll-editor .question .question__footer {
+  border-top: 1px solid #E5E5E5;
+  width: calc(100% + 60px);
+  height: 60px;
+  margin-left: -30px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+.poll-editor .question .question__footer .question__urn {
+  width: 24px;
+  height: 24px;
+  margin-right: 26px;
+  filter: opacity(0.2);
+  transition: 0.2s filter;
+  cursor: pointer;
+}
+.poll-editor .question .question__footer .question__urn:hover {
+  filter: opacity(0.7);
 }
 
 /*# sourceMappingURL=new_poll_editor.css.map */

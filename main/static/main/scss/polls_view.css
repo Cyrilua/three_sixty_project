@@ -411,6 +411,10 @@
     transform: rotate(360deg);
   }
 }
+.unshow-polls {
+  display: none;
+}
+
 .show-new-poll {
   width: 100%;
   height: 40px;
