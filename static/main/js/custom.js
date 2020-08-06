@@ -31,7 +31,7 @@ $(function () {
     });
 
     // Скрыть меню при клике в любом месте (под шапкой)
-    body.on('mouseup', function (el) {
+    $(window).on('mouseup', function (el) {
         if (menuDown.css('display') !== 'none') {
             if (el.target.closest('.head-menu') === null) {
                 menuUp.toggleClass('active');

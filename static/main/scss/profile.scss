@@ -95,6 +95,7 @@
         .center-content-information-positions {
           width: 50%;
           border-right: 1px solid #E5E5E5;
+          padding-right: 30px;
 
           .center-content-information-positions-title {
             font-weight: bold;
@@ -303,7 +304,7 @@
     }
 
     .center-content-notifications {
-      margin-bottom: 25vh;
+      margin-bottom: 0;
 
       & > .substrate {
         position: sticky;

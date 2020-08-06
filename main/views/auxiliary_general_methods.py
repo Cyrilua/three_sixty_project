@@ -67,6 +67,9 @@ def create_verification_code(email: str) -> str:
     code_str = str(code)
     code_md5 = _get_md5_code(code_str)
     verification_code.code = code_md5
+    print(code_md5)
+    print(code_str)
+    print(len(code_md5))
     verification_code.save()
     return code_str
 

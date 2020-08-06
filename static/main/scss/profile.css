@@ -83,6 +83,7 @@
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions {
   width: 50%;
   border-right: 1px solid #E5E5E5;
+  padding-right: 30px;
 }
 .profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-title {
   font-weight: bold;
@@ -254,7 +255,7 @@
   color: black;
 }
 .profile .center-content .center-content-notifications {
-  margin-bottom: 25vh;
+  margin-bottom: 0;
 }
 .profile .center-content .center-content-notifications > .substrate {
   position: sticky;
