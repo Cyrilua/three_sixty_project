@@ -15,7 +15,10 @@ def polls_view(request) -> render:
     args = {
         'title': "Опросы",
         'data': {
-            'templates': _build_templates(profile)
+            'templates': _build_templates(profile),
+            'new': {
+                'polls': NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
+            }
         },
     }
     args['data']['quatity'] = {
