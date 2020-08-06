@@ -19,12 +19,13 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 
-#@csrf_exempt
+@csrf_exempt
 def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        #print(request.FILES)
+        print(request.FILES)
+        print(request.POST)
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
         try:
