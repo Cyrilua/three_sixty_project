@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Сообщение об ошибке идет на почту
 ADMINS = (
-    ('Alex', 'koroliov_2015@mail.ru'),
+    ('admin', 'three.sixty.project.360@gmail.com'),
 )
 
 
