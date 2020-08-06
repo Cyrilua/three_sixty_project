@@ -40,6 +40,7 @@ def upload_profile_photo(request):
 
         result = photo_profile.photo.url
         print(result)
+
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 
@@ -66,12 +67,6 @@ def edit_profile(request) -> render:
     except:
         photo = None
     profile_data = build_profile_data(user, profile)
-
-    # img = Image.open(photo)
-    # img_str = img.tobytes()
-    # test = profile.profilephoto
-    # test.photo_hex = img_str
-    # test.save()
 
     args = {
         'title': "Настройки",
@@ -286,9 +281,10 @@ def save_email(request) -> JsonResponse:
 
 def send_email_verification_code(request):
     if request.is_ajax():
-        print(request.POST)
-        #code = create_verification_code(email)
-        #send_email_validate_message(profile.name, profile.surname, email, code)
+        profile = get_user_profile(request)
+        email = request.POST['values[email]']
+        code = create_verification_code(email)
+        send_email_validate_message(profile.name, profile.surname, email, code)
         return JsonResponse({}, status=200)
 
 
