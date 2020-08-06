@@ -24,10 +24,6 @@ def upload_profile_photo(request):
     #if auth.get_user(request).is_anonymous:
     #    return redirect('/')
     if request.is_ajax():
-        print()
-        print(request.FILES)
-        print(request.POST)
-        print()
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
         try:

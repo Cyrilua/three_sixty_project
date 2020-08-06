@@ -144,7 +144,7 @@ $(function () {
                 email: email.val(),
                 csrfmiddlewaretoken: csrf,
             },
-            success: function () {
+            beforeSend: function () {
                 $('.step-2').addClass('hide');
                 $('.step-3').removeClass('hide');
             },
