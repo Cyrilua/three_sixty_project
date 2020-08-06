@@ -139,10 +139,7 @@ $(function () {
         $.ajax({
             url: 'edit/photo/update',
             type: 'post',
-            data: {
-                data: data,
-                csrfmiddlewaretoken: csrf,
-            },
+            data: data,
             cache: false,
             // отключаем обработку передаваемых данных, пусть передаются как есть
             processData: false,
