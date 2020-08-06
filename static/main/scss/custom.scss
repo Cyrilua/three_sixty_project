@@ -826,6 +826,11 @@ button {
   display: block;
 }
 
+.disabled {
+  pointer-events: none;
+  opacity: .5;
+}
+
 //.height-auto,
 //.height-auto * {
 //  height: auto;
@@ -921,7 +926,7 @@ button {
   }
 
   ._hint-up {
-    .delete {
+    .delete-img {
       width: 24px;
       height: 24px;
       filter: opacity(25%);
@@ -963,3 +968,22 @@ button {
 }
 
 // !Delete!
+
+// Textarea
+
+.textarea-line {
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+
+// !Textarea!

@@ -93,9 +93,23 @@ $(function () {
                         checkBtnRegister(required);
                         checkBtnNext(required);
                     },
-                    error: function () {
-                        console.log('Что - то пошло не так :(');
+                    statusCode: {
+                        400: function () {
+                            throw new Error('Error 400 - Некорректный запрос');
+                        },
+                        403: function () {
+                            throw new Error('Error 403 - Доступ запрещён');
+                        },
+                        404: function () {
+                            throw new Error('Error 404 - Страница не найдена');
+                        },
+                        500: function () {
+                            throw new Error('Error 500 - Внутренняя ошибка сервера');
+                        }
                     },
+                    error: function () {
+                        throw new Error('Что - то пошло не так :(');
+                    }
                 });
             },
             dateFormat: 'd.m.yyyy',
@@ -134,23 +148,23 @@ $(function () {
                 $('.step-2').addClass('hide');
                 $('.step-3').removeClass('hide');
             },
-            error: function () {
-                console.log('Что - то пошло не так :(');
-            },
             statusCode: {
                 400: function () {
-                    console.log('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    console.log('Error 403 - Доступ запрещён');
+                    throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    console.log('Error 404 - Страница не найдена');
+                    throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    console.log('Error 500 - Внутренняя ошибка сервера');
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
+            error: function () {
+                throw new Error('Что - то пошло не так :(');
+            }
         })
     });
 
@@ -247,6 +261,7 @@ $(function () {
             type: 'post',
             data: {
                 code: code.val(),
+                email: email.val(),
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
@@ -263,25 +278,24 @@ $(function () {
                     checkBtnDone(required);
                 }
             },
-            error: function () {
-                console.log('Что - то пошло не так :(');
-            },
             statusCode: {
                 400: function () {
-                    console.log('Error 400 - Некорректный запрос');
+                    throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    console.log('Error 403 - Доступ запрещён');
+                    throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    console.log('Error 404 - Страница не найдена');
+                    throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    console.log('Error 500 - Внутренняя ошибка сервера');
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
+            error: function () {
+                throw new Error('Что - то пошло не так :(');
+            }
         });
-
     });
 });
 
@@ -328,9 +342,23 @@ function ajaxForUsername(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -369,9 +397,23 @@ function ajaxForPassword1(el, csrf, required, errors, body, timeShow,) {
             checkBtnRegister(required);
             checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -400,9 +442,23 @@ function ajaxForPassword2(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -429,9 +485,23 @@ function ajaxForEmail(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -459,9 +529,23 @@ function ajaxForName(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             // checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -489,9 +573,23 @@ function ajaxForSurname(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             // checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -519,9 +617,23 @@ function ajaxForPatronymic(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             // checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
@@ -548,9 +660,23 @@ function ajaxForBirthday(el, csrf, required, errors, body, timeShow) {
             checkBtnRegister(required);
             // checkBtnNext(required);
         },
-        error: function () {
-            console.log('Что - то пошло не так :(');
+        statusCode: {
+            400: function () {
+                throw new Error('Error 400 - Некорректный запрос');
+            },
+            403: function () {
+                throw new Error('Error 403 - Доступ запрещён');
+            },
+            404: function () {
+                throw new Error('Error 404 - Страница не найдена');
+            },
+            500: function () {
+                throw new Error('Error 500 - Внутренняя ошибка сервера');
+            }
         },
+        error: function () {
+            throw new Error('Что - то пошло не так :(');
+        }
     });
 }
 
