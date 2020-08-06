@@ -281,10 +281,15 @@ def save_email(request) -> JsonResponse:
         profile = get_user_profile(request)
         profile.email_is_validate = False
         profile.save()
-        code = create_verification_code(email)
-        send_email_validate_message(profile.name, profile.surname, email, code)
-
         return JsonResponse(args, status=200)
+
+
+def send_email_verification_code(request):
+    if request.is_ajax():
+        print(request.POST)
+        #code = create_verification_code(email)
+        #send_email_validate_message(profile.name, profile.surname, email, code)
+        return JsonResponse({}, status=200)
 
 
 def check_email_code(request):

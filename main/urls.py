@@ -78,8 +78,10 @@ urlpatterns = [
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
                   # Проверка корректности ввода почты
                   path('edit/check_input/email', edit_profile.check_email),
-                  # Сохранение новой почты и отправка сообщения с подтверждением
+                  # Сохранение новой почты
                   path('edit/edit/save/email', edit_profile.save_email),
+                  # Oтправка сообщения с подтверждением
+                  path('edit/edit/save/email/send_mail', edit_profile.send_email_verification_code),
                   # Проверка кода из письма
                   path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Проверка логина
