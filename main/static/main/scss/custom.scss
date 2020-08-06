@@ -543,6 +543,13 @@ button {
   }
 }
 
+.input-transparent {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  text-align: center;
+}
+
 // !Input!
 
 // Popup
@@ -973,6 +980,7 @@ button {
 
 .textarea-line {
   width: 100%;
+  height: 21px;
   overflow: hidden;
   resize: none;
   outline: none;
@@ -984,6 +992,33 @@ button {
   font-size: 14px;
   line-height: 16px;
   color: #595757;
+  transition: .2s border-bottom-color;
+
+  &:focus {
+    border-bottom-color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.textarea-border {
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
+  resize: none;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: transparent;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: #595757;
+  padding: 15px;
+  transition: .2s border-color;
+
+  &:focus {
+    border-color: rgba(0, 0, 0, 0.7);
+  }
 }
 
 // !Textarea!
