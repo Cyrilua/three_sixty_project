@@ -12,7 +12,6 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 
-
 from PIL import Image
 
 from django.conf import settings
@@ -68,11 +67,11 @@ def edit_profile(request) -> render:
         photo = None
     profile_data = build_profile_data(user, profile)
 
-    #img = Image.open(photo)
-    #img_str = img.tobytes()
-    #test = profile.profilephoto
-    #test.photo_hex = img_str
-    #test.save()
+    # img = Image.open(photo)
+    # img_str = img.tobytes()
+    # test = profile.profilephoto
+    # test.photo_hex = img_str
+    # test.save()
 
     args = {
         'title': "Настройки",
@@ -241,13 +240,16 @@ def save_birth_date(request) -> JsonResponse:
             birth_date_profile.profile = profile
             birth_date_profile.birthday = birth_date
         birth_date_profile.save()
+        collected_date = build_date(birth_date)
         args = {
             'resultStatus': 'success',
             'birthdate': {
-                'text': birth_date_profile.birthday,
+                'text': '{} {} {} г.'.format(collected_date['day'], collected_date['month'],
+                                             collected_date['year']),
                 'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
             }
         }
+        print(birth_date_profile.birthday)
         return JsonResponse(args, status=200)
 
 

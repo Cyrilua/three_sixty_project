@@ -1,5 +1,6 @@
 import hashlib
 import random
+from datetime import date
 
 from django.contrib import auth
 from django.contrib.auth import get_user_model
@@ -74,3 +75,34 @@ def profile_is_owner(request):
     user = auth.get_user(request)
     profile = get_user_profile(request)
     return profile.company.owner.id == user.id
+
+
+def build_date(input_date: date) -> dict:
+    months = {
+        1: "января",
+        2: "февраля",
+        3: "марта",
+        4: "апреля",
+        5: "мая",
+        6: "июня",
+        7: "июля",
+        8: "августа",
+        9: "сентября",
+        10: "октября",
+        11: "ноября",
+        12: "декабря"
+    }
+
+    try:
+        month = months[input_date.month]
+    except KeyError:
+        return {'day': input_date.day,
+        'month': input_date.month,
+        'year': input_date.year}
+    result = {
+        'day': input_date.day,
+        'month': month,
+        'year': input_date.year
+    }
+    return result
+

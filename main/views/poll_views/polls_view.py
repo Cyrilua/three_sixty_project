@@ -1,4 +1,4 @@
-from datetime import date
+
 
 from main.views.auxiliary_general_methods import *
 from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
@@ -129,7 +129,7 @@ def _build_poll(poll: Poll) -> dict:
     collected_poll = {
         'title': poll.name_poll,
         'answers_count': poll.count_passed,
-        'date': _build_date(poll.creation_date),
+        'date': build_date(poll.creation_date),
         'url': '/poll/result/{}/'.format(poll.id),
         'id': poll.id,
     }
@@ -141,38 +141,7 @@ def _build_poll(poll: Poll) -> dict:
         'surname': target.surname,
         'patronymic': target.patronymic
     }
-    _build_date(poll.creation_date)
     return collected_poll
-
-
-def _build_date(poll_date: date) -> dict:
-    months = {
-        1: "января",
-        2: "февраля",
-        3: "марта",
-        4: "апреля",
-        5: "мая",
-        6: "июня",
-        7: "июля",
-        8: "августа",
-        9: "сентября",
-        10: "октября",
-        11: "ноября",
-        12: "декабря"
-    }
-
-    try:
-        month = months[poll_date.month]
-    except KeyError:
-        return {'day': poll_date.day,
-        'month': poll_date.month,
-        'year': poll_date.year}
-    result = {
-        'day': poll_date.day,
-        'month': month,
-        'year': poll_date.year
-    }
-    return result
 
 
 def load_notification_new_poll(request) -> JsonResponse:
