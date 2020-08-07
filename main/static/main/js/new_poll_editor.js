@@ -6,10 +6,7 @@ $(function () {
 
     const body = $('body');
     const pollHeader = $('.poll-editor__header');
-    // const newQuestion = createNewQuestion();
     let listQuestions = {};
-
-    // let questions = {};
 
     run();
 
@@ -112,7 +109,6 @@ $(function () {
         }
         let id = question.attr('data-question-id');
         // Удаляем из listQuestions
-        // console.log(listQuestions[id])
         delete listQuestions[id];
         question.remove();
         if (questions.children('.question').length === 0) {
@@ -171,11 +167,6 @@ $(function () {
                 return;
             }
             answer.remove();
-            // let answers = question.children('.question__answers');
-            // answers.append(createNewAnswer(qType));
-            // if (answers.children('.answer').length >= maxAnswers) {
-            //     $(this).hide();
-            // }
         } else {
             throw new Error('Unexpected attribute when adding answer option');
         }
@@ -189,28 +180,30 @@ $(function () {
 
     // Первый запуск
     function run() {
+        $('.textarea-line').each(function (key, el) {
+            if (el.value !== '') {
+                countLines(el, 5);
+            }
+        });
+        $('.textarea-border').each(function (key, el) {
+            if (el.value !== '') {
+                countLines(el, -1);
+            }
+        });
+
         $('.question').each(function (key, el) {
             // Инициализация типа вопроса
             selectDeclaration(el);
             // Инициализация слайдеров
             if ($(el).attr('data-question-type') === 'range') {
-                // console.log(el.querySelector('.mdc-slider'))
                 sliderDeclaration(el);
-                // let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
-                // slider.min = parseInt($(el).find('.slider-range__min').val());
-                // slider.max = parseInt($(el).find('.slider-range__max').val());
-                // slider.step = parseInt($(el).find('.slider-range__step').val());
-                // // console.log($(el).find('.slider-range__min').val(), $(el).find('.slider-range__max').val(), $(el).find('.slider-range__step').val())
-                // slider.listen('MDCSlider:change', () => {
-                //     console.log(`Value changed to ${slider.value}`);
-                // });
             }
             // Заносим вопросы в список
             listQuestions[$(el).attr('data-question-id')] = {
                 type: $(el).attr('data-question-type'),
             };
         });
-        console.log(listQuestions)
+        // console.log(listQuestions)
     }
 
     // Создание нового опроса
