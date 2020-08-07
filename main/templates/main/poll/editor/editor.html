@@ -3,10 +3,10 @@
 <div class="poll-editor category-item">
     <div class="poll-editor__header rounded-block">
         <textarea name="" id="" rows="1" class="textarea-line poll__name" placeholder="Новый опрос"
-                  maxlength="150"></textarea>
+                  maxlength="150">{{ template.name }}</textarea>
         <span class="poll__target"><b>О ком:</b> Выберите на втором шаге</span>
         <textarea name="" id="" rows="1" class="textarea-line poll__description" placeholder="Описание опроса"
-                  maxlength="500"></textarea>
+                  maxlength="500">{{ template.description }}</textarea>
     </div>
 
     <div class="questions">
