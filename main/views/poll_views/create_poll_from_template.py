@@ -21,6 +21,7 @@ def create_poll_from_template(request, template_id) -> render:
         'title': "Создание опроса из шаблона",
         'poll': _build_template(template)
     }
+    print(args['poll'])
 
     return render(request, 'main/poll/new_poll_editor.html', args)
 
