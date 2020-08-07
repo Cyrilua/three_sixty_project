@@ -3,14 +3,14 @@
 <div class="poll-editor category-item">
     <div class="poll-editor__header rounded-block">
         <textarea name="" id="" rows="1" class="textarea-line poll__name" placeholder="Новый опрос"
-                  maxlength="150">{{ template.name }}</textarea>
+                  maxlength="150">{{ poll.name }}</textarea>
         <span class="poll__target"><b>О ком:</b> Выберите на втором шаге</span>
         <textarea name="" id="" rows="1" class="textarea-line poll__description" placeholder="Описание опроса"
-                  maxlength="500">{{ template.description }}</textarea>
+                  maxlength="500">{{ poll.description }}</textarea>
     </div>
 
     <div class="questions">
-        {% for quesiton in template.questions %}
+        {% for quesiton in poll.questions %}
             {% if question.type == 'radio' %}
 
                 <div class="question rounded-block" data-question-type="radio" data-question-id="{{ quesiton.id }}">
@@ -362,6 +362,6 @@
     </div>
     <div class="actions">
         <img src="{% static 'main/images/icon/add_circle_outline-black-48dp.svg' %}" alt=""
-             class="plus {% if template.countQuestions > 50 %}hide{% endif %}">
+             class="plus {% if poll.countQuestions > 50 %}hide{% endif %}">
     </div>
 </div>

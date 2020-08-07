@@ -16,7 +16,7 @@
             </div>
             <div class="head__move">
                 <button class="button-white head__btn" id="cancel" data-href="#">Отмена</button>
-                <button class="button-white head__btn" id="toStep2" data-href="#">Далее</button>
+                <button class="button-white head__btn" id="nextToStep2" data-href="#">Далее</button>
             </div>
         </div>
         <div class="editor__category categories-block">
@@ -28,16 +28,16 @@
                         </div>
                     </div>
                     <div class="category disabled" data-category=".poll-view__content">
-                        <div class="category__title">Просмотр <img src="{% static 'main/images/icon/build-24px.svg' %}"
+                        <div class="category__title">Просмотр <img src="{% static 'main/images/icon/handyman-24px.svg' %}"
                                                                    alt="" class="build" style="position: absolute; right: -30px">
                             {#                            <div class="category__notice hide"></div>#}
                         </div>
                     </div>
                     <div class="color">
-                        <div class="color__variable {% if template.color == '' %}color__variable--select{% endif %}" data-color=""></div>
-                        <div class="color__variable purple {% if template.color == 'purple' %}color__variable--select{% endif %}" data-color="purple"></div>
-                        <div class="color__variable blue {% if template.color == 'blue' %}color__variable--select{% endif %}" data-color="blue"></div>
-                        <div class="color__variable red {% if template.color == 'red' %}color__variable--select{% endif %}" data-color="red"></div>
+                        <div class="color__variable {% if poll.color == '' %}color__variable--select{% endif %}" data-color=""></div>
+                        <div class="color__variable purple {% if poll.color == 'purple' %}color__variable--select{% endif %}" data-color="purple"></div>
+                        <div class="color__variable blue {% if poll.color == 'blue' %}color__variable--select{% endif %}" data-color="blue"></div>
+                        <div class="color__variable red {% if poll.color == 'red' %}color__variable--select{% endif %}" data-color="red"></div>
                     </div>
                 </div>
             </div>
