@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
-from .views.poll_views import create_poll, polls_view, result_poll
+from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template
 from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
@@ -199,7 +199,7 @@ urlpatterns = [
                   # Страница просмотра опросов и шаблонов
                   path('polls/', polls_view.polls_view, name='new_poll_view'),
                   #
-                  path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
+                  path('poll/editor/', create_poll_from_template.create_poll_from_template, name='poll_editor_id'),
                   #
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
                   # Просмотр результата опроса
@@ -209,11 +209,11 @@ urlpatterns = [
                   # Маячок о новом опросе для прохождения
                   path('polls/new_notif/', polls_view.load_notification_new_poll),
                   # Создание нового опроса через шаблон
-                  path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
+                  path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
-                  #
+                  # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
