@@ -103,7 +103,7 @@ $(function () {
     body.on('click', '.question__urn', function () {
         let question = $(this).parent().parent();
         let questions = $(question).parent();
-        if (questions.children('.question').length === 5) {
+        if (questions.children('.question').length === maxQuestions) {
             console.log(questions.parent().children('.actions').children('.plus'))
             questions.parent().children('.actions').children('.plus').removeClass('hide')
         }
@@ -192,6 +192,8 @@ $(function () {
     // Первый запуск
     function run() {
         let questions = $('.question');
+
+        // Кнопка далее
         if (questions.children('.question').length === 0) {
             $('#nextToStep2').prop({
                 'disabled': true,
@@ -202,6 +204,32 @@ $(function () {
             });
         }
 
+        // Изменение цвета
+        let currentColor = $('.color__variable--select');
+        pollHeader.removeClass('red blue purple');
+        if (currentColor.hasClass('blue')) {
+            pollHeader.addClass('blue');
+            document.documentElement.style.setProperty('--mdc-theme-primary', '#001AFF');
+            document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
+            document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
+        } else if (currentColor.hasClass('red')) {
+            console.log('qwe')
+            pollHeader.addClass('red');
+            document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
+            document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
+            document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
+        } else if (currentColor.hasClass('purple')) {
+            pollHeader.addClass('purple');
+            document.documentElement.style.setProperty('--mdc-theme-primary', '#DB00FF');
+            document.documentElement.style.setProperty('--mdc-theme-secondary', '#DB00FF');
+            document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
+        } else {
+            document.documentElement.style.setProperty('--mdc-theme-primary', '#C4C4C4');
+            document.documentElement.style.setProperty('--mdc-theme-secondary', '#C4C4C4');
+            document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'black');
+        }
+
+        // Увеличение полей
         $('.textarea-line').each(function (key, el) {
             if (el.value !== '') {
                 countLines(el, 5);
