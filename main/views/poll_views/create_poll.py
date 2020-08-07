@@ -81,7 +81,7 @@ def poll_create(request, poll_id):
         print('I am in AJAX')
         print()
 
-    return render(request, 'main/poll/poll_editor.html', args)
+    return render(request, 'main/poll/old/poll_editor.html', args)
 
 
 def build_questions(questions):
