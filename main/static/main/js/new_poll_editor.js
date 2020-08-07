@@ -190,18 +190,19 @@ $(function () {
     function run() {
         $('.question').each(function (key, el) {
             // Инициализация типа вопроса
-            selectDeclaration(el.querySelector('.mdc-select'));
+            selectDeclaration(el);
             // Инициализация слайдеров
             if ($(el).attr('data-question-type') === 'range') {
                 // console.log(el.querySelector('.mdc-slider'))
-                let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
-                slider.min = parseInt($(el).find('.slider-range__min').val());
-                slider.max = parseInt($(el).find('.slider-range__max').val());
-                slider.step = parseInt($(el).find('.slider-range__step').val());
-                // console.log($(el).find('.slider-range__min').val(), $(el).find('.slider-range__max').val(), $(el).find('.slider-range__step').val())
-                slider.listen('MDCSlider:change', () => {
-                    console.log(`Value changed to ${slider.value}`);
-                });
+                sliderDeclaration(el);
+                // let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
+                // slider.min = parseInt($(el).find('.slider-range__min').val());
+                // slider.max = parseInt($(el).find('.slider-range__max').val());
+                // slider.step = parseInt($(el).find('.slider-range__step').val());
+                // // console.log($(el).find('.slider-range__min').val(), $(el).find('.slider-range__max').val(), $(el).find('.slider-range__step').val())
+                // slider.listen('MDCSlider:change', () => {
+                //     console.log(`Value changed to ${slider.value}`);
+                // });
             }
             // Заносим вопросы в список
             listQuestions[$(el).attr('data-question-id')] = {
@@ -371,7 +372,7 @@ $(function () {
                 '                        </div>';
         } else if (type === 'checkbox') {
             icon = '<div class="mdc-form-field">\n' +
-                '                            <div class="mdc-radio mdc-checkbox--disabled">\n' +
+                '                            <div class="mdc-checkbox mdc-checkbox--disabled">\n' +
                 '                                <input class="mdc-checkbox__native-control" type="checkbox" id="" name="" disabled>\n' +
                 '                                <div class="mdc-checkbox__background">\n' +
                 '                                    <div class="mdc-checkbox__outer-circle"></div>\n' +
@@ -413,9 +414,211 @@ $(function () {
     }
 
     function selectDeclaration(el) {
-        let sortable = new mdc.select.MDCSelect(el);
+        let sortable = new mdc.select.MDCSelect(el.querySelector('.mdc-select'));
         sortable.listen('MDCSelect:change', () => {
-            console.log(sortable.value)
+            let question = $(el);
+            let idQuestion = question.attr('data-question-id');
+            let lastVal = question.attr('data-question-type');
+            let currentVal = sortable.value;
+            if (lastVal !== currentVal) {
+                console.log(lastVal, currentVal)
+
+                let answers = question.children('.question__answers');
+                let newIcon;
+                if (currentVal === 'checkbox') {
+                    newIcon = '<div class="mdc-form-field">\n' +
+                        '                            <div class="mdc-checkbox mdc-checkbox--disabled">\n' +
+                        '                                <input class="mdc-checkbox__native-control" type="checkbox" id="" name="" disabled>\n' +
+                        '                                <div class="mdc-checkbox__background">\n' +
+                        '                                    <div class="mdc-checkbox__outer-circle"></div>\n' +
+                        '                                    <div class="mdc-checkbox__inner-circle"></div>\n' +
+                        '                                </div>\n' +
+                        '                                <div class="mdc-checkbox__ripple"></div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>';
+                } else if (currentVal === 'radio') {
+                    newIcon = '<div class="mdc-form-field">\n' +
+                        '                            <div class="mdc-radio mdc-radio--disabled">\n' +
+                        '                                <input class="mdc-radio__native-control" type="radio" id="" name="" disabled>\n' +
+                        '                                <div class="mdc-radio__background">\n' +
+                        '                                    <div class="mdc-radio__outer-circle"></div>\n' +
+                        '                                    <div class="mdc-radio__inner-circle"></div>\n' +
+                        '                                </div>\n' +
+                        '                                <div class="mdc-radio__ripple"></div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>';
+                }
+                console.log(answers)
+                question.attr({
+                    'data-question-type': currentVal,
+                });
+                if ((lastVal === 'radio' && currentVal === 'checkbox') ||
+                    (lastVal === 'checkbox' && currentVal === 'radio')) {
+                    $(answers.children('.answer')).each(function (key, el) {
+                        let icon = $(el).children('.answer__icon');
+                        icon.empty();
+                        icon[0].insertAdjacentHTML('afterbegin', newIcon);
+                    });
+                } else {
+                    answers.empty();
+                    if (currentVal === 'radio' || currentVal === 'checkbox') {
+                        let answer = document.createElement('div');
+                        answer.classList.add('answer');
+                        answers.append(answer);
+
+                        let aIcon = document.createElement('div');
+                        aIcon.classList.add('answer__icon');
+                        answer.append(aIcon);
+
+                        aIcon.insertAdjacentHTML('afterbegin', newIcon);
+
+                        let aText = document.createElement('textarea');
+                        aText.classList.add('textarea-line', 'answer__text');
+                        $(aText).attr({
+                            'name': '',
+                            'id': '',
+                            'rows': '1',
+                            'placeholder': 'Вариант ответа',
+                        });
+                        answer.append(aText);
+
+                        let aClear = document.createElement('img');
+                        aClear.classList.add('answer__clear');
+                        $(aClear).attr({
+                            'src': '/static/main/images/icon/clear-24px.svg',
+                            'alt': '',
+                        });
+                        answer.append(aClear);
+
+                        let aAdd = document.createElement('a');
+                        aAdd.classList.add('new-answer__btn');
+                        aAdd.text = 'Добавить ещё вариант ответа';
+                        answers.after(aAdd);
+                    } else if (currentVal === 'openQuestion') {
+                        question.children('.new-answer__btn').remove();
+
+                        let answer = document.createElement('textarea');
+                        answer.classList.add('open-question', 'textarea-line');
+                        $(answer).attr({
+                            'placeholder': 'Поле для ответа',
+                        });
+                        $(answer).prop({
+                            'disabled': true,
+                        });
+                        answers.append(answer);
+                    } else if (currentVal === 'range') {
+                        question.children('.new-answer__btn').remove();
+                        let answer = document.createElement('div');
+                        answer.classList.add('slider-range');
+                        answers.append(answer);
+
+                        let slider = '<div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"\n' +
+                            '                         aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" data-step="1"\n' +
+                            '                         aria-label="Select Value" aria-disabled="false">\n' +
+                            '                        <div class="mdc-slider__track-container">\n' +
+                            '                            <div class="mdc-slider__track"></div>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="mdc-slider__thumb-container">\n' +
+                            '                            <div class="mdc-slider__pin">\n' +
+                            '                                <span class="mdc-slider__pin-value-marker"></span>\n' +
+                            '                            </div>\n' +
+                            '                            <svg class="mdc-slider__thumb" width="21" height="21">\n' +
+                            '                                <circle cx="10.5" cy="10.5" r="7.875"></circle>\n' +
+                            '                            </svg>\n' +
+                            '                            <div class="mdc-slider__focus-ring"></div>\n' +
+                            '                        </div>\n' +
+                            '                    </div>';
+                        answer.insertAdjacentHTML('afterbegin', slider);
+
+                        let sSetting = document.createElement('div');
+                        sSetting.classList.add('slider-range__settings');
+                        answer.append(sSetting);
+
+                        let min = document.createElement('div');
+                        min.classList.add('min');
+                        sSetting.append(min);
+
+                        let minLabel = document.createElement('label');
+                        minLabel.classList.add('min__label');
+                        $(minLabel).attr({
+                            'for': `min_${idQuestion}`,
+                        });
+                        minLabel.textContent = 'От';
+                        min.append(minLabel);
+
+                        let minInput = document.createElement('input');
+                        minInput.classList.add('input-transparent', 'slider-range__min');
+                        $(minInput).attr({
+                            'type': 'number',
+                            'id': `min_${idQuestion}`,
+                            'min': '0',
+                            'max': '100',
+                            'value': '0',
+                        });
+                        min.append(minInput);
+
+                        let step = document.createElement('div');
+                        step.classList.add('step');
+                        sSetting.append(step);
+
+                        let stepLabel = document.createElement('label');
+                        stepLabel.classList.add('step__label');
+                        $(stepLabel).attr({
+                            'for': `step_${idQuestion}`,
+                        });
+                        stepLabel.textContent = 'С шагом';
+                        step.append(stepLabel);
+
+                        let stepInput = document.createElement('input');
+                        stepInput.classList.add('input-transparent', 'slider-range__step');
+                        $(stepInput).attr({
+                            'type': 'number',
+                            'id': `step_${idQuestion}`,
+                            'min': '1',
+                            'max': '50',
+                            'value': '1',
+                        });
+                        step.append(stepInput);
+
+                        let max = document.createElement('div');
+                        max.classList.add('max');
+                        sSetting.append(max);
+
+                        let maxLabel = document.createElement('label');
+                        maxLabel.classList.add('max__label');
+                        $(maxLabel).attr({
+                            'for': `max_${idQuestion}`,
+                        });
+                        maxLabel.textContent = 'До';
+                        max.append(maxLabel);
+
+                        let maxInput = document.createElement('input');
+                        maxInput.classList.add('input-transparent', 'slider-range__max');
+                        $(maxInput).attr({
+                            'type': 'number',
+                            'id': `max_${idQuestion}`,
+                            'min': '1',
+                            'max': '100',
+                            'value': '10',
+                        });
+                        max.append(maxInput);
+                        sliderDeclaration(el);
+                    } else {
+                        throw new Error('Unexpected attribute on question change');
+                    }
+                }
+                console.log(currentVal)
+            }
+        });
+    }
+
+    function sliderDeclaration(el) {
+        let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
+        slider.min = parseInt($(el).find('.slider-range__min').val());
+        slider.max = parseInt($(el).find('.slider-range__max').val());
+        slider.step = parseInt($(el).find('.slider-range__step').val());
+        slider.listen('MDCSlider:change', () => {
+            console.log(`Value changed to ${slider.value}`);
         });
     }
 
@@ -438,4 +641,3 @@ $(function () {
         return result;
     }
 });
-
