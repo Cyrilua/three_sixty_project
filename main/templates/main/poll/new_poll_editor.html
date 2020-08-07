@@ -22,12 +22,12 @@
         <div class="editor__category categories-block">
             <div class="substrate">
                 <div class="sort rounded-block unselectable">
-                    <div class="category active-sort" data-category="myPolls">
+                    <div class="category active-sort" data-category=".poll-editor__content">
                         <div class="category__title">Редактор
                             {#                                <div class="category__notice hide"></div>#}
                         </div>
                     </div>
-                    <div class="category" data-category="polls">
+                    <div class="category" data-category=".poll-view__content">
                         <div class="category__title">Просмотр
                             {#                            <div class="category__notice hide"></div>#}
                         </div>
@@ -41,8 +41,12 @@
                 </div>
             </div>
             <div class="categories">
-                <div class="content">
+                <div class="category-content poll-editor__content">
                     {% include 'main/poll/editor/editor.html' %}
+                </div>
+                <div class="category-content poll-view__content">
+{#                    {% include 'main/poll/editor/editor.html' %}#}
+                    <div class="category-item">ТУТ ДОЛЖЕН БЫТЬ ПРОСМОТР ОПРОСА</div>
                 </div>
             </div>
         </div>
