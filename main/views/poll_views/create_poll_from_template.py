@@ -28,7 +28,7 @@ def create_poll_from_template(request, template_id) -> render:
 
 def _build_template(template: TemplatesPoll) -> dict:
     result = {
-        'color': template.color,
+        'color': '' if template.color is None else template.color,
         'name': template.name_poll,
         'description': template.description,
         'questions': _build_questions(template.questions.all())
