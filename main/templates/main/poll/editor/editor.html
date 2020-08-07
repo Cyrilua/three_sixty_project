@@ -10,13 +10,13 @@
     </div>
 
     <div class="questions">
-        {% for quesiton in poll.questions %}
+        {% for question in poll.questions %}
             {% if question.type == 'radio' %}
 
-                <div class="question rounded-block" data-question-type="radio" data-question-id="{{ quesiton.id }}">
+                <div class="question rounded-block" data-question-type="radio" data-question-id="{{ question.id }}">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
-                                  maxlength="150">{{ quesiton.name }}</textarea>
+                                  maxlength="150">{{ question.name }}</textarea>
                         <div class="question__type unselectable">
                             <div class="mdc-select mdc-select--outlined width-264">
                                 <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="question__answers">
-                        {% for answer in quesiton.answers %}
+                        {% for answer in question.answers %}
                             <div class="answer">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
@@ -91,7 +91,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <a class="new-answer__btn {% if quesiton.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант
+                    <a class="new-answer__btn {% if question.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант
                         ответа</a>
                     <div class="question__footer">
                         <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
@@ -101,10 +101,10 @@
             {% elif question.type == 'checkbox' %}
 
                 <div class="question rounded-block" data-question-type="checkbox"
-                     data-question-id="{{ quesiton.id }}">
+                     data-question-id="{{ question.id }}">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
-                                  maxlength="150">{{ quesiton.name }}</textarea>
+                                  maxlength="150">{{ question.name }}</textarea>
                         <div class="question__type unselectable">
                             <div class="mdc-select mdc-select--outlined width-264">
                                 <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     <div class="question__answers">
-                        {% for answer in quesiton.answers %}
+                        {% for answer in question.answers %}
                             <div class="answer">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
@@ -179,7 +179,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <a class="new-answer__btn {% if quesiton.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант ответа</a>
+                    <a class="new-answer__btn {% if question.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант ответа</a>
                     <div class="question__footer">
                         <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
                     </div>
@@ -188,10 +188,10 @@
             {% elif question.type == 'range' %}
 
                 <div class="question rounded-block" data-question-type="range"
-                     data-question-id="{{ quesiton.id }}">
+                     data-question-id="{{ question.id }}">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
-                                  maxlength="150">{{ quesiton.name }}</textarea>
+                                  maxlength="150">{{ question.name }}</textarea>
                         <div class="question__type unselectable">
                             <div class="mdc-select mdc-select--outlined width-264">
                                 <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
@@ -246,8 +246,8 @@
                     <div class="question__answers">
                         <div class="slider-range">
                             <div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
-                                 aria-valuemin="{{ quesiton.slider.min }}" aria-valuemax="{{ quesiton.slider.max }}"
-                                 aria-valuenow="{{ quesiton.slider.min }}" data-step="{{ quesiton.slider.step }}"
+                                 aria-valuemin="{{ question.slider.min }}" aria-valuemax="{{ question.slider.max }}"
+                                 aria-valuenow="{{ question.slider.min }}" data-step="{{ question.slider.step }}"
                                  aria-label="Select Value" aria-disabled="false">
                                 <div class="mdc-slider__track-container">
                                     <div class="mdc-slider__track"></div>
@@ -264,23 +264,23 @@
                             </div>
                             <div class="slider-range__settings">
                                 <div class="min">
-                                    <label for="min_{{ quesiton.id }}" class="min__label">От</label>
-                                    <input type="number" id="min_{{ quesiton.id }}"
+                                    <label for="min_{{ question.id }}" class="min__label">От</label>
+                                    <input type="number" id="min_{{ question.id }}"
                                            class="input-transparent slider-range__min" min="0"
-                                           max="100" value="{{ quesiton.slider.min }}">
+                                           max="100" value="{{ question.slider.min }}">
                                 </div>
                                 <div class="step">
-                                    <label for="step_{{ quesiton.id }}" class="min__label">С
+                                    <label for="step_{{ question.id }}" class="min__label">С
                                         шагом</label>
-                                    <input type="number" id="step_{{ quesiton.id }}"
+                                    <input type="number" id="step_{{ question.id }}"
                                            class="input-transparent slider-range__step" min="1"
-                                           max="50" value="{{ quesiton.slider.step }}">
+                                           max="50" value="{{ question.slider.step }}">
                                 </div>
                                 <div class="max">
-                                    <label for="max_{{ quesiton.id }}" class="min__label">До</label>
-                                    <input type="number" id="max_{{ quesiton.id }}"
+                                    <label for="max_{{ question.id }}" class="min__label">До</label>
+                                    <input type="number" id="max_{{ question.id }}"
                                            class="input-transparent slider-range__max" min="1"
-                                           max="100" value="{{ quesiton.slider.max }}">
+                                           max="100" value="{{ question.slider.max }}">
                                 </div>
                             </div>
                         </div>
@@ -293,10 +293,10 @@
             {% elif question.type == 'openQuestion' %}
 
                 <div class="question rounded-block" data-question-type="openQuestion"
-                     data-question-id="{{ quesiton.id }}">
+                     data-question-id="{{ question.id }}">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
-                                  maxlength="150">{{ quesiton.name }}</textarea>
+                                  maxlength="150">{{ question.name }}</textarea>
                         <div class="question__type unselectable">
                             <div class="mdc-select mdc-select--outlined width-264">
                                 <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
