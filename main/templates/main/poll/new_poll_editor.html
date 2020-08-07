@@ -33,10 +33,10 @@
                         </div>
                     </div>
                     <div class="color">
-                        <div class="color__variable color__variable--select" data-color=""></div>
-                        <div class="color__variable purple" data-color="purple"></div>
-                        <div class="color__variable blue" data-color="blue"></div>
-                        <div class="color__variable red" data-color="red"></div>
+                        <div class="color__variable {% if template.color == '' %}color__variable--select{% endif %}" data-color=""></div>
+                        <div class="color__variable purple {% if template.color == 'purple' %}color__variable--select{% endif %}" data-color="purple"></div>
+                        <div class="color__variable blue {% if template.color == 'blue' %}color__variable--select{% endif %}" data-color="blue"></div>
+                        <div class="color__variable red {% if template.color == 'red' %}color__variable--select{% endif %}" data-color="red"></div>
                     </div>
                 </div>
             </div>
