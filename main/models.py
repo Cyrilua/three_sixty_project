@@ -175,7 +175,7 @@ class TemplatesPoll(models.Model):
     is_general = models.BooleanField(default=False)
     owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
-    color = models.CharField(max_length=20, null=True)  # purple, red, blue
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     objects = models.Manager()
 
     class Meta:
@@ -192,7 +192,7 @@ class Poll(models.Model):
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
     creation_date = models.DateField(null=True)
-    color = models.CharField(max_length=20, null=True)  # purple, red, blue
+    color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     questions = models.ManyToManyField('Questions')
     objects = models.Manager()
 

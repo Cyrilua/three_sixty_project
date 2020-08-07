@@ -209,7 +209,7 @@ urlpatterns = [
                   # Маячок о новом опросе для прохождения
                   path('polls/new_notif/', polls_view.load_notification_new_poll),
                   # Создание нового опроса через шаблон
-                  path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
+                  path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),

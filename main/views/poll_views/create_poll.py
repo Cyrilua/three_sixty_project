@@ -124,10 +124,5 @@ def poll_create_redirect(request):
     return redirect('/poll/editor/1/')
 
 
-def create_from_template(request, template_id) -> render:
-    # TODO
-    args = {}
-    return render(request, 'main/poll/new_poll_editor.html', args)
-
 
 
