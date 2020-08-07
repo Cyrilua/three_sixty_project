@@ -4,7 +4,7 @@
     <!-- Подключаемые файлы, метатеги, название страницы -->
 
     {% load static %}
-    {#    <link rel="stylesheet" href="{% static 'main/css/preloader.css' %}">#}
+    <link rel="stylesheet" href="{% static 'main/css/preloader.min.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
           rel="stylesheet">
     {#    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">#}
@@ -31,11 +31,11 @@
 </head>
 <body>
 
-{#<div class="preloader">#}
-{#    <div class="loader"></div>#}
-{#    <!-- /.loader -->#}
-{#</div>#}
-{#<!-- /.preloader -->#}
+<div class="preloader">
+    <div class="loader"></div>
+    <!-- /.loader -->
+</div>
+<!-- /.preloader -->
 
 <!-- Тело сайта, отвечает за вывод на страницу-->
 
@@ -129,7 +129,7 @@
     <script type="text/javascript" src={% static 'main/js/custom.min.js' %}></script>
     {% block scripts %}
     {% endblock scripts %}
-    {#    <script type="text/javascript" src={% static 'main/js/preloader.js' %}></script>#}
+    <script type="text/javascript" src={% static 'main/js/preloader.min.js' %}></script>
 </div>
 <!-- /.scripts -->
 

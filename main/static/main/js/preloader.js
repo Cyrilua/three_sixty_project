@@ -3,5 +3,5 @@ $(function () {
     body.addClass('preloader-hiding');
     setTimeout(() => (
         body.addClass('done')
-    ), 200);
+    ), 700);
 });
