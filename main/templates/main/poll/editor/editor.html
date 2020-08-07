@@ -10,7 +10,7 @@
     </div>
 
     <div class="questions">
-        {% for quesiton in poll.questions %}
+        {% for question in poll.questions %}
             {% if question.type == 'radio' %}
 
                 <div class="question rounded-block" data-question-type="radio" data-question-id="{{ quesiton.id }}">
