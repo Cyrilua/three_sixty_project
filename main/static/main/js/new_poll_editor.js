@@ -178,6 +178,11 @@ $(function () {
         }
     });
 
+    // Отмена создания
+    body.on('click', '#cancel', function () {
+        location.href = '/polls/';
+    });
+
     // Автоувеличение полей ввода
     function countLines(el, delta) {
         el.style.height = '1px';
