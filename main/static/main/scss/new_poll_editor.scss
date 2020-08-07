@@ -278,6 +278,9 @@
         display: inline-block;
         margin-top: 30px;
         //margin-bottom: 50px;
+        &.hide {
+          display: none;
+        }
       }
 
       .question__footer {
@@ -319,6 +322,10 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+
+      &.hide {
+        display: none;
+      }
     }
   }
 }

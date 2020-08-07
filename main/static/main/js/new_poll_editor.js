@@ -1,14 +1,12 @@
-const maxAnswers = 5;
-const maxQuestions = 5;
-const timeAnimation = 200;
-
 $(function () {
+    const maxAnswers = 15;
+    const maxQuestions = 50;
+    const maxLengthInput = 150;
+    const timeAnimation = 200;
+
     const body = $('body');
     const pollHeader = $('.poll-editor__header');
-    // const newQuestion = createNewQuestion();
     let listQuestions = {};
-
-    // let questions = {};
 
     run();
 
@@ -107,11 +105,10 @@ $(function () {
         let questions = $(question).parent();
         if (questions.children('.question').length === 5) {
             console.log(questions.parent().children('.actions').children('.plus'))
-            questions.parent().children('.actions').children('.plus').show()
+            questions.parent().children('.actions').children('.plus').removeClass('hide')
         }
         let id = question.attr('data-question-id');
         // Удаляем из listQuestions
-        // console.log(listQuestions[id])
         delete listQuestions[id];
         question.remove();
         if (questions.children('.question').length === 0) {
@@ -135,7 +132,7 @@ $(function () {
         console.log(listQuestions)
 
         if (questions.children('.question').length >= maxQuestions) {
-            $(this).hide();
+            $(this).addClass('hide');
         }
     });
 
@@ -147,7 +144,7 @@ $(function () {
             let answers = question.children('.question__answers');
             answers.append(createNewAnswer(qType));
             if (answers.children('.answer').length >= maxAnswers) {
-                $(this).hide();
+                $(this).addClass('hide');
             }
         } else {
             throw new Error('Unexpected attribute when adding answer option');
@@ -163,18 +160,13 @@ $(function () {
         if (qType === 'radio' || qType === 'checkbox') {
             let length = answers.children('.answer').length;
             if (length === maxAnswers) {
-                question.children('.new-answer__btn').show();
+                question.children('.new-answer__btn').removeClass('hide');
             } else if (length === 1) {
                 // answers.append(createNewAnswer(qType));
                 answer.children('.answer__text').val('');
                 return;
             }
             answer.remove();
-            // let answers = question.children('.question__answers');
-            // answers.append(createNewAnswer(qType));
-            // if (answers.children('.answer').length >= maxAnswers) {
-            //     $(this).hide();
-            // }
         } else {
             throw new Error('Unexpected attribute when adding answer option');
         }
@@ -188,28 +180,30 @@ $(function () {
 
     // Первый запуск
     function run() {
+        $('.textarea-line').each(function (key, el) {
+            if (el.value !== '') {
+                countLines(el, 5);
+            }
+        });
+        $('.textarea-border').each(function (key, el) {
+            if (el.value !== '') {
+                countLines(el, -1);
+            }
+        });
+
         $('.question').each(function (key, el) {
             // Инициализация типа вопроса
             selectDeclaration(el);
             // Инициализация слайдеров
             if ($(el).attr('data-question-type') === 'range') {
-                // console.log(el.querySelector('.mdc-slider'))
                 sliderDeclaration(el);
-                // let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
-                // slider.min = parseInt($(el).find('.slider-range__min').val());
-                // slider.max = parseInt($(el).find('.slider-range__max').val());
-                // slider.step = parseInt($(el).find('.slider-range__step').val());
-                // // console.log($(el).find('.slider-range__min').val(), $(el).find('.slider-range__max').val(), $(el).find('.slider-range__step').val())
-                // slider.listen('MDCSlider:change', () => {
-                //     console.log(`Value changed to ${slider.value}`);
-                // });
             }
             // Заносим вопросы в список
             listQuestions[$(el).attr('data-question-id')] = {
                 type: $(el).attr('data-question-type'),
             };
         });
-        console.log(listQuestions)
+        // console.log(listQuestions)
     }
 
     // Создание нового опроса
@@ -231,6 +225,7 @@ $(function () {
         qName.classList.add('question__name', 'textarea-border');
         $(qName).attr({
             'placeholder': 'Вопрос',
+            'maxlength': maxLengthInput,
         });
         qMain.append(qName);
 
@@ -319,6 +314,7 @@ $(function () {
             'id': '',
             'rows': '1',
             'placeholder': 'Вариант ответа',
+            'maxlength': maxLengthInput,
         });
         answer.append(aText);
 
@@ -393,6 +389,7 @@ $(function () {
             'id': '',
             'rows': '1',
             'placeholder': 'Вариант ответа',
+            'maxlength': maxLengthInput,
         });
         answer.append(aText);
 
@@ -479,6 +476,7 @@ $(function () {
                             'id': '',
                             'rows': '1',
                             'placeholder': 'Вариант ответа',
+                            'maxlength': maxLengthInput,
                         });
                         answer.append(aText);
 

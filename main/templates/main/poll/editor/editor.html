@@ -2,335 +2,366 @@
 
 <div class="poll-editor category-item">
     <div class="poll-editor__header rounded-block">
-        <textarea name="" id="" rows="1" class="textarea-line poll__name" placeholder="Новый опрос"></textarea>
+        <textarea name="" id="" rows="1" class="textarea-line poll__name" placeholder="Новый опрос"
+                  maxlength="150">{{ template.name }}</textarea>
         <span class="poll__target"><b>О ком:</b> Выберите на втором шаге</span>
-        <textarea name="" id="" rows="1" class="textarea-line poll__description" placeholder="Описание опроса"></textarea>
+        <textarea name="" id="" rows="1" class="textarea-line poll__description" placeholder="Описание опроса"
+                  maxlength="500">{{ template.description }}</textarea>
     </div>
 
     <div class="questions">
-        <div class="question rounded-block" data-question-type="radio" data-question-id="ClkVnh5GHH5scqyRRBqloQWveAqbk3CLG">
-            <div class="question__main">
-                <textarea class="question__name textarea-border" placeholder="Вопрос"></textarea>
-                <div class="question__type unselectable">
-                    <div class="mdc-select mdc-select--outlined width-264">
-                        <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
-                            <span id="" class="mdc-select__selected-text"></span>
-                            <span class="mdc-select__dropdown-icon">
-                                <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-inactive"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 10 12 15 17 10">
-                                    </polygon>
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-active"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 15 12 10 17 15">
-                                    </polygon>
-                                </svg>
-                            </span>
-                            <span class="mdc-notched-outline">
-                            <span class="mdc-notched-outline__leading"></span>
-                            <span class="mdc-notched-outline__notch">
-                {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
-                            </span>
-                            <span class="mdc-notched-outline__trailing"></span>
-                        </span>
-                        </div>
-                        <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
-                            <ul class="mdc-list">
-                                <li class="mdc-list-item mdc-list-item--selected" data-value="radio">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Один из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="checkbox">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Несколько из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="openQuestion">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Развёрнутый ответ</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="range">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Шкала</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="question__answers">
-                <div class="answer">
-                    <div class="answer__icon">
-                        <div class="mdc-form-field">
-                            <div class="mdc-radio mdc-radio--disabled">
-                                <input class="mdc-radio__native-control" type="radio" id="" name="" disabled>
-                                <div class="mdc-radio__background">
-                                    <div class="mdc-radio__outer-circle"></div>
-                                    <div class="mdc-radio__inner-circle"></div>
+        {% for quesiton in template.questions %}
+            {% if question.type == 'radio' %}
+
+                <div class="question rounded-block" data-question-type="radio" data-question-id="{{ quesiton.id }}">
+                    <div class="question__main">
+                        <textarea class="question__name textarea-border" placeholder="Вопрос"
+                                  maxlength="150">{{ quesiton.name }}</textarea>
+                        <div class="question__type unselectable">
+                            <div class="mdc-select mdc-select--outlined width-264">
+                                <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
+                                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-inactive"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 10 12 15 17 10">
+                                            </polygon>
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-active"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 15 12 10 17 15">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+                        {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
                                 </div>
-                                <div class="mdc-radio__ripple"></div>
-                            </div>
-                            {#                    <label for="radio-1">Radio 1</label>#}
-                        </div>
-                    </div>
-                    <textarea name="" id="" rows="1" class="textarea-line answer__text"
-                              placeholder="Вариант ответа"></textarea>
-                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="answer__clear">
-                </div>
-            </div>
-            <a class="new-answer__btn">Добавить ещё вариант ответа</a>
-            <div class="question__footer">
-                <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
-            </div>
-        </div>
-        <!-- /.question -->
-
-        <div class="question rounded-block" data-question-type="checkbox" data-question-id="sVlaFdreYjRpszua9w44InFQmNFR2xKP5">
-            <div class="question__main">
-                <textarea class="question__name textarea-border" placeholder="Вопрос"></textarea>
-                <div class="question__type unselectable">
-                    <div class="mdc-select mdc-select--outlined width-264">
-                        <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
-                            <span id="" class="mdc-select__selected-text"></span>
-                            <span class="mdc-select__dropdown-icon">
-                                <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-inactive"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 10 12 15 17 10">
-                                    </polygon>
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-active"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 15 12 10 17 15">
-                                    </polygon>
-                                </svg>
-                            </span>
-                            <span class="mdc-notched-outline">
-                            <span class="mdc-notched-outline__leading"></span>
-                            <span class="mdc-notched-outline__notch">
-                {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
-                            </span>
-                            <span class="mdc-notched-outline__trailing"></span>
-                        </span>
-                        </div>
-                        <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
-                            <ul class="mdc-list">
-                                <li class="mdc-list-item" data-value="radio">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Один из списка</span>
-                                </li>
-                                <li class="mdc-list-item mdc-list-item--selected" data-value="checkbox">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Несколько из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="openQuestion">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Развёрнутый ответ</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="range">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Шкала</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="question__answers">
-                <div class="answer">
-                    <div class="answer__icon">
-                        <div class="mdc-form-field">
-                            <div class="mdc-checkbox mdc-checkbox--disabled">
-                                <input class="mdc-checkbox__native-control" type="checkbox" id="" name="" disabled>
-                                <div class="mdc-checkbox__background">
-                                    <div class="mdc-checkbox__outer-circle"></div>
-                                    <div class="mdc-checkbox__inner-circle"></div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="radio">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Один из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="checkbox">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Несколько из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="openQuestion">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Развёрнутый ответ</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="range">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Шкала</span>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="mdc-checkbox__ripple"></div>
                             </div>
-                            {#                    <label for="radio-1">Radio 1</label>#}
                         </div>
                     </div>
-                    <textarea name="" id="" rows="1" class="textarea-line answer__text"
-                              placeholder="Вариант ответа"></textarea>
-                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="answer__clear">
-                </div>
-            </div>
-            <a class="new-answer__btn">Добавить ещё вариант ответа</a>
-            <div class="question__footer">
-                <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
-            </div>
-        </div>
-        <!-- /.question -->
-
-        <div class="question rounded-block" data-question-type="range" data-question-id="6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu">
-            <div class="question__main">
-                <textarea class="question__name textarea-border" placeholder="Вопрос"></textarea>
-                <div class="question__type unselectable">
-                    <div class="mdc-select mdc-select--outlined width-264">
-                        <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
-                            <span id="" class="mdc-select__selected-text"></span>
-                            <span class="mdc-select__dropdown-icon">
-                                <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-inactive"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 10 12 15 17 10">
-                                    </polygon>
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-active"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 15 12 10 17 15">
-                                    </polygon>
-                                </svg>
-                            </span>
-                            <span class="mdc-notched-outline">
-                            <span class="mdc-notched-outline__leading"></span>
-                            <span class="mdc-notched-outline__notch">
-                {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
-                            </span>
-                            <span class="mdc-notched-outline__trailing"></span>
-                        </span>
-                        </div>
-                        <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
-                            <ul class="mdc-list">
-                                <li class="mdc-list-item" data-value="radio">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Один из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="checkbox">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Несколько из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="openQuestion">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Развёрнутый ответ</span>
-                                </li>
-                                <li class="mdc-list-item mdc-list-item--selected" data-value="range">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Шкала</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="question__answers">
-                <div class="slider-range">
-                    <div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
-                         aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" data-step="1"
-                         aria-label="Select Value" aria-disabled="false">
-                        <div class="mdc-slider__track-container">
-                            <div class="mdc-slider__track"></div>
-                        </div>
-                        <div class="mdc-slider__thumb-container">
-                            <div class="mdc-slider__pin">
-                                <span class="mdc-slider__pin-value-marker"></span>
+                    <div class="question__answers">
+                        {% for answer in quesiton.answers %}
+                            <div class="answer">
+                                <div class="answer__icon">
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-radio mdc-radio--disabled">
+                                            <input class="mdc-radio__native-control" type="radio" id="" name=""
+                                                   disabled>
+                                            <div class="mdc-radio__background">
+                                                <div class="mdc-radio__outer-circle"></div>
+                                                <div class="mdc-radio__inner-circle"></div>
+                                            </div>
+                                            <div class="mdc-radio__ripple"></div>
+                                        </div>
+                                        {#                    <label for="radio-1">Radio 1</label>#}
+                                    </div>
+                                </div>
+                                <textarea name="" id="" rows="1" class="textarea-line answer__text"
+                                          placeholder="Вариант ответа" maxlength="150">{{ answer.text }}</textarea>
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="answer__clear">
                             </div>
-                            <svg class="mdc-slider__thumb" width="21" height="21">
-                                <circle cx="10.5" cy="10.5" r="7.875"></circle>
-                            </svg>
-                            <div class="mdc-slider__focus-ring"></div>
-                        </div>
+                        {% endfor %}
                     </div>
-                    <div class="slider-range__settings">
-                        <div class="min">
-                            <label for="min_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="min__label">От</label>
-                            <input type="number" id="min_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="input-transparent slider-range__min" min="0"
-                                   max="100" value="0">
-                        </div>
-                        <div class="step">
-                            <label for="step_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="min__label">С шагом</label>
-                            <input type="number" id="step_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="input-transparent slider-range__step" min="1"
-                                   max="50" value="1">
-                        </div>
-                        <div class="max">
-                            <label for="max_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="min__label">До</label>
-                            <input type="number" id="max_6gsBuDg9MDh4wLFjp9z2IxUiZjDjcWhRu" class="input-transparent slider-range__max" min="1"
-                                   max="100" value="10">
-                        </div>
+                    <a class="new-answer__btn {% if quesiton.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант
+                        ответа</a>
+                    <div class="question__footer">
+                        <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
                     </div>
                 </div>
-            </div>
-            <div class="question__footer">
-                <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
-            </div>
-        </div>
-        <!-- /.question -->
 
-        <div class="question rounded-block" data-question-type="openQuestion" data-question-id="VA93fXovVEb6uD0TQUXmpdEkyG8e6zNSW">
-            <div class="question__main">
-                <textarea class="question__name textarea-border" placeholder="Вопрос"></textarea>
-                <div class="question__type unselectable">
-                    <div class="mdc-select mdc-select--outlined width-264">
-                        <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
-                            <span id="" class="mdc-select__selected-text"></span>
-                            <span class="mdc-select__dropdown-icon">
-                                <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-inactive"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 10 12 15 17 10">
-                                    </polygon>
-                                    <polygon
-                                            class="mdc-select__dropdown-icon-active"
-                                            stroke="none"
-                                            fill-rule="evenodd"
-                                            points="7 15 12 10 17 15">
-                                    </polygon>
-                                </svg>
-                            </span>
-                            <span class="mdc-notched-outline">
-                            <span class="mdc-notched-outline__leading"></span>
-                            <span class="mdc-notched-outline__notch">
-                {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
-                            </span>
-                            <span class="mdc-notched-outline__trailing"></span>
-                        </span>
-                        </div>
-                        <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
-                            <ul class="mdc-list">
-                                <li class="mdc-list-item" data-value="radio">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Один из списка</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="checkbox">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Несколько из списка</span>
-                                </li>
-                                <li class="mdc-list-item mdc-list-item--selected" data-value="openQuestion">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Развёрнутый ответ</span>
-                                </li>
-                                <li class="mdc-list-item" data-value="range">
-                                    <span class="mdc-list-item__ripple"></span>
-                                    <span class="mdc-list-item__text">Шкала</span>
-                                </li>
-                            </ul>
+            {% elif question.type == 'checkbox' %}
+
+                <div class="question rounded-block" data-question-type="checkbox"
+                     data-question-id="{{ quesiton.id }}">
+                    <div class="question__main">
+                        <textarea class="question__name textarea-border" placeholder="Вопрос"
+                                  maxlength="150">{{ quesiton.name }}</textarea>
+                        <div class="question__type unselectable">
+                            <div class="mdc-select mdc-select--outlined width-264">
+                                <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
+                                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-inactive"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 10 12 15 17 10">
+                                            </polygon>
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-active"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 15 12 10 17 15">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+                        {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
+                                </div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item" data-value="radio">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Один из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="checkbox">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Несколько из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="openQuestion">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Развёрнутый ответ</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="range">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Шкала</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="question__answers">
+                        {% for answer in quesiton.answers %}
+                            <div class="answer">
+                                <div class="answer__icon">
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox mdc-checkbox--disabled">
+                                            <input class="mdc-checkbox__native-control" type="checkbox" id="" name=""
+                                                   disabled>
+                                            <div class="mdc-checkbox__background">
+                                                <div class="mdc-checkbox__outer-circle"></div>
+                                                <div class="mdc-checkbox__inner-circle"></div>
+                                            </div>
+                                            <div class="mdc-checkbox__ripple"></div>
+                                        </div>
+                                        {#                    <label for="radio-1">Radio 1</label>#}
+                                    </div>
+                                </div>
+                                <textarea name="" id="" rows="1" class="textarea-line answer__text"
+                                          placeholder="Вариант ответа" maxlength="150">{{ answer.text }}</textarea>
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="answer__clear">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="new-answer__btn {% if quesiton.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант ответа</a>
+                    <div class="question__footer">
+                        <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
+                    </div>
                 </div>
-            </div>
-            <div class="question__answers">
-                <textarea class="open-question textarea-line" placeholder="Поле для ответа" disabled></textarea>
-            </div>
-            <div class="question__footer">
-                <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
-            </div>
-        </div>
-        <!-- /.question -->
+
+            {% elif question.type == 'range' %}
+
+                <div class="question rounded-block" data-question-type="range"
+                     data-question-id="{{ quesiton.id }}">
+                    <div class="question__main">
+                        <textarea class="question__name textarea-border" placeholder="Вопрос"
+                                  maxlength="150">{{ quesiton.name }}</textarea>
+                        <div class="question__type unselectable">
+                            <div class="mdc-select mdc-select--outlined width-264">
+                                <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
+                                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-inactive"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 10 12 15 17 10">
+                                            </polygon>
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-active"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 15 12 10 17 15">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+                        {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
+                                </div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item" data-value="radio">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Один из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="checkbox">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Несколько из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="openQuestion">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Развёрнутый ответ</span>
+                                        </li>
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="range">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Шкала</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question__answers">
+                        <div class="slider-range">
+                            <div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
+                                 aria-valuemin="{{ quesiton.slider.min }}" aria-valuemax="{{ quesiton.slider.max }}"
+                                 aria-valuenow="{{ quesiton.slider.min }}" data-step="{{ quesiton.slider.step }}"
+                                 aria-label="Select Value" aria-disabled="false">
+                                <div class="mdc-slider__track-container">
+                                    <div class="mdc-slider__track"></div>
+                                </div>
+                                <div class="mdc-slider__thumb-container">
+                                    <div class="mdc-slider__pin">
+                                        <span class="mdc-slider__pin-value-marker"></span>
+                                    </div>
+                                    <svg class="mdc-slider__thumb" width="21" height="21">
+                                        <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                                    </svg>
+                                    <div class="mdc-slider__focus-ring"></div>
+                                </div>
+                            </div>
+                            <div class="slider-range__settings">
+                                <div class="min">
+                                    <label for="min_{{ quesiton.id }}" class="min__label">От</label>
+                                    <input type="number" id="min_{{ quesiton.id }}"
+                                           class="input-transparent slider-range__min" min="0"
+                                           max="100" value="{{ quesiton.slider.min }}">
+                                </div>
+                                <div class="step">
+                                    <label for="step_{{ quesiton.id }}" class="min__label">С
+                                        шагом</label>
+                                    <input type="number" id="step_{{ quesiton.id }}"
+                                           class="input-transparent slider-range__step" min="1"
+                                           max="50" value="{{ quesiton.slider.step }}">
+                                </div>
+                                <div class="max">
+                                    <label for="max_{{ quesiton.id }}" class="min__label">До</label>
+                                    <input type="number" id="max_{{ quesiton.id }}"
+                                           class="input-transparent slider-range__max" min="1"
+                                           max="100" value="{{ quesiton.slider.max }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question__footer">
+                        <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
+                    </div>
+                </div>
+
+            {% elif question.type == 'openQuestion' %}
+
+                <div class="question rounded-block" data-question-type="openQuestion"
+                     data-question-id="{{ quesiton.id }}">
+                    <div class="question__main">
+                        <textarea class="question__name textarea-border" placeholder="Вопрос"
+                                  maxlength="150">{{ quesiton.name }}</textarea>
+                        <div class="question__type unselectable">
+                            <div class="mdc-select mdc-select--outlined width-264">
+                                <div class="mdc-select__anchor height-50" aria-labelledby="outlined-select-label">
+                                    <span id="" class="mdc-select__selected-text"></span>
+                                    <span class="mdc-select__dropdown-icon">
+                                        <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5">
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-inactive"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 10 12 15 17 10">
+                                            </polygon>
+                                            <polygon
+                                                    class="mdc-select__dropdown-icon-active"
+                                                    stroke="none"
+                                                    fill-rule="evenodd"
+                                                    points="7 15 12 10 17 15">
+                                            </polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mdc-notched-outline">
+                                    <span class="mdc-notched-outline__leading"></span>
+                                    <span class="mdc-notched-outline__notch">
+                        {#                                        <span id="outlined-select-label" class="mdc-floating-label">Сортировка</span>#}
+                                    </span>
+                                    <span class="mdc-notched-outline__trailing"></span>
+                                </span>
+                                </div>
+                                <div class="mdc-select__menu mdc-menu mdc-menu-surface width-264">
+                                    <ul class="mdc-list">
+                                        <li class="mdc-list-item" data-value="radio">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Один из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="checkbox">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Несколько из списка</span>
+                                        </li>
+                                        <li class="mdc-list-item mdc-list-item--selected" data-value="openQuestion">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Развёрнутый ответ</span>
+                                        </li>
+                                        <li class="mdc-list-item" data-value="range">
+                                            <span class="mdc-list-item__ripple"></span>
+                                            <span class="mdc-list-item__text">Шкала</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question__answers">
+                        <textarea class="open-question textarea-line" placeholder="Поле для ответа" disabled></textarea>
+                    </div>
+                    <div class="question__footer">
+                        <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
+                    </div>
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
     </div>
     <div class="actions">
-        <img src="{% static 'main/images/icon/add_circle_outline-black-48dp.svg' %}" alt="" class="plus">
+        <img src="{% static 'main/images/icon/add_circle_outline-black-48dp.svg' %}" alt=""
+             class="plus {% if template.countQuestions > 50 %}hide{% endif %}">
     </div>
 </div>
