@@ -198,6 +198,9 @@
   display: inline-block;
   margin-top: 30px;
 }
+.poll-editor .questions .question .new-answer__btn.hide {
+  display: none;
+}
 .poll-editor .questions .question .question__footer {
   border-top: 1px solid #E5E5E5;
   width: calc(100% + 60px);
@@ -231,6 +234,9 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.poll-editor .actions .plus.hide {
+  display: none;
 }
 
 /*# sourceMappingURL=new_poll_editor.css.map */

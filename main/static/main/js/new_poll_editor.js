@@ -1,8 +1,9 @@
-const maxAnswers = 5;
-const maxQuestions = 5;
-const timeAnimation = 200;
-
 $(function () {
+    const maxAnswers = 15;
+    const maxQuestions = 50;
+    const maxLengthInput = 150;
+    const timeAnimation = 200;
+
     const body = $('body');
     const pollHeader = $('.poll-editor__header');
     // const newQuestion = createNewQuestion();
@@ -107,7 +108,7 @@ $(function () {
         let questions = $(question).parent();
         if (questions.children('.question').length === 5) {
             console.log(questions.parent().children('.actions').children('.plus'))
-            questions.parent().children('.actions').children('.plus').show()
+            questions.parent().children('.actions').children('.plus').removeClass('hide')
         }
         let id = question.attr('data-question-id');
         // Удаляем из listQuestions
@@ -135,7 +136,7 @@ $(function () {
         console.log(listQuestions)
 
         if (questions.children('.question').length >= maxQuestions) {
-            $(this).hide();
+            $(this).addClass('hide');
         }
     });
 
@@ -147,7 +148,7 @@ $(function () {
             let answers = question.children('.question__answers');
             answers.append(createNewAnswer(qType));
             if (answers.children('.answer').length >= maxAnswers) {
-                $(this).hide();
+                $(this).addClass('hide');
             }
         } else {
             throw new Error('Unexpected attribute when adding answer option');
@@ -163,7 +164,7 @@ $(function () {
         if (qType === 'radio' || qType === 'checkbox') {
             let length = answers.children('.answer').length;
             if (length === maxAnswers) {
-                question.children('.new-answer__btn').show();
+                question.children('.new-answer__btn').removeClass('hide');
             } else if (length === 1) {
                 // answers.append(createNewAnswer(qType));
                 answer.children('.answer__text').val('');
@@ -231,6 +232,7 @@ $(function () {
         qName.classList.add('question__name', 'textarea-border');
         $(qName).attr({
             'placeholder': 'Вопрос',
+            'maxlength': maxLengthInput,
         });
         qMain.append(qName);
 
@@ -319,6 +321,7 @@ $(function () {
             'id': '',
             'rows': '1',
             'placeholder': 'Вариант ответа',
+            'maxlength': maxLengthInput,
         });
         answer.append(aText);
 
@@ -393,6 +396,7 @@ $(function () {
             'id': '',
             'rows': '1',
             'placeholder': 'Вариант ответа',
+            'maxlength': maxLengthInput,
         });
         answer.append(aText);
 
@@ -479,6 +483,7 @@ $(function () {
                             'id': '',
                             'rows': '1',
                             'placeholder': 'Вариант ответа',
+                            'maxlength': maxLengthInput,
                         });
                         answer.append(aText);
 
