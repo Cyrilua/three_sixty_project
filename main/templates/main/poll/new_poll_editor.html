@@ -12,11 +12,13 @@
             <div class="head__main">
                 <h2 class="head__title">Создание опроса (Шаг 1)</h2>
                 <span class="head__text">Отредактируйте содержание и оформление опроса.</span>
-                {% if poll.is_template %}
-                    <a class="head__href-save" id="saveAs">Обновить шаблон</a>
-                {% else %}
-                    <a class="head__href-save" id="saveAs">Сохранить как шаблон</a>
-                {% endif %}
+                <a class="head__href-save" id="saveAs">
+                    {% if poll.is_template %}
+                        Обновить шаблон
+                    {% else %}
+                        Сохранить как шаблон
+                    {% endif %}
+                </a>
             </div>
             <div class="head__move">
                 <button class="button-white head__btn" id="cancel" data-href="#">Отмена</button>

@@ -223,7 +223,7 @@ $(function () {
         let questions = $('.question');
 
         // Кнопка далее
-        if (questions.children('.question').length === 0) {
+        if (questions.length === 0) {
             $('#nextToStep2').prop({
                 'disabled': true,
             });
@@ -242,7 +242,6 @@ $(function () {
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
         } else if (currentColor.hasClass('red')) {
-            console.log('qwe')
             pollHeader.addClass('red');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
