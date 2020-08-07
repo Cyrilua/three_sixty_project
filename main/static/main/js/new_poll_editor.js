@@ -112,6 +112,9 @@ $(function () {
         delete listQuestions[id];
         question.remove();
         if (questions.children('.question').length === 0) {
+            $('#nextToStep2').prop({
+                'disabled': true,
+            })
             // let newQuestion = createNewQuestion();
             // console.log(newQuestion)
             // questions.append(newQuestion);
@@ -125,6 +128,9 @@ $(function () {
         let newQuestion = createNewQuestion();
         console.log(newQuestion)
         questions.append(newQuestion);
+        $('#nextToStep2').prop({
+            'disabled': false,
+        });
         // Заносим в listQuestions
         listQuestions[$(newQuestion).attr('data-question-id')] = {
             type: $(newQuestion).attr('data-question-type'),
@@ -180,6 +186,17 @@ $(function () {
 
     // Первый запуск
     function run() {
+        let questions = $('.question');
+        if (questions.children('.question').length === 0) {
+            $('#nextToStep2').prop({
+                'disabled': true,
+            });
+        } else {
+            $('#nextToStep2').prop({
+                'disabled': false,
+            });
+        }
+
         $('.textarea-line').each(function (key, el) {
             if (el.value !== '') {
                 countLines(el, 5);
@@ -191,7 +208,7 @@ $(function () {
             }
         });
 
-        $('.question').each(function (key, el) {
+        questions.each(function (key, el) {
             // Инициализация типа вопроса
             selectDeclaration(el);
             // Инициализация слайдеров
