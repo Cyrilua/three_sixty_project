@@ -34,9 +34,6 @@ class BirthDate(models.Model):
         db_table = 'BirthDate'
 
 
-
-
-
 class Moderator(models.Model):
     company = models.ForeignKey('Company', on_delete=models.CASCADE, null=True)
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
