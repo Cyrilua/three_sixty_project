@@ -286,7 +286,7 @@ $(function () {
             '                        </div>\n' +
             '                    </div>';
         qType.insertAdjacentHTML('afterbegin', selectorType);
-        selectDeclaration(qType.querySelector('.mdc-select'));
+        selectDeclaration(question);
 
         let qAnswers = document.createElement('div');
         qAnswers.classList.add('question__answers');
