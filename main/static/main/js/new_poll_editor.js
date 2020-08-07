@@ -49,53 +49,82 @@ $(function () {
     });
 
     // Настроки ответов типа range
-    body.on('change', '.slider-range__min', function () {
-        let val = parseInt($(this).val());
-        if (val < 0) {
-            val = 0;
-        } else if (val > 100) {
-            val = 100;
-        } else if (typeof (val) !== typeof (10) || isNaN(val)) {
-            val = 0;
+    body.on('change, input', '.slider-range__min', function () {
+        let settings = $(this).parent().parent();
+        let min = parseInt($(this).val());
+        let max = parseInt(settings.children('.max').children('.slider-range__max').val());
+        let step = parseInt(settings.children('.step').children('.slider-range__step').val());
+        if (min < 0) {
+            min = 0;
+        } else if (min > max - step) {
+            min = max - step;
+        } else if (typeof (min) !== typeof (10) || isNaN(min)) {
+            min = 0;
         }
-        $(this).val(val);
-        if (val >= 0 && val <= 100) {
+        $(this).val(min);
+        if (min >= 0 && min <= 100) {
             let slider = $(this).closest('.slider-range').children('.mdc-slider');
             let _slider = new mdc.slider.MDCSlider(slider[0]);
-            _slider.min = val;
+            _slider.step = step;
+            _slider.max = max;
+            _slider.min = min;
+            console.log(min, max, step, "maxStep")
+
+            console.log(_slider.min, _slider.max, _slider.step, "maxStep")
         }
     });
-    body.on('change', '.slider-range__max', function () {
-        let val = parseInt($(this).val());
-        if (val < 1) {
-            val = 1;
-        } else if (val > 100) {
-            val = 100;
-        } else if (typeof (val) !== typeof (10) || isNaN(val)) {
-            val = 100;
+    body.on('change, input', '.slider-range__max', function () {
+        let settings = $(this).parent().parent();
+        let max = parseInt($(this).val());
+        let min = parseInt(settings.children('.min').children('.slider-range__min').val());
+        let step = parseInt(settings.children('.step').children('.slider-range__step').val());
+        if (max < min + step) {
+            console.log(1)
+            max = min + step;
+        } else if (max > 100) {
+            console.log(2)
+            max = 100;
+        } else if (typeof (max) !== typeof (10) || isNaN(max)) {
+            console.log(3)
+            max = 100;
         }
-        $(this).val(val);
-        if (val >= 1 && val <= 100) {
+        $(this).val(max);
+        if (max >= 1 && max <= 100) {
             let slider = $(this).closest('.slider-range').children('.mdc-slider');
             let _slider = new mdc.slider.MDCSlider(slider[0]);
-            _slider.max = val;
+            _slider.step = step;
+            _slider.max = max;
+            _slider.min = min;
+            console.log(min, max, step, "maxStep")
+
+            console.log(_slider.min, _slider.max, _slider.step, "maxStep")
         }
     });
-    body.on('change', '.slider-range__step', function () {
-        let val = parseInt($(this).val());
-        let step = parseInt($(this).parent().parent().children('.max').children('.slider-range__max').val());
-        if (val < 1) {
-            val = 1;
-        } else if (val > step) {
-            val = step;
-        } else if (typeof (val) !== typeof (10) || isNaN(val)) {
-            val = 1;
+    body.on('change, input', '.slider-range__step', function () {
+        let settings = $(this).parent().parent();
+        let step = parseInt($(this).val());
+        let max = parseInt(settings.children('.max').children('.slider-range__max').val());
+        let min = parseInt(settings.children('.min').children('.slider-range__min').val());
+        let maxStep = max - min;
+        if (step < 1) {
+            step = 1;
+        } else if (step > 50) {
+            step = 50;
+        } else if (step > maxStep) {
+            step = maxStep;
+        } else if (typeof (step) !== typeof (10) || isNaN(step)) {
+            step = 1;
         }
-        $(this).val(val);
-        if (val >= 1 && val <= 50) {
+        $(this).val(step);
+        if (step >= 1 && step <= 50) {
             let slider = $(this).closest('.slider-range').children('.mdc-slider');
             let _slider = new mdc.slider.MDCSlider(slider[0]);
-            _slider.step = val;
+            _slider.step = step;
+            _slider.max = max;
+            _slider.min = min;
+            console.log(min, max, step, maxStep)
+
+            console.log(_slider.min, _slider.max, _slider.step, maxStep)
         }
     });
 
