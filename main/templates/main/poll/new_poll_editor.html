@@ -8,17 +8,21 @@
 {% block content-user %}
 
     <div class="editor">
+        {% csrf_token %}
         <div class="editor__head rounded-block">
             <div class="head__main">
                 <h2 class="head__title">Создание опроса (Шаг 1)</h2>
                 <span class="head__text">Отредактируйте содержание и оформление опроса.</span>
-                <a class="head__href-save" id="saveAs">
-                    {% if poll.is_template %}
-                        Обновить шаблон
-                    {% else %}
-                        Сохранить как шаблон
-                    {% endif %}
-                </a>
+                <div class="save-as">
+                    <a class="head__href-save" id="saveAs">
+                        {% if poll.is_template %}
+                            Обновить шаблон
+                        {% else %}
+                            Сохранить как шаблон
+                        {% endif %}
+                    </a>
+                    <div class="save__status"></div>
+                </div>
             </div>
             <div class="head__move">
                 <button class="button-white head__btn" id="cancel" data-href="#">Отмена</button>

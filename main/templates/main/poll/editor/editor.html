@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="poll-editor category-item">
-    <div class="poll-editor__header rounded-block">
+    <div class="poll-editor__header rounded-block" data-poll-id="{{ poll.id }}">
         <textarea name="" id="" rows="1" class="textarea-line poll__name" placeholder="Новый опрос"
                   maxlength="150">{{ poll.name }}</textarea>
         <span class="poll__target"><b>О ком:</b> Выберите на втором шаге</span>
@@ -179,7 +179,8 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <a class="new-answer__btn {% if question.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант ответа</a>
+                    <a class="new-answer__btn {% if question.countAnswers > 15 %}hide{% endif %}">Добавить ещё вариант
+                        ответа</a>
                     <div class="question__footer">
                         <img src="{% static 'main/images/icon/delete_forever-24px.svg' %}" alt="" class="question__urn">
                     </div>

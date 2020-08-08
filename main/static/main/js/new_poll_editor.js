@@ -5,8 +5,9 @@ $(function () {
     const timeAnimation = 200;
 
     const body = $('body');
+    const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     const pollHeader = $('.poll-editor__header');
-    let listQuestions = {};
+    let listKeys = [];
 
     run();
 
@@ -68,9 +69,9 @@ $(function () {
             _slider.step = step;
             _slider.max = max;
             _slider.min = min;
-            console.log(min, max, step, "maxStep")
+            // console.log(min, max, step, "maxStep")
 
-            console.log(_slider.min, _slider.max, _slider.step, "maxStep")
+            // console.log(_slider.min, _slider.max, _slider.step, "maxStep")
         }
     });
     body.on('change, input', '.slider-range__max', function () {
@@ -79,13 +80,13 @@ $(function () {
         let min = parseInt(settings.children('.min').children('.slider-range__min').val());
         let step = parseInt(settings.children('.step').children('.slider-range__step').val());
         if (max < min + step) {
-            console.log(1)
+            // console.log(1)
             max = min + step;
         } else if (max > 100) {
-            console.log(2)
+            // console.log(2)
             max = 100;
         } else if (typeof (max) !== typeof (10) || isNaN(max)) {
-            console.log(3)
+            // console.log(3)
             max = 100;
         }
         $(this).val(max);
@@ -95,9 +96,9 @@ $(function () {
             _slider.step = step;
             _slider.max = max;
             _slider.min = min;
-            console.log(min, max, step, "maxStep")
+            // console.log(min, max, step, "maxStep")
 
-            console.log(_slider.min, _slider.max, _slider.step, "maxStep")
+            // console.log(_slider.min, _slider.max, _slider.step, "maxStep")
         }
     });
     body.on('change, input', '.slider-range__step', function () {
@@ -122,9 +123,9 @@ $(function () {
             _slider.step = step;
             _slider.max = max;
             _slider.min = min;
-            console.log(min, max, step, maxStep)
+            // console.log(min, max, step, maxStep)
 
-            console.log(_slider.min, _slider.max, _slider.step, maxStep)
+            // console.log(_slider.min, _slider.max, _slider.step, maxStep)
         }
     });
 
@@ -133,12 +134,14 @@ $(function () {
         let question = $(this).parent().parent();
         let questions = $(question).parent();
         if (questions.children('.question').length === maxQuestions) {
-            console.log(questions.parent().children('.actions').children('.plus'))
+            // console.log(questions.parent().children('.actions').children('.plus'))
             questions.parent().children('.actions').children('.plus').removeClass('hide')
         }
         let id = question.attr('data-question-id');
-        // Удаляем из listQuestions
-        delete listQuestions[id];
+        // // Удаляем из listQuestions
+        let i = listKeys.indexOf(id);
+        if (i !== -1) delete listKeys[i];
+        // delete listQuestions[id];
         question.remove();
         if (questions.children('.question').length === 0) {
             $('#nextToStep2').prop({
@@ -148,23 +151,21 @@ $(function () {
             // console.log(newQuestion)
             // questions.append(newQuestion);
         }
-        console.log(listQuestions)
+        // console.log(listQuestions)
     });
 
     // Добавеление вопросов
     body.on('click', '.plus', function () {
         let questions = $('.questions');
         let newQuestion = createNewQuestion();
-        console.log(newQuestion)
+        // console.log(newQuestion)
         questions.append(newQuestion);
         $('#nextToStep2').prop({
             'disabled': false,
         });
-        // Заносим в listQuestions
-        listQuestions[$(newQuestion).attr('data-question-id')] = {
-            type: $(newQuestion).attr('data-question-type'),
-        };
-        console.log(listQuestions)
+        // Заносим в listKeys
+        listKeys.push($(newQuestion).attr('data-question-id'))
+        // console.log(listQuestions)
 
         if (questions.children('.question').length >= maxQuestions) {
             $(this).addClass('hide');
@@ -211,6 +212,54 @@ $(function () {
     body.on('click', '#cancel', function () {
         location.href = '/polls/';
     });
+
+    // Сохранения шаблона
+    body.on('click', '#saveAs', function () {
+        let id = $('.poll-editor__header').attr('data-poll-id');
+        let template = getTemplate();
+        let status = $(this).parent().children('.save__status');
+        console.log(template)
+        $.ajax({
+            url: 'save_as/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                id: id,
+                template: template,
+            },
+            beforeSend: function () {
+                status.removeClass('status--loading status--error status--done')
+                    .addClass('status--loading');
+            },
+            success: function () {
+                status.removeClass('status--loading status--error status--done')
+                    .addClass('status--done');
+            },
+            statusCode: {
+                400: function () {
+                    throw new Error('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    throw new Error('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    throw new Error('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    throw new Error('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                status.removeClass('status--loading status--error status--done')
+                    .addClass('status--error');
+                throw new Error('Что - то пошло не так :(');
+            },
+        })
+    });
+
+    body.on('focus', '.question', function () {
+        console.log('focus')
+    })
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {
@@ -276,10 +325,8 @@ $(function () {
             if ($(el).attr('data-question-type') === 'range') {
                 sliderDeclaration(el);
             }
-            // Заносим вопросы в список
-            listQuestions[$(el).attr('data-question-id')] = {
-                type: $(el).attr('data-question-type'),
-            };
+            // Заносим в listKeys
+            listKeys.push($(el).attr('data-question-id'))
         });
         // console.log(listQuestions)
     }
@@ -496,7 +543,7 @@ $(function () {
             let lastVal = question.attr('data-question-type');
             let currentVal = sortable.value;
             if (lastVal !== currentVal) {
-                console.log(lastVal, currentVal)
+                // console.log(lastVal, currentVal)
 
                 let answers = question.children('.question__answers');
                 let newIcon;
@@ -523,7 +570,7 @@ $(function () {
                         '                            </div>\n' +
                         '                        </div>';
                 }
-                console.log(answers)
+                // console.log(answers)
                 question.attr({
                     'data-question-type': currentVal,
                 });
@@ -683,7 +730,7 @@ $(function () {
                         throw new Error('Unexpected attribute on question change');
                     }
                 }
-                console.log(currentVal)
+                // console.log(currentVal)
             }
         });
     }
@@ -699,8 +746,7 @@ $(function () {
     }
 
     function checkId(id) {
-        let keys = Object.keys(listQuestions);
-        for (let e in keys) {
+        for (let e in listKeys) {
             if (e === id) {
                 id = checkId(createId());
                 break;
@@ -715,5 +761,51 @@ $(function () {
         for (let i = 0; i < 33; i++)
             result += possible.charAt(Math.floor(Math.random() * possible.length));
         return result;
+    }
+
+    function getTemplate() {
+        let questions = $('.question');
+        let template = {
+            id: $('.poll-editor__header').attr('data-poll-id'),
+            name: $('.poll__name').val(),
+            description: $('.poll__description').val(),
+            questions: [],
+            color: $('.color__variable--select').attr('data-color'),
+            countQuestion: questions.length,
+        };
+        questions.each(function (key, el) {
+            let type = $(el).attr('data-question-type');
+            let answersBlock = $(el).children('.question__answers');
+            template.questions.push({
+                id: $(el).attr('data-question-id'),
+                serialNumber: key + 1,
+                type: type,
+                name: $(el).children('.question__main').children('.question__name ').val(),
+                // answers: [],
+                // countAnswers: answers.length,
+                // settingsSlider: {}
+            });
+            if (type === 'radio' || type === 'checkbox') {
+                let answers = answersBlock.children('.answer');
+                template.questions[key].answers = [];
+                template.questions[key].countAnswers = answers.length;
+                $(answers).each(function (keyA, elA) {
+                    let answerText = $(elA).children('.answer__text').val();
+                    template.questions[key].answers.push(answerText);
+                })
+            } else if (type === 'range') {
+                let settings = answersBlock.children('.slider-range').children('.slider-range__settings');
+                template.questions[key].settingsSlider = {
+                    min: settings.children('.min').children('.slider-range__min').val(),
+                    max: settings.children('.max').children('.slider-range__max').val(),
+                    step: settings.children('.step').children('.slider-range__step').val(),
+                }
+            } else if (type === 'openQuestion') {
+
+            } else {
+                throw new Error('unexpected attribute when receiving a poll');
+            }
+        });
+        return template;
     }
 });

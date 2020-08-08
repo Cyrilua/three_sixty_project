@@ -34,13 +34,45 @@
   line-height: 21px;
   color: #595757;
 }
-.editor .editor__head .head__main .head__href-save {
+.editor .editor__head .head__main .save-as {
   margin-top: 20px;
+  display: flex;
+}
+.editor .editor__head .head__main .save-as.hide {
+  display: none;
+}
+.editor .editor__head .head__main .save-as .head__href-save {
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
   color: #2269D5;
+}
+.editor .editor__head .head__main .save-as .save__status {
+  height: 21px;
+  width: 21px;
+  margin-left: 10px;
+}
+.editor .editor__head .head__main .save-as .save__status.status--loading {
+  background-image: url("../images/icon/cached-24px.svg");
+  background-repeat: no-repeat;
+  background-size: 21px 21px;
+  animation: 0.7s reverse infinite linear cached;
+}
+.editor .editor__head .head__main .save-as .save__status.status--error {
+  background-image: url("../images/icon/error_outline-24px.svg");
+  background-repeat: no-repeat;
+  background-size: 21px 21px;
+  filter: invert(9%) sepia(91%) saturate(5786%) hue-rotate(343deg) brightness(111%) contrast(109%);
+}
+.editor .editor__head .head__main .save-as .save__status.status--done {
+  background-image: url("../images/icon/done-24px.svg");
+  background-repeat: no-repeat;
+  background-size: 21px 21px;
+  filter: invert(49%) sepia(76%) saturate(3666%) hue-rotate(83deg) brightness(101%) contrast(104%);
+}
+.editor .editor__head .head__move {
+  height: 40px;
 }
 .editor .editor__head .head__move .head__btn:first-child {
   margin-right: 12px;
@@ -237,6 +269,15 @@
 }
 .poll-editor .actions .plus.hide {
   display: none;
+}
+
+@keyframes cached {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*# sourceMappingURL=new_poll_editor.css.map */
