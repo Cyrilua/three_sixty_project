@@ -488,6 +488,35 @@ button {
   margin-bottom: 12px;
 }
 
+.role-mini {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #595757;
+}
+.role-mini:hover {
+  background-color: #595757;
+}
+.role-mini.role-boss {
+  background-color: #FF1841;
+}
+.role-mini.role-boss:hover {
+  background-color: #FF1841;
+}
+.role-mini.role-master {
+  background-color: #DB00FF;
+}
+.role-mini.role-master:hover {
+  background-color: #DB00FF;
+}
+.role-mini.role-moderator {
+  background-color: #001AFF;
+}
+.role-mini.role-moderator:hover {
+  background-color: #001AFF;
+}
+
 .role {
   display: flex;
   align-items: center;

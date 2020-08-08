@@ -614,6 +614,42 @@ button {
 
 // Roles
 
+.role-mini {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #595757;
+
+  &:hover {
+    background-color: #595757;
+  }
+
+  &.role-boss {
+    background-color: #FF1841;
+
+    &:hover {
+      background-color: #FF1841;
+    }
+  }
+
+  &.role-master {
+    background-color: #DB00FF;
+
+    &:hover {
+      background-color: #DB00FF;
+    }
+  }
+
+  &.role-moderator {
+    background-color: #001AFF;
+
+    &:hover {
+      background-color: #001AFF;
+    }
+  }
+}
+
 .role {
   //display: table-cell;
   //vertical-align: middle;

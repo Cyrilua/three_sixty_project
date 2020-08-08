@@ -231,35 +231,94 @@ $(function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--loading');
             },
-            success: function () {
+            success: function (response) {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--done');
             },
             statusCode: {
                 400: function () {
-                    throw new Error('Error 400 - Некорректный запрос');
+                    // throw new Error('Error 400 - Некорректный запрос');
                 },
                 403: function () {
-                    throw new Error('Error 403 - Доступ запрещён');
+                    // throw new Error('Error 403 - Доступ запрещён');
                 },
                 404: function () {
-                    throw new Error('Error 404 - Страница не найдена');
+                    // throw new Error('Error 404 - Страница не найдена');
                 },
                 500: function () {
-                    throw new Error('Error 500 - Внутренняя ошибка сервера');
+                    // throw new Error('Error 500 - Внутренняя ошибка сервера');
                 }
             },
             error: function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--error');
-                throw new Error('Что - то пошло не так :(');
+                // throw new Error('Что - то пошло не так :(');
             },
         })
     });
 
-    body.on('focus', '.question', function () {
-        console.log('focus')
-    })
+    // body.on('focusout', '.question', function () {
+    //     console.log('focusout')
+    // })
+
+    // С 1 шага на 2
+    body.on('click', '#nextToStep2', function (el) {
+        let id = $('.poll-editor__header').attr('data-poll-id');
+        let template = getTemplate();
+        $.ajax({
+            url: 'select_target',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                id: id,
+                template: template,
+            },
+            beforeSend: function () {
+                $(el.target).prop({
+                    'disabled': true,
+                })
+            },
+            success: function (response) {
+                document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
+                document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
+                document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
+
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain.insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove.insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories.insertAdjacentHTML('afterbegin', response.categories);
+            },
+            complete: function () {
+                $(el.target).prop({
+                    'disabled': false,
+                });
+            },
+            statusCode: {
+                400: function () {
+                    // throw new Error('Error 400 - Некорректный запрос');
+                },
+                403: function () {
+                    // throw new Error('Error 403 - Доступ запрещён');
+                },
+                404: function () {
+                    // throw new Error('Error 404 - Страница не найдена');
+                },
+                500: function () {
+                    // throw new Error('Error 500 - Внутренняя ошибка сервера');
+                }
+            },
+            error: function () {
+                // throw new Error('Что - то пошло не так :(');
+            },
+        })
+    });
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {

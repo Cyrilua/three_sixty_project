@@ -79,15 +79,19 @@
 }
 .editor .editor__category .substrate {
   z-index: 10;
+  margin-bottom: 10px;
 }
-.editor .editor__category .substrate .color {
+.editor .editor__category .substrate .sort {
+  margin-bottom: 0;
+}
+.editor .editor__category .substrate .sort .color {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: auto 0 auto auto;
   width: 185px;
 }
-.editor .editor__category .substrate .color .color__variable {
+.editor .editor__category .substrate .sort .color .color__variable {
   width: 35px;
   height: 35px;
   background-color: #C4C4C4;
@@ -97,7 +101,7 @@
   transform: scale(1);
   transition: 0.15s transform;
 }
-.editor .editor__category .substrate .color .color__variable.color__variable--select:before {
+.editor .editor__category .substrate .sort .color .color__variable.color__variable--select:before {
   content: "";
   /*вместо того, чтобы создавать div с фоном и позиционировать внутри родительского блока*/
   position: absolute;
@@ -108,17 +112,29 @@
   background: url("../images/icon/check-mark.svg") no-repeat;
   background-size: 22px;
 }
-.editor .editor__category .substrate .color .color__variable.color__variable--select {
+.editor .editor__category .substrate .sort .color .color__variable.color__variable--select {
   transform: scale(1.2);
 }
-.editor .editor__category .substrate .color .color__variable.purple {
+.editor .editor__category .substrate .sort .color .color__variable.purple {
   background-color: #DB00FF;
 }
-.editor .editor__category .substrate .color .color__variable.blue {
+.editor .editor__category .substrate .sort .color .color__variable.blue {
   background-color: #001AFF;
 }
-.editor .editor__category .substrate .color .color__variable.red {
+.editor .editor__category .substrate .sort .color .color__variable.red {
   background-color: #FF1841;
+}
+.editor .editor__category .substrate .search-down {
+  padding-bottom: 25px;
+}
+.editor .editor__category .substrate .search-down .search {
+  width: 850px;
+}
+.editor .editor__category .substrate .search-down .search .input__search {
+  background-image: url("../images/icon/search-24px.svg");
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  padding-left: 43px;
 }
 .poll-editor {
   padding-bottom: 150px;
@@ -269,6 +285,52 @@
 }
 .poll-editor .actions .plus.hide {
   display: none;
+}
+
+.select-participants .participants .participant {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.select-participants .participants .participant .participant__photo {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.select-participants .participants .participant .info {
+  margin-left: 10px;
+}
+.select-participants .participants .participant .info .name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.select-participants .participants .participant .info .name .participant__href {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #2269D5;
+}
+.select-participants .participants .participant .info .name .participant__role {
+  margin-left: 5px;
+}
+.select-participants .participants .participant .info .positions-n-platforms {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.select-participants .participants .participant .info .positions-n-platforms .position,
+.select-participants .participants .participant .info .positions-n-platforms .platform {
+  margin-right: 5px;
+}
+.select-participants .participants .participant .radio {
+  margin-right: 0;
+  margin-left: auto;
 }
 
 @keyframes cached {

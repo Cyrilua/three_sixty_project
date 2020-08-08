@@ -1,0 +1,26 @@
+{% load static %}
+<div class="substrate">
+    <div class="sort rounded-block unselectable">
+        <div class="category active-sort" data-category="">
+            <div class="category__title">Участники (350)
+                {#                                <div class="category__notice hide"></div>#}
+            </div>
+        </div>
+        <div class="category" data-category="">
+            <div class="category__title">Команды (10)
+                {#                            <div class="category__notice hide"></div>#}
+            </div>
+        </div>
+    </div>
+    <div class="unselectable search-down rounded-block">
+        <div class="search ">
+            <input type="text" class="input-field input__search" placeholder="Поиск по участникам...">
+        </div>
+    </div>
+</div>
+<div class="categories">
+    <div class="content">
+        {% include 'main/poll/select_target/content_participants.html' %}
+{#        {% include 'main/poll/select_target/content_teams.html' %}#}
+    </div>
+</div>
