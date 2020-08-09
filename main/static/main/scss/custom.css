@@ -498,6 +498,13 @@ button {
 .role-mini:hover {
   background-color: #595757;
 }
+.role-mini.role-leader {
+  background-color: transparent;
+  background-image: url("../images/icon/crown.svg");
+  width: 16px;
+  height: 12px;
+  border-radius: 0;
+}
 .role-mini.role-boss {
   background-color: #FF1841;
 }
@@ -615,6 +622,13 @@ button {
 .role-information .platform__info::after {
   content: "Отдел";
 }
+.role-information .leader__info::before {
+  content: "Лидер";
+  font-weight: bold;
+}
+.role-information .leader__info::after {
+  content: " - член команды, у которого есть дополнительные обязанности лидерства";
+}
 .role-information .boss__info::before {
   content: "Босс";
   font-weight: bold;
@@ -691,8 +705,17 @@ button {
 .disabled {
   pointer-events: none;
   opacity: 0.5;
+  animation: 0.5s linear 1 start;
 }
 
+@keyframes start {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
 .cross-in-circle {
   width: 14px;
   height: 14px;

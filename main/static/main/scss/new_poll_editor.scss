@@ -90,6 +90,10 @@
           margin-right: 12px;
         }
       }
+
+      #sendPoll {
+        width: 100px;
+      }
     }
   }
 
@@ -392,63 +396,208 @@
 
 .select-participants {
   .participants {
-    .participant {
-      padding-bottom: 20px;
-      padding-top: 20px;
+
+  }
+}
+
+.loader-round {
+  width: 30px;
+  height: 30px;
+  margin: auto auto auto 20px;
+
+  .loader__status {
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+
+    &.status--loading {
+      background-image: url('../images/icon/cached-24px.svg');
+      animation: .8s linear 0s infinite reverse looping;
+    }
+
+    &.status--done {
+      background-image: url('../images/icon/done-24px.svg');
+      filter: invert(49%) sepia(76%) saturate(3666%) hue-rotate(83deg) brightness(101%) contrast(104%);
+
+    }
+
+    &.status--error {
+      background-image: url('../images/icon/error_outline-24px.svg');
+      filter: invert(9%) sepia(91%) saturate(5786%) hue-rotate(343deg) brightness(111%) contrast(109%);
+    }
+  }
+
+  //.update {
+  //  width: 30px;
+  //  height: 30px;
+  //  animation: .8s linear 0s infinite reverse looping;
+  //}
+}
+
+.participant {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .participant__photo {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .info {
+    margin-left: 10px;
+
+    .name {
       display: flex;
-      flex-direction: row;
+      flex-wrap: wrap;
       align-items: center;
+
+      .participant__href {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        color: #2269D5;
+      }
+
+      .participant__role {
+        margin-left: 5px;
+      }
+    }
+
+    .positions-n-platforms {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+
+      .position,
+      .platform {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .radio,
+  .checkbox {
+    margin-right: 0;
+    margin-left: auto;
+  }
+}
+
+.select-teams {
+  .teams {
+    .team {
+      padding: 0;
       margin-bottom: 10px;
 
-      .participant__photo {
-        width: 70px;
-        height: 70px;
-        object-fit: cover;
-        border-radius: 50%;
+      &.team--selected {
+        background-color: #F0F1F6;
+        padding-bottom: 10px;
+
+        .team__up {
+          .team__actions {
+            .team__action {
+              &:after {
+                content: 'Свернуть';
+              }
+            }
+          }
+        }
+
+        .team__down {
+          display: block;
+        }
       }
 
-      .info {
-        margin-left: 10px;
+      .team__up {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px 30px;
 
-        .name {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
+        .team__photo {
+          width: 70px;
+          margin-right: 10px;
+        }
 
-          .participant__href {
+        .info {
+          width: 570px;
+
+          .name {
+            .team__href {
+              font-style: normal;
+              font-weight: bold;
+              font-size: 24px;
+              line-height: 28px;
+              color: #2269D5;
+            }
+          }
+
+          .team__numbers {
+            display: block;
             font-style: normal;
             font-weight: bold;
-            font-size: 24px;
-            line-height: 28px;
-            color: #2269D5;
+            font-size: 14px;
+            line-height: 16px;
+            color: #595757;
+            margin-top: 5px;
           }
 
-          .participant__role {
-            margin-left: 5px;
+          .team__descriptions {
+            display: block;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+            color: #595757;
+            margin-top: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
 
-        .positions-n-platforms {
-          display: flex;
-          flex-wrap: wrap;
-          margin-top: 10px;
+        .team__actions {
+          margin: 0 0 auto auto;
 
-          .position,
-          .platform {
-            margin-right: 5px;
+          .team__action {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+            color: #2269D5;
+
+            &:after {
+              content: 'Развернуть';
+            }
           }
         }
       }
 
-      .radio {
-        margin-right: 0;
-        margin-left: auto;
+      .team__down {
+        margin-top: 10px;
+        display: none;
       }
     }
   }
 }
 
 @keyframes cached {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes looping {
   from {
     transform: rotate(0);
   }

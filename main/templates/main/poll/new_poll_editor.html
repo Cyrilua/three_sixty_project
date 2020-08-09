@@ -11,65 +11,20 @@
         {% csrf_token %}
         <div class="editor__head rounded-block ">
             <div class="head__main">
-
+                {% include 'main/poll/editor/editor_head_main.html' %}
 {#                {% include 'main/poll/select_target/select_target_head_main.html' %}#}
-                                <h2 class="head__title">Создание опроса (Шаг 1)</h2>
-                                <span class="head__text">Отредактируйте содержание и оформление опроса.</span>
-                                <div class="save-as">
-                                    <a class="head__href-save" id="saveAs">
-                                        {% if poll.is_template %}
-                                            Обновить шаблон
-                                        {% else %}
-                                            Сохранить как шаблон
-                                        {% endif %}
-                                    </a>
-                                    <div class="save__status"></div>
-                                </div>
+{#                {% include 'main/poll/select_interviewed/select_interviewed_head_main.html' %}#}
             </div>
             <div class="head__move">
-
+                {% include 'main/poll/editor/editor_head_move.html' %}
 {#                {% include 'main/poll/select_target/select_target_head_move.html' %}#}
-                                <button class="button-white head__btn" id="cancel" data-href="#">Отмена</button>
-                                <button class="button-white head__btn" id="nextToStep2" data-href="#">Далее</button>
+{#                {% include 'main/poll/select_interviewed/select_interviewed_head_move.html' %}#}
             </div>
         </div>
         <div class="editor__category categories-block">
+                {% include 'main/poll/editor/editor_content.html' %}
 {#            {% include 'main/poll/select_target/select_target_content.html' %}#}
-                        <div class="substrate">
-                            <div class="sort rounded-block unselectable">
-                                <div class="category active-sort" data-category=".poll-editor__content">
-                                    <div class="category__title">Редактор
-                                            <div class="category__notice hide"></div>
-                                    </div>
-                                </div>
-                                <div class="category disabled" data-category=".poll-view__content">
-                                    <div class="category__title">Просмотр
-                                        <img src="{% static 'main/images/icon/handyman-24px.svg' %}"
-                                             alt="" class="build" style="position: absolute; right: -30px">
-                                        <div class="category__notice hide"></div>
-                                    </div>
-                                </div>
-                                <div class="color">
-                                    <div class="color__variable {% if poll.color == '' %}color__variable--select{% endif %}"
-                                         data-color=""></div>
-                                    <div class="color__variable purple {% if poll.color == 'purple' %}color__variable--select{% endif %}"
-                                         data-color="purple"></div>
-                                    <div class="color__variable blue {% if poll.color == 'blue' %}color__variable--select{% endif %}"
-                                         data-color="blue"></div>
-                                    <div class="color__variable red {% if poll.color == 'red' %}color__variable--select{% endif %}"
-                                         data-color="red"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="categories">
-                            <div class="category-content poll-editor__content">
-                                {% include 'main/poll/editor/editor.html' %}
-                            </div>
-                            <div class="category-content poll-view__content">
-{#                                {% include 'main/poll/editor/editor.html' %}#}
-                                <div class="category-item">ТУТ ДОЛЖЕН БЫТЬ ПРОСМОТР ОПРОСА</div>
-                            </div>
-                        </div>
+{#            {% include 'main/poll/select_interviewed/select_interviewed_content.html' %}#}
         </div>
     </div>
 
