@@ -1,5 +1,3 @@
-
-
 from main.views.auxiliary_general_methods import *
 from main.models import CreatedPoll, Poll, NeedPassPoll, TemplatesPoll
 from django.shortcuts import redirect, render

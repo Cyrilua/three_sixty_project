@@ -119,7 +119,7 @@ class Notifications (models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=20)
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='+')
     key = models.CharField(max_length=36, unique=True, default='')
     description = models.CharField(max_length=150, default='')
     objects = models.Manager()
@@ -158,7 +158,7 @@ class PositionCompany (models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=20, default='')
     description = models.CharField(max_length=150, default='')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     key = models.CharField(max_length=36, default='')
     objects = models.Manager()
 
@@ -186,7 +186,7 @@ class TemplatesPoll(models.Model):
 
 
 class Poll(models.Model):
-    initiator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+', null=True)
+    initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name_poll = models.CharField(max_length=50, default='')
     description = models.CharField(max_length=500, null=True)
