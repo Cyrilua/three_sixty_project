@@ -62,7 +62,7 @@ def render_teams_list_for_choose_respondents(request, template_id: int) -> JsonR
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        print(request.POST)
+        print(request.POST.getlist('template[questions][0][answers][]'))
     profile = get_user_profile(request)
     company = profile.company
     teams = profile.groups.all()

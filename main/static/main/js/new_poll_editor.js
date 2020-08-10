@@ -1166,9 +1166,7 @@ $(function () {
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
                     let answerText = $(elA).children('.answer__text').val();
-                    template.questions[key].answers.push({
-                        text: answerText,
-                    });
+                    template.questions[key].answers.push(answerText);
                 })
             } else if (type === 'range') {
                 let settings = answersBlock.children('.slider-range').children('.slider-range__settings');
