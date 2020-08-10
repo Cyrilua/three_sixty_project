@@ -154,6 +154,7 @@ $(function () {
             if (accessStep3) {
                 menu.eq(2).addClass('disabled');
             }
+            $('.save-as').css("visibility", "hidden");
             // let newQuestion = createNewQuestion();
             // console.log(newQuestion)
             // questions.append(newQuestion);
@@ -174,6 +175,7 @@ $(function () {
         if (accessStep3) {
             menu.eq(2).removeClass('disabled');
         }
+        $('.save-as').css("visibility", "visible");
         // Заносим в listKeys
         listKeys.push($(newQuestion).attr('data-question-id'));
         // console.log(listQuestions)
