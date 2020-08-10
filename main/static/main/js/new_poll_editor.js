@@ -285,15 +285,15 @@ $(function () {
 
                 let headMain = $('.head__main');
                 headMain.empty();
-                headMain.insertAdjacentHTML('afterbegin', response.headMain);
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
 
                 let headMove = $('.head__move');
                 headMove.empty();
-                headMove.insertAdjacentHTML('afterbegin', response.headMove);
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
 
                 let categories = $('.categories-block');
                 categories.empty();
-                categories.insertAdjacentHTML('afterbegin', response.categories);
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
             },
             complete: function () {
                 $(el.target).prop({
