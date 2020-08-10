@@ -251,8 +251,9 @@ $(function () {
     body.on('click', '#nextToStep2', function (el) {
         let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
+        console.log(template)
         $.ajax({
-            url: 'step/2/from/1',
+            url: 'step/2/from/1/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -299,7 +300,7 @@ $(function () {
     body.on('click', '#backToStep1', function (el) {
         let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/1/from/2',
+            url: 'step/1/from/2/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -454,7 +455,7 @@ $(function () {
     body.on('click', '#nextToStep3', function (el) {
         let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/3/from/2',
+            url: 'step/3/from/2/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -566,7 +567,7 @@ $(function () {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
         $.ajax({
-            url: 'step/2/from/3',
+            url: 'step/2/from/3/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -1165,7 +1166,9 @@ $(function () {
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
                     let answerText = $(elA).children('.answer__text').val();
-                    template.questions[key].answers.push(answerText);
+                    template.questions[key].answers.push({
+                        text: answerText,
+                    });
                 })
             } else if (type === 'range') {
                 let settings = answersBlock.children('.slider-range').children('.slider-range__settings');
