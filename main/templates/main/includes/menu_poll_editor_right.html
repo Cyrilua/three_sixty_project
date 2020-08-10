@@ -1,25 +1,15 @@
 {% load static %}
 
-<div class="row" style="z-index: 10;">
-    <div class="col-md-12 navbar-light position-fixed" style="z-index: 10;">
-        <ul class="navbar-nav flex-column" style="z-index: 10;">
-            <li class="{{ menu_walkthrough_polls_view }} user-sidebar-item" style="z-index: 10;">
-                <a class="nav-link" style="z-index: 10;" href="{% url 'main:walkthrough_polls_view' %}">Прохождение опросов</a>
-            </li>
-            <li style="z-index: 10;" class="{{ menu_results_polls_view }} user-sidebar-item">
-                <a style="z-index: 10;" class="nav-link" href="{% url 'main:results_polls_view' %}">Результаты опросов</a>
-            </li>
-            <li style="z-index: 10;" class="{{ menu_new_poll_view }} user-sidebar-item">
-                <a style="z-index: 10;" class="nav-link" href="{% url 'main:new_poll_view' %}">Создание опроса</a>
-            </li>
-        </ul>
-
-{#        <div class="scroll-top-btn">#}
-{#            <div class="scroll-top-btn-value">#}
-{#                <p class="scroll-top-btn-text">Наверх</p>#}
-{#                <img src="{% static 'main/images/upArrow.svg' %}" alt="Наверх"#}
-{#                     class="scroll-top-btn-img">#}
-{#            </div>#}
-{#        </div>#}
-    </div>
+<div class="menu-r unselectable">
+    <ul class="menu rounded-block">
+        <li class="menu__item {{ menu_editor }}">
+            <a class="item__link">Редактор опроса</a>
+        </li>
+        <li class="menu__item">
+            <a class="item__link">О ком опрос</a>
+        </li>
+        <li class="menu__item">
+            <a class="item__link">Опрашиваемые</a>
+        </li>
+    </ul>
 </div>

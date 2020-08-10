@@ -5,9 +5,11 @@ $(function () {
     const timeAnimation = 200;
 
     const body = $('body');
-    let editor = $('.editor ');
+    const editor = $('.editor ');
+    const menu = $('.menu-r').children('.menu').children('.menu__item');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let listKeys = [];
+    let accessStep3 = false;
 
     run();
 
@@ -147,7 +149,11 @@ $(function () {
         if (questions.children('.question').length === 0) {
             $('#nextToStep2').prop({
                 'disabled': true,
-            })
+            });
+            menu.eq(1).addClass('disabled');
+            if (accessStep3) {
+                menu.eq(2).addClass('disabled');
+            }
             // let newQuestion = createNewQuestion();
             // console.log(newQuestion)
             // questions.append(newQuestion);
@@ -164,6 +170,10 @@ $(function () {
         $('#nextToStep2').prop({
             'disabled': false,
         });
+        menu.eq(1).removeClass('disabled');
+        if (accessStep3) {
+            menu.eq(2).removeClass('disabled');
+        }
         // Заносим в listKeys
         listKeys.push($(newQuestion).attr('data-question-id'));
         // console.log(listQuestions)
@@ -229,6 +239,8 @@ $(function () {
                 template: template,
             },
             beforeSend: function () {
+                menu.addClass('disabled');
+                editor.addClass('disabled');
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--loading');
             },
@@ -240,6 +252,14 @@ $(function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--error');
             },
+            complete: function () {
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
+            }
         })
     });
 
@@ -264,6 +284,8 @@ $(function () {
                 $(el.target).prop({
                     'disabled': true,
                 });
+                editor.addClass('disabled');
+                menu.addClass('disabled');
             },
             success: function (response) {
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
@@ -285,11 +307,20 @@ $(function () {
                 editor.attr({
                     'data-step': '2',
                 });
+
+                menu.eq(0).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
+                editor.removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                menu.eq(0).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
             },
             error: function () {
             },
@@ -309,7 +340,9 @@ $(function () {
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -328,12 +361,21 @@ $(function () {
                     'data-step': '1',
                 });
 
+                menu.eq(1).removeClass('item--active');
+                menu.eq(0).addClass('item--active');
+
                 run();
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
             },
         })
     });
@@ -378,6 +420,8 @@ $(function () {
                 loader
                     .removeClass('status--loading status--done status--error')
                     .addClass('status--loading');
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 if (partUrl === 'participants') {
@@ -432,6 +476,12 @@ $(function () {
                     loader.removeClass('status--loading status--done status--error');
                     updater.addClass('hide');
                 }, 2000);
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
             },
             error: function () {
                 search.prop({
@@ -449,6 +499,8 @@ $(function () {
         $('#nextToStep3').prop({
             'disabled': false,
         });
+        accessStep3 = true;
+        menu.eq(2).addClass('disabled');
     });
 
     // С 2 шага на 3
@@ -464,7 +516,9 @@ $(function () {
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -482,11 +536,16 @@ $(function () {
                 editor.attr({
                     'data-step': '3',
                 });
+
+                menu.eq(1).removeClass('item--active');
+                menu.eq(2).addClass('item--active');
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
+                menu.removeClass('disabled');
+                editor.removeClass('disabled');
             },
             error: function () {
             },
@@ -517,12 +576,28 @@ $(function () {
         if (step !== 2 || step !== 3) {
             throw new Error('Unexpected attribute on search');
         }
+        let data;
+        if (step === 2) {
+            data = {
+                csrfmiddlewaretoken: csrf,
+                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
+                checkedTarget: $('input[name=participants]:checked').attr('data-participant-id'),
+            }
+        } else if (step === 3) {
+            let checkedInterviewed = [];
+            $('input[name=participants]:checked').each(function (key, elem) {
+                checked.push($(elem).attr('data-participant-id'));
+            });
+            data = {
+                csrfmiddlewaretoken: csrf,
+                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
+                checkedInterviewed: checkedInterviewed,
+            }
+        }
         ajaxSearch = $.ajax({
             url: `step/${step}/search/`,
-            type: 'get',
-            data: {
-                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
-            },
+            type: 'post',
+            data: data,
             beforeSend: function () {
                 if (ajaxSearch) {
                     ajaxSearch.abort()
@@ -576,7 +651,9 @@ $(function () {
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -594,11 +671,20 @@ $(function () {
                 editor.attr({
                     'data-step': '2',
                 });
+
+                menu.eq(2).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
             },
         })
     });
@@ -617,6 +703,7 @@ $(function () {
                 checkedInterviewed: checkedInterviewed,
             },
             beforeSend: function () {
+                menu.addClass('disabled');
                 editor.addClass('disabled');
                 $(el.target).prop({
                     'disabled': true,
@@ -650,10 +737,17 @@ $(function () {
             $('#nextToStep2').prop({
                 'disabled': true,
             });
+            menu.eq(1).addClass('disabled');
         } else {
             $('#nextToStep2').prop({
                 'disabled': false,
             });
+            menu.eq(1).removeClass('disabled');
+        }
+        if (accessStep3) {
+            menu.eq(2).removeClass('disabled');
+        } else {
+            menu.eq(2).addClass('disabled');
         }
 
         // Изменение цвета
