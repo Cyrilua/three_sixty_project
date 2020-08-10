@@ -71,12 +71,6 @@ def create_verification_code(email: str) -> str:
     return code_str
 
 
-def profile_is_owner(request):
-    user = auth.get_user(request)
-    profile = get_user_profile(request)
-    return profile.company.owner.id == user.id
-
-
 def build_date(input_date: date) -> dict:
     months = {
         1: "января",

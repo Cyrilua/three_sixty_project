@@ -211,6 +211,8 @@ urlpatterns = [
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
+                  path('poll/editor/template/<int:template_id>/step/2/',
+                       create_poll_from_template.render_teams_list_for_choose_respondents, name='choose_respondents'),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
