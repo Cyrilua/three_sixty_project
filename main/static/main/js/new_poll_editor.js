@@ -5,6 +5,7 @@ $(function () {
     const timeAnimation = 200;
 
     const body = $('body');
+    let editor = $('.editor ');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let listKeys = [];
 
@@ -235,24 +236,9 @@ $(function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--done');
             },
-            statusCode: {
-                400: function () {
-                    // throw new Error('Error 400 - Некорректный запрос');
-                },
-                403: function () {
-                    // throw new Error('Error 403 - Доступ запрещён');
-                },
-                404: function () {
-                    // throw new Error('Error 404 - Страница не найдена');
-                },
-                500: function () {
-                    // throw new Error('Error 500 - Внутренняя ошибка сервера');
-                }
-            },
             error: function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--error');
-                // throw new Error('Что - то пошло не так :(');
             },
         })
     });
@@ -266,7 +252,7 @@ $(function () {
         let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
         $.ajax({
-            url: 'step/2/',
+            url: 'step/2/from/1',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -294,21 +280,15 @@ $(function () {
                 let categories = $('.categories-block');
                 categories.empty();
                 categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '2',
+                });
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
-            },
-            statusCode: {
-                400: function () {
-                },
-                403: function () {
-                },
-                404: function () {
-                },
-                500: function () {
-                }
             },
             error: function () {
             },
@@ -316,18 +296,48 @@ $(function () {
     });
 
     // С 2 шага на 1
-    body.on('click', '#backToStep1', function () {
+    body.on('click', '#backToStep1', function (el) {
+        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/1',
-            type: 'get',
-            data: {},
+            url: 'step/1/from/2',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            },
+            beforeSend: function () {
+                $(el.target).prop({
+                    'disabled': true,
+                })
+            },
             success: function (response) {
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '1',
+                });
+
                 run();
+            },
+            complete: function () {
+                $(el.target).prop({
+                    'disabled': false,
+                });
             },
         })
     });
 
-    // 2 шаг, смена категорий (участники/команды)
+    // 2 и 3 шаг, смена категорий (участники/команды)
     let timeOutId;
     body.on('click', '.category', function () {
         let partUrl = $(this).attr('data-part-url');
@@ -335,10 +345,31 @@ $(function () {
         let loader = $('.loader__status');
         let substrate = $('.substrate');
         let search = $('.input__search');
+        let step = editor.attr('data-step');
+        if (step !== 2 || step !== 3) {
+            throw new Error('Unexpected attribute on search');
+        }
+        let data;
+        if (step === 2) {
+            let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
+            data = {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            }
+        } else if (step === 3) {
+            let checkedInterviewed = [];
+            $('input[name=participants]:checked').each(function (key, elem) {
+                checked.push($(elem).attr('data-participant-id'));
+            });
+            data = {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            }
+        }
         $.ajax({
-            url: `category/${partUrl}/`,
+            url: `step/${step}/category/${partUrl}/`, // step = 2 | 3,  partUrl = participants | teams
             type: 'get',
-            data: {},
+            data: data,
             beforeSend: function () {
                 clearTimeout(timeOutId);
                 substrate.addClass('disabled');
@@ -364,16 +395,35 @@ $(function () {
                 search.prop({
                     'disabled': false,
                 });
-                $('#nextToStep3').prop({
-                    'disabled': true,
-                });
 
                 let content = $('.content');
                 content.empty();
-                content.insertAdjacentHTML('afterbegin', response.content);
+                content[0].insertAdjacentHTML('afterbegin', response.content);
                 loader
                     .removeClass('status--loading status--done status--error')
                     .addClass('status--done');
+
+                if ($('input[name=participants]:checked').length > 0) {
+                    if (step === 2) {
+                        $('#nextToStep3').prop({
+                            'disabled': false,
+                        });
+                    } else if (step === 3) {
+                        $('#sendPoll').prop({
+                            'disabled': false,
+                        });
+                    }
+                } else {
+                    if (step === 2) {
+                        $('#nextToStep3').prop({
+                            'disabled': true,
+                        });
+                    } else if (step === 3) {
+                        $('#sendPoll').prop({
+                            'disabled': true,
+                        });
+                    }
+                }
             },
             complete: function () {
                 substrate.removeClass('disabled');
@@ -402,10 +452,14 @@ $(function () {
 
     // С 2 шага на 3
     body.on('click', '#nextToStep3', function (el) {
+        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/3',
-            type: 'get',
-            data: {},
+            url: 'step/3/from/2',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            },
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
@@ -414,37 +468,31 @@ $(function () {
             success: function (response) {
                 let headMain = $('.head__main');
                 headMain.empty();
-                headMain.insertAdjacentHTML('afterbegin', response.headMain);
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
 
                 let headMove = $('.head__move');
                 headMove.empty();
-                headMove.insertAdjacentHTML('afterbegin', response.headMove);
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
 
                 let categories = $('.categories-block');
                 categories.empty();
-                categories.insertAdjacentHTML('afterbegin', response.categories);
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '3',
+                });
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
             },
-            statusCode: {
-                400: function () {
-                },
-                403: function () {
-                },
-                404: function () {
-                },
-                500: function () {
-                }
-            },
             error: function () {
             },
         })
     });
 
-    // 2 шаг - выбор по командам - свернуть/развернуть команду
+    // 2 и 3 шаг - выбор по командам - свернуть/развернуть команду
     body.on('click', '.team__action', function () {
         let team = $(this).parent().parent().parent();
         let teamId = team.attr('data-team-id');
@@ -457,18 +505,22 @@ $(function () {
         team.toggleClass('team--selected');
     });
 
-    // Шаг 2 - Поиск по командам/участникам
+    // Шаг 2 и 3 - Поиск по командам/участникам
     let ajaxSearch;
     body.on('input', '.input__search', function (el) {
         let sort = $('.sort');
         let content = $('.content');
         let loader = $('.loader-round');
         let loaderStatus = loader.children('.loader__status');
+        let step = editor.attr('data-step');
+        if (step !== 2 || step !== 3) {
+            throw new Error('Unexpected attribute on search');
+        }
         ajaxSearch = $.ajax({
-            url: 'search',
+            url: `step/${step}/search/`,
             type: 'get',
             data: {
-                mode: $(el.target).attr('data-mode'),
+                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
             },
             beforeSend: function () {
                 if (ajaxSearch) {
@@ -489,7 +541,7 @@ $(function () {
                     .removeClass('status--loading status--done status--error')
             },
             success: function (response) {
-                content.insertAdjacentHTML('afterbegin', response.content);
+                content[0].insertAdjacentHTML('afterbegin', response.content);
             }
         })
     });
@@ -505,6 +557,80 @@ $(function () {
                 'disabled': true,
             });
         }
+    });
+
+    // С 3 шага переход на 2 шаг
+    body.on('click', '#backToStep2', function (el) {
+        let checkedInterviewed = [];
+        $('input[name=participants]:checked').each(function (key, elem) {
+            checkedInterviewed.push($(elem).attr('data-participant-id'));
+        });
+        $.ajax({
+            url: 'step/2/from/3',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            },
+            beforeSend: function () {
+                $(el.target).prop({
+                    'disabled': true,
+                })
+            },
+            success: function (response) {
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '2',
+                });
+            },
+            complete: function () {
+                $(el.target).prop({
+                    'disabled': false,
+                });
+            },
+        })
+    });
+
+    // 3 шаг - отправка опроса
+    body.on('click', '#sendPoll', function (el) {
+        let checkedInterviewed = [];
+        $('input[name=participants]:checked').each(function (key, elem) {
+            checkedInterviewed.push($(elem).attr('data-participant-id'));
+        });
+        $.ajax({
+            url: 'send/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            },
+            beforeSend: function () {
+                editor.addClass('disabled');
+                $(el.target).prop({
+                    'disabled': true,
+                });
+            },
+            success: function () {
+                location.href = 'polls/';
+            },
+            error: function () {
+                editor.removeClass('disabled');
+                $(el.target).prop({
+                    'disabled': false,
+                });
+            }
+        })
     });
 
     // Автоувеличение полей ввода
