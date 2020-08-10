@@ -276,7 +276,7 @@ $(function () {
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
             },
             success: function (response) {
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
@@ -492,6 +492,19 @@ $(function () {
                 content.insertAdjacentHTML('afterbegin', response.content);
             }
         })
+    });
+
+    // 3 шаг - активация кнопки ОТПРАВИТЬ
+    body.on('click', '[name=participants]', function () {
+        if ($('input[name=participants]:checked').length > 0) {
+            $('#sendPoll').prop({
+                'disabled': false,
+            });
+        } else {
+            $('#sendPoll').prop({
+                'disabled': true,
+            });
+        }
     });
 
     // Автоувеличение полей ввода
