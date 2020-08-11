@@ -10,6 +10,7 @@ $(function () {
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let listKeys = [];
     let accessStep3 = false;
+    let pollId;
 
     run();
 
@@ -221,14 +222,13 @@ $(function () {
         }
     });
 
-    // Отмена создания
+    // Отмена созданияF
     body.on('click', '#cancel', function () {
         location.href = '/polls/';
     });
 
     // Сохранения шаблона
     body.on('click', '#saveAs', function () {
-        let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
         let status = $(this).parent().children('.save__status');
         console.log(template)
@@ -237,7 +237,7 @@ $(function () {
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                id: id,
+                pollId: pollId,
                 template: template,
             },
             beforeSend: function () {
@@ -275,7 +275,7 @@ $(function () {
     });
 
     function ajaxStepFrom1To2(el) {
-        let id = $('.poll-editor__header').attr('data-poll-id');
+        let id = editor.attr('data-poll-id');
         let template = getTemplate();
         console.log(template)
         $.ajax({
@@ -283,7 +283,7 @@ $(function () {
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                id: id,
+                pollId: pollId,
                 template: template,
             },
             beforeSend: function () {
@@ -309,6 +309,10 @@ $(function () {
                 let categories = $('.categories-block');
                 categories.empty();
                 categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                if (pollId === undefined) {
+                    pollId = response.pollId;
+                }
 
                 editor.attr({
                     'data-step': '2',
@@ -346,6 +350,7 @@ $(function () {
             data: {
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
+                pollId: pollId,
             },
             beforeSend: function () {
                 // $(el.target).prop({
@@ -406,6 +411,7 @@ $(function () {
         if (step === 2) {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
             }
@@ -415,13 +421,14 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             }
         }
         $.ajax({
             url: `step/${step}/category/${partUrl}/`, // step = 2 | 3,  partUrl = participants | teams
-            type: 'get',
+            type: 'post',
             data: data,
             beforeSend: function () {
                 clearTimeout(timeOutId);
@@ -524,6 +531,7 @@ $(function () {
             url: 'step/3/from/2/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
             },
@@ -593,6 +601,7 @@ $(function () {
         let data;
         if (step === 2) {
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
                 checkedTarget: $('input[name=participants]:checked').attr('data-participant-id'),
@@ -603,6 +612,7 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
                 checkedInterviewed: checkedInterviewed,
@@ -663,6 +673,7 @@ $(function () {
             url: 'step/2/from/3/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             },
@@ -717,6 +728,7 @@ $(function () {
             url: 'send/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             },
@@ -772,6 +784,7 @@ $(function () {
             url: 'step/1/from/3/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             },
@@ -817,7 +830,6 @@ $(function () {
     }
 
     function ajaxStepFrom1To3(el) {
-        let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
         console.log(template)
         $.ajax({
@@ -825,7 +837,7 @@ $(function () {
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                id: id,
+                pollId: pollId,
                 template: template,
             },
             beforeSend: function () {
@@ -1389,7 +1401,7 @@ $(function () {
     function getTemplate() {
         let questions = $('.question');
         let template = {
-            id: $('.poll-editor__header').attr('data-poll-id'),
+            pollId: pollId,
             name: $('.poll__name').val(),
             description: $('.poll__description').val(),
             questions: [],
