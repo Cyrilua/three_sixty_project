@@ -404,18 +404,18 @@ $(function () {
         let substrate = $('.substrate');
         let search = $('.input__search');
         let step = editor.attr('data-step');
-        if (step !== 2 || step !== 3) {
+        if (step !== '2' && step !== '3') {
             throw new Error('Unexpected attribute on search');
         }
         let data;
-        if (step === 2) {
+        if (step === '2') {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
             data = {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
             }
-        } else if (step === 3) {
+        } else if (step === '3') {
             let checkedInterviewed = [];
             $('input[name=participants]:checked').each(function (key, elem) {
                 checked.push($(elem).attr('data-participant-id'));
@@ -466,21 +466,21 @@ $(function () {
                     .addClass('status--done');
 
                 if ($('input[name=participants]:checked').length > 0) {
-                    if (step === 2) {
+                    if (step === '2') {
                         $('#nextToStep3').prop({
                             'disabled': false,
                         });
-                    } else if (step === 3) {
+                    } else if (step === '3') {
                         $('#sendPoll').prop({
                             'disabled': false,
                         });
                     }
                 } else {
-                    if (step === 2) {
+                    if (step === '2') {
                         $('#nextToStep3').prop({
                             'disabled': true,
                         });
-                    } else if (step === 3) {
+                    } else if (step === '3') {
                         $('#sendPoll').prop({
                             'disabled': true,
                         });
@@ -595,18 +595,18 @@ $(function () {
         let loader = $('.loader-round');
         let loaderStatus = loader.children('.loader__status');
         let step = editor.attr('data-step');
-        if (step !== 2 || step !== 3) {
+        if (step !== '2' && step !== '3') {
             throw new Error('Unexpected attribute on search');
         }
         let data;
-        if (step === 2) {
+        if (step === '2') {
             data = {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
                 checkedTarget: $('input[name=participants]:checked').attr('data-participant-id'),
             }
-        } else if (step === 3) {
+        } else if (step === '3') {
             let checkedInterviewed = [];
             $('input[name=participants]:checked').each(function (key, elem) {
                 checked.push($(elem).attr('data-participant-id'));
