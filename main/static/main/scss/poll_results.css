@@ -1,0 +1,13 @@
+.results {
+  display: flex;
+  flex-direction: column;
+}
+.results .head__menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/*# sourceMappingURL=poll_results.css.map */

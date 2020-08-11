@@ -1,9 +1,10 @@
 {% extends 'main/wrapper.html' %}
+{% load static %}
 
 {% block content-user %}
 
     <div class="results">
-        <div class="head__menu">
+        <div class="head__menu rounded-block">
             <button class="button-white menu__back">К опросам</button>
             <span class="menu__count-answers">0 ответов</span>
             <div class="menu__save-as">
@@ -11,7 +12,7 @@
             </div>
         </div>
         <div class="poll">
-            <div class="pull__head">
+            <div class="pull__head rounded-block">
                 <h1 class="poll__name">Опрос о чём-то очень важном</h1>
                 <span class="poll__target">
                     <b>О ком:</b> <a href="#" class="target__href">Иванов Иван Иванович</a>
@@ -19,7 +20,7 @@
                 <div class="poll_descriptions">Это опрос о чём-то очень важном</div>
             </div>
             <div class="questions">
-                <div class="question" data-question-type="radio">
+                <div class="question rounded-block" data-question-type="radio">
                     <div class="question__head">
                         <h3 class="question__name">Быть или не быть?</h3>
                         <span class="question__type"></span>
@@ -40,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="question" data-question-type="checkbox">
+                <div class="question rounded-block" data-question-type="checkbox">
                     <div class="question__head">
                         <h3 class="question__name">Быть или не быть?</h3>
                         <span class="question__type"></span>
@@ -61,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="question" data-question-type="openQuestion">
+                <div class="question rounded-block" data-question-type="openQuestion">
                     <div class="question__head">
                         <h3 class="question__name">Быть или не быть?</h3>
                         <span class="question__type"></span>
@@ -77,17 +78,82 @@
                     </div>
                 </div>
 
-                <div class="question" data-question-type="range">
+                <div class="question rounded-block" data-question-type="range">
                     <div class="question__head">
                         <h3 class="question__name">Быть или не быть?</h3>
                         <span class="question__type"></span>
                     </div>
                     <div class="question__statistics-answers">
-
+                        <div class="statistics-answer">
+                            <span class="percent">2</span>
+                            <span class="answer">1</span>
+                            <span class="count">1</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">4</span>
+                            <span class="answer">2</span>
+                            <span class="count">2</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">6</span>
+                            <span class="answer">3</span>
+                            <span class="count">3</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">8</span>
+                            <span class="answer">4</span>
+                            <span class="count">4</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">10</span>
+                            <span class="answer">5</span>
+                            <span class="count">5</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">13</span>
+                            <span class="answer">6</span>
+                            <span class="count">6</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">15</span>
+                            <span class="answer">7</span>
+                            <span class="count">7</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">17</span>
+                            <span class="answer">8</span>
+                            <span class="count">8</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">20</span>
+                            <span class="answer">9</span>
+                            <span class="count">9</span>
+                        </div>
+                        <div class="statistics-answer">
+                            <span class="percent">0</span>
+                            <span class="answer">10</span>
+                            <span class="count">0</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/poll_results.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/poll_results.js' %}"></script>
 {% endblock %}
