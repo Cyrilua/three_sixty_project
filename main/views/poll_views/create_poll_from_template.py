@@ -1,7 +1,8 @@
 from main.views.auxiliary_general_methods import *
-from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company
+from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, AnswerChoice
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
+from django.core.handlers.wsgi import WSGIRequest
 
 
 def create_poll_from_template(request, template_id) -> render:
@@ -56,6 +57,72 @@ def _build_questions(questions: list) -> list:
         }
         result.append(collected_question)
     return result
+
+
+def save_template(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if request.is_ajax():
+        #for i in request.POST:
+        #    print(i)
+        template = _create_new_template(request)
+        _create_new_questions_for_template(request, template)
+        data = request.POST
+        data_key = 'template[{}]'
+        print(data[data_key.format('color')])
+
+        return JsonResponse({}, status=200)
+
+
+def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
+    data = request.POST
+    data_key = 'template[{}]'
+    new_template = TemplatesPoll()
+    new_template.name_poll = data[data_key.format('name')]
+    new_template.description = data[data_key.format('description')]
+    new_template.owner = get_user_profile(request)
+    new_template.color = None if data[data_key.format('color')] == '' else data[data_key.format('color')]
+    new_template.save()
+    return new_template
+
+
+def _create_new_questions_for_template(request: WSGIRequest, template: TemplatesPoll) -> None:
+    data = request.POST
+    try:
+        count_questions = int(data['template[countQuestion]'])
+    except ValueError:
+        return None
+    for question_number in range(count_questions):
+        data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
+        question = Questions()
+        question.text = data[data_key.format('name')]
+        settings = _create_settings(request, question_number)
+        question.settings = settings
+        question.save()
+        template.questions.add(question)
+
+
+def _create_settings(request: WSGIRequest, question_number: int) -> Settings:
+    def add_if_contains_key(key: str):
+        key = "template[questions][{}]".format(question_number) + key
+        return data[key] if key in keys else None
+
+    data = request.POST
+    keys = data.keys()
+    data_key = "template[questions][{}]".format(question_number) + '[{}]'
+    settings = Settings()
+    settings.type = data[data_key.format('type')]
+    settings.step = add_if_contains_key('[settingsSlider][step]')
+    settings.min = add_if_contains_key('[settingsSlider][min]')
+    settings.max = add_if_contains_key('[settingsSlider][max]')
+    settings.save()
+
+    answers_str = request.POST.getlist(data_key.format('answers') + '[]')
+    for answer_str in answers_str:
+        answer_str: str
+        new_answer_choice = AnswerChoice()
+        new_answer_choice.text = answer_str
+        new_answer_choice.save()
+        settings.answer_choice.add(new_answer_choice)
+    return settings
 
 
 def render_teams_list_for_choose_respondents(request, template_id: int) -> JsonResponse:
