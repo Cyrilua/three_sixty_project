@@ -4,138 +4,184 @@
 {% block content-user %}
 
     <div class="results">
+        {% csrf_token %}
         <div class="head__menu rounded-block">
             <button class="button-white menu__back">К опросам</button>
-            <span class="menu__count-answers">0 ответов</span>
+            <span class="menu__count-answers">{{ poll.countAnswers }} ответов</span>
             <div class="menu__save-as">
                 <a class="menu__href" id="saveAs">Сохранить как шаблон</a>
             </div>
         </div>
-        <div class="poll">
-            <div class="pull__head rounded-block">
-                <h1 class="poll__name">Опрос о чём-то очень важном</h1>
+        <div class="poll {{ poll.color }}" data-poll-color="{{ poll.color }}">
+            <div class="poll__head rounded-block">
+                <h1 class="poll__name">{{ poll.name }}</h1>
                 <span class="poll__target">
-                    <b>О ком:</b> <a href="#" class="target__href">Иванов Иван Иванович</a>
+                    <b>О ком:</b> <a href="{{ poll.target.href }}"
+                                     class="target__href">{{ poll.target.surname }} {{ poll.target.name }} {{ poll.target.patronymic }}</a>
                 </span>
-                <div class="poll_descriptions">Это опрос о чём-то очень важном</div>
+                <div class="poll_description">{{ poll.dascription }}</div>
             </div>
             <div class="questions">
-                <div class="question rounded-block" data-question-type="radio">
-                    <div class="question__head">
-                        <h3 class="question__name">Быть или не быть?</h3>
-                        <span class="question__type"></span>
-                    </div>
-                    <div class="question__answers">
-                        <div class="answer">
-                            <span class="answer__text">Быть</span>
-                            <span class="answer__result">
-                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>
-                            </span>
+                {% for question in poll.questions %}
+                    <div class="question rounded-block"
+                         data-question-type="{% if question.type == 'radio' %}radio{% elif question.type == 'checkbox' %}checkbox{% elif question.type == 'openQuestion' %}openQuestion{% elif question.type == 'range' %}range{% endif %}">
+                        <div class="question__head">
+                            <h3 class="question__name">{{ question.name }}</h3>
+                            <div class="question__type"></div>
                         </div>
-                        <div class="answer">
-                            <span class="answer__text">НЕ Быть</span>
-                            <span class="answer__result">
-                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>
-                            </span>
-                        </div>
+                        {% if question.type == 'radio' or question.type == 'checkbox' %}
+                            <div class="question__answers">
+                                {% for answer in question.answers %}
+                                    <div class="answer">
+                                        <span class="answer__text">{{ answer.text }}</span>
+                                        <span class="answer__result">
+                                            <span class="result__count">{{ answer.result.countAnswer }} чел.</span> / <span
+                                                class="result__percent">{{ answer.result.percent }}%</span>
+                                        </span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elif question.type == 'openQuestion' %}
+                            <div class="question__open-answers">
+                                {% for answer in question.answers %}
+                                    <div class="open-answer">
+                                        <span class="answer">{{ answer }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% elif question.type == 'range' %}
+                            <div class="question__statistics-answers unselectable">
+                                {% for answer in question.answers %}
+                                    <div class="statistics-answer" title="{{ answer.countAnswer }} чел.">
+                                        <span class="percent">{{ answer.percent }}</span>
+                                        <span class="value">{{ answer.value }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
+                {% endfor %}
 
-                <div class="question rounded-block" data-question-type="checkbox">
-                    <div class="question__head">
-                        <h3 class="question__name">Быть или не быть?</h3>
-                        <span class="question__type"></span>
-                    </div>
-                    <div class="question__answers">
-                        <div class="answer">
-                            <span class="answer__text">Быть</span>
-                            <span class="answer__result">
-                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>
-                            </span>
-                        </div>
-                        <div class="answer">
-                            <span class="answer__text">НЕ Быть</span>
-                            <span class="answer__result">
-                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question rounded-block" data-question-type="openQuestion">
-                    <div class="question__head">
-                        <h3 class="question__name">Быть или не быть?</h3>
-                        <span class="question__type"></span>
-                    </div>
-                    <div class="question__open-answers">
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                        <div class="open-answer">Не быть, конечно, что за вопрос</div>
-                    </div>
-                </div>
-
-                <div class="question rounded-block" data-question-type="range">
-                    <div class="question__head">
-                        <h3 class="question__name">Быть или не быть?</h3>
-                        <span class="question__type"></span>
-                    </div>
-                    <div class="question__statistics-answers">
-                        <div class="statistics-answer">
-                            <span class="percent">2</span>
-                            <span class="answer">1</span>
-                            <span class="count">1</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">4</span>
-                            <span class="answer">2</span>
-                            <span class="count">2</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">6</span>
-                            <span class="answer">3</span>
-                            <span class="count">3</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">8</span>
-                            <span class="answer">4</span>
-                            <span class="count">4</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">10</span>
-                            <span class="answer">5</span>
-                            <span class="count">5</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">13</span>
-                            <span class="answer">6</span>
-                            <span class="count">6</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">15</span>
-                            <span class="answer">7</span>
-                            <span class="count">7</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">17</span>
-                            <span class="answer">8</span>
-                            <span class="count">8</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">20</span>
-                            <span class="answer">9</span>
-                            <span class="count">9</span>
-                        </div>
-                        <div class="statistics-answer">
-                            <span class="percent">0</span>
-                            <span class="answer">10</span>
-                            <span class="count">0</span>
-                        </div>
-                    </div>
-                </div>
+                {#                                <div class="question rounded-block" data-question-type="radio">#}
+                {#                                    <div class="question__head">#}
+                {#                                        <h3 class="question__name">Быть или не быть?</h3>#}
+                {#                                        <div class="question__type"></div>#}
+                {#                                    </div>#}
+                {#                                    <div class="question__answers">#}
+                {#                                        <div class="answer">#}
+                {#                                            <span class="answer__text">Быть</span>#}
+                {#                                            <span class="answer__result">#}
+                {#                                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>#}
+                {#                                            </span>#}
+                {#                                        </div>#}
+                {#                                        <div class="answer">#}
+                {#                                            <span class="answer__text">НЕ Быть</span>#}
+                {#                                            <span class="answer__result">#}
+                {#                                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>#}
+                {#                                            </span>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {##}
+                {#                                <div class="question rounded-block" data-question-type="checkbox">#}
+                {#                                    <div class="question__head">#}
+                {#                                        <h3 class="question__name">Быть или не быть?</h3>#}
+                {#                                        <span class="question__type"></span>#}
+                {#                                    </div>#}
+                {#                                    <div class="question__answers">#}
+                {#                                        <div class="answer">#}
+                {#                                            <span class="answer__text">Быть</span>#}
+                {#                                            <span class="answer__result">#}
+                {#                                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>#}
+                {#                                            </span>#}
+                {#                                        </div>#}
+                {#                                        <div class="answer">#}
+                {#                                            <span class="answer__text">НЕ Быть</span>#}
+                {#                                            <span class="answer__result">#}
+                {#                                                <span class="result__count">0 чел.</span> / <span class="result__percent">0%</span>#}
+                {#                                            </span>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {##}
+                {#                                <div class="question rounded-block" data-question-type="openQuestion">#}
+                {#                                    <div class="question__head">#}
+                {#                                        <h3 class="question__name">Быть или не быть?</h3>#}
+                {#                                        <span class="question__type"></span>#}
+                {#                                    </div>#}
+                {#                                    <div class="question__open-answers">#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                        <div class="open-answer">#}
+                {#                                            <span class="answer">Не быть, конечно, что за вопрос</span>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {##}
+                {#                <div class="question rounded-block" data-question-type="range">#}
+                {#                    <div class="question__head">#}
+                {#                        <h3 class="question__name">Быть или не быть?</h3>#}
+                {#                        <span class="question__type"></span>#}
+                {#                    </div>#}
+                {#                    <div class="question__statistics-answers unselectable">#}
+                {#                        <div class="statistics-answer" title="0 чел.">#}
+                {#                            <span class="percent">0</span>#}
+                {#                            <span class="value">0</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="1 чел.">#}
+                {#                            <span class="percent">2</span>#}
+                {#                            <span class="value">1</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="2 чел.">#}
+                {#                            <span class="percent">4</span>#}
+                {#                            <span class="value">2</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="3 чел.">#}
+                {#                            <span class="percent">6</span>#}
+                {#                            <span class="value">3</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="4 чел.">#}
+                {#                            <span class="percent">8</span>#}
+                {#                            <span class="value">4</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="5 чел.">#}
+                {#                            <span class="percent">10</span>#}
+                {#                            <span class="value">5</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="6 чел.">#}
+                {#                            <span class="percent">13</span>#}
+                {#                            <span class="value">6</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="7 чел.">#}
+                {#                            <span class="percent">15</span>#}
+                {#                            <span class="value">7</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="8 чел.">#}
+                {#                            <span class="percent">17</span>#}
+                {#                            <span class="value">8</span>#}
+                {#                        </div>#}
+                {#                        <div class="statistics-answer" title="9 чел.">#}
+                {#                            <span class="percent">20</span>#}
+                {#                            <span class="value">9</span>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
     </div>

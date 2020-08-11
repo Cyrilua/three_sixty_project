@@ -7,7 +7,7 @@
 
 {% block content-user %}
 
-    <div class="editor unselectable" data-step="1">
+    <div class="editor unselectable" data-step="1" {% if is_master %}data-master="true"{% endif %}>
         {% csrf_token %}
         <div class="editor__head rounded-block ">
             <div class="head__main">
