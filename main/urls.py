@@ -214,6 +214,8 @@ urlpatterns = [
                   # Переход с первого на второй шаг
                   path('poll/editor/template/<int:template_id>/step/2/from/1/',
                        create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
+                  # Загрузка команд на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/category/teams/', create_poll_from_template.render_category_teams_on_step_2),
                   # Сохранение шаблона
                   path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
                        name='save_template'),

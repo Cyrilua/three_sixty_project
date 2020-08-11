@@ -160,6 +160,7 @@ class Group(models.Model):
     description = models.CharField(max_length=150, default='')
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     key = models.CharField(max_length=36, default='')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     class Meta:
