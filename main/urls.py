@@ -214,7 +214,7 @@ urlpatterns = [
                   path('poll/editor/template/<int:template_id>/step/2/from/1/',
                        create_poll_from_template.render_teams_list_for_choose_respondents, name='choose_respondents'),
                   # Сохранение шаблона
-                  path('poll/editor/template/1/save_as/', create_poll_from_template.save_template, name='save_template'),
+                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template, name='save_template'),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
