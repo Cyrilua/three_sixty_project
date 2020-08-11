@@ -203,6 +203,7 @@ class Poll(models.Model):
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
+        # TODO удаление ответов
         questions = self.questions.all()
         for question in questions:
             question.delete()
