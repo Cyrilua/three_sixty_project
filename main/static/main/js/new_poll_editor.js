@@ -5,8 +5,11 @@ $(function () {
     const timeAnimation = 200;
 
     const body = $('body');
+    const editor = $('.editor ');
+    const menu = $('.menu-r').children('.menu').children('.menu__item');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let listKeys = [];
+    let accessStep3 = false;
 
     run();
 
@@ -146,7 +149,12 @@ $(function () {
         if (questions.children('.question').length === 0) {
             $('#nextToStep2').prop({
                 'disabled': true,
-            })
+            });
+            menu.eq(1).addClass('disabled');
+            if (accessStep3) {
+                menu.eq(2).addClass('disabled');
+            }
+            $('.save-as').css("visibility", "hidden");
             // let newQuestion = createNewQuestion();
             // console.log(newQuestion)
             // questions.append(newQuestion);
@@ -163,6 +171,11 @@ $(function () {
         $('#nextToStep2').prop({
             'disabled': false,
         });
+        menu.eq(1).removeClass('disabled');
+        if (accessStep3) {
+            menu.eq(2).removeClass('disabled');
+        }
+        $('.save-as').css("visibility", "visible");
         // Заносим в listKeys
         listKeys.push($(newQuestion).attr('data-question-id'));
         // console.log(listQuestions)
@@ -228,6 +241,8 @@ $(function () {
                 template: template,
             },
             beforeSend: function () {
+                menu.addClass('disabled');
+                editor.addClass('disabled');
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--loading');
             },
@@ -235,25 +250,18 @@ $(function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--done');
             },
-            statusCode: {
-                400: function () {
-                    // throw new Error('Error 400 - Некорректный запрос');
-                },
-                403: function () {
-                    // throw new Error('Error 403 - Доступ запрещён');
-                },
-                404: function () {
-                    // throw new Error('Error 404 - Страница не найдена');
-                },
-                500: function () {
-                    // throw new Error('Error 500 - Внутренняя ошибка сервера');
-                }
-            },
             error: function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--error');
-                // throw new Error('Что - то пошло не так :(');
             },
+            complete: function () {
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
+            }
         })
     });
 
@@ -265,8 +273,9 @@ $(function () {
     body.on('click', '#nextToStep2', function (el) {
         let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
+        console.log(template)
         $.ajax({
-            url: 'step/2/',
+            url: 'step/2/from/1/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -276,7 +285,9 @@ $(function () {
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
+                editor.addClass('disabled');
+                menu.addClass('disabled');
             },
             success: function (response) {
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
@@ -294,20 +305,23 @@ $(function () {
                 let categories = $('.categories-block');
                 categories.empty();
                 categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '2',
+                });
+
+                menu.eq(0).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
-            },
-            statusCode: {
-                400: function () {
-                },
-                403: function () {
-                },
-                404: function () {
-                },
-                500: function () {
+                editor.removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                menu.eq(0).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
                 }
             },
             error: function () {
@@ -316,18 +330,59 @@ $(function () {
     });
 
     // С 2 шага на 1
-    body.on('click', '#backToStep1', function () {
+    body.on('click', '#backToStep1', function (el) {
+        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/1',
-            type: 'get',
-            data: {},
+            url: 'step/1/from/2/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            },
+            beforeSend: function () {
+                $(el.target).prop({
+                    'disabled': true,
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
+            },
             success: function (response) {
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '1',
+                });
+
+                menu.eq(1).removeClass('item--active');
+                menu.eq(0).addClass('item--active');
+
                 run();
+            },
+            complete: function () {
+                $(el.target).prop({
+                    'disabled': false,
+                });
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
             },
         })
     });
 
-    // 2 шаг, смена категорий (участники/команды)
+    // 2 и 3 шаг, смена категорий (участники/команды)
     let timeOutId;
     body.on('click', '.category', function () {
         let partUrl = $(this).attr('data-part-url');
@@ -335,10 +390,31 @@ $(function () {
         let loader = $('.loader__status');
         let substrate = $('.substrate');
         let search = $('.input__search');
+        let step = editor.attr('data-step');
+        if (step !== 2 || step !== 3) {
+            throw new Error('Unexpected attribute on search');
+        }
+        let data;
+        if (step === 2) {
+            let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
+            data = {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            }
+        } else if (step === 3) {
+            let checkedInterviewed = [];
+            $('input[name=participants]:checked').each(function (key, elem) {
+                checked.push($(elem).attr('data-participant-id'));
+            });
+            data = {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            }
+        }
         $.ajax({
-            url: `category/${partUrl}/`,
+            url: `step/${step}/category/${partUrl}/`, // step = 2 | 3,  partUrl = participants | teams
             type: 'get',
-            data: {},
+            data: data,
             beforeSend: function () {
                 clearTimeout(timeOutId);
                 substrate.addClass('disabled');
@@ -346,6 +422,8 @@ $(function () {
                 loader
                     .removeClass('status--loading status--done status--error')
                     .addClass('status--loading');
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 if (partUrl === 'participants') {
@@ -364,16 +442,35 @@ $(function () {
                 search.prop({
                     'disabled': false,
                 });
-                $('#nextToStep3').prop({
-                    'disabled': true,
-                });
 
                 let content = $('.content');
                 content.empty();
-                content.insertAdjacentHTML('afterbegin', response.content);
+                content[0].insertAdjacentHTML('afterbegin', response.content);
                 loader
                     .removeClass('status--loading status--done status--error')
                     .addClass('status--done');
+
+                if ($('input[name=participants]:checked').length > 0) {
+                    if (step === 2) {
+                        $('#nextToStep3').prop({
+                            'disabled': false,
+                        });
+                    } else if (step === 3) {
+                        $('#sendPoll').prop({
+                            'disabled': false,
+                        });
+                    }
+                } else {
+                    if (step === 2) {
+                        $('#nextToStep3').prop({
+                            'disabled': true,
+                        });
+                    } else if (step === 3) {
+                        $('#sendPoll').prop({
+                            'disabled': true,
+                        });
+                    }
+                }
             },
             complete: function () {
                 substrate.removeClass('disabled');
@@ -381,6 +478,12 @@ $(function () {
                     loader.removeClass('status--loading status--done status--error');
                     updater.addClass('hide');
                 }, 2000);
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
             },
             error: function () {
                 search.prop({
@@ -398,53 +501,60 @@ $(function () {
         $('#nextToStep3').prop({
             'disabled': false,
         });
+        accessStep3 = true;
+        menu.eq(2).addClass('disabled');
     });
 
     // С 2 шага на 3
     body.on('click', '#nextToStep3', function (el) {
+        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
-            url: 'step/3',
-            type: 'get',
-            data: {},
+            url: 'step/3/from/2/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedTarget: checkedTarget,
+            },
             beforeSend: function () {
                 $(el.target).prop({
                     'disabled': true,
-                })
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
             },
             success: function (response) {
                 let headMain = $('.head__main');
                 headMain.empty();
-                headMain.insertAdjacentHTML('afterbegin', response.headMain);
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
 
                 let headMove = $('.head__move');
                 headMove.empty();
-                headMove.insertAdjacentHTML('afterbegin', response.headMove);
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
 
                 let categories = $('.categories-block');
                 categories.empty();
-                categories.insertAdjacentHTML('afterbegin', response.categories);
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '3',
+                });
+
+                menu.eq(1).removeClass('item--active');
+                menu.eq(2).addClass('item--active');
             },
             complete: function () {
                 $(el.target).prop({
                     'disabled': false,
                 });
-            },
-            statusCode: {
-                400: function () {
-                },
-                403: function () {
-                },
-                404: function () {
-                },
-                500: function () {
-                }
+                menu.removeClass('disabled');
+                editor.removeClass('disabled');
             },
             error: function () {
             },
         })
     });
 
-    // 2 шаг - выбор по командам - свернуть/развернуть команду
+    // 2 и 3 шаг - выбор по командам - свернуть/развернуть команду
     body.on('click', '.team__action', function () {
         let team = $(this).parent().parent().parent();
         let teamId = team.attr('data-team-id');
@@ -457,19 +567,39 @@ $(function () {
         team.toggleClass('team--selected');
     });
 
-    // Шаг 2 - Поиск по командам/участникам
+    // Шаг 2 и 3 - Поиск по командам/участникам
     let ajaxSearch;
     body.on('input', '.input__search', function (el) {
         let sort = $('.sort');
         let content = $('.content');
         let loader = $('.loader-round');
         let loaderStatus = loader.children('.loader__status');
+        let step = editor.attr('data-step');
+        if (step !== 2 || step !== 3) {
+            throw new Error('Unexpected attribute on search');
+        }
+        let data;
+        if (step === 2) {
+            data = {
+                csrfmiddlewaretoken: csrf,
+                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
+                checkedTarget: $('input[name=participants]:checked').attr('data-participant-id'),
+            }
+        } else if (step === 3) {
+            let checkedInterviewed = [];
+            $('input[name=participants]:checked').each(function (key, elem) {
+                checked.push($(elem).attr('data-participant-id'));
+            });
+            data = {
+                csrfmiddlewaretoken: csrf,
+                mode: $(el.target).attr('data-mode'),   // mode = participant | teams
+                checkedInterviewed: checkedInterviewed,
+            }
+        }
         ajaxSearch = $.ajax({
-            url: 'search',
-            type: 'get',
-            data: {
-                mode: $(el.target).attr('data-mode'),
-            },
+            url: `step/${step}/search/`,
+            type: 'post',
+            data: data,
             beforeSend: function () {
                 if (ajaxSearch) {
                     ajaxSearch.abort()
@@ -489,7 +619,106 @@ $(function () {
                     .removeClass('status--loading status--done status--error')
             },
             success: function (response) {
-                content.insertAdjacentHTML('afterbegin', response.content);
+                content[0].insertAdjacentHTML('afterbegin', response.content);
+            }
+        })
+    });
+
+    // 3 шаг - активация кнопки ОТПРАВИТЬ
+    body.on('click', '[name=participants]', function () {
+        if ($('input[name=participants]:checked').length > 0) {
+            $('#sendPoll').prop({
+                'disabled': false,
+            });
+        } else {
+            $('#sendPoll').prop({
+                'disabled': true,
+            });
+        }
+    });
+
+    // С 3 шага переход на 2 шаг
+    body.on('click', '#backToStep2', function (el) {
+        let checkedInterviewed = [];
+        $('input[name=participants]:checked').each(function (key, elem) {
+            checkedInterviewed.push($(elem).attr('data-participant-id'));
+        });
+        $.ajax({
+            url: 'step/2/from/3/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            },
+            beforeSend: function () {
+                $(el.target).prop({
+                    'disabled': true,
+                });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
+            },
+            success: function (response) {
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '2',
+                });
+
+                menu.eq(2).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
+            },
+            complete: function () {
+                $(el.target).prop({
+                    'disabled': false,
+                });
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
+            },
+        })
+    });
+
+    // 3 шаг - отправка опроса
+    body.on('click', '#sendPoll', function (el) {
+        let checkedInterviewed = [];
+        $('input[name=participants]:checked').each(function (key, elem) {
+            checkedInterviewed.push($(elem).attr('data-participant-id'));
+        });
+        $.ajax({
+            url: 'send/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            },
+            beforeSend: function () {
+                menu.addClass('disabled');
+                editor.addClass('disabled');
+                $(el.target).prop({
+                    'disabled': true,
+                });
+            },
+            success: function () {
+                location.href = 'polls/';
+            },
+            error: function () {
+                editor.removeClass('disabled');
+                $(el.target).prop({
+                    'disabled': false,
+                });
             }
         })
     });
@@ -510,10 +739,17 @@ $(function () {
             $('#nextToStep2').prop({
                 'disabled': true,
             });
+            menu.eq(1).addClass('disabled');
         } else {
             $('#nextToStep2').prop({
                 'disabled': false,
             });
+            menu.eq(1).removeClass('disabled');
+        }
+        if (accessStep3) {
+            menu.eq(2).removeClass('disabled');
+        } else {
+            menu.eq(2).addClass('disabled');
         }
 
         // Изменение цвета

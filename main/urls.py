@@ -211,8 +211,7 @@ urlpatterns = [
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
-                  # Переход на второй шаг
-                  path('poll/editor/template/<int:template_id>/step/2/',
+                  path('poll/editor/template/<int:template_id>/step/2/from/1/',
                        create_poll_from_template.render_teams_list_for_choose_respondents, name='choose_respondents'),
                   # Сохранение шаблона
                   path('poll/editor/template/1/save_as/', create_poll_from_template.save_template, name='save_template'),

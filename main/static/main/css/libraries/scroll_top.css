@@ -1,8 +1,11 @@
 .scroll-top {
-    position: fixed;
+    /*position: fixed;*/
     width: 100%;
-    height: calc(100% - 87px);
+    height: 33%;
     z-index: 1;
+    /*display: contents;*/
+    /*margin-top: auto;*/
+    /*margin-bottom: 0;*/
 }
 
 .scroll-top-btn {

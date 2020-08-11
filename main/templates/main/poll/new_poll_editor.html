@@ -7,31 +7,31 @@
 
 {% block content-user %}
 
-    <div class="editor unselectable">
+    <div class="editor unselectable" data-step="1">
         {% csrf_token %}
         <div class="editor__head rounded-block ">
             <div class="head__main">
                 {% include 'main/poll/editor/editor_head_main.html' %}
-{#                {% include 'main/poll/select_target/select_target_head_main.html' %}#}
-{#                {% include 'main/poll/select_interviewed/select_interviewed_head_main.html' %}#}
+                {#                {% include 'main/poll/select_target/select_target_head_main.html' %}#}
+                {#                {% include 'main/poll/select_interviewed/select_interviewed_head_main.html' %}#}
             </div>
             <div class="head__move">
                 {% include 'main/poll/editor/editor_head_move.html' %}
-{#                {% include 'main/poll/select_target/select_target_head_move.html' %}#}
-{#                {% include 'main/poll/select_interviewed/select_interviewed_head_move.html' %}#}
+                {#                {% include 'main/poll/select_target/select_target_head_move.html' %}#}
+                {#                {% include 'main/poll/select_interviewed/select_interviewed_head_move.html' %}#}
             </div>
         </div>
         <div class="editor__category categories-block">
-                {% include 'main/poll/editor/editor_content.html' %}
-{#            {% include 'main/poll/select_target/select_target_content.html' %}#}
-{#            {% include 'main/poll/select_interviewed/select_interviewed_content.html' %}#}
+            {% include 'main/poll/editor/editor_content.html' %}
+            {#            {% include 'main/poll/select_target/select_target_content.html' %}#}
+            {#            {% include 'main/poll/select_interviewed/select_interviewed_content.html' %}#}
         </div>
     </div>
 
 {% endblock %}
 
 {% block sidebar-nav-right %}
-    {#    {% include 'main/includes/menu_poll_editor_right.html' with menu_new_poll_view="active" %}#}
+    {% include 'main/includes/menu_poll_editor_right.html' with menu_editor="item--active" %}
     {% include 'main/includes/scroll_top.html' %}
 {% endblock %}
 
