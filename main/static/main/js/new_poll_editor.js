@@ -10,6 +10,7 @@ $(function () {
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     let listKeys = [];
     let accessStep3 = false;
+    let pollId;
 
     run();
 
@@ -221,14 +222,13 @@ $(function () {
         }
     });
 
-    // Отмена создания
+    // Отмена созданияF
     body.on('click', '#cancel', function () {
         location.href = '/polls/';
     });
 
     // Сохранения шаблона
     body.on('click', '#saveAs', function () {
-        let id = $('.poll-editor__header').attr('data-poll-id');
         let template = getTemplate();
         let status = $(this).parent().children('.save__status');
         console.log(template)
@@ -237,7 +237,7 @@ $(function () {
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                id: id,
+                pollId: pollId,
                 template: template,
             },
             beforeSend: function () {
@@ -271,7 +271,11 @@ $(function () {
 
     // С 1 шага на 2
     body.on('click', '#nextToStep2', function (el) {
-        let id = $('.poll-editor__header').attr('data-poll-id');
+        ajaxStepFrom1To2(el);
+    });
+
+    function ajaxStepFrom1To2(el) {
+        let id = editor.attr('data-poll-id');
         let template = getTemplate();
         console.log(template)
         $.ajax({
@@ -279,13 +283,13 @@ $(function () {
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                id: id,
+                pollId: pollId,
                 template: template,
             },
             beforeSend: function () {
-                $(el.target).prop({
-                    'disabled': true,
-                });
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
                 editor.addClass('disabled');
                 menu.addClass('disabled');
             },
@@ -306,6 +310,10 @@ $(function () {
                 categories.empty();
                 categories[0].insertAdjacentHTML('afterbegin', response.categories);
 
+                if (pollId === undefined) {
+                    pollId = response.pollId;
+                }
+
                 editor.attr({
                     'data-step': '2',
                 });
@@ -314,9 +322,9 @@ $(function () {
                 menu.eq(1).addClass('item--active');
             },
             complete: function () {
-                $(el.target).prop({
-                    'disabled': false,
-                });
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
                 editor.removeClass('disabled');
                 menu.eq(1).removeClass('disabled');
                 menu.eq(0).removeClass('disabled');
@@ -326,11 +334,15 @@ $(function () {
             },
             error: function () {
             },
-        })
-    });
+        });
+    }
 
     // С 2 шага на 1
     body.on('click', '#backToStep1', function (el) {
+        ajaxStepFrom2To1(el);
+    });
+
+    function ajaxStepFrom2To1(el) {
         let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
             url: 'step/1/from/2/',
@@ -338,11 +350,12 @@ $(function () {
             data: {
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
+                pollId: pollId,
             },
             beforeSend: function () {
-                $(el.target).prop({
-                    'disabled': true,
-                });
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
             },
@@ -369,9 +382,9 @@ $(function () {
                 run();
             },
             complete: function () {
-                $(el.target).prop({
-                    'disabled': false,
-                });
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
                 menu.eq(0).removeClass('disabled');
                 menu.eq(1).removeClass('disabled');
                 if (accessStep3) {
@@ -379,8 +392,8 @@ $(function () {
                 }
                 editor.removeClass('disabled');
             },
-        })
-    });
+        });
+    }
 
     // 2 и 3 шаг, смена категорий (участники/команды)
     let timeOutId;
@@ -398,6 +411,7 @@ $(function () {
         if (step === 2) {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
             }
@@ -407,13 +421,14 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             }
         }
         $.ajax({
             url: `step/${step}/category/${partUrl}/`, // step = 2 | 3,  partUrl = participants | teams
-            type: 'get',
+            type: 'post',
             data: data,
             beforeSend: function () {
                 clearTimeout(timeOutId);
@@ -507,18 +522,23 @@ $(function () {
 
     // С 2 шага на 3
     body.on('click', '#nextToStep3', function (el) {
+        ajaxStepFrom2To3(el);
+    });
+
+    function ajaxStepFrom2To3(el) {
         let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
         $.ajax({
             url: 'step/3/from/2/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedTarget: checkedTarget,
             },
             beforeSend: function () {
-                $(el.target).prop({
-                    'disabled': true,
-                });
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
             },
@@ -543,16 +563,16 @@ $(function () {
                 menu.eq(2).addClass('item--active');
             },
             complete: function () {
-                $(el.target).prop({
-                    'disabled': false,
-                });
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
                 menu.removeClass('disabled');
                 editor.removeClass('disabled');
             },
             error: function () {
             },
-        })
-    });
+        });
+    }
 
     // 2 и 3 шаг - выбор по командам - свернуть/развернуть команду
     body.on('click', '.team__action', function () {
@@ -581,6 +601,7 @@ $(function () {
         let data;
         if (step === 2) {
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
                 checkedTarget: $('input[name=participants]:checked').attr('data-participant-id'),
@@ -591,6 +612,7 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
                 checkedInterviewed: checkedInterviewed,
@@ -639,6 +661,10 @@ $(function () {
 
     // С 3 шага переход на 2 шаг
     body.on('click', '#backToStep2', function (el) {
+        ajaxStepFrom3To2(el);
+    });
+
+    function ajaxStepFrom3To2(el) {
         let checkedInterviewed = [];
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
@@ -647,13 +673,14 @@ $(function () {
             url: 'step/2/from/3/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             },
             beforeSend: function () {
-                $(el.target).prop({
-                    'disabled': true,
-                });
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
             },
@@ -678,9 +705,9 @@ $(function () {
                 menu.eq(1).addClass('item--active');
             },
             complete: function () {
-                $(el.target).prop({
-                    'disabled': false,
-                });
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
                 menu.eq(0).removeClass('disabled');
                 menu.eq(1).removeClass('disabled');
                 if (accessStep3) {
@@ -688,8 +715,8 @@ $(function () {
                 }
                 editor.removeClass('disabled');
             },
-        })
-    });
+        });
+    }
 
     // 3 шаг - отправка опроса
     body.on('click', '#sendPoll', function (el) {
@@ -701,27 +728,164 @@ $(function () {
             url: 'send/',
             type: 'post',
             data: {
+                pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
             },
             beforeSend: function () {
                 menu.addClass('disabled');
                 editor.addClass('disabled');
-                $(el.target).prop({
-                    'disabled': true,
-                });
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
             },
             success: function () {
                 location.href = 'polls/';
             },
             error: function () {
                 editor.removeClass('disabled');
-                $(el.target).prop({
-                    'disabled': false,
-                });
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
             }
         })
     });
+
+    body.on('click', '.item__link', function (el) {
+        let li = $(this).parent();
+        let nextStep = li.attr('data-step');
+        let currentStep = editor.attr('data-step');
+        console.log(currentStep, nextStep)
+        if (!li.hasClass('item--active') && nextStep !== currentStep) {
+            if (currentStep === '1' && nextStep === '2') {
+                ajaxStepFrom1To2();
+            } else if (currentStep === '1' && nextStep === '3') {
+                ajaxStepFrom1To3();
+            } else if (currentStep === '2' && nextStep === '1') {
+                ajaxStepFrom2To1();
+            } else if (currentStep === '2' && nextStep === '3') {
+                ajaxStepFrom2To3();
+            } else if (currentStep === '3' && nextStep === '1') {
+                ajaxStepFrom3To1();
+            } else if (currentStep === '3' && nextStep === '2') {
+                ajaxStepFrom3To2();
+            } else {
+                throw new Error('Unexpected attribute when going to another step');
+            }
+        }
+    });
+
+    function ajaxStepFrom3To1(el) {
+        let checkedInterviewed = [];
+        $('input[name=participants]:checked').each(function (key, elem) {
+            checkedInterviewed.push($(elem).attr('data-participant-id'));
+        });
+        $.ajax({
+            url: 'step/1/from/3/',
+            type: 'post',
+            data: {
+                pollId: pollId,
+                csrfmiddlewaretoken: csrf,
+                checkedInterviewed: checkedInterviewed,
+            },
+            beforeSend: function () {
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
+                menu.addClass('disabled');
+                editor.addClass('disabled');
+            },
+            success: function (response) {
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '1',
+                });
+
+                menu.eq(2).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
+            },
+            complete: function () {
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
+                menu.eq(0).removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+                editor.removeClass('disabled');
+            },
+        });
+    }
+
+    function ajaxStepFrom1To3(el) {
+        let template = getTemplate();
+        console.log(template)
+        $.ajax({
+            url: 'step/3/from/1/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                template: template,
+            },
+            beforeSend: function () {
+                // $(el.target).prop({
+                //     'disabled': true,
+                // });
+                editor.addClass('disabled');
+                menu.addClass('disabled');
+            },
+            success: function (response) {
+                document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
+                document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
+                document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
+
+                let headMain = $('.head__main');
+                headMain.empty();
+                headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                let headMove = $('.head__move');
+                headMove.empty();
+                headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                let categories = $('.categories-block');
+                categories.empty();
+                categories[0].insertAdjacentHTML('afterbegin', response.categories);
+
+                editor.attr({
+                    'data-step': '3',
+                });
+
+                menu.eq(0).removeClass('item--active');
+                menu.eq(1).addClass('item--active');
+            },
+            complete: function () {
+                // $(el.target).prop({
+                //     'disabled': false,
+                // });
+                editor.removeClass('disabled');
+                menu.eq(1).removeClass('disabled');
+                menu.eq(0).removeClass('disabled');
+                if (accessStep3) {
+                    menu.eq(2).removeClass('disabled');
+                }
+            },
+            error: function () {
+            },
+        });
+    }
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {
@@ -1237,7 +1401,7 @@ $(function () {
     function getTemplate() {
         let questions = $('.question');
         let template = {
-            id: $('.poll-editor__header').attr('data-poll-id'),
+            pollId: pollId,
             name: $('.poll__name').val(),
             description: $('.poll__description').val(),
             questions: [],
