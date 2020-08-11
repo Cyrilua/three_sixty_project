@@ -1,8 +1,12 @@
+from datetime import datetime
+
 from main.views.auxiliary_general_methods import *
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, AnswerChoice
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
+from django.utils.datastructures import MultiValueDictKeyError
+from django.template.response import SimpleTemplateResponse
 
 
 def create_poll_from_template(request, template_id) -> render:
@@ -61,14 +65,8 @@ def _build_questions(questions: list) -> list:
 
 def save_template(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        #for i in request.POST:
-        #    print(i)
         template = _create_new_template(request)
-        _create_new_questions_for_template(request, template)
-        data = request.POST
-        data_key = 'template[{}]'
-        print(data[data_key.format('color')])
-
+        _create_new_questions(request, template)
         return JsonResponse({}, status=200)
 
 
@@ -84,7 +82,7 @@ def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
     return new_template
 
 
-def _create_new_questions_for_template(request: WSGIRequest, template: TemplatesPoll) -> None:
+def _create_new_questions(request: WSGIRequest, poll) -> None:
     data = request.POST
     try:
         count_questions = int(data['template[countQuestion]'])
@@ -97,7 +95,7 @@ def _create_new_questions_for_template(request: WSGIRequest, template: Templates
         settings = _create_settings(request, question_number)
         question.settings = settings
         question.save()
-        template.questions.add(question)
+        poll.questions.add(question)
 
 
 def _create_settings(request: WSGIRequest, question_number: int) -> Settings:
@@ -125,21 +123,47 @@ def _create_settings(request: WSGIRequest, question_number: int) -> Settings:
     return settings
 
 
-def render_teams_list_for_choose_respondents(request, template_id: int) -> JsonResponse:
+def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        print(request.POST.getlist('template[questions][0][answers][]'))
-    profile = get_user_profile(request)
-    company = profile.company
-    teams = profile.groups.all()
-    args = {
-        'company': {
-            'countTeams': teams.count(),
-            'countParticipants': company.profile_set.all().count()
+        for i in request.POST:
+            print(i)
+
+        #try:
+        #    poll_id = int(request.POST['pollId'])
+        #    poll = Poll.objects.get(id=poll_id)
+        #    poll = _create_or_change_poll(request, poll)
+        #except [MultiValueDictKeyError, ObjectDoesNotExist, ValueError]:
+        #    poll = _create_or_change_poll(request, None)
+
+        #_create_new_questions(request, poll)
+
+        head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
+        head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
+        categories = SimpleTemplateResponse('main/poll/select_target/select_target_content.html', {}).rendered_content
+
+        args = {
+            #'pollId': poll.id,
+            'headMain': head_main,
+            'headMove': head_move,
+            'categories': categories
         }
-    }
-    return JsonResponse({}, status=200)
+        return JsonResponse(args, status=200)
+
+
+def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
+    if poll is None:
+        poll = Poll()
+    data = request.POST
+    data_key = 'template[{}]'
+    poll.name_poll = data[data_key.format('name')]
+    poll.description = data[data_key.format('description')]
+    poll.color = data[data_key.format('color')]
+    poll.creation_date = datetime.today()
+    poll.initiator = get_user_profile(request)
+    poll.save()
+    return poll
 
 
 def _build_team_list(teams: list) -> list:

@@ -211,16 +211,18 @@ urlpatterns = [
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
+                  # Переход с первого на второй шаг
                   path('poll/editor/template/<int:template_id>/step/2/from/1/',
-                       create_poll_from_template.render_teams_list_for_choose_respondents, name='choose_respondents'),
+                       create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
                   # Сохранение шаблона
-                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template, name='save_template'),
+                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
+                       name='save_template'),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
-                 path('test/', test.code_verifications_test)
+                 path('test/', test.test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
