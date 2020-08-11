@@ -20,10 +20,11 @@ def create_poll_from_template(request, template_id) -> render:
 
     if template.owner is not None and template.owner != get_user_profile(request):
         return redirect('/')
-
+    profile = get_user_profile(request)
     args = {
         'title': "Создание опроса из шаблона",
-        'poll': _build_template(template)
+        'poll': _build_template(template),
+        'is_master': SurveyWizard.objects.filter(profile=profile).exists()
     }
 
     return render(request, 'main/poll/new_poll_editor.html', args)
@@ -127,24 +128,36 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        for i in request.POST:
-            print(i)
-
-        #try:
+        # TODO
+        # try:
         #    poll_id = int(request.POST['pollId'])
         #    poll = Poll.objects.get(id=poll_id)
         #    poll = _create_or_change_poll(request, poll)
-        #except [MultiValueDictKeyError, ObjectDoesNotExist, ValueError]:
+        # except [MultiValueDictKeyError, ObjectDoesNotExist, ValueError]:
         #    poll = _create_or_change_poll(request, None)
-
-        #_create_new_questions(request, poll)
+        # _create_new_questions(request, poll)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
-        categories = SimpleTemplateResponse('main/poll/select_target/select_target_content.html', {}).rendered_content
+        profile = get_user_profile(request)
+        company: Company = profile.company
+        profiles = company.profile_set.all()
+        categories_args = {
+            'participants': _build_team_profiles_list(profiles, company),
+            'company': {
+                'countParticipants': profiles.count(),
+            }
+        }
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            categories_args['company']['countTeams'] = Group.objects.filter(company=company).count()
+        else:
+            categories_args['company']['countTeams'] = profile.groups.all().count()
+
+        categories = SimpleTemplateResponse('main/poll/select_target/select_target_content.html',
+                                            categories_args).rendered_content
 
         args = {
-            #'pollId': poll.id,
+            # 'pollId': poll.id,
             'headMain': head_main,
             'headMove': head_move,
             'categories': categories
@@ -182,7 +195,7 @@ def _build_team_list(teams: list) -> list:
     return result
 
 
-def _build_team_profiles_list(profiles: list, team: Group) -> list:
+def _build_team_profiles_list(profiles: list, group) -> list:
     result = []
     for profile in profiles:
         profile: Profile
@@ -193,7 +206,7 @@ def _build_team_profiles_list(profiles: list, team: Group) -> list:
             'surname': profile.surname,
             'patronymic': profile.patronymic,
             'roles': _get_roles(profile),
-            'is_leader': team.owner == profile,
+            'is_leader': group.owner == profile,
             'positions': [i.name for i in profile.positions.all()],
             'platforms': [i.name for i in profile.platforms.all()],
         }
@@ -206,8 +219,68 @@ def _get_roles(profile: Profile) -> list:
     roles = []
     if profile.company.owner.id == profile.id:
         roles.append('boss')
-    if SurveyWizard.objects.filter(profile=profile).exist():
+    if SurveyWizard.objects.filter(profile=profile).exists():
         roles.append('master')
-    if Moderator.objects.filter(profile=profile).exist():
+    if Moderator.objects.filter(profile=profile).exists():
         roles.append('moderator')
     return roles
+
+
+def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        print(request.POST)
+        print(request.GET)
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        profile = get_user_profile(request)
+        company = profile.company
+        profiles = company.profile_set.all()
+        content_participants_args = {
+            'participants': _build_team_profiles_list(profiles, company)
+        }
+        content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
+                                         content_participants_args).rendered_content
+        args = {
+            'content': content
+        }
+        return JsonResponse(args, status=200)
+
+
+def search_step_2(request: WSGIRequest, templste_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
+
+
+def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)

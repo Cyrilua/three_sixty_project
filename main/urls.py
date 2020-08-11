@@ -214,9 +214,28 @@ urlpatterns = [
                   # Переход с первого на второй шаг
                   path('poll/editor/template/<int:template_id>/step/2/from/1/',
                        create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
+                  # Загрузка команд на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/category/teams/',
+                       create_poll_from_template.render_category_teams_on_step_2),
+                  # Загрузка участников компании на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/category/participants/',
+                       create_poll_from_template.render_category_participants_on_step_2),
                   # Сохранение шаблона
                   path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
                        name='save_template'),
+                  # Поиск на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/search/',
+                       create_poll_from_template.search_step_2),
+                  path('poll/editor/template/<int:template_id>/step/1/from/2/',
+                       create_poll_from_template.render_step_1_from_step_2),
+                  path('poll/editor/template/<int:template_id>/step/1/from/3/',
+                       create_poll_from_template.render_step_1_from_step_3),
+                  path('poll/editor/template/<int:template_id>/step/3/from/1/',
+                       create_poll_from_template.render_step_3_from_step_1),
+                  path('poll/editor/template/<int:template_id>/step/3/from/2/',
+                       create_poll_from_template.render_step_3_from_step_2),
+                  path('poll/editor/template/<int:template_id>/step/2/from/3/',
+                       create_poll_from_template.render_step_2_from_step_3),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
