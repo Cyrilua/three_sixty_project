@@ -2,6 +2,7 @@ from main.views.auxiliary_general_methods import *
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
+from django.core.handlers.wsgi import WSGIRequest
 
 
 def create_poll_from_template(request, template_id) -> render:
@@ -56,6 +57,55 @@ def _build_questions(questions: list) -> list:
         }
         result.append(collected_question)
     return result
+
+
+def save_template(request: WSGIRequest) -> JsonResponse:
+    if request.is_ajax():
+        print(request.POST)
+        for i in request.POST:
+            print(i)
+        data = request.POST
+        print(request.POST['template[questions][0][countAnswers]'])
+        for i in data['template[questions][1][answers][]'].all():
+            print(i)
+        return JsonResponse({}, status=200)
+
+
+def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
+    data = request.POST
+    data_key = 'template[{}]'
+    new_template = TemplatesPoll()
+    new_template.name_poll = data[data_key.format('name')]
+    new_template.description = data[data_key.format('description')]
+    new_template.owner = get_user_profile(request)
+    new_template.color = data[data_key.format('color')]
+    new_template.save()
+    return new_template
+
+
+def _create_new_questions_for_template(request: WSGIRequest, template: TemplatesPoll) -> None:
+    data = request.POST
+    for i in range(data['template[questions]']):
+        data_key = 'template[questions][{}]'.format(i) + '[{}]'
+        question = Questions()
+        question.text = data[data_key.format('name')]
+
+
+def _create_settings(request: WSGIRequest, question_number: int):
+    def add_if_contains_key(key: str):
+        key = "template[questions][{}]".format(question_number) + key
+        return data[key] if key in keys else None
+    data = request.POST
+    keys = data.keys()
+    data_key = "template[questions][{}]".format(question_number) + '[{}]'
+    settings = Settings()
+    settings.type = data[data_key.format('type')]
+    settings.step = add_if_contains_key('[settingsSlider][step]')
+    settings.min = add_if_contains_key('[settingsSlider][min]')
+    settings.max = add_if_contains_key('[settingsSlider][max]')
+    settings.save()
+
+
 
 
 def render_teams_list_for_choose_respondents(request, template_id: int) -> JsonResponse:
