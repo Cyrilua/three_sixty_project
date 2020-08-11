@@ -178,6 +178,12 @@ class TemplatesPoll(models.Model):
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     objects = models.Manager()
 
+    def delete(self, *args, **kwargs):
+        questions = self.questions.all()
+        for question in questions:
+            question.delete()
+        super(TemplatesPoll, self).delete(*args, **kwargs)
+
     class Meta:
         db_table = 'Template'
 
@@ -195,6 +201,12 @@ class Poll(models.Model):
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     questions = models.ManyToManyField('Questions')
     objects = models.Manager()
+
+    def delete(self, *args, **kwargs):
+        questions = self.questions.all()
+        for question in questions:
+            question.delete()
+        super(Poll, self).delete(*args, **kwargs)
 
     class Meta:
         db_table = "Poll"
@@ -234,6 +246,10 @@ class Questions(models.Model):
     text = models.CharField(max_length=100)
     objects = models.Manager()
 
+    def delete(self, *args, **kwargs):
+        self.settings.delete()
+        super(Questions, self).delete(*args, **kwargs)
+
     class Meta:
         db_table = "Questions"
 
@@ -255,6 +271,13 @@ class Settings(models.Model):
     step = models.IntegerField(null=True)
     answer_choice = models.ManyToManyField('AnswerChoice')
     objects = models.Manager()
+
+    def delete(self, *args, **kwargs):
+        answers = self.answer_choice.all()
+        for answer in answers:
+            answer: AnswerChoice
+            answer.delete()
+        super(Settings, self).delete(*args, **kwargs)
 
     class Meta:
         db_table = "Questions settings"
