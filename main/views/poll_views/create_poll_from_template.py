@@ -92,6 +92,7 @@ def _create_new_questions(request: WSGIRequest, poll) -> None:
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
+            print(data[data_key.format('id')])
             question_id = int(data[data_key.format('id')])
             question = Questions.objects.get(id=question_id)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
@@ -124,6 +125,7 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     answers_str = request.POST.getlist(data_key.format('answers') + '[]')
     for answer_str in answers_str:
         answer_str: str
+        # TODO fix this
         new_answer_choice = AnswerChoice()
         new_answer_choice.text = answer_str
         new_answer_choice.save()
@@ -141,10 +143,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
             poll = _create_or_change_poll(request, poll)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             poll = _create_or_change_poll(request, None)
-            print(poll)
         _create_new_questions(request, poll)
-
-        #print(request.POST)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
@@ -188,7 +187,7 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
     return poll
 
 
-def _build_team_list(teams: list) -> list:
+def _build_team_list(teams: (list, filter)) -> list:
     result = []
     for team in teams:
         team: Group
@@ -198,13 +197,14 @@ def _build_team_list(teams: list) -> list:
             'name': team.name,
             'numbers': profiles.count(),
             'descriptions': team.description,
-            'participants': _build_team_profiles_list(profiles, team)
+            'participants': _build_team_profiles_list(profiles, team),
+            'href': ''
         }
         result.append(collected_poll)
     return result
 
 
-def _build_team_profiles_list(profiles: list, group, checked_profile: Profile = None) -> list:
+def _build_team_profiles_list(profiles: (list, filter), group, checked_profile: Profile = None) -> list:
     result = []
     for profile in profiles:
         profile: Profile
@@ -272,7 +272,42 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         print(request.POST)
-        return JsonResponse({}, status=200)
+        mode = request.POST['mode']
+        user_input: str = request.POST['input']
+        profile = get_user_profile(request)
+        if mode == 'participants':
+            def compare_with_user_input(profile_compared: Profile):
+                for user_input_object in user_input_list:
+                    compare = profile_compared.name.find(user_input_object) != -1 or \
+                              profile_compared.surname.find(user_input_object) != -1 or \
+                              profile_compared.patronymic.find(user_input_object) != -1
+                    if compare:
+                        return True
+                return False
+            user_input_list = user_input.split(' ')
+            profiles = profile.company.profile_set.all()
+            profiles = filter(lambda x: compare_with_user_input(x), profiles)
+            content_participants_args = {
+                'participants': _build_team_profiles_list(profiles, profile.company)
+            }
+            content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
+                                             content_participants_args).rendered_content
+        elif mode == 'teams':
+            user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
+            if user_is_master:
+                teams = Group.objects.filter(company=profile.company)
+            else:
+                teams = profile.groups.all()
+            teams = filter(lambda team: team.name.find(user_input) != -1, teams)
+            collected_teams = _build_team_list(teams)
+            content_teams_args = {
+                'teams': collected_teams
+            }
+            content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
+                                             content_teams_args).rendered_content
+        else:
+            return JsonResponse({}, status=400)
+        return JsonResponse({'content': content}, status=200)
 
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
@@ -298,9 +333,7 @@ def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
             return JsonResponse({}, status=400)
         poll.target = profile
         poll.save()
-
-
-
+        # TODO
         return JsonResponse({}, status=200)
 
 
@@ -327,7 +360,6 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
             poll.target = profile
             poll.save()
 
-        created_poll = _build_created_poll(poll)
         categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
                                             {'poll': _build_created_poll(poll)}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html').rendered_content
