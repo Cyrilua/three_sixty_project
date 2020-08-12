@@ -280,7 +280,9 @@ button {
 
   .col-left {
     width: 219px;
-    height: auto;
+    height: calc(100vh - 87px);
+    position: sticky;
+    top: 87px;
     padding-right: 10px;
     /*background-color: green;*/
   }
@@ -294,8 +296,13 @@ button {
 
   .col-right {
     width: 219px;
-    height: auto;
+    height: calc(100vh - 87px);
+    position: sticky;
+    top: 87px;
     padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     /*background-color: red;*/
   }
 }
@@ -305,7 +312,7 @@ button {
 // Menu-main
 
 .menu-left {
-  position: fixed;
+  //position: fixed;
   width: 209px;
   padding: 0 0 0 15px;
   box-sizing: border-box;
@@ -614,6 +621,53 @@ button {
 
 // Roles
 
+.role-mini {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #595757;
+
+  &:hover {
+    background-color: #595757;
+  }
+
+  &.role-leader {
+    background-color: transparent;
+    background-image: url('../images/icon/crown.svg');
+    width: 16px;
+    height: 12px;
+    border-radius: 0;
+
+    &:hover {
+    }
+  }
+
+  &.role-boss {
+    background-color: #FF1841;
+
+    &:hover {
+      background-color: #FF1841;
+    }
+  }
+
+  &.role-master {
+    background-color: #DB00FF;
+
+    &:hover {
+      background-color: #DB00FF;
+    }
+  }
+
+  &.role-moderator {
+    background-color: #001AFF;
+
+    &:hover {
+      background-color: #001AFF;
+    }
+  }
+}
+
 .role {
   //display: table-cell;
   //vertical-align: middle;
@@ -727,6 +781,18 @@ button {
     }
   }
 
+  .leader__info {
+
+    &::before {
+      content: 'Лидер';
+      font-weight: bold;
+    }
+
+    &::after {
+      content: ' - член команды, у которого есть дополнительные обязанности лидерства';
+    }
+  }
+
   .boss__info {
 
     &::before {
@@ -836,6 +902,16 @@ button {
 .disabled {
   pointer-events: none;
   opacity: .5;
+  animation: .5s linear 1 start;
+}
+
+@keyframes start {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
 }
 
 //.height-auto,
@@ -1022,3 +1098,114 @@ button {
 }
 
 // !Textarea!
+
+// Menu right
+
+.menu-r {
+  //position: fixed;
+  width: 209px;
+  padding-right: 15px;
+  z-index: 2;
+
+  .menu {
+    padding: 10px 0;
+
+    //&.menu-disabled {
+    //  pointer-events: none;
+    //}
+
+    .menu__item {
+      list-style: none;
+
+      &:hover {
+        background-color: #F0F1F6;
+
+        .item__link {
+          color: #595757;
+        }
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 3px;
+      }
+
+      &.item--active {
+
+        .item__link {
+          border-left: 5px solid #001AFF;
+          color: #001AFF;
+        }
+      }
+
+      .item__link {
+        height: 60px;
+        border-left: 5px solid #939393;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 19px;
+        color: #939393;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// !Menu right!
+
+// Snackbar
+
+.snackbar-container {
+
+
+  &.custom {
+    background-color: #000000 !important;
+    border-radius: 5px !important;
+    -webkit-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+    -moz-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+    padding: 20px 30px !important;
+    //opacity: 1 !important;
+    animation: .2s linear 1 fromBottom !important;
+    //transition: opacity .3s;
+    //
+    //&.close {
+    //  opacity: 0 ;
+    //}
+
+    &.no-animation {
+      animation: none !important;
+    }
+
+    p {
+      font-style: normal !important;
+      font-weight: bold !important;
+      font-size: 18px !important;
+      line-height: 21px !important;
+      color: #FFFFFF !important;
+    }
+
+    button {
+      font-style: normal !important;
+      font-weight: bold !important;
+      font-size: 18px !important;
+      line-height: 21px !important;
+      outline: none;
+    }
+  }
+
+}
+
+@keyframes fromBottom {
+  from {
+    transform: translateY(150%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+// !Snackbar!

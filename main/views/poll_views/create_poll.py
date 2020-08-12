@@ -81,7 +81,7 @@ def poll_create(request, poll_id):
         print('I am in AJAX')
         print()
 
-    return render(request, 'main/poll/poll_editor.html', args)
+    return render(request, 'main/poll/old/poll_editor.html', args)
 
 
 def build_questions(questions):
@@ -123,11 +123,6 @@ def poll_create_redirect(request):
     # Пока не созданы черновики всегда будет возвращаться первый недосозданный опрос
     return redirect('/poll/editor/1/')
 
-
-def create_from_template(request, template_id) -> render:
-    # TODO
-    args = {}
-    return render(request, 'main/poll/new_poll_editor.html', args)
 
 
 

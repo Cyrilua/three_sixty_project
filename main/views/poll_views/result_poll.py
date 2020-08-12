@@ -4,4 +4,4 @@ from django.shortcuts import redirect, render
 
 
 def result_poll(request, poll_id: int) -> render:
-    return render(request, 'main/poll/old/poll_results.html', {})
+    return render(request, 'main/poll/poll_results.html', {})
