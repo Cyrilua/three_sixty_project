@@ -642,6 +642,10 @@ $(function () {
             }
         });
         team.toggleClass('team--selected');
+
+        team.children('.team__up')[0].scrollIntoView(false);
+        // team.children('.team__up')[0].scrollIntoView();
+        // window.scrollBy(0, -221);
     });
 
     // Шаг 2 и 3 - Поиск по командам/участникам
