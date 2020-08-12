@@ -434,8 +434,10 @@ $(function () {
         let search = $('.input__search');
         let step = editor.attr('data-step');
         if (step !== '2' && step !== '3') {
-            throw new Error('Unexpected attribute on search');
+            return;
         }
+        $('.category').removeClass('active-sort');
+        $(this).addClass('active-sort');
         let data;
         if (step === '2') {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
