@@ -545,7 +545,7 @@ $(function () {
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
     body.on('click', 'input[name=participants]', function () {
         let scroll = window.pageYOffset;
-        console.log(scroll)
+        // console.log(scroll)
         let participant = $(this).parent().parent().parent();
         if ($('.teams').length > 0) {
             $('.participant-active').each(function (key, elem) {
@@ -819,7 +819,7 @@ $(function () {
         let li = $(this).parent();
         let nextStep = li.attr('data-step');
         let currentStep = editor.attr('data-step');
-        console.log(currentStep, nextStep)
+        // console.log(currentStep, nextStep)
         if (!li.hasClass('item--active') && nextStep !== currentStep) {
             if (currentStep === '1' && nextStep === '2') {
                 ajaxStepFrom1To2();
@@ -1440,7 +1440,7 @@ $(function () {
         slider.max = parseInt($(el).find('.slider-range__max').val());
         slider.step = parseInt($(el).find('.slider-range__step').val());
         slider.listen('MDCSlider:change', () => {
-            console.log(`Value changed to ${slider.value}`);
+            // console.log(`Value changed to ${slider.value}`);
         });
     }
 
@@ -1490,7 +1490,10 @@ $(function () {
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
                     let answerText = $(elA).children('.answer__text').val();
-                    template.questions[key].answers.push(answerText);
+                    template.questions[key].answers.push({
+                        text: answerText,
+                        id: elA + 1,
+                    });
                 })
             } else if (type === 'range') {
                 let settings = answersBlock.children('.slider-range').children('.slider-range__settings');
