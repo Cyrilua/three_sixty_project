@@ -624,12 +624,14 @@ $(function () {
         let loader = $('.loader-round');
         let loaderStatus = loader.children('.loader__status');
         let step = editor.attr('data-step');
+        let input = $('.input__search').val();
         if (step !== '2' && step !== '3') {
             throw new Error('Unexpected attribute on search');
         }
         let data;
         if (step === '2') {
             data = {
+                input: input,
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
@@ -641,6 +643,7 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                input: input,
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
