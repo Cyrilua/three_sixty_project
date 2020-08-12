@@ -71,7 +71,7 @@
                     </div>
                     <div class="question__answers">
                         {% for answer in question.answers %}
-                            <div class="answer">
+                            <div class="answer" data-real-id="{{ answer.id }}">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
                                         <div class="mdc-radio mdc-radio--disabled">
@@ -159,7 +159,7 @@
                     </div>
                     <div class="question__answers">
                         {% for answer in question.answers %}
-                            <div class="answer">
+                            <div class="answer" data-real-id="{{ answer.id }}">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
                                         <div class="mdc-checkbox mdc-checkbox--disabled">

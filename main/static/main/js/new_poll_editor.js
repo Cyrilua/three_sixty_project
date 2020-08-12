@@ -1516,9 +1516,10 @@ $(function () {
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
                     let answerText = $(elA).children('.answer__text').val();
+                    let answerId = $(elA).attr('data-real-id');
                     template.questions[key].answers.push({
                         text: answerText,
-                        id: keyA + 1,
+                        id: answerId,
                     });
                 })
             } else if (type === 'range') {
