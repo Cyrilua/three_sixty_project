@@ -92,6 +92,7 @@ def _create_new_questions(request: WSGIRequest, poll) -> None:
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
+            print(data[data_key.format('id')])
             question_id = int(data[data_key.format('id')])
             question = Questions.objects.get(id=question_id)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
@@ -124,6 +125,7 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     answers_str = request.POST.getlist(data_key.format('answers') + '[]')
     for answer_str in answers_str:
         answer_str: str
+        # TODO fix this
         new_answer_choice = AnswerChoice()
         new_answer_choice.text = answer_str
         new_answer_choice.save()
@@ -185,7 +187,7 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
     return poll
 
 
-def _build_team_list(teams: list) -> list:
+def _build_team_list(teams: (list, filter)) -> list:
     result = []
     for team in teams:
         team: Group
@@ -195,13 +197,14 @@ def _build_team_list(teams: list) -> list:
             'name': team.name,
             'numbers': profiles.count(),
             'descriptions': team.description,
-            'participants': _build_team_profiles_list(profiles, team)
+            'participants': _build_team_profiles_list(profiles, team),
+            'href': ''
         }
         result.append(collected_poll)
     return result
 
 
-def _build_team_profiles_list(profiles: list, group, checked_profile: Profile = None) -> list:
+def _build_team_profiles_list(profiles: (list, filter), group, checked_profile: Profile = None) -> list:
     result = []
     for profile in profiles:
         profile: Profile
@@ -270,16 +273,32 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         print(request.POST)
         mode = request.POST['mode']
-        user_input = request.POST['input']
+        user_input: str = request.POST['input']
         profile = get_user_profile(request)
         if mode == 'participants':
-            pass
+            def compare_with_user_input(profile_compared: Profile):
+                for user_input_object in user_input_list:
+                    compare = profile_compared.name.find(user_input_object) != -1 or \
+                              profile_compared.surname.find(user_input_object) != -1 or \
+                              profile_compared.patronymic.find(user_input_object) != -1
+                    if compare:
+                        return True
+                return False
+            user_input_list = user_input.split(' ')
+            profiles = profile.company.profile_set.all()
+            profiles = filter(lambda x: compare_with_user_input(x), profiles)
+            content_participants_args = {
+                'participants': _build_team_profiles_list(profiles, profile.company)
+            }
+            content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
+                                             content_participants_args).rendered_content
         elif mode == 'teams':
-            if SurveyWizard.objects.filter(profile=profile).exists():
+            user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
+            if user_is_master:
                 teams = Group.objects.filter(company=profile.company)
             else:
                 teams = profile.groups.all()
-            teams = list(filter(lambda team: team.name.find(user_input) != -1, teams))
+            teams = filter(lambda team: team.name.find(user_input) != -1, teams)
             collected_teams = _build_team_list(teams)
             content_teams_args = {
                 'teams': collected_teams
