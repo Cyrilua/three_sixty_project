@@ -45,13 +45,26 @@ $(function () {
         }
     });
 
+    // Смена положения вопроса
+    $('.questions').sortable({
+        handle: '.question__move',
+        items: "> .question",
+        // tolerance: 'pointer',
+        // revert: true,
+        // scroll: false,
+        opacity: 0.5,
+        // containment: ".categories",
+        // axis: "y",
+        // cursorAt: { left: 5 }
+    });
+
     // Сообщение перед ухода со страницы
     window.onunload = function () {
         return confirm('Все несохраненные изменения удалятся')
-    }
+    };
     window.onbeforeunload = function () {
         return confirm('Все несохраненные изменения удалятся');
-    }
+    };
 
     // Увеличение полей для ввода
     body.on('input', '.textarea-line', function () {
@@ -1056,7 +1069,7 @@ $(function () {
         // console.log(listQuestions)
     }
 
-    // Создание нового опроса
+    // Создание нового вопроса
     function createNewQuestion() {
         let question = document.createElement('div');
         question.classList.add('question', 'rounded-block');
@@ -1066,6 +1079,14 @@ $(function () {
             'data-question-type': 'radio',
             'data-question-id': id,
         });
+
+        let qMove = document.createElement('img');
+        qMove.classList.add('question__move');
+        $(qMove).attr({
+            'src': '/static/main/images/move.svg',
+            'alt': '',
+        });
+        question.append(qMove);
 
         let qMain = document.createElement('div');
         qMain.classList.add('question__main');

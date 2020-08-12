@@ -103,6 +103,7 @@
 
                 <div class="question rounded-block" data-question-type="checkbox"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
@@ -191,6 +192,7 @@
 
                 <div class="question rounded-block" data-question-type="range"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
@@ -296,6 +298,7 @@
 
                 <div class="question rounded-block" data-question-type="openQuestion"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
