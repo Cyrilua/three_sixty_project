@@ -4,12 +4,12 @@
         {% for team in teams %}
             <div class="team rounded-block" data-team-id="{{ team.id }}">
                 <div class="team__up">
-                    <img src="{{ team.photo }}" alt="" class="team__photo">
+                    <img src="{% static 'main/images/team.svg' %}" alt="" class="team__photo">
                     <div class="info">
                         <div class="name">
                             <a href="{{ team.href }}" class="team__href">{{ team.name }}</a>
                         </div>
-                        <span class="team__numbers">{{ team.numbers }}</span>
+                        <span class="team__numbers">{{ team.numbers }} участников</span>
                         <span class="team__descriptions">{{ team.descriptions }}</span>
                     </div>
                     <div class="team__actions">
