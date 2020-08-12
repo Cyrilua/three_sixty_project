@@ -189,7 +189,7 @@ def _build_team_list(teams: list) -> list:
             'name': team.name,
             'numbers': profiles.count(),
             'descriptions': team.description,
-            'participants': _build_team_profiles_list(profiles)
+            'participants': _build_team_profiles_list(profiles, team)
         }
         result.append(collected_poll)
     return result
@@ -228,10 +228,19 @@ def _get_roles(profile: Profile) -> list:
 
 def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
-        print(request.GET)
-        # TODO
-        return JsonResponse({}, status=200)
+        profile = get_user_profile(request)
+        company = profile.company
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            teams = company.group_set.all()
+        else:
+            teams = profile.groups.all()
+        collected_teams = _build_team_list(teams)
+        content_teams_args = {
+            'teams': collected_teams
+        }
+        content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
+                                         content_teams_args).rendered_content
+        return JsonResponse({'content': content}, status=200)
 
 
 def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
@@ -250,7 +259,7 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
         return JsonResponse(args, status=200)
 
 
-def search_step_2(request: WSGIRequest, templste_id) -> JsonResponse:
+def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         # TODO
         return JsonResponse({}, status=200)
