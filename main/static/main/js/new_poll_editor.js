@@ -543,7 +543,17 @@ $(function () {
     });
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
-    body.on('click', '[name=participants]', function () {
+    body.on('click', 'input[name=participants]', function () {
+        let participant = $(this).parent().parent().parent();
+        $('.participant-active').each(function (key, elem) {
+            $(elem).css({
+                'order': 'initial',
+            });
+        });
+        participant.css({
+            'order': -10000,
+        });
+        participant.addClass('participant-active');
         $('#nextToStep3').prop({
             'disabled': false,
         });

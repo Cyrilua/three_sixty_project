@@ -290,6 +290,10 @@
   display: none;
 }
 
+.participants {
+  display: flex;
+  flex-direction: column;
+}
 .loader-round {
   width: 30px;
   height: 30px;

@@ -394,9 +394,12 @@
   }
 }
 
-.select-participants {
-  .participants {
+.participants {
+  display: flex;
+  flex-direction: column;
 
+  .participant {
+    
   }
 }
 
