@@ -91,15 +91,19 @@ def _create_new_questions(request: WSGIRequest, poll) -> None:
         return None
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
-        question = Questions()
+        try:
+            question_id = int(data[data_key.format('id')])
+            question = Questions.objects.get(id=question_id)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            question = Questions()
         question.text = data[data_key.format('name')]
-        settings = _create_settings(request, question_number)
+        settings = _create_or_change_settings(request, question_number, question)
         question.settings = settings
         question.save()
         poll.questions.add(question)
 
 
-def _create_settings(request: WSGIRequest, question_number: int) -> Settings:
+def _create_or_change_settings(request: WSGIRequest, question_number: int, question: Questions) -> Settings:
     def add_if_contains_key(key: str):
         key = "template[questions][{}]".format(question_number) + key
         return data[key] if key in keys else None
@@ -107,7 +111,10 @@ def _create_settings(request: WSGIRequest, question_number: int) -> Settings:
     data = request.POST
     keys = data.keys()
     data_key = "template[questions][{}]".format(question_number) + '[{}]'
-    settings = Settings()
+    if question.settings is None:
+        settings = Settings()
+    else:
+        settings = question.settings
     settings.type = data[data_key.format('type')]
     settings.step = add_if_contains_key('[settingsSlider][step]')
     settings.min = add_if_contains_key('[settingsSlider][min]')
@@ -134,7 +141,10 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
             poll = _create_or_change_poll(request, poll)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             poll = _create_or_change_poll(request, None)
-            _create_new_questions(request, poll)
+            print(poll)
+        _create_new_questions(request, poll)
+
+        #print(request.POST)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
@@ -142,7 +152,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
         company: Company = profile.company
         profiles = company.profile_set.all()
         categories_args = {
-            'participants': _build_team_profiles_list(profiles, company),
+            'participants': _build_team_profiles_list(profiles, company, poll.target),
             'company': {
                 'countParticipants': profiles.count(),
             }
@@ -194,7 +204,7 @@ def _build_team_list(teams: list) -> list:
     return result
 
 
-def _build_team_profiles_list(profiles: list, group) -> list:
+def _build_team_profiles_list(profiles: list, group, checked_profile: Profile = None) -> list:
     result = []
     for profile in profiles:
         profile: Profile
@@ -208,6 +218,7 @@ def _build_team_profiles_list(profiles: list, group) -> list:
             'is_leader': group.owner == profile,
             'positions': [i.name for i in profile.positions.all()],
             'platforms': [i.name for i in profile.platforms.all()],
+            'is_checked': profile == checked_profile if checked_profile is not None else False
         }
         result.append(collected_profile)
 
@@ -266,7 +277,7 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
+        print(request.POST)
         return JsonResponse({}, status=200)
 
 
@@ -278,7 +289,18 @@ def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse
 
 def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            profile_id = int(request.POST['checkedTarget'])
+            profile = Profile.objects.get(id=profile_id)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            return JsonResponse({}, status=400)
+        poll.target = profile
+        poll.save()
+
+
+
         return JsonResponse({}, status=200)
 
 
@@ -296,12 +318,20 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             return JsonResponse({}, status=400)
 
-        categories = SimpleTemplateResponse('main/poll/editor/content_poll_editor.html',
+        try:
+            profile_id = int(request.POST['checkedTarget'])
+            profile = Profile.objects.get(id=profile_id)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            pass
+        else:
+            poll.target = profile
+            poll.save()
+
+        created_poll = _build_created_poll(poll)
+        categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
                                             {'poll': _build_created_poll(poll)}).rendered_content
-        head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html',
-                                           {'poll': _build_created_poll(poll)}).rendered_content
-        head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html',
-                                           {'poll': _build_created_poll(poll)}).rendered_content
+        head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html').rendered_content
+        head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html').rendered_content
         args = {
             'categories': categories,
             'headMove': head_move,
