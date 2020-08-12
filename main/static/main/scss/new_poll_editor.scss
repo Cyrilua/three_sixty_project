@@ -234,6 +234,15 @@
     .question {
       padding-bottom: 0;
       margin-bottom: 10px;
+      position: relative;
+
+      .question__move{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        cursor: move;
+        transform: translateX(-50%);
+      }
 
       .question__main {
         display: flex;
@@ -399,7 +408,7 @@
   flex-direction: column;
 
   .participant {
-    
+
   }
 }
 

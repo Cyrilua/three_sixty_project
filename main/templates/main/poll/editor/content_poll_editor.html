@@ -14,6 +14,7 @@
             {% if question.type == 'radio' %}
 
                 <div class="question rounded-block" data-question-type="radio" data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>

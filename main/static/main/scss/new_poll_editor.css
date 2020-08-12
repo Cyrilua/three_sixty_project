@@ -179,6 +179,14 @@
 .poll-editor .questions .question {
   padding-bottom: 0;
   margin-bottom: 10px;
+  position: relative;
+}
+.poll-editor .questions .question .question__move {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  cursor: move;
+  transform: translateX(-50%);
 }
 .poll-editor .questions .question .question__main {
   display: flex;
