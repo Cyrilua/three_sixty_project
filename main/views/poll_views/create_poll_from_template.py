@@ -128,14 +128,13 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        # TODO
-        # try:
-        #    poll_id = int(request.POST['pollId'])
-        #    poll = Poll.objects.get(id=poll_id)
-        #    poll = _create_or_change_poll(request, poll)
-        # except [MultiValueDictKeyError, ObjectDoesNotExist, ValueError]:
-        #    poll = _create_or_change_poll(request, None)
-        # _create_new_questions(request, poll)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            poll = _create_or_change_poll(request, poll)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            poll = _create_or_change_poll(request, None)
+            _create_new_questions(request, poll)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
@@ -157,7 +156,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
                                             categories_args).rendered_content
 
         args = {
-            # 'pollId': poll.id,
+            'pollId': poll.id,
             'headMain': head_main,
             'headMove': head_move,
             'categories': categories
@@ -261,7 +260,7 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
 
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
+        print(request.POST)
         return JsonResponse({}, status=200)
 
 
@@ -291,5 +290,32 @@ def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse
 
 def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            return JsonResponse({}, status=400)
+
+        categories = SimpleTemplateResponse('main/poll/editor/content_poll_editor.html',
+                                            {'poll': _build_created_poll(poll)}).rendered_content
+        head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html',
+                                           {'poll': _build_created_poll(poll)}).rendered_content
+        head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html',
+                                           {'poll': _build_created_poll(poll)}).rendered_content
+        args = {
+            'categories': categories,
+            'headMove': head_move,
+            'headMain': head_main
+        }
+        return JsonResponse(args, status=200)
+
+
+def _build_created_poll(poll: Poll) -> dict:
+    result = {
+        'color': '' if poll.color is None else poll.color,
+        'name': poll.name_poll,
+        'description': poll.description,
+        'questions': _build_questions(poll.questions.all()),
+        'id': poll.id,
+    }
+    return result
