@@ -139,10 +139,7 @@ $(function () {
         $.ajax({
             url: 'edit/photo/update',
             type: 'post',
-            data: {
-                data: data,
-                csrfmiddlewaretoken: csrf,
-            },
+            data: data,
             cache: false,
             // отключаем обработку передаваемых данных, пусть передаются как есть
             processData: false,
@@ -414,6 +411,11 @@ $(function () {
                 let spanMin = currentSetting.parent().parent().parent().children('.setting__close')
                     .children('.setting__mini').children('.setting__2-block')
                     .children('.setting__value');
+                if (partUrl === 'email_code') {
+                    let setting = $('.setting__email');
+                    spanMax = $(setting[1]);
+                    spanMin = $(setting[0]);
+                }
                 if (partUrl === 'name') {
                     name.val(response.name);
                     surname.val(response.surname);
@@ -451,7 +453,35 @@ $(function () {
                         errors.email = false;
                         sessionStorage.setItem('new_email', email.val());
                         email.val('');
+                        // console.log('show')
                         modal.toggleClass('hide');
+                        delete values['password_for_email'];
+                        $.ajax({
+                            url: 'edit/save/email/send_mail',
+                            type: 'post',
+                            data: {
+                                values: values,
+                            },
+                            success: function () {
+                            },
+                            statusCode: {
+                                400: function () {
+                                    throw new Error('Error 400 - Некорректный запрос');
+                                },
+                                403: function () {
+                                    throw new Error('Error 403 - Доступ запрещён');
+                                },
+                                404: function () {
+                                    throw new Error('Error 404 - Страница не найдена');
+                                },
+                                500: function () {
+                                    throw new Error('Error 500 - Внутренняя ошибка сервера');
+                                }
+                            },
+                            error: function () {
+                                throw new Error('Что - то пошло не так :(');
+                            }
+                        });
                     }
                 } else if (partUrl === 'email_code') {
                     if (response.resultStatus === 'error') {

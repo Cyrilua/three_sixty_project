@@ -19,6 +19,7 @@ function getCounterSymbols(el1, el2) {
 }
 
 $(function () {
+    console.log('Time loading page ' + performance.now());
     let headMenu = $('.head-menu');
     let menuUp = headMenu.children('.head-menu-up');
     let menuDown = headMenu.children('.head-menu-down');

@@ -36,9 +36,7 @@ def upload_profile_photo(request):
         photo_profile.profile = profile
         photo_profile.photo = user_photo
         photo_profile.save()
-
         result = photo_profile.photo.url
-        print(result)
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 

@@ -215,6 +215,6 @@ urlpatterns = [
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
-                 path('test/', test.code_verifications_test)
+                 path('test/', test.open_file)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
