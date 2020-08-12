@@ -45,6 +45,14 @@ $(function () {
         }
     });
 
+    // Сообщение перед ухода со страницы
+    window.onunload = function () {
+        return confirm('Все несохраненные изменения удалятся')
+    }
+    window.onbeforeunload = function () {
+        return confirm('Все несохраненные изменения удалятся');
+    }
+
     // Увеличение полей для ввода
     body.on('input', '.textarea-line', function () {
         countLines(this, 5);
@@ -224,7 +232,25 @@ $(function () {
 
     // Отмена созданияF
     body.on('click', '#cancel', function () {
-        location.href = '/polls/';
+        $.ajax({
+            url: 'cancel/',
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+            },
+            beforeSend: function () {
+                menu.addClass('disabled');
+                editor.addClass('disabled');
+            },
+            success: function () {
+                location.href = '/polls/';
+            },
+            complete: function () {
+                menu.removeClass('disabled');
+                editor.removeClass('disabled');
+            }
+        })
     });
 
     // Сохранения шаблона
