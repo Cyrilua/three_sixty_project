@@ -141,10 +141,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
             poll = _create_or_change_poll(request, poll)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             poll = _create_or_change_poll(request, None)
-            print(poll)
         _create_new_questions(request, poll)
-
-        #print(request.POST)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
