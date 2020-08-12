@@ -544,15 +544,31 @@ $(function () {
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
     body.on('click', 'input[name=participants]', function () {
+        let scroll = window.pageYOffset;
+        console.log(scroll)
         let participant = $(this).parent().parent().parent();
-        $('.participant-active').each(function (key, elem) {
-            $(elem).css({
-                'order': 'initial',
+        if ($('.teams').length > 0) {
+            $('.participant-active').each(function (key, elem) {
+                $(elem).css({
+                    'order': 'initial',
+                });
             });
-        });
-        participant.css({
-            'order': -10000,
-        });
+            participant.css({
+                'order': -10000,
+            });
+        } else {
+            $('.participant-active').each(function (key, elem) {
+                $(elem).css({
+                    'order': 'initial',
+                    'background-color': '#FAFAFA',
+                });
+            });
+            participant.css({
+                'order': -10000,
+                'background-color': '#F0F1F6',
+            });
+        }
+        window.scrollTo(0, scroll);
         participant.addClass('participant-active');
         $('#nextToStep3').prop({
             'disabled': false,
