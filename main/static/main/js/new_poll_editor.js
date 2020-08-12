@@ -1518,7 +1518,7 @@ $(function () {
                     let answerText = $(elA).children('.answer__text').val();
                     template.questions[key].answers.push({
                         text: answerText,
-                        id: elA + 1,
+                        id: keyA + 1,
                     });
                 })
             } else if (type === 'range') {
