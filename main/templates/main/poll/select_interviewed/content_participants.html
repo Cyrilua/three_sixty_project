@@ -1,0 +1,83 @@
+{% load static %}
+<div class="category-item select-participants">
+    <div class="participants">
+        {% for participant in participants %}
+            <div class="participant rounded-block">
+                <img src="{{ participant.photo }}" alt="" class="participant__photo">
+                <div class="info">
+                    <div class="name">
+                        <a href="{{ participant.href }}"
+                           class="participant__href">{{ participant.surname }} {{ participant.nume }} {{ participant.patronymic }}</a>
+                        {% for role in participant.roles %}
+                            <div class="participant__role _hint unselectable">
+                                <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="role-information">
+                                            {% if role == 'boss' %}
+                                                <div class="boss__info"></div>
+                                            {% elif role == 'master' %}
+                                                <div class="master__info"></div>
+                                            {% elif role == 'moderator' %}
+                                                <div class="moderator__info"></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="positions-n-platforms">
+                        {% for position in participant.positions %}
+                            <div class="position _hint">
+                                <div class="role _hint-up">
+                                    {{ position }}
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="position-information role-information">
+                                            <div class="position__info"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for platform in participant.platforms %}
+                            <div class="platform _hint">
+                                <div class="role _hint-up">
+                                    {{ platform }}
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="platform-information role-information">
+                                            <div class="platform__info"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <div class="mdc-checkbox mdc-checkbox--touch">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="checkbox-{{ participant.id }}" data-participant-id="{{ participant.id }}"
+                               name="participants {% if participant.is_checked %}checked{% endif %}"/>
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                        <div class="mdc-checkbox__ripple"></div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

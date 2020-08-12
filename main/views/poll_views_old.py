@@ -243,7 +243,7 @@ def result_view(request, poll_id):
         'name_poll': poll.name_poll,
         'results': question_answer_result
     }
-    return render(request, 'main/poll/old/poll_results.html', args)
+    return render(request, 'main/poll/poll_results.html', args)
 
 
 def build_result_questions_answers(questions):
@@ -819,7 +819,7 @@ def poll_create(request, poll_id):
         print('I am in AJAX')
         print()
 
-    return render(request, 'main/poll/poll_editor.html', args)
+    return render(request, 'main/poll/old/poll_editor.html', args)
 
 
 def build_questions(questions):

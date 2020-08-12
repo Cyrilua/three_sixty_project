@@ -1,6 +1,6 @@
-body {
-    overflow: hidden;
-}
+/*body {*/
+/*    overflow-y: hidden;*/
+/*}*/
 
 .preloader {
     position: fixed;
@@ -10,6 +10,17 @@ body {
     right: 0;
     background-color: whitesmoke;
     z-index: 1100;
+    opacity: 1;
+    /*animation: .5s linear 1 reverse appearance;*/
+}
+
+@keyframes appearance {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .loader {
@@ -28,12 +39,12 @@ body {
     display: none;
 }
 
-.preloader-hiding body {
-    overflow: auto;
-}
+/*.preloader-hiding body {*/
+/*    overflow-y: scroll;*/
+/*}*/
 
 .preloader-hiding .preloader {
-    transition: opacity .2s;
+    transition: opacity .7s;
     opacity: 0;
 }
 

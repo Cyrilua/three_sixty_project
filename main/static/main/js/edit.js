@@ -460,6 +460,7 @@ $(function () {
                             url: 'edit/save/email/send_mail',
                             type: 'post',
                             data: {
+                                csrfmiddlewaretoken: csrf,
                                 values: values,
                             },
                             success: function () {

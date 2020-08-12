@@ -72,37 +72,53 @@ $(function () {
 
     // Удаление шаблонов
     body.on('click', '.delete', function (el) {
+        let timeOut = 3000;
         let id = $(this).parent().attr('data-id');
-        $.ajax({
-            url: `template/remove/`,
-            type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-                id: id,
-            },
-            success: function () {
-                $(el.target).parent().parent().parent().parent().remove();
-                if (myTemplates.children('.template-item').length < 1) {
-                    myTemplatesBlock.addClass('hide');
-                }
-            },
-            statusCode: {
-                400: function () {
-                    throw new Error('Error 400 - Некорректный запрос');
+        let timerId = setTimeout(function () {
+            $.ajax({
+                url: `template/remove/`,
+                type: 'post',
+                data: {
+                    csrfmiddlewaretoken: csrf,
+                    id: id,
                 },
-                403: function () {
-                    throw new Error('Error 403 - Доступ запрещён');
+                success: function () {
+                    $(el.target).parent().parent().parent().parent().remove();
+                    if (myTemplates.children('.template-item').length < 1) {
+                        myTemplatesBlock.addClass('hide');
+                    }
                 },
-                404: function () {
-                    throw new Error('Error 404 - Страница не найдена');
+                error: function () {
+
                 },
-                500: function () {
-                    throw new Error('Error 500 - Внутренняя ошибка сервера');
-                }
+            });
+        }, timeOut);
+
+
+        Snackbar.show({
+            text: 'Шаблон будет удален через 3 секунды, Вы уверены?',
+            showAction: true,
+            duration: 3000,
+            actionText: "Отменить",
+            actionTextColor: 'red',
+            customClass: 'custom no-animation',
+            width: 400,
+            pos: 'bottom-center',
+            onActionClick: function (elem) {
+                clearTimeout(timerId);
+                $(elem).animate({
+                    opacity: 0,
+                }, 200);
             },
-            error: function () {
-                throw new Error('Что - то пошло не так :(');
-            },
+            // onClose: function (elem) {
+            //     $(elem).animate({
+            //         opacity: 0,
+            //     }, 200, function () {
+            //         // el.remove()
+            //
+            //     });
+            //
+            // },
         });
     });
 

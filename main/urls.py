@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
-from .views.poll_views import create_poll, polls_view, result_poll
+from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template
 from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
@@ -78,8 +78,10 @@ urlpatterns = [
                   path('edit/edit/save/birthdate', edit_profile.save_birth_date),
                   # Проверка корректности ввода почты
                   path('edit/check_input/email', edit_profile.check_email),
-                  # Сохранение новой почты и отправка сообщения с подтверждением
+                  # Сохранение новой почты
                   path('edit/edit/save/email', edit_profile.save_email),
+                  # Oтправка сообщения с подтверждением
+                  path('edit/edit/save/email/send_mail', edit_profile.send_email_verification_code),
                   # Проверка кода из письма
                   path('edit/edit/save/email_code', edit_profile.check_email_code),
                   # Проверка логина
@@ -197,7 +199,7 @@ urlpatterns = [
                   # Страница просмотра опросов и шаблонов
                   path('polls/', polls_view.polls_view, name='new_poll_view'),
                   #
-                  path('poll/editor/<int:poll_id>/', create_poll.poll_create, name='poll_editor_id'),
+                  path('poll/editor/', create_poll_from_template.create_poll_from_template, name='poll_editor_id'),
                   #
                   path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
                   # Просмотр результата опроса
@@ -207,14 +209,39 @@ urlpatterns = [
                   # Маячок о новом опросе для прохождения
                   path('polls/new_notif/', polls_view.load_notification_new_poll),
                   # Создание нового опроса через шаблон
-                  path('poll/editor/template/<int:template_id>/', create_poll.create_from_template,
+                  path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
+                  # Переход с первого на второй шаг
+                  path('poll/editor/template/<int:template_id>/step/2/from/1/',
+                       create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
+                  # Загрузка команд на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/category/teams/',
+                       create_poll_from_template.render_category_teams_on_step_2),
+                  # Загрузка участников компании на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/category/participants/',
+                       create_poll_from_template.render_category_participants_on_step_2),
+                  # Сохранение шаблона
+                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
+                       name='save_template'),
+                  # Поиск на втором шаге
+                  path('poll/editor/template/<int:template_id>/step/2/search/',
+                       create_poll_from_template.search_step_2),
+                  path('poll/editor/template/<int:template_id>/step/1/from/2/',
+                       create_poll_from_template.render_step_1_from_step_2),
+                  path('poll/editor/template/<int:template_id>/step/1/from/3/',
+                       create_poll_from_template.render_step_1_from_step_3),
+                  path('poll/editor/template/<int:template_id>/step/3/from/1/',
+                       create_poll_from_template.render_step_3_from_step_1),
+                  path('poll/editor/template/<int:template_id>/step/3/from/2/',
+                       create_poll_from_template.render_step_3_from_step_2),
+                  path('poll/editor/template/<int:template_id>/step/2/from/3/',
+                       create_poll_from_template.render_step_2_from_step_3),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
-                  #
+                  # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
                  ############ Only for debug ###############
-                 path('test/', test.code_verifications_test)
+                 path('test/', test.test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

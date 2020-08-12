@@ -238,7 +238,9 @@ button {
 }
 .container-main .col-left {
   width: 219px;
-  height: auto;
+  height: calc(100vh - 87px);
+  position: sticky;
+  top: 87px;
   padding-right: 10px;
   /*background-color: green;*/
 }
@@ -249,13 +251,17 @@ button {
 }
 .container-main .col-right {
   width: 219px;
-  height: auto;
+  height: calc(100vh - 87px);
+  position: sticky;
+  top: 87px;
   padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   /*background-color: red;*/
 }
 
 .menu-left {
-  position: fixed;
   width: 209px;
   padding: 0 0 0 15px;
   box-sizing: border-box;
@@ -488,6 +494,42 @@ button {
   margin-bottom: 12px;
 }
 
+.role-mini {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #595757;
+}
+.role-mini:hover {
+  background-color: #595757;
+}
+.role-mini.role-leader {
+  background-color: transparent;
+  background-image: url("../images/icon/crown.svg");
+  width: 16px;
+  height: 12px;
+  border-radius: 0;
+}
+.role-mini.role-boss {
+  background-color: #FF1841;
+}
+.role-mini.role-boss:hover {
+  background-color: #FF1841;
+}
+.role-mini.role-master {
+  background-color: #DB00FF;
+}
+.role-mini.role-master:hover {
+  background-color: #DB00FF;
+}
+.role-mini.role-moderator {
+  background-color: #001AFF;
+}
+.role-mini.role-moderator:hover {
+  background-color: #001AFF;
+}
+
 .role {
   display: flex;
   align-items: center;
@@ -586,6 +628,13 @@ button {
 .role-information .platform__info::after {
   content: "Отдел";
 }
+.role-information .leader__info::before {
+  content: "Лидер";
+  font-weight: bold;
+}
+.role-information .leader__info::after {
+  content: " - член команды, у которого есть дополнительные обязанности лидерства";
+}
 .role-information .boss__info::before {
   content: "Босс";
   font-weight: bold;
@@ -662,8 +711,17 @@ button {
 .disabled {
   pointer-events: none;
   opacity: 0.5;
+  animation: 0.5s linear 1 start;
 }
 
+@keyframes start {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
 .cross-in-circle {
   width: 14px;
   height: 14px;
@@ -852,6 +910,80 @@ button {
 }
 .textarea-border:focus {
   border-color: rgba(0, 0, 0, 0.7);
+}
+
+.menu-r {
+  width: 209px;
+  padding-right: 15px;
+  z-index: 2;
+}
+.menu-r .menu {
+  padding: 10px 0;
+}
+.menu-r .menu .menu__item {
+  list-style: none;
+}
+.menu-r .menu .menu__item:hover {
+  background-color: #F0F1F6;
+}
+.menu-r .menu .menu__item:hover .item__link {
+  color: #595757;
+}
+.menu-r .menu .menu__item:not(:last-child) {
+  margin-bottom: 3px;
+}
+.menu-r .menu .menu__item.item--active .item__link {
+  border-left: 5px solid #001AFF;
+  color: #001AFF;
+}
+.menu-r .menu .menu__item .item__link {
+  height: 60px;
+  border-left: 5px solid #939393;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  color: #939393;
+  text-decoration: none;
+}
+
+.snackbar-container.custom {
+  background-color: #000000 !important;
+  border-radius: 5px !important;
+  -webkit-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  padding: 20px 30px !important;
+  animation: 0.2s linear 1 fromBottom !important;
+}
+.snackbar-container.custom.no-animation {
+  animation: none !important;
+}
+.snackbar-container.custom p {
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+  color: #FFFFFF !important;
+}
+.snackbar-container.custom button {
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+  outline: none;
+}
+
+@keyframes fromBottom {
+  from {
+    transform: translateY(150%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 /*# sourceMappingURL=custom.css.map */
