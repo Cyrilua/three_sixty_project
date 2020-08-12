@@ -117,7 +117,8 @@ $(function () {
                 let answers = answersBlock.children('.statistics-answer');
                 let min = answers.first().children('.value').text();
                 let max = answers.last().children('.value').text();
-                let step = Math.ceil((max - min) / answers.length);     // МОГУТ БЫТЬ НЕТОЧНОСТИ
+                // let step = Math.ceil((max - min) / answers.length);     // МОГУТ БЫТЬ НЕТОЧНОСТИ
+                let step = Math.max((answers[1] - answers[0]), (answers[2] - answers[1]));      // Вариант получше
                 template.questions[key].settingsSlider = {
                     min: min,
                     max: max,
