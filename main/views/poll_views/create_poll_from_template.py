@@ -269,7 +269,26 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         print(request.POST)
-        return JsonResponse({}, status=200)
+        mode = request.POST['mode']
+        user_input = request.POST['input']
+        profile = get_user_profile(request)
+        if mode == 'participants':
+            pass
+        elif mode == 'teams':
+            if SurveyWizard.objects.filter(profile=profile).exists():
+                teams = Group.objects.filter(company=profile.company)
+            else:
+                teams = profile.groups.all()
+            teams = list(filter(lambda team: team.name.find(user_input) != -1, teams))
+            collected_teams = _build_team_list(teams)
+            content_teams_args = {
+                'teams': collected_teams
+            }
+            content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
+                                             content_teams_args).rendered_content
+        else:
+            return JsonResponse({}, status=400)
+        return JsonResponse({'content': content}, status=200)
 
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
@@ -295,9 +314,7 @@ def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
             return JsonResponse({}, status=400)
         poll.target = profile
         poll.save()
-
-
-
+        # TODO
         return JsonResponse({}, status=200)
 
 
@@ -324,7 +341,6 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
             poll.target = profile
             poll.save()
 
-        created_poll = _build_created_poll(poll)
         categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
                                             {'poll': _build_created_poll(poll)}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html').rendered_content
