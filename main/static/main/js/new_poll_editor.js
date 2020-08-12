@@ -229,8 +229,12 @@ $(function () {
 
     // Сохранения шаблона
     body.on('click', '#saveAs', function () {
+        ajaxSaveAs(this);
+    });
+
+    function ajaxSaveAs(el) {
         let template = getTemplate();
-        let status = $(this).parent().children('.save__status');
+        let status = $(el).parent().children('.save__status');
         console.log(template)
         $.ajax({
             url: 'save_as/',
@@ -247,12 +251,36 @@ $(function () {
                     .addClass('status--loading');
             },
             success: function () {
-                status.removeClass('status--loading status--error status--done')
-                    .addClass('status--done');
+                // status.removeClass('status--loading status--error status--done')
+                //     .addClass('status--done');
+                Snackbar.show({
+                    text: 'Шаблон успешно создан',
+                    showAction: true,
+                    duration: 3000,
+                    actionText: "Закрыть",
+                    actionTextColor: 'green',
+                    customClass: 'custom',
+                });
             },
             error: function () {
-                status.removeClass('status--loading status--error status--done')
-                    .addClass('status--error');
+                // status.removeClass('status--loading status--error status--done')
+                //     .addClass('status--error');
+                Snackbar.show({
+                    text: 'Ошибка при сохранении шаблона',
+                    showAction: true,
+                    duration: 3000,
+                    actionText: "Повторить",
+                    actionTextColor: 'red',
+                    customClass: 'custom',
+                    onActionClick: function (el) {
+                        $(el).animate({
+                            opacity: 0,
+                        }, 200, function () {
+                            // el.remove()
+                            ajaxSaveAs();
+                        })
+                    },
+                });
             },
             complete: function () {
                 menu.eq(0).removeClass('disabled');
@@ -261,9 +289,10 @@ $(function () {
                     menu.eq(2).removeClass('disabled');
                 }
                 editor.removeClass('disabled');
+                status.removeClass('status--loading status--error status--done')
             }
-        })
-    });
+        });
+    }
 
     // body.on('focusout', '.question', function () {
     //     console.log('focusout')
@@ -405,8 +434,10 @@ $(function () {
         let search = $('.input__search');
         let step = editor.attr('data-step');
         if (step !== '2' && step !== '3') {
-            throw new Error('Unexpected attribute on search');
+            return;
         }
+        $('.category').removeClass('active-sort');
+        $(this).addClass('active-sort');
         let data;
         if (step === '2') {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
@@ -595,12 +626,14 @@ $(function () {
         let loader = $('.loader-round');
         let loaderStatus = loader.children('.loader__status');
         let step = editor.attr('data-step');
+        let input = $('.input__search').val();
         if (step !== '2' && step !== '3') {
             throw new Error('Unexpected attribute on search');
         }
         let data;
         if (step === '2') {
             data = {
+                input: input,
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams
@@ -612,6 +645,7 @@ $(function () {
                 checked.push($(elem).attr('data-participant-id'));
             });
             data = {
+                input: input,
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 mode: $(el.target).attr('data-mode'),   // mode = participant | teams

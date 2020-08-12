@@ -950,4 +950,40 @@ button {
   text-decoration: none;
 }
 
+.snackbar-container.custom {
+  background-color: #000000 !important;
+  border-radius: 5px !important;
+  -webkit-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  -moz-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
+  padding: 20px 30px !important;
+  animation: 0.2s linear 1 fromBottom !important;
+}
+.snackbar-container.custom.no-animation {
+  animation: none !important;
+}
+.snackbar-container.custom p {
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+  color: #FFFFFF !important;
+}
+.snackbar-container.custom button {
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  line-height: 21px !important;
+  outline: none;
+}
+
+@keyframes fromBottom {
+  from {
+    transform: translateY(150%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 /*# sourceMappingURL=custom.css.map */

@@ -11,10 +11,10 @@ $(function () {
 
     // Сохранить как шаблон
     body.on('click', '#saveAs', function () {
-        ajaxSaveAS();
+        ajaxSaveAs();
     });
 
-    function ajaxSaveAS() {
+    function ajaxSaveAs() {
         let template = getTemplate();
         // let status = $(this).parent().children('.save__status');
         let results = $('.results');
@@ -40,7 +40,8 @@ $(function () {
                     duration: 3000,
                     actionText: "Закрыть",
                     actionTextColor: 'green',
-                })
+                    customClass: 'custom',
+                });
             },
             error: function () {
                 // status.removeClass('status--loading status--error status--done')
@@ -57,10 +58,10 @@ $(function () {
                             opacity: 0,
                         }, 200, function () {
                             // el.remove()
-                            ajaxSaveAS();
+                            ajaxSaveAs();
                         })
                     },
-                })
+                });
             },
             complete: function () {
                 results.removeClass('disabled');
@@ -116,7 +117,8 @@ $(function () {
                 let answers = answersBlock.children('.statistics-answer');
                 let min = answers.first().children('.value').text();
                 let max = answers.last().children('.value').text();
-                let step = Math.ceil((max - min) / answers.length);     // МОГУТ БЫТЬ НЕТОЧНОСТИ
+                // let step = Math.ceil((max - min) / answers.length);     // МОГУТ БЫТЬ НЕТОЧНОСТИ
+                let step = Math.max((answers[1] - answers[0]), (answers[2] - answers[1]));      // Вариант получше
                 template.questions[key].settingsSlider = {
                     min: min,
                     max: max,
