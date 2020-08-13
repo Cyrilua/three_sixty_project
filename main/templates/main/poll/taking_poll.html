@@ -7,13 +7,8 @@
 
 {% block content-user %}
 
-    <div class="taking-poll" data-color="{{ poll.color }}" data-poll-id="{{ poll.id }}">
-        {% csrf_token %}
-        {% include 'main/poll/taking_poll_preview.html' %}
-        <div class="actions">
-            <button class="button-red done-poll" disabled>Отправить</button>
-        </div>
-    </div>
+
+        {% include 'main/poll/taking_poll_preview.html' with is_not_preview="True"%}
 
 {% endblock %}
 
