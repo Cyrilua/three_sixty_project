@@ -47,10 +47,12 @@ def _build_questions(questions: list) -> list:
         question: Questions
         settings: Settings = question.settings
         answers = settings.answer_choice.all()
+        print(question)
+        print(answers)
         collected_question = {
             'is_template': True,
             'type': settings.type,
-            'id': question.id,
+            #'id': question.id,
             'name': question.text,
             'answers': answers,
             'countAnswers': answers.count(),
@@ -67,7 +69,7 @@ def _build_questions(questions: list) -> list:
 def save_template(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
         template = _create_new_template(request)
-        _create_new_questions(request, template)
+        _create_new_questions_or_change(request, template)
         return JsonResponse({}, status=200)
 
 
@@ -83,7 +85,7 @@ def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
     return new_template
 
 
-def _create_new_questions(request: WSGIRequest, poll) -> None:
+def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> None:
     data = request.POST
     try:
         count_questions = int(data['template[countQuestion]'])
@@ -92,7 +94,6 @@ def _create_new_questions(request: WSGIRequest, poll) -> None:
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
-            print(data[data_key.format('id')])
             question_id = int(data[data_key.format('id')])
             question = Questions.objects.get(id=question_id)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
@@ -122,14 +123,23 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     settings.max = add_if_contains_key('[settingsSlider][max]')
     settings.save()
 
-    answers_str = request.POST.getlist(data_key.format('answers') + '[]')
-    for answer_str in answers_str:
-        answer_str: str
-        # TODO fix this
-        new_answer_choice = AnswerChoice()
-        new_answer_choice.text = answer_str
-        new_answer_choice.save()
-        settings.answer_choice.add(new_answer_choice)
+    try:
+        count_answers = int(request.POST[data_key.format('countAnswers')])
+        data_key = data_key.format('answers') + "[{}]"
+    except (ValueError, MultiValueDictKeyError):
+        pass
+    else:
+        for answer_number in range(count_answers):
+            answer_number: int
+            current_data_key = data_key.format(answer_number) + '[{}]'
+            try:
+                answer_id = int(data[current_data_key.format('id')])
+                answer = AnswerChoice.objects.get(id=answer_id)
+            except (ValueError, MultiValueDictKeyError, ObjectDoesNotExist):
+                answer = AnswerChoice()
+            answer.text = data[current_data_key.format('text')]
+            answer.save()
+            settings.answer_choice.add(answer)
     return settings
 
 
@@ -143,7 +153,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
             poll = _create_or_change_poll(request, poll)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             poll = _create_or_change_poll(request, None)
-        _create_new_questions(request, poll)
+        _create_new_questions_or_change(request, poll)
 
         head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
         head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
@@ -345,6 +355,7 @@ def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse
 
 def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
+        print(request.POST)
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
