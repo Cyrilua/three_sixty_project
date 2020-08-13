@@ -241,7 +241,7 @@ urlpatterns = [
                   # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
 
-                  path('compiling_poll/', compiling_poll.compiling_poll, name='compiling_poll'),
+                  path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
 
                  ############ Only for debug ###############
                  path('test/', test.test)
