@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
     auxiliary_general_methods, notifications_views, test
-from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template
+from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
 
 app_name = "main"
@@ -240,6 +240,8 @@ urlpatterns = [
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
+
+                  path('compiling_poll/', compiling_poll.compiling_poll, name='compiling_poll'),
 
                  ############ Only for debug ###############
                  path('test/', test.test)
