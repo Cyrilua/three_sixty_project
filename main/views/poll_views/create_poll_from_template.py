@@ -335,7 +335,8 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
     return {
         'categories': categories,
         'headMove': move,
-        'headMain': main
+        'headMain': main,
+        'pollId': poll.id
     }
 
 
