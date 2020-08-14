@@ -1,2 +1,2 @@
 <button class="button-white head__btn" id="cancel" data-href="#">Отмена</button>
-<button class="button-white head__btn" id="nextToStep2" data-href="#">Далее</button>
+<button class="button-white head__btn" id="{% if is_master %}nextToStep2{% else %}nextToStep3NotMaster{% endif %}" data-href="#">Далее</button>
