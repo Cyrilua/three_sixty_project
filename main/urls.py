@@ -150,50 +150,8 @@ urlpatterns = [
                   # Контроллер, на который ссылается поиск HR
                   path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
 
-                  # Создание опроса
-                  path('create_poll/', poll_views_old.create_pool, name='create_pool'),
-                  # Добавление вопросов к опросу
-                  path('<int:pool_id>/add_question', poll_views_old.add_questions_in_poll, name='add_question_in_pool'),
-                  # Добавление ответа к вопросу опроса
-                  path('<int:poll_id>/add_answer/<int:question_id>/', poll_views_old.add_answer,
-                       name='add_answer_in_poll_for_question'),
-                  # Возвращает список вопросов
-                  path('<int:poll_id>/poll_questions/', poll_views_old.questions_in_pool_view,
-                       name='view_questions_in_poll'),
-                  # Выбор типа опроса
-                  path('type_poll/', poll_views_old.type_poll, name='choose_type_poll'),
-                  # Список стандартных опросов
-                  path('default_poll_list/', poll_views_old.default_poll_template_view, name='list_default_poll'),
-                  # Выбор области опрашиваемых
-                  path('default_poll/<int:poll>/select_survey_area/', poll_views_old.select_survey_area,
-                       name='select_survey_area'),
-
                   # Выполнение уведомления
                   path('notifications/<int:notification_id>/', notifications_views.redirect_from_notification),
-
-                  # Выбор участников опроса для компании
-                  path('respondent_choice_c/', poll_views_old.respondent_choice_from_company,
-                       name="respondent_choice_company"),
-                  # Выбор участников опроса для команды
-                  path('respondent_choice_t/<int:group_id>/', poll_views_old.respondent_choice_group,
-                       name='respondent_choice_group'),
-                  # Создание опроса
-                  path('new_poll/<int:poll_id>/', poll_views_old.new_poll, name='new_poll'),
-                  # Ответ на опрос
-                  path('answer_poll/<int:poll_id>/', poll_views_old.answer_the_poll, name='answer_the_poll'),
-                  # Результаты опроса
-                  path('result_poll/<int:poll_id>/', poll_views_old.result_view, name='result_poll'),
-                  # Выбор цели опроса
-                  path('target_poll/<int:profile_id>/<int:poll_id>/', poll_views_old.select_target,
-                       name='select_target_poll'),
-                  # Создание опроса через шаблон
-                  path('new_poll_template/<int:poll_id>/<int:template_id>/', poll_views_old.create_poll_from_template,
-                       name='new_poll_from_template'),
-
-                  ################ Old poll ##########################
-
-                  path('walkthrough_polls_view/', poll_views_old.walkthrough_polls_view, name='walkthrough_polls_view'),
-                  path('results_polls_view/', poll_views_old.results_polls_view, name='results_polls_view'),
 
                   ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
@@ -211,6 +169,9 @@ urlpatterns = [
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),
+                  # Сохранение шаблона
+                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
+                       name='save_template'),
                   # Переход с первого на второй шаг
                   path('poll/editor/template/<int:template_id>/step/2/from/1/',
                        create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
@@ -220,24 +181,28 @@ urlpatterns = [
                   # Загрузка участников компании на втором шаге
                   path('poll/editor/template/<int:template_id>/step/2/category/participants/',
                        create_poll_from_template.render_category_participants_on_step_2),
-                  # Сохранение шаблона
-                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
-                       name='save_template'),
                   # Поиск на втором шаге
                   path('poll/editor/template/<int:template_id>/step/2/search/',
                        create_poll_from_template.search_step_2),
+                  # Переход на первый шаг со второго
                   path('poll/editor/template/<int:template_id>/step/1/from/2/',
                        create_poll_from_template.render_step_1_from_step_2),
+                  # Переход на первый шаг с третьего
                   path('poll/editor/template/<int:template_id>/step/1/from/3/',
                        create_poll_from_template.render_step_1_from_step_3),
+                  # Переход на третий шаг с первого
                   path('poll/editor/template/<int:template_id>/step/3/from/1/',
                        create_poll_from_template.render_step_3_from_step_1),
+                  # Переход на третий шаг со второго
                   path('poll/editor/template/<int:template_id>/step/3/from/2/',
                        create_poll_from_template.render_step_3_from_step_2),
+                  # Переход на третий шаг со второго
                   path('poll/editor/template/<int:template_id>/step/2/from/3/',
                        create_poll_from_template.render_step_2_from_step_3),
+                  # Переход на третий шаг для не мастера (второй шаг для пользователя)
                   path('poll/editor/template/<int:template_id>/step/3/from/1/notMaster/',
                        create_poll_from_template.render_step_3_from_step_1),
+                  # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
                   path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
                        create_poll_from_template.render_step_1_from_step_3),
                   # Удаление шаблона
