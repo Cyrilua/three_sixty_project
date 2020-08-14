@@ -1,3 +1,147 @@
-
+@charset "UTF-8";
+.taking-poll {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20vh;
+}
+.taking-poll[data-color=red] .poll__head {
+  border-top-color: #FF1841;
+}
+.taking-poll[data-color=blue] .poll__head {
+  border-top-color: #001AFF;
+}
+.taking-poll[data-color=purple] .poll__head {
+  border-top-color: #DB00FF;
+}
+.taking-poll .poll__head {
+  border-top: 20px solid #C4C4C4;
+  margin-bottom: 10px;
+}
+.taking-poll .poll__head .poll__name {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 42px;
+  color: #000000;
+}
+.taking-poll .poll__head .poll__target {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+  margin-top: 35px;
+  display: block;
+}
+.taking-poll .poll__head .poll__target .target {
+  font-weight: normal;
+}
+.taking-poll .poll__head .description {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+  margin-top: 20px;
+  display: block;
+}
+.taking-poll .questions {
+  display: flex;
+  flex-direction: column;
+}
+.taking-poll .questions .question {
+  margin-bottom: 10px;
+  padding-top: 45px;
+  padding-bottom: 50px;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__head .question__type:before {
+  content: "Один из списка";
+}
+.taking-poll .questions .question[data-question-type=checkbox] .question__head .question__type:before {
+  content: "Несколько из списка";
+}
+.taking-poll .questions .question[data-question-type=openQuestion] .question__head .question__type:before {
+  content: "Развёрнутый ответ";
+}
+.taking-poll .questions .question[data-question-type=openQuestion] .open-answer {
+  margin-top: 47px;
+}
+.taking-poll .questions .question[data-question-type=range] .question__head .question__type:before {
+  content: "Шкала";
+}
+.taking-poll .questions .question[data-question-type=range] .range-answer {
+  width: 500px;
+  margin: 47px auto 0;
+  position: relative;
+}
+.taking-poll .questions .question[data-question-type=range] .range-answer .min,
+.taking-poll .questions .question[data-question-type=range] .range-answer .max {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: #595757;
+}
+.taking-poll .questions .question[data-question-type=range] .range-answer .min {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+}
+.taking-poll .questions .question[data-question-type=range] .range-answer .max {
+  position: absolute;
+  bottom: -15px;
+  right: 0;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__answers, .taking-poll .questions .question[data-question-type=checkbox] .question__answers {
+  display: flex;
+  flex-direction: column;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__answers .answer, .taking-poll .questions .question[data-question-type=checkbox] .question__answers .answer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 30px;
+  height: 20px;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__answers .answer:first-child, .taking-poll .questions .question[data-question-type=checkbox] .question__answers .answer:first-child {
+  margin-top: 47px;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__answers .answer .radio,
+.taking-poll .questions .question[data-question-type=radio] .question__answers .answer .checkbox, .taking-poll .questions .question[data-question-type=checkbox] .question__answers .answer .radio,
+.taking-poll .questions .question[data-question-type=checkbox] .question__answers .answer .checkbox {
+  margin-left: -14px;
+}
+.taking-poll .questions .question[data-question-type=radio] .question__answers .answer .answer__text, .taking-poll .questions .question[data-question-type=checkbox] .question__answers .answer .answer__text {
+  margin-right: auto;
+  margin-left: -4px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.taking-poll .questions .question .question__head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.taking-poll .questions .question .question__head .question__name {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: #000000;
+}
+.taking-poll .questions .question .question__head .question__type {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.taking-poll .actions .done-poll {
+  width: 100px;
+}
 
 /*# sourceMappingURL=taking_poll.css.map */

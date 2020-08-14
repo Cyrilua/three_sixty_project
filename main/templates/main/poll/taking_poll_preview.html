@@ -1,0 +1,227 @@
+<div class="taking-poll" data-color="{{ poll.color }}" data-poll-id="{{ poll.id }}">
+    {% if is_not_preview %}
+        {% csrf_token %}
+    {% endif %}
+    <div class="poll__head rounded-block">
+        <h1 class="poll__name">{{ poll.name }}</h1>
+        <span class="poll__target">
+                О ком: <a href="{{ poll.target.href }}"
+                          class="target">{{ poll.target.surname }} {{ poll.target.name }} {{ poll.target.patronymic }}</a>
+            </span>
+        <span class="description">{{ poll.description }}</span>
+    </div>
+    <div class="questions unselectable">
+
+        {% for question in poll.questions %}
+
+            <div class="question rounded-block" data-question-type="{{ question.type }}"
+                 data-real-id="{{ question.id }}">
+                <div class="question__head">
+                    <div class="question__name">{{ question.name }}</div>
+                    <div class="question__type"></div>
+                </div>
+
+                {% if question.type == 'radio' or question.type == 'checkbox' %}
+                    <div class="question__answers">
+                        {% for answer in question.answers %}
+                            <div class="answer">
+                                {% if question.type == 'range' %}
+                                    <div class="radio">
+                                        <div class="mdc-radio mdc-radio--touch">
+                                            <input class="mdc-radio__native-control" type="radio"
+                                                   id="{{ question.id }}-{{ answer.id }}"
+                                                   data-real-id="{{ answer.id }}"
+                                                   name="question-{{ question.id }}">
+                                            <div class="mdc-radio__background">
+                                                <div class="mdc-radio__outer-circle"></div>
+                                                <div class="mdc-radio__inner-circle"></div>
+                                            </div>
+                                            <div class="mdc-radio__ripple"></div>
+                                        </div>
+                                    </div>
+                                {% elif question.type == 'checkbox' %}
+                                    <div class="checkbox">
+                                        <div class="mdc-checkbox mdc-checkbox--touch">
+                                            <input type="checkbox" class="mdc-checkbox__native-control"
+                                                   data-real-id="{{ answer.id }}"
+                                                   id="{{ question.id }}-{{ answer.id }}"
+                                                   name="question-{{ question.id }}"/>
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
+                                            </div>
+                                            <div class="mdc-checkbox__ripple"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <label class="answer__text"
+                                       for="{{ question.id }}-{{ answer.id }}">{{ answer.text }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elif question.type == 'openQuestion' %}
+                    <div class="open-answer">
+                            <textarea class="textarea-line answer" name="" id="" rows="1" placeholder="Поле для ответа"
+                                      maxlength="500"></textarea>
+                    </div>
+                {% elif question.type == 'range' %}
+                    <div class="range-answer">
+                        <div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"
+                             aria-valuemin="{{ question.answer.min }}" aria-valuemax="{{ question.answer.max }}"
+                             aria-valuenow="{{ question.answer.now }}" data-step="1"
+                             aria-label="Select Value" aria-disabled="false">
+                            <div class="mdc-slider__track-container">
+                                <div class="mdc-slider__track"></div>
+                            </div>
+                            <div class="mdc-slider__thumb-container">
+                                <div class="mdc-slider__pin">
+                                    <span class="mdc-slider__pin-value-marker"></span>
+                                </div>
+                                <svg class="mdc-slider__thumb" width="21" height="21">
+                                    <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                                </svg>
+                                <div class="mdc-slider__focus-ring"></div>
+                            </div>
+                        </div>
+                        <div class="min">{{ question.answer.min }}</div>
+                        <div class="max">{{ question.answer.max }}</div>
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+
+        {#            <div class="question rounded-block" data-question-type="radio" data-real-id="1">#}
+        {#                <div class="question__head">#}
+        {#                    <div class="question__name">Быть или не быть?</div>#}
+        {#                    <div class="question__type"></div>#}
+        {#                </div>#}
+        {#                <div class="question__answers">#}
+        {#                    <div class="answer">#}
+        {#                        <div class="radio">#}
+        {#                            <div class="mdc-radio mdc-radio--touch">#}
+        {#                                <input class="mdc-radio__native-control" type="radio" id="1-1" data-real-id="1"#}
+        {#                                       name="question-1">#}
+        {#                                <div class="mdc-radio__background">#}
+        {#                                    <div class="mdc-radio__outer-circle"></div>#}
+        {#                                    <div class="mdc-radio__inner-circle"></div>#}
+        {#                                </div>#}
+        {#                                <div class="mdc-radio__ripple"></div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <label class="answer__text" for="1-1">Быть</label>#}
+        {#                    </div>#}
+        {#                    <div class="answer">#}
+        {#                        <div class="radio">#}
+        {#                            <div class="mdc-radio mdc-radio--touch">#}
+        {#                                <input class="mdc-radio__native-control" type="radio" id="1-2" data-real-id="2"#}
+        {#                                       name="question-1">#}
+        {#                                <div class="mdc-radio__background">#}
+        {#                                    <div class="mdc-radio__outer-circle"></div>#}
+        {#                                    <div class="mdc-radio__inner-circle"></div>#}
+        {#                                </div>#}
+        {#                                <div class="mdc-radio__ripple"></div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <label class="answer__text" for="1-2">НЕ Быть</label>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+
+        {#            <div class="question rounded-block" data-question-type="checkbox" data-real-id="2">#}
+        {#                <div class="question__head">#}
+        {#                    <div class="question__name">Быть или не быть?</div>#}
+        {#                    <div class="question__type"></div>#}
+        {#                </div>#}
+        {#                <div class="question__answers">#}
+        {#                    <div class="answer">#}
+        {#                        <div class="checkbox">#}
+        {#                            <div class="mdc-checkbox mdc-checkbox--touch">#}
+        {#                                <input type="checkbox" class="mdc-checkbox__native-control" data-real-id="1"#}
+        {#                                       id="2-1" name="question-2"/>#}
+        {#                                <div class="mdc-checkbox__background">#}
+        {#                                    <svg class="mdc-checkbox__checkmark"#}
+        {#                                         viewBox="0 0 24 24">#}
+        {#                                        <path class="mdc-checkbox__checkmark-path"#}
+        {#                                              fill="none"#}
+        {#                                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>#}
+        {#                                    </svg>#}
+        {#                                    <div class="mdc-checkbox__mixedmark"></div>#}
+        {#                                </div>#}
+        {#                                <div class="mdc-checkbox__ripple"></div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <label class="answer__text" for="2-1">НН Быть</label>#}
+        {#                    </div>#}
+        {#                    <div class="answer">#}
+        {#                        <div class="checkbox">#}
+        {#                            <div class="mdc-checkbox mdc-checkbox--touch">#}
+        {#                                <input type="checkbox" class="mdc-checkbox__native-control" data-real-id="2"#}
+        {#                                       id="2-2" name="question-2"/>#}
+        {#                                <div class="mdc-checkbox__background">#}
+        {#                                    <svg class="mdc-checkbox__checkmark"#}
+        {#                                         viewBox="0 0 24 24">#}
+        {#                                        <path class="mdc-checkbox__checkmark-path"#}
+        {#                                              fill="none"#}
+        {#                                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>#}
+        {#                                    </svg>#}
+        {#                                    <div class="mdc-checkbox__mixedmark"></div>#}
+        {#                                </div>#}
+        {#                                <div class="mdc-checkbox__ripple"></div>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                        <label class="answer__text" for="2-2">Быть</label>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+
+        {#            <div class="question rounded-block" data-question-type="openQuestion" data-real-id="3">#}
+        {#                <div class="question__head">#}
+        {#                    <div class="question__name">Быть или не быть?</div>#}
+        {#                    <div class="question__type"></div>#}
+        {#                </div>#}
+        {#                <div class="open-answer">#}
+        {#                    <textarea class="textarea-line answer" name="" id="" rows="1" placeholder="Поле для ответа"#}
+        {#                              maxlength="500"></textarea>#}
+        {#                </div>#}
+        {#            </div>#}
+
+        {#            <div class="question rounded-block" data-question-type="range" data-real-id="4">#}
+        {#                <div class="question__head">#}
+        {#                    <div class="question__name">Так быть всё-таки или нет?</div>#}
+        {#                    <div class="question__type"></div>#}
+        {#                </div>#}
+        {#                <div class="range-answer">#}
+        {#                    <div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"#}
+        {#                         aria-valuemin="0" aria-valuemax="10"#}
+        {#                         aria-valuenow="5" data-step="1"#}
+        {#                         aria-label="Select Value" aria-disabled="false">#}
+        {#                        <div class="mdc-slider__track-container">#}
+        {#                            <div class="mdc-slider__track"></div>#}
+        {#                        </div>#}
+        {#                        <div class="mdc-slider__thumb-container">#}
+        {#                            <div class="mdc-slider__pin">#}
+        {#                                <span class="mdc-slider__pin-value-marker"></span>#}
+        {#                            </div>#}
+        {#                            <svg class="mdc-slider__thumb" width="21" height="21">#}
+        {#                                <circle cx="10.5" cy="10.5" r="7.875"></circle>#}
+        {#                            </svg>#}
+        {#                            <div class="mdc-slider__focus-ring"></div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                    <div class="min">0</div>#}
+        {#                    <div class="max">10</div>#}
+        {#                </div>#}
+        {#            </div>#}
+    </div>
+    {% if is_not_preview %}
+        <div class="actions">
+            <button class="button-red done-poll" disabled>Отправить</button>
+        </div>
+    {% endif %}
+</div>

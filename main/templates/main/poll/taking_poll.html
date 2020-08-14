@@ -7,105 +7,8 @@
 
 {% block content-user %}
 
-    <div class="taking-poll">
-        <div class="poll__head">
-            <h1 class="poll__name">Опрос о чём-то очень важном</h1>
-            <span class="poll__target">
-                О ком: <a href="#" class="target">Иванов Иван Иванович</a>
-            </span>
-            <span class="description">Это опрос о чём-то очень важном</span>
-        </div>
-        <div class="questions">
-            <div class="question" data-question-type="radio" data-real-id="1">
-                <div class="question__head">
-                    <div class="question__name">Быть или не быть?</div>
-                    <div class="question__type"></div>
-                </div>
-                <div class="question__answers">
-                    <div class="answer">
-                        <div class="radio">
-                            <div class="mdc-radio mdc-radio--touch">
-                                <input class="mdc-radio__native-control" type="radio" id="" data-real-id="1"
-                                       name="answer-1" checked>
-                                <div class="mdc-radio__background">
-                                    <div class="mdc-radio__outer-circle"></div>
-                                    <div class="mdc-radio__inner-circle"></div>
-                                </div>
-                                <div class="mdc-radio__ripple"></div>
-                            </div>
-                        </div>
-                        <div class="answer__text">Быть</div>
-                    </div>
-                    <div class="answer">
-                        <div class="radio">
-                            <div class="mdc-radio mdc-radio--touch">
-                                <input class="mdc-radio__native-control" type="radio" id="" data-real-id="2"
-                                       name="answer-1">
-                                <div class="mdc-radio__background">
-                                    <div class="mdc-radio__outer-circle"></div>
-                                    <div class="mdc-radio__inner-circle"></div>
-                                </div>
-                                <div class="mdc-radio__ripple"></div>
-                            </div>
-                        </div>
-                        <div class="answer__text">НЕ Быть</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="question" data-question-type="checkbox" data-real-id="2">
-                <div class="question__head">
-                    <div class="question__name">Быть или не быть?</div>
-                    <div class="question__type"></div>
-                </div>
-                <div class="question__answers">
-                    <div class="answer">
-                        <div class="checkbox">
-                            <div class="mdc-checkbox mdc-checkbox--touch">
-                                <input type="checkbox" class="mdc-checkbox__native-control" data-real-id="1"
-                                       id="" name="question-2"/>
-                                <div class="mdc-checkbox__background">
-                                    <svg class="mdc-checkbox__checkmark"
-                                         viewBox="0 0 24 24">
-                                        <path class="mdc-checkbox__checkmark-path"
-                                              fill="none"
-                                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                                    </svg>
-                                    <div class="mdc-checkbox__mixedmark"></div>
-                                </div>
-                                <div class="mdc-checkbox__ripple"></div>
-                            </div>
-                        </div>
-                        <div class="answer__text">НН Быть</div>
-                    </div>
-                    <div class="answer">
-                        <div class="checkbox">
-                            <div class="mdc-checkbox mdc-checkbox--touch">
-                                <input type="checkbox" class="mdc-checkbox__native-control" data-real-id="1"
-                                       id="" name="question-2"/>
-                                <div class="mdc-checkbox__background">
-                                    <svg class="mdc-checkbox__checkmark"
-                                         viewBox="0 0 24 24">
-                                        <path class="mdc-checkbox__checkmark-path"
-                                              fill="none"
-                                              d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                                    </svg>
-                                    <div class="mdc-checkbox__mixedmark"></div>
-                                </div>
-                                <div class="mdc-checkbox__ripple"></div>
-                            </div>
-                        </div>
-                        <div class="answer__text">Быть</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="question">
-
-            </div>
-            <div class="question"></div>
-        </div>
-    </div>
+        {% include 'main/poll/taking_poll_preview.html' with is_not_preview="True"%}
 
 {% endblock %}
 
@@ -121,6 +24,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src={% static 'main/js/taking_poll.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/taking_poll.js' %}></script>
     <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
 {% endblock %}

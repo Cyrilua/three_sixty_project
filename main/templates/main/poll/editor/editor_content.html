@@ -1,17 +1,21 @@
 {% load static %}
 <div class="substrate">
     <div class="sort rounded-block unselectable">
-        <div class="category active-sort" data-category=".poll-editor__content">
+        <div class="category active-sort" data-category="" data-part-url="editor">
             <div class="category__title">Редактор
                 <div class="category__notice hide"></div>
             </div>
         </div>
-        <div class="category disabled" data-category=".poll-view__content">
+        <div class="category" data-category="" data-part-url="preview">
             <div class="category__title">Просмотр
-                <img src="{% static 'main/images/icon/handyman-24px.svg' %}"
-                     alt="" class="build" style="position: absolute; right: -30px">
+                {#                <img src="{% static 'main/images/icon/handyman-24px.svg' %}"#}
+                {#                     alt="" class="build" style="position: absolute; right: -30px">#}
                 <div class="category__notice hide"></div>
             </div>
+        </div>
+        <div class="loader-round hide">
+            <div class="loader__status"></div>
+            {#            <img src="{% static 'main/images/icon/cached-24px.svg' %}" alt="" class="update">#}
         </div>
         <div class="color">
             <div class="color__variable {% if poll.color == '' %}color__variable--select{% endif %}"
@@ -26,7 +30,7 @@
     </div>
 </div>
 <div class="categories">
-    <div class="category-content poll-editor__content">
+    <div class="content">
         {% include 'main/poll/editor/content_poll_editor.html' %}
     </div>
     {#    <div class="category-content poll-view__content">#}
