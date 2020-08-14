@@ -280,16 +280,16 @@ def _search(mode: str, user_input: str, profile: Profile) -> QuerySet:
         return teams.filter(name__icontains=user_input)
 
 
-
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
+        # TODO
         return JsonResponse({}, status=200)
 
 
 def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         # TODO
+        print(request.POST)
         return JsonResponse({}, status=200)
 
 
@@ -339,11 +339,18 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
     }
 
 
-
 def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            poll = _create_or_change_poll(request, poll)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            poll = _create_or_change_poll(request, None)
+        version = _create_new_questions_or_change(request, poll)
+        poll.questions.all().exclude(version=version).delete()
+        args = _get_rendered_page_for_step_3(request, poll)
+        return JsonResponse(args, status=200)
 
 
 def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
@@ -452,3 +459,4 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
         'headMove': head_move,
         'categories': categories
     }
+
