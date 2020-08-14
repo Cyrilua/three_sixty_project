@@ -205,11 +205,14 @@ urlpatterns = [
                   # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
                   path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
                        create_poll_from_template.render_step_1_from_step_3),
+                  # Привеьюшка для опроса
+                  path('poll/editor/template/<int:template_id>/step/1/category/preview/',
+                       create_poll_from_template.poll_preview),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
-
+                  #
                   path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
 
                  ############ Only for debug ###############
