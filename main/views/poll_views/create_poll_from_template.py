@@ -288,9 +288,23 @@ def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse
 
 def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
-        print(request.POST)
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            list_profiles = request.POST.getlist('checkedInterviewed[]')
+        except MultiValueDictKeyError:
+            return JsonResponse({}, status=400)
+        for profile_id in list_profiles:
+            try:
+                profile = Profile.objects.get(id=int(profile_id))
+            except (ValueError, ObjectDoesNotExist):
+                continue
+            need_pass = NeedPassPoll()
+            need_pass.poll = poll
+            need_pass.profile = profile
+            need_pass.save()
+        args = _get_rendered_page_for_step_1(request, poll)
+        return JsonResponse(args, status=200)
 
 
 def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
@@ -318,8 +332,10 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
     profiles = profile.company.profile_set.all()
     company = profile.company
 
+    profiles_checked = [i.profile for i in NeedPassPoll.objects.filter(poll=poll)]
+    print(profiles_checked)
     categories_args = {
-        'participants': _build_team_profiles_list(profiles, company, list(NeedPassPoll.objects.filter(poll=poll))),
+        'participants': _build_team_profiles_list(profiles, company, profiles_checked),
         'company': {
             'countParticipants': profiles.count(),
         }
@@ -376,12 +392,14 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
 
 
 def _get_rendered_page_for_step_1(request: WSGIRequest, poll: Poll) -> dict:
+    created_poll = _build_created_poll(poll)
+    print(created_poll)
+    categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
+                                        {'poll': created_poll}).rendered_content
     args = {}
     profile = get_user_profile(request)
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
-    categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
-                                        {'poll': _build_created_poll(poll)}).rendered_content
     head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html', args).rendered_content
     head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html', args).rendered_content
     return {
