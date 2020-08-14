@@ -243,8 +243,12 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
                         return True
                 return False
             user_input_list = user_input.split(' ')
-            profiles = profile.company.profile_set.all()
-            profiles = filter(lambda x: compare_with_user_input(x), profiles)
+            #profiles = profile.company.profile_set.all()
+            #profiles = filter(lambda x: compare_with_user_input(x), profiles)
+            print(type(user_input_list))
+            print(user_input_list)
+            profiles = profile.company.profile_set.all().filter(name__in__icontains=user_input_list)
+            print(profiles)
             content_participants_args = {
                 'participants': _build_team_profiles_list(profiles, profile.company)
             }
