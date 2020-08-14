@@ -508,9 +508,13 @@ $(function () {
         let substrate = $('.substrate');
         let search = $('.input__search');
         let step = editor.attr('data-step');
+        let target = this;
         // if (step !== '2' && step !== '3') {
         //     return;
         // }
+        if ($('.active-sort').attr('data-part-url') === partUrl) {
+            return;
+        }
         let data;
         if (step === '2') {
             let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
@@ -592,11 +596,10 @@ $(function () {
                 content[0].insertAdjacentHTML('afterbegin', response.content);
                 loader
                     .removeClass('status--loading status--done status--error')
-                    .addClass('status--done');
 
 
-                $('.category').removeClass('active-sort');
-                $(el.target).addClass('active-sort');
+                $('.active-sort').removeClass('active-sort');
+                $(target).addClass('active-sort');
             },
             complete: function () {
                 substrate.removeClass('disabled');
