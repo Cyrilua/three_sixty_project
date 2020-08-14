@@ -242,8 +242,12 @@ $(function () {
         }
     });
 
-    // Отмена созданияF
+    // Отмена создания
     body.on('click', '#cancel', function () {
+        ajaxCancel();
+    });
+
+    function ajaxCancel() {
         $.ajax({
             url: 'cancel/',
             type: 'post',
@@ -262,8 +266,8 @@ $(function () {
                 menu.removeClass('disabled');
                 editor.removeClass('disabled');
             }
-        })
-    });
+        });
+    }
 
     // Сохранения шаблона
     body.on('click', '#saveAs', function () {
