@@ -205,8 +205,11 @@ urlpatterns = [
                   # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
                   path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
                        create_poll_from_template.render_step_1_from_step_3),
-                  # Привеьюшка для опроса
+                  # Превьюшка для опроса
                   path('poll/editor/template/<int:template_id>/step/1/category/preview/',
+                       create_poll_from_template.poll_preview),
+                  # TODO
+                  path('poll/editor/template/<int:template_id>/step/1/category/editor/',
                        create_poll_from_template.poll_preview),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),

@@ -393,7 +393,6 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
 
 def _get_rendered_page_for_step_1(request: WSGIRequest, poll: Poll) -> dict:
     created_poll = _build_created_poll(poll)
-    print(created_poll)
     categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
                                         {'poll': created_poll}).rendered_content
     args = {}
@@ -482,4 +481,8 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
 
 def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
+        print(request.POST)
         return JsonResponse({}, status=200)
+
+
+
