@@ -1035,10 +1035,6 @@ $(function () {
                     'data-step': '3',
                 });
 
-                if (pollId === undefined) {
-                    pollId = response.pollId;
-                }
-
                 menu.eq(0).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
             },
@@ -1100,6 +1096,10 @@ $(function () {
                 editor.attr({
                     'data-step': '3',
                 });
+
+                if (pollId === undefined) {
+                    pollId = response.pollId;
+                }
 
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
