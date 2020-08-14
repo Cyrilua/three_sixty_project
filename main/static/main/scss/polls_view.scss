@@ -347,15 +347,15 @@
     font-size: 14px;
     line-height: 16px;
     max-width: 190px;
-    //overflow: hidden;
-    //white-space: nowrap;
-    //text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     .name {
       height: 22px;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      //justify-content: center;
       align-items: center;
       max-width: 190px;
       padding: 0 9px;
