@@ -1480,6 +1480,7 @@ $(function () {
         return keys[keys.length - 1];
     }
 
+    // изменение типа
     function selectDeclaration(el) {
         let sortable = new mdc.select.MDCSelect(el.querySelector('.mdc-select'));
         sortable.listen('MDCSelect:change', () => {
@@ -1581,7 +1582,7 @@ $(function () {
                         answers.append(answer);
 
                         let slider = '<div class="mdc-slider mdc-slider--discrete" tabindex="0" role="slider"\n' +
-                            '                         aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" data-step="1"\n' +
+                            '                         aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" data-step="1"\n' +
                             '                         aria-label="Select Value" aria-disabled="false">\n' +
                             '                        <div class="mdc-slider__track-container">\n' +
                             '                            <div class="mdc-slider__track"></div>\n' +
@@ -1627,6 +1628,9 @@ $(function () {
 
                         let step = document.createElement('div');
                         step.classList.add('step');
+                        $(step).prop({
+                            'hidden': true,
+                        });
                         sSetting.append(step);
 
                         let stepLabel = document.createElement('label');
