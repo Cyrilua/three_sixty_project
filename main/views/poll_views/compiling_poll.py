@@ -10,4 +10,5 @@ from django.template.response import SimpleTemplateResponse
 
 
 def compiling_poll(request, poll_id) -> render:
+    print('test')
     return render(request, 'main/poll/taking_poll.html', {})
