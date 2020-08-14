@@ -48,10 +48,10 @@ $(function () {
 
     // Сообщение перед ухода со страницы
     window.onunload = function () {
-        return confirm('Все несохраненные изменения удалятся')
+        // return confirm('Все несохраненные изменения удалятся')
     };
     window.onbeforeunload = function () {
-        return confirm('Все несохраненные изменения удалятся');
+        // return confirm('Все несохраненные изменения удалятся');
     };
 
     // Увеличение полей для ввода
