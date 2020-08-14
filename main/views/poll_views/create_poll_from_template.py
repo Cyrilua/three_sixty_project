@@ -26,7 +26,7 @@ def create_poll_from_template(request, template_id) -> render:
     profile = get_user_profile(request)
     args = {
         'title': "Создание опроса из шаблона",
-        'poll': _build_template(template),
+        'poll': _build_poll(template),
     }
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
@@ -34,13 +34,14 @@ def create_poll_from_template(request, template_id) -> render:
     return render(request, 'main/poll/new_poll_editor.html', args)
 
 
-def _build_template(template: TemplatesPoll) -> dict:
+def _build_poll(poll: (TemplatesPoll, Poll)) -> dict:
+    is_template = type(poll) is TemplatesPoll
     result = {
-        'color': '' if template.color is None else template.color,
-        'name': template.name_poll,
-        'description': template.description,
-        'questions': _build_questions(template.questions.all(), True),
-        'id': template.id,
+        'color': '' if poll.color is None else poll.color,
+        'name': poll.name_poll,
+        'description': poll.description,
+        'questions': _build_questions(poll.questions.all(), is_template),
+        'id': poll.id,
     }
     return result
 
@@ -482,8 +483,26 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
 def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
         # TODO
-        print(request.POST)
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            poll = _create_or_change_poll(request, poll)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            poll = _create_or_change_poll(request, None)
+        version = _create_new_questions_or_change(request, poll)
+        poll.questions.all().exclude(version=version).delete()
+        created_poll = _build_poll(poll)
+        if poll.target is not None:
+            created_poll['target'] = {
+                'name': poll.target.name,
+                'surname': poll.target.surname,
+                'patronymic': poll.target.patronymic
+            }
+        print(created_poll)
+        content = SimpleTemplateResponse('main/poll/taking_poll.html',
+                                         {'poll': created_poll}).rendered_content
+        print(content)
+        return JsonResponse({'content': content}, status=200)
 
 
 def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
@@ -498,6 +517,7 @@ def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
             poll = Poll.objects.get(id=int(request.POST['pollId']))
             poll = _create_or_change_poll(request, poll)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-            return JsonResponse({}, status=400)
-        poll.delete()
-        return JsonResponse({}, status=200)
+            return JsonResponse({}, status=200)
+        else:
+            poll.delete()
+            return JsonResponse({}, status=200)
