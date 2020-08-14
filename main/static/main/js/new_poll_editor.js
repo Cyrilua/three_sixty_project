@@ -346,7 +346,7 @@ $(function () {
         let template = getTemplate();
         let data;
         let category = $('.active-sort').attr('data-part-url');
-        let step = editor.attr('data-step');
+        // let step = editor.attr('data-step');
         if (category === 'preview') {
             data = {
                 csrfmiddlewaretoken: csrf,
@@ -401,14 +401,18 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
 
-                if ($('input[name=participants]:checked').length > 0) {
-                    if (step === '2') {
-                        $('#nextToStep3').prop({
-                            'disabled': false,
-                        });
-                        menu.eq(1).removeClass('disabled');
-                    }
+                let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
+                if (participant.length > 0) {
+                    $('#nextToStep3').prop({
+                        'disabled': false,
+                    });
+                    menu.eq(1).removeClass('disabled');
                 }
+                console.log(participant)
+                participant.css({
+                    // 'order': -10000,
+                    'background-color': '#F0F1F6',
+                });
 
             },
             complete: function () {
@@ -649,23 +653,23 @@ $(function () {
         // console.log(scroll)
         let participant = $(this).parent().parent().parent();
         if ($('.teams').length > 0) {
-            $('.participant-active').each(function (key, elem) {
-                $(elem).css({
-                    'order': 'initial',
-                });
-            });
-            participant.css({
-                'order': -10000,
-            });
+            // $('.participant-active').each(function (key, elem) {
+            //     $(elem).css({
+            //         'order': 'initial',
+            //     });
+            // });
+            // participant.css({
+            //     'order': -10000,
+            // });
         } else {
             $('.participant-active').each(function (key, elem) {
                 $(elem).css({
-                    'order': 'initial',
+                    // 'order': 'initial',
                     'background-color': '#FAFAFA',
                 });
             });
             participant.css({
-                'order': -10000,
+                // 'order': -10000,
                 'background-color': '#F0F1F6',
             });
         }
@@ -1086,6 +1090,19 @@ $(function () {
 
                 menu.eq(0).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
+
+                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participant.length > 0) {
+                    $('#sendPoll').prop({
+                        'disabled': false,
+                    });
+                    menu.eq(1).removeClass('disabled');
+                }
+                console.log(participant)
+                participant.css({
+                    // 'order': -10000,
+                    'background-color': '#F0F1F6',
+                });
             },
             complete: function () {
                 // $(el.target).prop({
@@ -1152,6 +1169,19 @@ $(function () {
 
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
+
+                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participant.length > 0) {
+                    $('#sendPoll').prop({
+                        'disabled': false,
+                    });
+                    menu.eq(1).removeClass('disabled');
+                }
+                console.log(participant)
+                participant.css({
+                    // 'order': -10000,
+                    'background-color': '#F0F1F6',
+                });
             },
             complete: function () {
                 // $(el.target).prop({
