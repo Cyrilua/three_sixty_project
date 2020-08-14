@@ -582,7 +582,7 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
-                } else if (step === '1') {
+                } else if (step === '1' && partUrl === 'preview') {
                     if (pollId === undefined) {
                         pollId = response.pollId;
                     }
@@ -595,8 +595,7 @@ $(function () {
                 content.empty();
                 content[0].insertAdjacentHTML('afterbegin', response.content);
                 loader
-                    .removeClass('status--loading status--done status--error')
-
+                    .removeClass('status--loading status--done status--error');
 
                 $('.active-sort').removeClass('active-sort');
                 $(target).addClass('active-sort');
