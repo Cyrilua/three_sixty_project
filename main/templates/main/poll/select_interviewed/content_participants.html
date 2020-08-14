@@ -7,7 +7,7 @@
                 <div class="info">
                     <div class="name">
                         <a href="{{ participant.href }}" target="_blank"
-                           class="participant__href">{{ participant.surname }} {{ participant.nume }} {{ participant.patronymic }}</a>
+                           class="participant__href">{{ participant.surname }} {{ participant.name }} {{ participant.patronymic }}</a>
                         {% for role in participant.roles %}
                             <div class="participant__role _hint unselectable">
                                 <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">

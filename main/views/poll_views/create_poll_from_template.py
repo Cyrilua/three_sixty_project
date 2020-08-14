@@ -227,6 +227,9 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
         return JsonResponse(args, status=200)
 
 
+from django.db.models import Q
+
+
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         print(request.POST)
@@ -234,17 +237,10 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
         user_input: str = request.POST['input']
         profile = get_user_profile(request)
         if mode == 'participants':
-            def compare_with_user_input(profile_compared: Profile):
-                for user_input_object in user_input_list:
-                    compare = profile_compared.name.find(user_input_object) != -1 or \
-                              profile_compared.surname.find(user_input_object) != -1 or \
-                              profile_compared.patronymic.find(user_input_object) != -1
-                    if compare:
-                        return True
-                return False
             user_input_list = user_input.split(' ')
             profiles = profile.company.profile_set.all()
-            profiles = filter(lambda x: compare_with_user_input(x), profiles)
+            for user_input in user_input_list:
+                profiles = profiles.filter(Q(name__icontains=user_input) | Q(surname__icontains=user_input) | Q(patronymic__icontains=user_input))
             content_participants_args = {
                 'participants': _build_team_profiles_list(profiles, profile.company)
             }
@@ -256,7 +252,7 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
                 teams = Group.objects.filter(company=profile.company)
             else:
                 teams = profile.groups.all()
-            teams = filter(lambda team: team.name.find(user_input) != -1, teams)
+            teams = filter(lambda team: team.name.lower().find(user_input) != -1, teams)
             collected_teams = _build_team_list(teams)
             content_teams_args = {
                 'teams': collected_teams
@@ -397,6 +393,4 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
 
 
 def _delete_deleted_questions(poll: Poll, version: int) -> None:
-    questions = poll.questions.all().filter(version__lt=version)
-    for question in questions:
-        question.delete()
+    questions = poll.questions.all().filter(version__lt=version).delete()
