@@ -7,7 +7,7 @@
                     <img src="{% static 'main/images/team.svg' %}" alt="" class="team__photo">
                     <div class="info">
                         <div class="name">
-                            <a href="{{ team.href }}" class="team__href">{{ team.name }}</a>
+                            <a href="{{ team.href }}" target="_blank" class="team__href">{{ team.name }}</a>
                         </div>
                         <span class="team__numbers">{{ team.numbers }} участников</span>
                         <span class="team__descriptions">{{ team.descriptions }}</span>
@@ -23,7 +23,7 @@
                                 <img src="{{ participant.photo }}" alt="" class="participant__photo">
                                 <div class="info">
                                     <div class="name">
-                                        <a href="{{ participant.href }}"
+                                        <a href="{{ participant.href }}" target="_blank"
                                            class="participant__href">{{ participant.surname }} {{ participant.nume }} {{ participant.patronymic }}</a>
                                         {% for role in participant.roles %}
                                             <div class="participant__role _hint unselectable">
