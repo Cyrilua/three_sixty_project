@@ -260,6 +260,12 @@ $(function () {
                 editor.addClass('disabled');
             },
             success: function () {
+                window.onunload = function () {
+                    return false;
+                };
+                window.onbeforeunload = function () {
+                    return false;
+                };
                 location.href = '/polls/';
             },
             complete: function () {
