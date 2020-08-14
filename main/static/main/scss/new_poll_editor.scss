@@ -607,6 +607,16 @@
   line-height: 16px;
   color: #2269D4;
   margin: 20px 0 auto auto;
+
+  &.all-checked {
+    &:before {
+      content: 'Отменить выделение';
+    }
+  }
+
+  &:before {
+    content: 'Выбрать всех';
+  }
 }
 
 @keyframes cached {

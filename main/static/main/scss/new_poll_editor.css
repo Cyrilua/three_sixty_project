@@ -454,6 +454,12 @@
   color: #2269D4;
   margin: 20px 0 auto auto;
 }
+.select__all.all-checked:before {
+  content: "Отменить выделение";
+}
+.select__all:before {
+  content: "Выбрать всех";
+}
 
 @keyframes cached {
   from {

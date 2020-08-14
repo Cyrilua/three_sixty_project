@@ -636,7 +636,7 @@ $(function () {
     });
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
-    body.on('click', 'input[name=participants]', function () {
+    body.on('change', 'input[type=radio][name=participants]', function () {
         let scroll = window.pageYOffset;
         // console.log(scroll)
         let participant = $(this).parent().parent().parent();
@@ -789,6 +789,7 @@ $(function () {
                     .addClass('status--loading');
                 sort.addClass('disabled');
                 content.empty();
+                menu.addClass('disabled');
             },
             complete: function () {
                 ajaxSearch = undefined;
@@ -796,6 +797,36 @@ $(function () {
                 loader.addClass('hide');
                 loaderStatus
                     .removeClass('status--loading status--done status--error')
+                menu.eq(0).removeClass('disabled');
+
+                if ($('input[name=participants]:checked').length > 0) {
+                    if (step === '2') {
+                        $('#nextToStep3').prop({
+                            'disabled': false,
+                        });
+                        menu.eq(1).removeClass('disabled');
+                    } else if (step === '3') {
+                        $('#sendPoll').prop({
+                            'disabled': false,
+                        });
+                        menu.eq(1).removeClass('disabled');
+                        if (accessStep3) {
+                            menu.eq(2).removeClass('disabled');
+                        }
+                    }
+                } else {
+                    if (step === '2') {
+                        $('#nextToStep3').prop({
+                            'disabled': true,
+                        });
+                        menu.eq(1).removeClass('disabled');
+                    } else if (step === '3') {
+                        $('#sendPoll').prop({
+                            'disabled': true,
+                        });
+                        menu.eq(1).removeClass('disabled');
+                    }
+                }
             },
             success: function (response) {
                 content[0].insertAdjacentHTML('afterbegin', response.content);
@@ -804,8 +835,10 @@ $(function () {
     });
 
     // 3 шаг - активация кнопки ОТПРАВИТЬ
-    body.on('click', '[name=participants]', function () {
-        if ($('input[name=participants]:checked').length > 0) {
+    body.on('change', 'input[type=checkbox][name=participants]', function () {
+        let checked = $('input[name=participants]:checked');
+        let allCheckbox = $('input[name=participants]');
+        if (checked.length > 0) {
             $('#sendPoll').prop({
                 'disabled': false,
             });
@@ -813,6 +846,12 @@ $(function () {
             $('#sendPoll').prop({
                 'disabled': true,
             });
+        }
+
+        if (checked.length === allCheckbox.length) {
+            $('.select__all').addClass('all-checked');
+        } else {
+            $('.select__all').removeClass('all-checked');
         }
     });
 
@@ -1175,6 +1214,31 @@ $(function () {
             },
         });
     }
+
+    body.on('click', '.select__all', function (el) {
+        if (!$(this).hasClass('all-checked')) {
+            $('input[name=participants]').prop({
+                'checked': true,
+            });
+            $(this).addClass('all-checked');
+        } else {
+            $('input[name=participants]').prop({
+                'checked': false,
+            });
+            $(this).removeClass('all-checked');
+        }
+
+        if ($('input[name=participants]:checked').length > 0) {
+            $('#sendPoll').prop({
+                'disabled': false,
+            });
+        } else {
+            $('#sendPoll').prop({
+                'disabled': true,
+            });
+        }
+    });
+
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {
