@@ -45,18 +45,6 @@ $(function () {
         }
     });
 
-    // Смена положения вопроса
-    $('.questions').sortable({
-        handle: '.question__move',
-        items: "> .question",
-        // tolerance: 'pointer',
-        // revert: true,
-        // scroll: false,
-        opacity: 0.5,
-        // containment: ".categories",
-        // axis: "y",
-        // cursorAt: { left: 5 }
-    });
 
     // Сообщение перед ухода со страницы
     window.onunload = function () {
@@ -1051,6 +1039,19 @@ $(function () {
         } else {
             menu.eq(2).addClass('disabled');
         }
+
+        // Смена положения вопроса
+        $('.questions').sortable({
+            handle: '.question__move',
+            items: "> .question",
+            // tolerance: 'pointer',
+            // revert: true,
+            // scroll: false,
+            opacity: 0.5,
+            // containment: ".categories",
+            // axis: "y",
+            // cursorAt: { left: 5 }
+        });
 
         // Изменение цвета
         let currentColor = $('.color__variable--select');
