@@ -1203,6 +1203,8 @@ $(function () {
 
                 menu.eq(1).removeClass('item--active');
                 menu.eq(0).addClass('item--active');
+
+                run();
             },
             complete: function () {
                 // $(el.target).prop({
