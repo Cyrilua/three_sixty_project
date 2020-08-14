@@ -462,5 +462,6 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
     }
 
 
-def poll_preview():
-    pass
+def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if request.is_ajax():
+        return JsonResponse({}, status=200)
