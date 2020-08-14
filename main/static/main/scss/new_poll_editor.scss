@@ -236,7 +236,7 @@
       margin-bottom: 10px;
       position: relative;
 
-      .question__move{
+      .question__move {
         position: absolute;
         top: 0;
         left: 50%;
@@ -598,6 +598,15 @@
       }
     }
   }
+}
+
+.select__all {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D4;
+  margin: 20px 0 auto auto;
 }
 
 @keyframes cached {
