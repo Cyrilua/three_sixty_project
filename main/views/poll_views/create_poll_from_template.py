@@ -27,8 +27,9 @@ def create_poll_from_template(request, template_id) -> render:
     args = {
         'title': "Создание опроса из шаблона",
         'poll': _build_template(template),
-        'is_master': SurveyWizard.objects.filter(profile=profile).exists()
     }
+    if SurveyWizard.objects.filter(profile=profile).exists():
+        args['is_master'] = 'is_master'
 
     return render(request, 'main/poll/new_poll_editor.html', args)
 
@@ -308,9 +309,12 @@ def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
 
 
 def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
-    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html').rendered_content
-    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html').rendered_content
+    args = {}
     profile = get_user_profile(request)
+    if SurveyWizard.objects.filter(profile=profile).exists():
+        args['is_master'] = 'is_master'
+    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html', args).rendered_content
+    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html', args).rendered_content
     profiles = profile.company.profile_set.all()
     company = profile.company
 
@@ -358,16 +362,20 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
         else:
             poll.target = profile
             poll.save()
-        args = _get_rendered_page_for_step_1(poll)
+        args = _get_rendered_page_for_step_1(request, poll)
 
         return JsonResponse(args, status=200)
 
 
-def _get_rendered_page_for_step_1(poll: Poll) -> dict:
+def _get_rendered_page_for_step_1(request: WSGIRequest, poll: Poll) -> dict:
+    args = {}
+    profile = get_user_profile(request)
+    if SurveyWizard.objects.filter(profile=profile).exists():
+        args['is_master'] = 'is_master'
     categories = SimpleTemplateResponse('main/poll/editor/editor_content.html',
                                         {'poll': _build_created_poll(poll)}).rendered_content
-    head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html').rendered_content
-    head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html').rendered_content
+    head_move = SimpleTemplateResponse('main/poll/editor/editor_head_move.html', args).rendered_content
+    head_main = SimpleTemplateResponse('main/poll/editor/editor_head_main.html', args).rendered_content
     return {
         'categories': categories,
         'headMove': head_move,
