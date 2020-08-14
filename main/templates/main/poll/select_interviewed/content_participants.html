@@ -64,7 +64,7 @@
                         <input type="checkbox"
                                class="mdc-checkbox__native-control"
                                id="checkbox-{{ participant.id }}" data-participant-id="{{ participant.id }}"
-                               name="participants {% if participant.is_checked %}checked{% endif %}"/>
+                               name="participants"{% if participant.is_checked %}checked{% endif %}/>
                         <div class="mdc-checkbox__background">
                             <svg class="mdc-checkbox__checkmark"
                                  viewBox="0 0 24 24">
