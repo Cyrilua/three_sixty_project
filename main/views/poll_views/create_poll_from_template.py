@@ -481,8 +481,23 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
 
 def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
+        # TODO
         print(request.POST)
         return JsonResponse({}, status=200)
 
 
+def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if request.is_ajax():
+        # TODO
+        return JsonResponse({}, status=200)
 
+
+def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if request.is_ajax():
+        try:
+            poll = Poll.objects.get(id=int(request.POST['pollId']))
+            poll = _create_or_change_poll(request, poll)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            return JsonResponse({}, status=400)
+        poll.delete()
+        return JsonResponse({}, status=200)
