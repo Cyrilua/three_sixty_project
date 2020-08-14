@@ -201,6 +201,7 @@ class Poll(models.Model):
     creation_date = models.DateField(null=True)
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     questions = models.ManyToManyField('Questions')
+    is_submitted = models.BooleanField(default=False)
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
