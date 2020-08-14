@@ -35,24 +35,22 @@ def _build_template(template: TemplatesPoll) -> dict:
         'color': '' if template.color is None else template.color,
         'name': template.name_poll,
         'description': template.description,
-        'questions': _build_questions(template.questions.all()),
+        'questions': _build_questions(template.questions.all(), True),
         'id': template.id,
     }
     return result
 
 
-def _build_questions(questions: list) -> list:
+def _build_questions(questions: list, from_template: bool) -> list:
     result = []
     for question in questions:
         question: Questions
         settings: Settings = question.settings
         answers = settings.answer_choice.all()
-        print(question)
-        print(answers)
         collected_question = {
             'is_template': True,
             'type': settings.type,
-            #'id': question.id,
+            'id': question.id if not from_template else '',
             'name': question.text,
             'answers': answers,
             'countAnswers': answers.count(),
@@ -85,24 +83,28 @@ def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
     return new_template
 
 
-def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> None:
+def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> int:
     data = request.POST
     try:
         count_questions = int(data['template[countQuestion]'])
     except ValueError:
         return None
+    version = 0
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
             question_id = int(data[data_key.format('id')])
-            question = Questions.objects.get(id=question_id)
+            question: Questions = Questions.objects.get(id=question_id)
+            version = question.version + 1
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             question = Questions()
         question.text = data[data_key.format('name')]
         settings = _create_or_change_settings(request, question_number, question)
         question.settings = settings
+        question.version = version
         question.save()
         poll.questions.add(question)
+    return version
 
 
 def _create_or_change_settings(request: WSGIRequest, question_number: int, question: Questions) -> Settings:
@@ -141,60 +143,6 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
             answer.save()
             settings.answer_choice.add(answer)
     return settings
-
-
-def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonResponse:
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            poll = _create_or_change_poll(request, poll)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-            poll = _create_or_change_poll(request, None)
-        _create_new_questions_or_change(request, poll)
-
-        head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
-        head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
-        profile = get_user_profile(request)
-        company: Company = profile.company
-        profiles = company.profile_set.all()
-        categories_args = {
-            'participants': _build_team_profiles_list(profiles, company, poll.target),
-            'company': {
-                'countParticipants': profiles.count(),
-            }
-        }
-        if SurveyWizard.objects.filter(profile=profile).exists():
-            categories_args['company']['countTeams'] = Group.objects.filter(company=company).count()
-        else:
-            categories_args['company']['countTeams'] = profile.groups.all().count()
-
-        categories = SimpleTemplateResponse('main/poll/select_target/select_target_content.html',
-                                            categories_args).rendered_content
-
-        args = {
-            'pollId': poll.id,
-            'headMain': head_main,
-            'headMove': head_move,
-            'categories': categories
-        }
-        return JsonResponse(args, status=200)
-
-
-def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
-    if poll is None:
-        poll = Poll()
-    data = request.POST
-    data_key = 'template[{}]'
-    poll.name_poll = data[data_key.format('name')]
-    poll.description = data[data_key.format('description')]
-    poll.color = data[data_key.format('color')]
-    poll.creation_date = datetime.today()
-    poll.initiator = get_user_profile(request)
-    poll.save()
-    return poll
 
 
 def _build_team_list(teams: (list, filter)) -> list:
@@ -355,7 +303,6 @@ def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse
 
 def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
@@ -388,7 +335,68 @@ def _build_created_poll(poll: Poll) -> dict:
         'color': '' if poll.color is None else poll.color,
         'name': poll.name_poll,
         'description': poll.description,
-        'questions': _build_questions(poll.questions.all()),
+        'questions': _build_questions(poll.questions.all(), False),
         'id': poll.id,
     }
     return result
+
+
+def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    if request.is_ajax():
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            poll = _create_or_change_poll(request, poll)
+        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+            poll = _create_or_change_poll(request, None)
+        version = _create_new_questions_or_change(request, poll)
+        _delete_deleted_questions(poll, version)
+
+        head_main = SimpleTemplateResponse('main/poll/select_target/select_target_head_main.html', {}).rendered_content
+        head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
+        profile = get_user_profile(request)
+        company: Company = profile.company
+        profiles = company.profile_set.all()
+        categories_args = {
+            'participants': _build_team_profiles_list(profiles, company, poll.target),
+            'company': {
+                'countParticipants': profiles.count(),
+            }
+        }
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            categories_args['company']['countTeams'] = Group.objects.filter(company=company).count()
+        else:
+            categories_args['company']['countTeams'] = profile.groups.all().count()
+
+        categories = SimpleTemplateResponse('main/poll/select_target/select_target_content.html',
+                                            categories_args).rendered_content
+
+        args = {
+            'pollId': poll.id,
+            'headMain': head_main,
+            'headMove': head_move,
+            'categories': categories
+        }
+        return JsonResponse(args, status=200)
+
+
+def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
+    if poll is None:
+        poll = Poll()
+    data = request.POST
+    data_key = 'template[{}]'
+    poll.name_poll = data[data_key.format('name')]
+    poll.description = data[data_key.format('description')]
+    poll.color = data[data_key.format('color')]
+    poll.creation_date = datetime.today()
+    poll.initiator = get_user_profile(request)
+    poll.save()
+    return poll
+
+
+def _delete_deleted_questions(poll: Poll, version: int) -> None:
+    questions = poll.questions.all().filter(version__lt=version)
+    for question in questions:
+        question.delete()

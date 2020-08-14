@@ -246,6 +246,7 @@ class CreatedPoll(models.Model):
 class Questions(models.Model):
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
+    version = models.IntegerField(default=0)
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
