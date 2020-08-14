@@ -313,8 +313,8 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
     profile = get_user_profile(request)
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
-    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html', args).rendered_content
-    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html', args).rendered_content
+    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html', args).rendered_content
+    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html', args).rendered_content
     profiles = profile.company.profile_set.all()
     company = profile.company
 
@@ -460,3 +460,6 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
         'categories': categories
     }
 
+
+def poll_preview():
+    pass

@@ -238,6 +238,8 @@ urlpatterns = [
                        create_poll_from_template.render_step_2_from_step_3),
                   path('poll/editor/template/<int:template_id>/step/3/from/1/notMaster/',
                        create_poll_from_template.render_step_3_from_step_1),
+                  path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
+                       create_poll_from_template.render_step_1_from_step_3),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
