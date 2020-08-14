@@ -516,12 +516,20 @@ $(function () {
                 checkedInterviewed: checkedInterviewed,
             }
         } else if (step === '1') {
-            let template = getTemplate();
-            data = {
-                pollId: pollId,
-                csrfmiddlewaretoken: csrf,
-                template: template,
+            if (partUrl === 'editor') {
+                data = {
+                    pollId: pollId,
+                    csrfmiddlewaretoken: csrf,
+                }
+            } else if (partUrl === 'preview') {
+                let template = getTemplate();
+                data = {
+                    pollId: pollId,
+                    csrfmiddlewaretoken: csrf,
+                    template: template,
+                }
             }
+
         } else {
             throw new Error('unexpected attribute when changing category');
         }
