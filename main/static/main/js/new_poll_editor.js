@@ -566,6 +566,12 @@ $(function () {
                 editor.addClass('disabled');
             },
             success: function (response) {
+                let content = $('.content');
+                content.empty();
+                content[0].insertAdjacentHTML('afterbegin', response.content);
+                loader
+                    .removeClass('status--loading status--done status--error');
+
                 if (partUrl === 'participants') {
                     search.attr({
                         'placeholder': 'Поиск по участникам...',
@@ -582,20 +588,18 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
-                } else if (step === '1' && partUrl === 'preview') {
-                    if (pollId === undefined) {
-                        pollId = response.pollId;
+                } else if (step === '1') {
+                    if (partUrl === 'preview') {
+                        if (pollId === undefined) {
+                            pollId = response.pollId;
+                        }
+                    } else if (partUrl === 'editor') {
+                        run();
                     }
+
                 } else {
                     throw new Error('unexpected attribute when changing category');
                 }
-
-
-                let content = $('.content');
-                content.empty();
-                content[0].insertAdjacentHTML('afterbegin', response.content);
-                loader
-                    .removeClass('status--loading status--done status--error');
 
                 $('.active-sort').removeClass('active-sort');
                 $(target).addClass('active-sort');
