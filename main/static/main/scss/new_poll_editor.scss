@@ -622,12 +622,12 @@
 
             &.team-checked {
               &:before {
-                content: 'Отменить выделение',
+                content: 'Отменить выделение';
               }
             }
 
             &:before {
-              content: 'Выбрать всех',
+              content: 'Выбрать всех';
             }
           }
         }

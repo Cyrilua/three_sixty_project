@@ -25,7 +25,7 @@
                     <div class="question__answers">
                         {% for answer in question.answers %}
                             <div class="answer">
-                                {% if question.type == 'range' %}
+                                {% if question.type == 'radio' %}
                                     <div class="radio">
                                         <div class="mdc-radio mdc-radio--touch">
                                             <input class="mdc-radio__native-control" type="radio"

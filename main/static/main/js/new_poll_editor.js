@@ -24,14 +24,23 @@ $(function () {
         if (color !== '') {
             pollHeader.addClass(color);
             if (color === 'red') {
+                $('.taking-poll').attr({
+                    'data-color': 'red',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
             } else if (color === 'blue') {
+                $('.taking-poll').attr({
+                    'data-color': 'blue',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#001AFF');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
             } else if (color === 'purple') {
+                $('.taking-poll').attr({
+                    'data-color': 'purple',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#DB00FF');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#DB00FF');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -39,6 +48,9 @@ $(function () {
                 throw new Error('Unexpected attribute on color change');
             }
         } else {
+            $('.taking-poll').attr({
+                'data-color': 'grey',
+            });
             document.documentElement.style.setProperty('--mdc-theme-primary', '#C4C4C4');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#C4C4C4');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'black');
@@ -691,7 +703,7 @@ $(function () {
     });
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
-    body.on('change', 'input[type=radio]', function () {
+    body.on('change', 'input[type=radio][name^=participants]', function () {
         // let scroll = window.pageYOffset;
         // console.log(scroll)
         // if ($('.teams').length > 0) {
@@ -1532,20 +1544,20 @@ $(function () {
         });
 
         // Изменение цвета
-        let currentColor = $('.color__variable--select');
+        let currentColor = $('.color__variable--select').attr('data-color');
         let pollHeader = $('.poll-editor__header');
         pollHeader.removeClass('red blue purple');
-        if (currentColor.hasClass('blue')) {
+        if (currentColor === 'blue') {
             pollHeader.addClass('blue');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#001AFF');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
-        } else if (currentColor.hasClass('red')) {
+        } else if (currentColor === 'red') {
             pollHeader.addClass('red');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
-        } else if (currentColor.hasClass('purple')) {
+        } else if (currentColor === 'purple') {
             pollHeader.addClass('purple');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#DB00FF');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#DB00FF');
