@@ -283,59 +283,48 @@ def _search(mode: str, user_input: str, profile: Profile) -> QuerySet:
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            list_profiles = request.POST.getlist('checkedInterviewed[]')
-        except MultiValueDictKeyError:
+        poll = _save_information_from_step_3(request)
+        if poll is None:
             return JsonResponse({}, status=400)
-        for profile_id in list_profiles:
-            try:
-                profile = Profile.objects.get(id=int(profile_id))
-            except (ValueError, ObjectDoesNotExist):
-                continue
-            need_pass = NeedPassPoll()
-            need_pass.poll = poll
-            need_pass.profile = profile
-            need_pass.save()
         args = _get_rendered_page_for_step_2(request, poll)
         return JsonResponse(args, status=200)
 
 
 def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            list_profiles = request.POST.getlist('checkedInterviewed[]')
-        except MultiValueDictKeyError:
+        poll = _save_information_from_step_3(request)
+        if poll is None:
             return JsonResponse({}, status=400)
-        for profile_id in list_profiles:
-            try:
-                profile = Profile.objects.get(id=int(profile_id))
-            except (ValueError, ObjectDoesNotExist):
-                continue
-            need_pass = NeedPassPoll()
-            need_pass.poll = poll
-            need_pass.profile = profile
-            need_pass.save()
         args = _get_rendered_page_for_step_1(request, poll)
         return JsonResponse(args, status=200)
 
 
 def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            profile_id = int(request.POST['checkedTarget'])
-            profile = Profile.objects.get(id=profile_id)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        poll = _save_information_from_step_2(request)
+        if poll is None:
             return JsonResponse({}, status=400)
-        poll.target = profile
-        poll.save()
         args = _get_rendered_page_for_step_3(request, poll)
         return JsonResponse(args, status=200)
+
+
+def _save_information_from_step_3(request: WSGIRequest) -> Poll:
+    try:
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(id=poll_id)
+        list_profiles = request.POST.getlist('checkedInterviewed[]')
+    except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
+        return None
+    for profile_id in list_profiles:
+        try:
+            profile = Profile.objects.get(id=int(profile_id))
+        except (ValueError, ObjectDoesNotExist):
+            continue
+        need_pass = NeedPassPoll()
+        need_pass.poll = poll
+        need_pass.profile = profile
+        need_pass.save()
+    return poll
 
 
 def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
@@ -374,37 +363,34 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
 
 def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            poll = _create_or_change_poll(request, poll)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-            poll = _create_or_change_poll(request, None)
-        version = _create_new_questions_or_change(request, poll)
-        poll.questions.all().exclude(version=version).delete()
+        poll = _save_information_from_step_1(request)
+        if poll is None:
+            return JsonResponse({}, status=400)
+
         args = _get_rendered_page_for_step_3(request, poll)
         return JsonResponse(args, status=200)
 
 
 def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        poll = _save_information_from_step_2(request)
+        if poll is None:
             return JsonResponse({}, status=400)
 
-        try:
-            profile_id = int(request.POST['checkedTarget'])
-            profile = Profile.objects.get(id=profile_id)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-            pass
-        else:
-            poll.target = profile
-            poll.save()
         args = _get_rendered_page_for_step_1(request, poll)
-
         return JsonResponse(args, status=200)
+
+
+def _save_information_from_step_1(request: WSGIRequest) -> Poll:
+    try:
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(id=poll_id)
+        poll = _create_or_change_poll(request, poll)
+    except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        poll = _create_or_change_poll(request, None)
+    version = _create_new_questions_or_change(request, poll)
+    poll.questions.all().exclude(version=version).delete()
+    return poll
 
 
 def _get_rendered_page_for_step_1(request: WSGIRequest, poll: Poll) -> dict:
@@ -439,14 +425,9 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-            poll = _create_or_change_poll(request, poll)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-            poll = _create_or_change_poll(request, None)
-        version = _create_new_questions_or_change(request, poll)
-        poll.questions.all().exclude(version=version).delete()
+        poll = _save_information_from_step_2(request)
+        if poll is None:
+            return JsonResponse({}, status=400)
         args = _get_rendered_page_for_step_2(request, poll)
         return JsonResponse(args, status=200)
 
@@ -461,6 +442,19 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
     poll.color = data[data_key.format('color')]
     poll.creation_date = datetime.today()
     poll.initiator = get_user_profile(request)
+    poll.save()
+    return poll
+
+
+def _save_information_from_step_2(request: WSGIRequest) -> Poll:
+    try:
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(id=poll_id)
+        profile_id = int(request.POST['checkedTarget'])
+        profile = Profile.objects.get(id=profile_id)
+    except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        return None
+    poll.target = profile
     poll.save()
     return poll
 
@@ -542,3 +536,10 @@ def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
         else:
             poll.delete()
             return JsonResponse({}, status=200)
+
+
+def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
+    if request.is_ajax():
+        # todo
+        print(request.POST)
+        return JsonResponse({}, status=200)

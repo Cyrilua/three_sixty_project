@@ -214,6 +214,9 @@ urlpatterns = [
                   # Отмена создания опроса
                   path('poll/editor/template/<int:template_id>/cancel/',
                        create_poll_from_template.cancel_created_poll),
+                  # Отправить опросы опрашиваемым и разослать уведомления на почту
+                  path('poll/editor/template/<int:template_id>/send/',
+                       create_poll_from_template.send_poll),
                   # Удаление шаблона
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
