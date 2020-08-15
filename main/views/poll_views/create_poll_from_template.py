@@ -482,7 +482,6 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
 
 def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        # TODO
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
@@ -498,17 +497,24 @@ def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
                 'surname': poll.target.surname,
                 'patronymic': poll.target.patronymic
             }
-        print(created_poll)
-        content = SimpleTemplateResponse('main/poll/taking_poll.html',
+        content = SimpleTemplateResponse('main/poll/taking_poll_preview.html',
                                          {'poll': created_poll}).rendered_content
-        print(content)
-        return JsonResponse({'content': content}, status=200)
+        return JsonResponse({'content': content, 'pollId': poll.id}, status=200)
 
 
 def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
         # TODO
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (MultiValueDictKeyError, ObjectDoesNotExist):
+            return JsonResponse({}, status=400)
+        created_poll = _build_poll(poll)
+        content = SimpleTemplateResponse('main/poll/editor/content_poll_editor.html',
+                                         {'poll': created_poll}).rendered_content
+        print(content)
+        return JsonResponse({'content': content}, status=200)
 
 
 def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:

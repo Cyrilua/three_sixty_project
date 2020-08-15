@@ -208,9 +208,9 @@ urlpatterns = [
                   # Превьюшка для опроса
                   path('poll/editor/template/<int:template_id>/step/1/category/preview/',
                        create_poll_from_template.poll_preview),
-                  # TODO
+                  # Возврат к редактированию опроса
                   path('poll/editor/template/<int:template_id>/step/1/category/editor/',
-                       create_poll_from_template.poll_preview),
+                       create_poll_from_template.poll_editor),
                   # Отмена создания опроса
                   path('poll/editor/template/<int:template_id>/cancel/',
                        create_poll_from_template.cancel_created_poll),
