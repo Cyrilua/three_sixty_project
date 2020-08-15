@@ -528,6 +528,7 @@ $(function () {
             $('input[name=participants]:checked').each(function (key, elem) {
                 checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
+            checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
             data = {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
@@ -690,10 +691,9 @@ $(function () {
     });
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
-    body.on('change', 'input[type=radio][name=participants]', function () {
+    body.on('change', 'input[type=radio]', function () {
         // let scroll = window.pageYOffset;
         // console.log(scroll)
-        let participant = $(this).parent().parent().parent();
         // if ($('.teams').length > 0) {
         //     // $('.participant-active').each(function (key, elem) {
         //     //     $(elem).css({
@@ -716,8 +716,41 @@ $(function () {
         //     // });
         // }
         // window.scrollTo(0, scroll);
-        $('.participant-active').removeClass('participant-active');
+
+
+        // let participant = $(this).parent().parent().parent();
+        // $('.participant-active').removeClass('participant-active');
+        // participant.addClass('participant-active');
+
+
+        let participant = $(this).parent().parent().parent();
+        console.log(participant)
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'participants') {
+            $('.participant-active').removeClass('participant-active');
+        } else if (category === 'teams') {
+            console.log(0)
+            if (!$(this).hasClass('changeEnd')) {
+                console.log(1)
+                $('.participant-active')
+                    .removeClass('participant-active')
+                    .children('.radio').children('.mdc-radio').children('[type=radio]').prop({
+                    'checked': false,
+                });
+                participant.addClass('participant-active');
+                let radioWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                console.log(radioWithThisId.not(':checked'))
+                radioWithThisId.not(':checked')
+                    .addClass('changeEnd')
+                    .trigger('click');
+            } else {
+                console.log(2)
+                $(this).removeClass('changeEnd');
+                participant.addClass('participant-active');
+            }
+        }
         participant.addClass('participant-active');
+
         $('#nextToStep3').prop({
             'disabled': false,
         });
@@ -731,7 +764,8 @@ $(function () {
     });
 
     function ajaxStepFrom2To3(el) {
-        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
+        let checkedTarget = $('input[name^=participants]:checked').attr('data-participant-id');
+        console.log(checkedTarget)
         $.ajax({
             url: 'step/3/from/2/',
             type: 'post',
@@ -844,6 +878,7 @@ $(function () {
             $('input[name=participants]:checked').each(function (key, elem) {
                 checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
+            checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
             data = {
                 input: input,
                 pollId: pollId,
@@ -928,29 +963,88 @@ $(function () {
         })
     });
 
-    // 3 шаг - активация кнопки ОТПРАВИТЬ
-    body.on('change', 'input[type=checkbox][name=participants]', function () {
-        let checked = $('input[name=participants]:checked');
-        let allCheckbox = $('input[name=participants]');
-        if (checked.length > 0) {
-            $('#sendPoll').prop({
-                'disabled': false,
-            });
-        } else {
-            $('#sendPoll').prop({
-                'disabled': true,
-            });
-        }
-        if ($(this).prop('checked')) {
-            $(this).parent().parent().parent().addClass('participant-active');
-        } else {
-            $(this).parent().parent().parent().removeClass('participant-active');
-        }
+    // 3 шаг - выбор тех, кому отправить
+    body.on('change changeEnd', 'input[type=checkbox][name=participants]', function (event) {
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'participants') {
+            let checked = $('input[name=participants]:checked');
+            let allCheckbox = $('input[name=participants]');
+            if (checked.length > 0) {
+                $('#sendPoll').prop({
+                    'disabled': false,
+                });
+            } else {
+                $('#sendPoll').prop({
+                    'disabled': true,
+                });
+            }
+            if ($(this).prop('checked')) {
+                $(this).parent().parent().parent().addClass('participant-active');
+            } else {
+                $(this).parent().parent().parent().removeClass('participant-active');
+            }
 
-        if (checked.length === allCheckbox.length) {
-            $('.select__all').addClass('all-checked');
+            if (checked.length === allCheckbox.length) {
+                $('.select__all').addClass('all-checked');
+            } else {
+                $('.select__all').removeClass('all-checked');
+            }
+        } else if (category === 'teams') {
+            let participantBlockInTeam = $(this).parent().parent().parent().parent();
+            let checkboxesInTeam = participantBlockInTeam.children('.participant').children('.checkbox');
+            let checkedInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]:checked');
+            let allCheckboxInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]');
+            let allChecked = $('input[name=participants]:checked');
+            if (allChecked.length > 0) {
+                $('#sendPoll').prop({
+                    'disabled': false,
+                });
+            } else {
+                $('#sendPoll').prop({
+                    'disabled': true,
+                });
+            }
+            if (checkedInTeam.length === allCheckboxInTeam.length) {
+                participantBlockInTeam.parent().parent().children('.team__up').children('.team__actions')
+                    .children('.team__select-all').addClass('team-checked');
+            } else {
+                participantBlockInTeam.parent().parent().children('.team__up').children('.team__actions')
+                    .children('.team__select-all').removeClass('team-checked');
+            }
+
+            if (!$(this).hasClass('changeEnd')) {
+                if ($(this).prop('checked')) {
+                    let checkboxWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                    checkboxWithThisId.not(':checked')
+                        .addClass('changeEnd')
+                        .trigger('click');
+                } else {
+                    let checkboxWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                    checkboxWithThisId.filter(':checked')
+                        .addClass('changeEnd')
+                        .trigger('click');
+                }
+            } else {
+                $(this).removeClass('changeEnd');
+            }
+        }
+    });
+
+    // body.on('changeEnd', 'input[type=checkbox][name=participants]', function () {
+    //
+    // })
+
+    body.on('click', '.team__select-all', function (el) {
+        if ($(this).hasClass('team-checked')) {
+            let checked = $(this).closest('.team').children('.team__down').children('.participants')
+                .children('.participant').children('.checkbox').children('.mdc-checkbox')
+                .children('input[name=participants]');
+            checked.trigger('click');
         } else {
-            $('.select__all').removeClass('all-checked');
+            let noChecked = $(this).closest('.team').children('.team__down').children('.participants')
+                .children('.participant').children('.checkbox').children('.mdc-checkbox')
+                .children('input[name=participants]').not(':checked');
+            noChecked.trigger('click');
         }
     });
 
@@ -964,6 +1058,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/2/from/3/',
             type: 'post',
@@ -1038,6 +1133,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'send/',
             type: 'post',
@@ -1111,6 +1207,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/1/from/3/',
             type: 'post',
@@ -1328,6 +1425,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/1/from/3/notMaster/',
             type: 'post',
@@ -1379,37 +1477,10 @@ $(function () {
     }
 
     body.on('click', '.select__all', function (el) {
-        if (!$(this).hasClass('all-checked')) {
-            let allCheck = $('input[name=participants][type=checkbox]')
-            allCheck.prop({
-                'checked': true,
-            });
-            allCheck.parent().parent().parent().each(function (key, elem) {
-                $(elem).addClass('participant-active');
-            });
-            $(this).addClass('all-checked');
+        if ($(this).hasClass('all-checked')) {
+            $('input[type=checkbox][name=participants]').trigger('click');
         } else {
-            let allCheck = $('input[name=participants][type=checkbox]')
-            allCheck.prop({
-                'checked': false,
-            });
-            allCheck.parent().parent().parent().each(function (key, elem) {
-                $(elem).removeClass('participant-active');
-            });
-            // $('input[name=participants]').prop({
-            //     'checked': false,
-            // });
-            $(this).removeClass('all-checked');
-        }
-
-        if ($('input[name=participants]:checked').length > 0) {
-            $('#sendPoll').prop({
-                'disabled': false,
-            });
-        } else {
-            $('#sendPoll').prop({
-                'disabled': true,
-            });
+            $('input[type=checkbox][name=participants]').not(':checked').trigger('click');
         }
     });
 

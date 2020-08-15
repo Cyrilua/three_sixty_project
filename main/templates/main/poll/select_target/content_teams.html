@@ -93,7 +93,7 @@
                                     <div class="mdc-radio mdc-radio--touch">
                                         <input class="mdc-radio__native-control" type="radio"
                                                id="radio-{{ participant.id }}"
-                                               data-participant-id="{{ participant.id }}" name="participants" {% if participant.is_checked %}checked{% endif %}>
+                                               data-participant-id="{{ participant.id }}" name="participants-{{ team.id }}" {% if participant.is_checked %}checked{% endif %}>
                                         <div class="mdc-radio__background">
                                             <div class="mdc-radio__outer-circle"></div>
                                             <div class="mdc-radio__inner-circle"></div>
