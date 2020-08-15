@@ -976,10 +976,17 @@ $(function () {
                 // });
             },
             success: function () {
+                window.onunload = function () {
+                    return false;
+                };
+                window.onbeforeunload = function () {
+                    return false;
+                };
                 location.href = 'polls/';
             },
             error: function () {
                 editor.removeClass('disabled');
+                menu.removeClass('disabled');
                 // $(el.target).prop({
                 //     'disabled': false,
                 // });
