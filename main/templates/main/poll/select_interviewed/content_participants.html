@@ -2,7 +2,7 @@
 <div class="category-item select-participants">
     <div class="participants">
         {% for participant in participants %}
-            <div class="participant rounded-block">
+            <div class="participant rounded-block {% if participant.is_checked %}participant-active{% endif %}">
                 <img src="{{ participant.photo }}" alt="" class="participant__photo">
                 <div class="info">
                     <div class="name">

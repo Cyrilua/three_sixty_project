@@ -418,11 +418,11 @@ $(function () {
                     });
                     menu.eq(1).removeClass('disabled');
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participant)
+                // participant.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
             },
             complete: function () {
@@ -580,6 +580,26 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
+
+                    if (step === '3') {
+                        let allParticipants = $('input[type=checkbox][name=participants]');
+                        let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                        if (participants.length > 0) {
+                            $('#sendPoll').prop({
+                                'disabled': false,
+                            });
+                            menu.eq(1).removeClass('disabled');
+                            if (allParticipants.length === participants.length) {
+                                $('.select__all ').addClass('all-checked');
+                            }
+                        }
+                        // console.log(participants)
+                        // participants.css({
+                        //     // 'order': -10000,
+                        //     'background-color': '#F0F1F6',
+                        // });
+                    }
+
                 } else if (partUrl === 'teams') {
                     search.attr({
                         'placeholder': 'Поиск по командам...',
@@ -626,14 +646,15 @@ $(function () {
                                 'disabled': false,
                             });
                             menu.eq(1).removeClass('disabled');
+                            if (accessStep3) {
+                                menu.eq(2).removeClass('disabled');
+                            }
                         } else if (step === '3') {
                             $('#sendPoll').prop({
                                 'disabled': false,
                             });
                             menu.eq(1).removeClass('disabled');
-                            if (accessStep3) {
-                                menu.eq(2).removeClass('disabled');
-                            }
+                            menu.eq(2).removeClass('disabled');
                         }
                     } else {
                         if (step === '2') {
@@ -646,6 +667,7 @@ $(function () {
                                 'disabled': true,
                             });
                             menu.eq(1).removeClass('disabled');
+                            menu.eq(2).removeClass('disabled');
                         }
                     }
                 }
@@ -665,31 +687,32 @@ $(function () {
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
     body.on('change', 'input[type=radio][name=participants]', function () {
-        let scroll = window.pageYOffset;
+        // let scroll = window.pageYOffset;
         // console.log(scroll)
         let participant = $(this).parent().parent().parent();
-        if ($('.teams').length > 0) {
-            // $('.participant-active').each(function (key, elem) {
-            //     $(elem).css({
-            //         'order': 'initial',
-            //     });
-            // });
-            // participant.css({
-            //     'order': -10000,
-            // });
-        } else {
-            $('.participant-active').each(function (key, elem) {
-                $(elem).css({
-                    // 'order': 'initial',
-                    'background-color': '#FAFAFA',
-                });
-            });
-            participant.css({
-                // 'order': -10000,
-                'background-color': '#F0F1F6',
-            });
-        }
-        window.scrollTo(0, scroll);
+        // if ($('.teams').length > 0) {
+        //     // $('.participant-active').each(function (key, elem) {
+        //     //     $(elem).css({
+        //     //         'order': 'initial',
+        //     //     });
+        //     // });
+        //     // participant.css({
+        //     //     'order': -10000,
+        //     // });
+        // } else {
+        //     // $('.participant-active').each(function (key, elem) {
+        //     //     $(elem).css({
+        //     //         // 'order': 'initial',
+        //     //         'background-color': '#FAFAFA',
+        //     //     });
+        //     // });
+        //     // participant.css({
+        //     //     // 'order': -10000,
+        //     //     'background-color': '#F0F1F6',
+        //     // });
+        // }
+        // window.scrollTo(0, scroll);
+        $('.participant-active').removeClass('participant-active');
         participant.addClass('participant-active');
         $('#nextToStep3').prop({
             'disabled': false,
@@ -737,11 +760,27 @@ $(function () {
                     'data-step': '3',
                 });
 
-                if ($('input[type=checkbox][name=participants]:checked').length > 0) {
+                // if ($('input[type=checkbox][name=participants]:checked').length > 0) {
+                //     $('#sendPoll').prop({
+                //         'disabled': false,
+                //     })
+                // }
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
-                    })
+                    });
+                    menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
                 menu.eq(1).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
@@ -855,10 +894,27 @@ $(function () {
                         });
                         menu.eq(1).removeClass('disabled');
                     } else if (step === '3') {
-                        $('#sendPoll').prop({
-                            'disabled': true,
-                        });
+                        // $('#sendPoll').prop({
+                        //     'disabled': true,
+                        // });
                         menu.eq(1).removeClass('disabled');
+
+                        let allParticipants = $('input[type=checkbox][name=participants]');
+                        let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                        if (participants.length > 0) {
+                            $('#sendPoll').prop({
+                                'disabled': false,
+                            });
+                            menu.eq(1).removeClass('disabled');
+                            if (allParticipants.length === participants.length) {
+                                $('.select__all ').addClass('all-checked');
+                            }
+                        }
+                        // console.log(participants)
+                        // participants.css({
+                        //     // 'order': -10000,
+                        //     'background-color': '#F0F1F6',
+                        // });
                     }
                 }
             },
@@ -880,6 +936,11 @@ $(function () {
             $('#sendPoll').prop({
                 'disabled': true,
             });
+        }
+        if ($(this).prop('checked')) {
+            $(this).parent().parent().parent().addClass('participant-active');
+        } else {
+            $(this).parent().parent().parent().removeClass('participant-active');
         }
 
         if (checked.length === allCheckbox.length) {
@@ -931,11 +992,24 @@ $(function () {
                     'data-step': '2',
                 });
 
-                if ($('input[type=radio][name=participants]:checked').length > 0) {
+                // if ($('input[type=radio][name=participants]:checked').length > 0) {
+                //     $('#nextToStep3').prop({
+                //         'disabled': false,
+                //     })
+                // }
+
+                let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
+                if (participant.length > 0) {
                     $('#nextToStep3').prop({
                         'disabled': false,
-                    })
+                    });
+                    menu.eq(1).removeClass('disabled');
                 }
+                // console.log(participant)
+                // participant.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
                 menu.eq(2).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
@@ -1126,18 +1200,22 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
 
-                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
                     menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
             },
             complete: function () {
                 // $(el.target).prop({
@@ -1205,18 +1283,22 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
 
-                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
                     menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
             },
             complete: function () {
                 // $(el.target).prop({
@@ -1294,14 +1376,25 @@ $(function () {
 
     body.on('click', '.select__all', function (el) {
         if (!$(this).hasClass('all-checked')) {
-            $('input[name=participants]').prop({
+            let allCheck = $('input[name=participants][type=checkbox]')
+            allCheck.prop({
                 'checked': true,
+            });
+            allCheck.parent().parent().parent().each(function (key, elem) {
+                $(elem).addClass('participant-active');
             });
             $(this).addClass('all-checked');
         } else {
-            $('input[name=participants]').prop({
+            let allCheck = $('input[name=participants][type=checkbox]')
+            allCheck.prop({
                 'checked': false,
             });
+            allCheck.parent().parent().parent().each(function (key, elem) {
+                $(elem).removeClass('participant-active');
+            });
+            // $('input[name=participants]').prop({
+            //     'checked': false,
+            // });
             $(this).removeClass('all-checked');
         }
 

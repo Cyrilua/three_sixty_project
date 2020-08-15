@@ -298,6 +298,10 @@
   display: none;
 }
 
+.category-item > .participants .participant.participant-active {
+  background-color: #F0F1F6;
+}
+
 .participants {
   display: flex;
   flex-direction: column;
