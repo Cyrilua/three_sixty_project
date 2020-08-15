@@ -593,6 +593,7 @@ $(function () {
                                 $('.select__all ').addClass('all-checked');
                             }
                         }
+                        $('.select__all').removeClass('hide');
                         // console.log(participants)
                         // participants.css({
                         //     // 'order': -10000,
@@ -608,6 +609,9 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
+                    if (step === '3') {
+                        $('.select__all').addClass('hide');
+                    }
                 } else if (step === '1') {
                     if (partUrl === 'preview') {
                         if (pollId === undefined) {
