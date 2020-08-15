@@ -283,8 +283,23 @@ def _search(mode: str, user_input: str, profile: Profile) -> QuerySet:
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # TODO
-        return JsonResponse({}, status=200)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+            list_profiles = request.POST.getlist('checkedInterviewed[]')
+        except MultiValueDictKeyError:
+            return JsonResponse({}, status=400)
+        for profile_id in list_profiles:
+            try:
+                profile = Profile.objects.get(id=int(profile_id))
+            except (ValueError, ObjectDoesNotExist):
+                continue
+            need_pass = NeedPassPoll()
+            need_pass.poll = poll
+            need_pass.profile = profile
+            need_pass.save()
+        args = _get_rendered_page_for_step_2(request, poll)
+        return JsonResponse(args, status=200)
 
 
 def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
