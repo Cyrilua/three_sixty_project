@@ -211,6 +211,9 @@ urlpatterns = [
                   # Загрузка участников компании на третьем шаге
                   path('poll/editor/template/<int:template_id>/step/3/category/participants/',
                        create_poll_from_template.render_category_participants_on_step_3),
+                  # Поиск на третьем шаге
+                  path('poll/editor/template/<int:template_id>/step/3/search/',
+                       create_poll_from_template.search_step_3),
                   # Превьюшка для опроса
                   path('poll/editor/template/<int:template_id>/step/1/category/preview/',
                        create_poll_from_template.poll_preview),

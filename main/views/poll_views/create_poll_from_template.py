@@ -606,3 +606,28 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          args).rendered_content
         return JsonResponse({'content': content}, status=200)
+
+
+def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        mode = request.POST['mode']
+        user_input: str = request.POST['input']
+        profile = get_user_profile(request)
+        result_search = _search(mode, user_input, profile)
+
+        if mode == 'participants':
+            content_participants_args = {
+                'participants': _build_team_profiles_list(result_search, profile.company, [])
+            }
+            content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
+                                             content_participants_args).rendered_content
+        elif mode == 'teams':
+            collected_teams = _build_team_list(result_search)
+            content_teams_args = {
+                'teams': collected_teams
+            }
+            content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
+                                             content_teams_args).rendered_content
+        else:
+            return JsonResponse({}, status=400)
+        return JsonResponse({'content': content}, status=200)
