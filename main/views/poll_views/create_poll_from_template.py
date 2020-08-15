@@ -453,12 +453,16 @@ def _save_information_from_step_2(request: WSGIRequest) -> Poll:
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
+    except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        return None
+    try:
         profile_id = int(request.POST['checkedTarget'])
         profile = Profile.objects.get(id=profile_id)
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-        return None
-    poll.target = profile
-    poll.save()
+        pass
+    else:
+        poll.target = profile
+        poll.save()
     return poll
 
 
