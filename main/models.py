@@ -193,6 +193,7 @@ class TemplatesPoll(models.Model):
 
 
 class Poll(models.Model):
+    key = models.CharField(max_length=100, default='')
     initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name_poll = models.CharField(max_length=50, default='')

@@ -205,6 +205,12 @@ urlpatterns = [
                   # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
                   path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
                        create_poll_from_template.render_step_1_from_step_3),
+                  # Загрузка команд на третьем шаге
+                  path('poll/editor/template/<int:template_id>/step/3/category/teams/',
+                       create_poll_from_template.render_category_teams_on_step_3),
+                  # Загрузка участников компании на третьем шаге
+                  path('poll/editor/template/<int:template_id>/step/3/category/participants/',
+                       create_poll_from_template.render_category_participants_on_step_3),
                   # Превьюшка для опроса
                   path('poll/editor/template/<int:template_id>/step/1/category/preview/',
                        create_poll_from_template.poll_preview),
