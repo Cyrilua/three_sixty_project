@@ -737,6 +737,12 @@ $(function () {
                     'data-step': '3',
                 });
 
+                if ($('input[type=checkbox][name=participants]:checked').length > 0) {
+                    $('#sendPoll').prop({
+                        'disabled': false,
+                    })
+                }
+
                 menu.eq(1).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
             },
@@ -924,6 +930,12 @@ $(function () {
                 editor.attr({
                     'data-step': '2',
                 });
+
+                if ($('input[type=radio][name=participants]:checked').length > 0) {
+                    $('#nextToStep3').prop({
+                        'disabled': false,
+                    })
+                }
 
                 menu.eq(2).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
