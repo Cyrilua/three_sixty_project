@@ -526,7 +526,7 @@ $(function () {
         } else if (step === '3') {
             let checkedInterviewed = [];
             $('input[name=participants]:checked').each(function (key, elem) {
-                checked.push($(elem).attr('data-participant-id'));
+                checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
             data = {
                 pollId: pollId,
@@ -799,7 +799,7 @@ $(function () {
         } else if (step === '3') {
             let checkedInterviewed = [];
             $('input[name=participants]:checked').each(function (key, elem) {
-                checked.push($(elem).attr('data-participant-id'));
+                checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
             data = {
                 input: input,
@@ -976,10 +976,17 @@ $(function () {
                 // });
             },
             success: function () {
+                window.onunload = function () {
+                    return false;
+                };
+                window.onbeforeunload = function () {
+                    return false;
+                };
                 location.href = 'polls/';
             },
             error: function () {
                 editor.removeClass('disabled');
+                menu.removeClass('disabled');
                 // $(el.target).prop({
                 //     'disabled': false,
                 // });
