@@ -6,6 +6,8 @@
   user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }
 
+// Scrollbar
+
 ::-webkit-scrollbar {
   width: 10px;
   margin-left: 7px;
@@ -25,6 +27,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #9f9f9f;
 }
+
+// !Scrollbar!
 
 // Main
 
@@ -1183,6 +1187,7 @@ button {
 
 
   &.custom {
+    max-width: 910px;
     background-color: #000000 !important;
     border-radius: 5px !important;
     -webkit-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
@@ -1201,15 +1206,25 @@ button {
       animation: none !important;
     }
 
+    &.center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    //&.center {
+    //  transform: translateX(-19px);
+    //}
+
     p {
       font-style: normal !important;
       font-weight: bold !important;
       font-size: 18px !important;
       line-height: 21px !important;
-      color: #FFFFFF !important;
+      //color: #FFFFFF !important;
     }
 
     button {
+      text-transform: capitalize;
       font-style: normal !important;
       font-weight: bold !important;
       font-size: 18px !important;

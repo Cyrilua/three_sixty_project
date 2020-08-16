@@ -1,0 +1,20 @@
+{% load static %}
+{% if teams %}
+    <div class="teams">
+        {% for team in teams %}
+            <div class="team rounded-block" data-team-id="{{ team.id }}">
+                <img src="{% static 'main/images/team.svg' %}" alt="" class="team__icon">
+                <div class="team__info">
+                    <div class="team__name">
+                        <a href="{{ team.href }}" class="team__name">{{ team.name }}</a>
+                    </div>
+                    <span class="team__quantity-users">{{ team.quantity }} участников</span>
+                    <span class="team__description">{{ team.description }}</span>
+                </div>
+                <div class="team__leave"></div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% include 'main/includes/bad_search.html' with text=error.text %}
+{% endif %}

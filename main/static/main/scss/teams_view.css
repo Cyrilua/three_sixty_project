@@ -1,0 +1,128 @@
+@charset "UTF-8";
+.content .content__head {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  margin-bottom: 10px;
+}
+.content .content__head .head__search {
+  width: 660px;
+  padding-left: 43px;
+  background-image: url("../images/icon/search-24px.svg");
+  background-repeat: no-repeat;
+  background-position: 11px 50%;
+}
+.content .content__head .head__search:focus {
+  padding-left: 42px;
+  background-position: 10px 50%;
+}
+.content .content__head .head__button {
+  width: 180px;
+}
+.content .content__body .teams {
+  display: flex;
+  flex-direction: column;
+}
+.content .content__body .teams .team {
+  margin-bottom: 10px;
+  height: 110px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+}
+.content .content__body .teams .team .team__icon {
+  width: 70px;
+}
+.content .content__body .teams .team .team__info {
+  height: 70px;
+  width: 570px;
+  margin-left: 12px;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.content .content__body .teams .team .team__info div.team__name {
+  height: 28px;
+}
+.content .content__body .teams .team .team__info div.team__name a.team__name {
+  max-width: 570px;
+  height: 28px;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #2269D5;
+}
+.content .content__body .teams .team .team__info .team__quantity-users {
+  height: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.content .content__body .teams .team .team__info .team__description {
+  display: block;
+  height: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.content .content__body .teams .team .team__leave {
+  margin: 0 0 auto auto;
+  cursor: pointer;
+  opacity: 0.1;
+  transition: 0.2s opacity;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-image: url("../images/icon/exit_to_app-24px.svg");
+  background-size: cover;
+}
+.content .content__body .teams .team .team__leave::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  padding: 2px 4px;
+  border-radius: 2px;
+  visibility: hidden;
+  content: "Покинуть";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  background-color: transparent;
+  color: transparent;
+  transform: translateX(-50%) scaleX(0) scaleY(0);
+  cursor: default;
+  transition: 0.2s all;
+  pointer-events: none;
+}
+.content .content__body .teams .team .team__leave:hover {
+  opacity: 0.7;
+}
+.content .content__body .teams .team .team__leave:hover::before {
+  visibility: visible;
+  top: -20px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.75);
+  transform: translateX(-50%);
+}
+
+/*# sourceMappingURL=teams_view.css.map */
