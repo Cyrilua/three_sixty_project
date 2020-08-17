@@ -529,7 +529,7 @@ $(function () {
         }
         let data;
         if (step === '2') {
-            let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
+            let checkedTarget = $('input[name^=participants]:checked').attr('data-participant-id');
             data = {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
@@ -537,7 +537,7 @@ $(function () {
             }
         } else if (step === '3') {
             let checkedInterviewed = [];
-            $('input[name=participants]:checked').each(function (key, elem) {
+            $('input[name^=participants]:checked').each(function (key, elem) {
                 checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
             checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
