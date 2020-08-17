@@ -256,6 +256,12 @@ def _render_category_participants(request: WSGIRequest, list_checked_profiles: l
 
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
+            return None
+
         mode = request.POST['mode']
         user_input: str = request.POST['input']
         profile = get_user_profile(request)
@@ -268,7 +274,7 @@ def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
             content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                              content_participants_args).rendered_content
         elif mode == 'teams':
-            collected_teams = _build_team_list(result_search)
+            collected_teams = _build_team_list(result_search, [poll.target])
             content_teams_args = {
                 'teams': collected_teams
             }
