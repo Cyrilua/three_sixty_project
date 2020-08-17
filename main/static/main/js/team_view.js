@@ -47,8 +47,83 @@ $(function () {
         })
     });
 
+    // Кикнуть из команды
+    body.on('click', '#kick', function (event) {
+        let team = $(this).parent();
+        let teammateId = team.attr('data-real-id');
+        let teammateName = team.children('.info').children('.info__top').children('.teammate-href').text();
+        let id;
+        $.ajax({
+            url: `leave/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                teammateId: teammateId,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxRequests[id]) {
+                    id = ajaxRequests.length;
+                    ajax.abort();
+                    ajaxRequests.push({
+                        request: request,
+                        finish: false,
+                    });
+                    $(team).css({
+                        'display': 'none',
+                    });
+                    Snackbar.show({
+                        text: `${teammateName} был удален из команды`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            ajaxRequests[id].finish = true;
+                            $(ele).remove();
+                            $(team).css({
+                                'display': 'flex',
+                            });
+                        },
+                        onClose: function () {
+                            if (!ajaxRequests[id].finish) {
+                                $.ajax(request);
+                            }
+                        }
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                window.onbeforeunload = function () {
+                    return;
+                };
+                window.onunload = function () {
+                    return;
+                };
+                location.href = '/teams/';
+            },
+            complete: function () {
+                ajaxRequests[id].finish = true;
+            },
+            error: function () {
+                $(team).css({
+                    'display': 'flex',
+                });
+                Snackbar.show({
+                    text: 'Произошла ошибка при выходе вo команды.',
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        });
+    });
+
     // Выход из команды
-    body.on('click', '.team__leave', function (event) {
+    body.on('click', '#leaveTeam', function (event) {
         let team = $(this).parent();
         let id;
         $.ajax({
@@ -69,7 +144,7 @@ $(function () {
                         'display': 'none',
                     });
                     Snackbar.show({
-                        text: 'Команда удалена',
+                        text: 'Вы покинули команду',
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
