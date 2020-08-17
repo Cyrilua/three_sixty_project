@@ -561,7 +561,7 @@ def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
         created_poll.profile = profile
         created_poll.save()
 
-
+        sending_emails(poll)
 
         return JsonResponse({}, status=200)
 
@@ -571,18 +571,14 @@ def create_unique_key(poll: Poll):
     initiator_id_changed = poll.initiator.id % 1000 + 1000
     target_id_changed = poll.initiator.id % 1000 + 1000
     date: datetime = poll.creation_date
-    time_str_changed = '{}{}{}{}'.format(date.hour, date.minute, date.second, date.microsecond)
-    date_str_changed = '{}{}{}'.format(date.day, date.month, date.year)
-    key = '{}{}{}{}{}'.format(poll_id_changed, initiator_id_changed, target_id_changed, time_str_changed,
-                              date_str_changed)
+    key = '{}{}{}{}'.format(poll_id_changed, initiator_id_changed, target_id_changed, date)
     poll.key = key
     poll.save()
 
 
 def sending_emails(poll: Poll):
-    for need_pass_poll in NeedPassPoll.objects.filter(poll=poll):
-        need_pass_poll: NeedPassPoll
-        profile_pass = need_pass_poll.profile
+    #todo
+    emails = [i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
 
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
@@ -609,6 +605,7 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
 
 
 def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+    # todo fix bug
     if request.is_ajax():
         mode = request.POST['mode']
         user_input: str = request.POST['input']
