@@ -60,10 +60,10 @@ $(function () {
 
     // Сообщение перед ухода со страницы
     window.onunload = function () {
-        // return confirm('Все несохраненные изменения удалятся')
+        return confirm('Все несохраненные изменения удалятся')
     };
     window.onbeforeunload = function () {
-        // return confirm('Все несохраненные изменения удалятся');
+        return confirm('Все несохраненные изменения удалятся');
     };
 
     // Увеличение полей для ввода
@@ -1163,12 +1163,12 @@ $(function () {
             },
             success: function () {
                 window.onunload = function () {
-                    return false;
+                    return;
                 };
                 window.onbeforeunload = function () {
-                    return false;
+                    return;
                 };
-                location.href = 'polls/';
+                location.href = '/polls/';
             },
             error: function () {
                 editor.removeClass('disabled');
