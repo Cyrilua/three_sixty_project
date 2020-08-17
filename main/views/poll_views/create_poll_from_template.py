@@ -644,6 +644,11 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
 def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     # todo fix bug
     if request.is_ajax():
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            return JsonResponse({}, status=400)
         mode = request.POST['mode']
         user_input: str = request.POST['input']
         profile = get_user_profile(request)
@@ -651,12 +656,14 @@ def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
 
         if mode == 'participants':
             content_participants_args = {
-                'participants': _build_team_profiles_list(result_search, profile.company, [])
+                'participants': _build_team_profiles_list(
+                    result_search, profile.company, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
             }
             content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                              content_participants_args).rendered_content
         elif mode == 'teams':
-            collected_teams = _build_team_list(result_search, [])
+            collected_teams = _build_team_list(result_search,
+                                               [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
             content_teams_args = {
                 'teams': collected_teams
             }
