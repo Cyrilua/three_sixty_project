@@ -212,6 +212,14 @@ def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonRe
             poll = Poll.objects.get(id=poll_id)
         except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
             return JsonResponse({}, status=400)
+
+        try:
+            target_id = int(request.POST['checkedTarget'])
+            target = Profile.objects.get(id=target_id)
+            poll.target = target
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            pass
+
         content_teams_args = _render_category_teams(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
                                          content_teams_args).rendered_content
@@ -238,7 +246,12 @@ def render_category_participants_on_step_2(request: WSGIRequest, template_id) ->
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             return JsonResponse({}, status=400)
 
-        print(request.POST)
+        try:
+            target_id = int(request.POST['checkedTarget'])
+            target = Profile.objects.get(id=target_id)
+            poll.target = target
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            pass
 
         content_participants_args = _render_category_participants(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
