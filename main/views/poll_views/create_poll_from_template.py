@@ -207,8 +207,12 @@ def _get_roles(profile: Profile) -> list:
 
 def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # todo
-        content_teams_args = _render_category_teams(request, [])
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            return JsonResponse({}, status=400)
+        content_teams_args = _render_category_teams(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
                                          content_teams_args).rendered_content
         return JsonResponse({'content': content}, status=200)
@@ -227,12 +231,14 @@ def _render_category_teams(request: WSGIRequest, checked_profiles) -> dict:
 
 def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
+        # todo сохранять изменения при смене категорий
         try:
-            # todo
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             return JsonResponse({}, status=400)
+
+        print(request.POST)
 
         content_participants_args = _render_category_participants(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
@@ -619,7 +625,6 @@ def sending_emails(poll: Poll):
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        # todo cохранять выбранных пользователей на другой категории
         print(request.POST)
         poll = _save_information_from_step_3(request)
         if poll is None:
