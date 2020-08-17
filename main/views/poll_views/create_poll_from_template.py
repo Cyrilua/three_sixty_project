@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from main.views.auxiliary_general_methods import *
-from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company,\
+from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, \
     AnswerChoice, NeedPassPoll, CreatedPoll
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
@@ -95,21 +95,24 @@ def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, 
         count_questions = int(data['template[countQuestion]'])
     except ValueError:
         return None
-    version = 0
+    first_question = poll.questions.all().first()
+    version = 0 if first_question is None else first_question.version + 1
+    ordinal_number = 0
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
             question_id = int(data[data_key.format('id')])
             question: Questions = Questions.objects.get(id=question_id)
-            version = question.version + 1
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             question = Questions()
         question.text = data[data_key.format('name')]
         settings = _create_or_change_settings(request, question_number, question)
         question.settings = settings
         question.version = version
+        question.ordinal_number = ordinal_number
         question.save()
         poll.questions.add(question)
+        ordinal_number += 1
     return version
 
 
@@ -151,7 +154,7 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     return settings
 
 
-def _build_team_list(teams: (list, filter)) -> list:
+def _build_team_list(teams: (list, filter), checked_profiles: list) -> list:
     result = []
     for team in teams:
         team: Group
@@ -161,7 +164,7 @@ def _build_team_list(teams: (list, filter)) -> list:
             'name': team.name,
             'numbers': profiles.count(),
             'descriptions': team.description,
-            'participants': _build_team_profiles_list(profiles, team, []),
+            'participants': _build_team_profiles_list(profiles, team, checked_profiles),
             'href': ''
         }
         result.append(collected_poll)
@@ -204,30 +207,38 @@ def _get_roles(profile: Profile) -> list:
 
 def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        content_teams_args = _render_category_teams(request)
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            return JsonResponse({}, status=400)
+        content_teams_args = _render_category_teams(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
                                          content_teams_args).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
-def _render_category_teams(request: WSGIRequest) -> dict:
+def _render_category_teams(request: WSGIRequest, checked_profiles) -> dict:
     profile = get_user_profile(request)
     company = profile.company
     if SurveyWizard.objects.filter(profile=profile).exists():
         teams = company.group_set.all()
     else:
         teams = profile.groups.all()
-    collected_teams = _build_team_list(teams)
+    collected_teams = _build_team_list(teams, checked_profiles)
     return {'teams': collected_teams}
 
 
 def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
+        # todo сохранять изменения при смене категорий
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
         except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
             return JsonResponse({}, status=400)
+
+        print(request.POST)
 
         content_participants_args = _render_category_participants(request, [poll.target])
         content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
@@ -303,6 +314,10 @@ def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
+def render_step_1_from_step_3_not_master(request: WSGIRequest, template_id) -> JsonResponse:
+    return render_step_1_from_step_3(request, template_id)
+
+
 def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         poll = _save_information_from_step_2(request)
@@ -319,15 +334,27 @@ def _save_information_from_step_3(request: WSGIRequest) -> Poll:
         list_profiles = request.POST.getlist('checkedInterviewed[]')
     except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
         return None
+    first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
+    version = 1 if first_respondent is None else first_respondent.version + 1
+    print(version)
+    print(list_profiles)
     for profile_id in list_profiles:
         try:
             profile = Profile.objects.get(id=int(profile_id))
         except (ValueError, ObjectDoesNotExist):
             continue
-        need_pass = NeedPassPoll()
-        need_pass.poll = poll
-        need_pass.profile = profile
+
+        try:
+            need_pass: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile_id=profile_id)
+        except ObjectDoesNotExist:
+            need_pass = NeedPassPoll()
+            need_pass.profile = profile
+            need_pass.poll = poll
+        need_pass.version = version
         need_pass.save()
+    profiles_for_delete = NeedPassPoll.objects.filter(poll=poll).exclude(version=version)
+    print(profiles_for_delete)
+    #profiles_for_delete.delete()
     return poll
 
 
@@ -336,10 +363,14 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
     profile = get_user_profile(request)
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
-    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html', args).rendered_content
-    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html', args).rendered_content
-    profiles = profile.company.profile_set.all()
+    main = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_main.html',
+                                  args).rendered_content
+    move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html',
+                                  args).rendered_content
     company = profile.company
+    target_id = -1 if poll.target is None else poll.target.id
+    initiator_id = -1 if poll.initiator is None else poll.initiator.id
+    profiles = Profile.objects.filter(company=company).exclude(id=target_id).exclude(id=initiator_id)
 
     profiles_checked = [i.profile for i in NeedPassPoll.objects.filter(poll=poll)]
     categories_args = {
@@ -367,6 +398,17 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
 def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
         poll = _save_information_from_step_1(request)
+        if poll is None:
+            return JsonResponse({}, status=400)
+
+        args = _get_rendered_page_for_step_3(request, poll)
+        return JsonResponse(args, status=200)
+
+
+def render_step_3_from_step_1_not_master(request: WSGIRequest, template_id) -> JsonResponse:
+    if request.is_ajax():
+        poll = _save_information_from_step_1(request)
+        poll.target = get_user_profile(request)
         if poll is None:
             return JsonResponse({}, status=400)
 
@@ -577,14 +619,17 @@ def create_unique_key(poll: Poll):
 
 
 def sending_emails(poll: Poll):
-    #todo
+    # todo
     emails = [i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
 
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        # todo cохранять выбранных пользователей на другой категории
-        args = _render_category_teams(request)
+        print(request.POST)
+        poll = _save_information_from_step_3(request)
+        if poll is None:
+            return JsonResponse({}, status=400)
+        args = _render_category_teams(request, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                          args).rendered_content
         return JsonResponse({'content': content}, status=200)
@@ -592,11 +637,8 @@ def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> J
 
 def render_category_participants_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        # todo cохранять выбранных пользователей на другой категории
-        try:
-            poll_id = int(request.POST['pollId'])
-            poll = Poll.objects.get(id=poll_id)
-        except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
+        poll = _save_information_from_step_3(request)
+        if poll is None:
             return JsonResponse({}, status=400)
         args = _render_category_participants(request, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
@@ -607,6 +649,11 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
 def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
     # todo fix bug
     if request.is_ajax():
+        try:
+            poll_id = int(request.POST['pollId'])
+            poll = Poll.objects.get(id=poll_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            return JsonResponse({}, status=400)
         mode = request.POST['mode']
         user_input: str = request.POST['input']
         profile = get_user_profile(request)
@@ -614,12 +661,14 @@ def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
 
         if mode == 'participants':
             content_participants_args = {
-                'participants': _build_team_profiles_list(result_search, profile.company, [])
+                'participants': _build_team_profiles_list(
+                    result_search, profile.company, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
             }
             content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                              content_participants_args).rendered_content
         elif mode == 'teams':
-            collected_teams = _build_team_list(result_search)
+            collected_teams = _build_team_list(result_search,
+                                               [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
             content_teams_args = {
                 'teams': collected_teams
             }
