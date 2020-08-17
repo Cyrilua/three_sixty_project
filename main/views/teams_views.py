@@ -82,27 +82,27 @@ def connect_to_team_to_link(request, key: str) -> render:
 def team_user_view(request, group_id: int) -> render:
     args = {}
 
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    try:
-        group = Group.objects.get(id=group_id)
-        profile = get_user_profile(request)
-        if profile not in group.profile_set.all():
-            raise Exception()
-    except:
-        return redirect('/')
-
-    args['users'] = group.profile_set.all()
-
-    if auth.get_user(request).id == group.owner.id:
-        args['link_to_enter'] = request.scheme + "://" + request.get_host() + "/invite/t/" + group.key
-    args['owner'] = {'pk': group.owner.profile.pk,
-                     'name': group.owner.profile.name,
-                     'surname': group.owner.profile.surname}
-    args['team_name'] = group.name
-    args['title'] = group.name
-    args['group_id'] = group_id
-    return render(request, 'main/teams/old/team_view.html', args)
+    # if auth.get_user(request).is_anonymous:
+    #     return redirect('/')
+    # try:
+    #     group = Group.objects.get(id=group_id)
+    #     profile = get_user_profile(request)
+    #     if profile not in group.profile_set.all():
+    #         raise Exception()
+    # except:
+    #     return redirect('/')
+    #
+    # args['users'] = group.profile_set.all()
+    #
+    # if auth.get_user(request).id == group.owner.id:
+    #     args['link_to_enter'] = request.scheme + "://" + request.get_host() + "/invite/t/" + group.key
+    # args['owner'] = {'pk': group.owner.profile.pk,
+    #                  'name': group.owner.profile.name,
+    #                  'surname': group.owner.profile.surname}
+    # args['team_name'] = group.name
+    # args['title'] = group.name
+    # args['group_id'] = group_id
+    return render(request, 'main/teams/team_view.html', args)
 
 
 def search_team_for_invite(request, profile_id: int) -> render:

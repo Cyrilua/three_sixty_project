@@ -1,0 +1,61 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_teams="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="content">
+        {% csrf_token %}
+        <div class="content__head rounded-block">
+            <div class="head__top">
+                <div class="info">
+                    <h1 class="team__name">Крутая команда</h1>
+                    <div class="company-substrate">
+                        <a href="#" class="company__href">ООО Крутая компания</a>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="button" class="new-poll button-red">Провести опрос</button>
+                </div>
+            </div>
+            <div class="head__middle">
+                <h3 class="subtitle">Описание</h3>
+                <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum
+                    dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                    magna aliqua.
+                </div>
+            </div>
+        </div>
+        <div class="head__bottom rounded-block">
+            <input type="text" class="search input-field" placeholder="Поиск по участникам...">
+            <button class="button-white send-invites">Пригласить ещё</button>
+        </div>
+        <div class="content__body">
+            {% include 'main/teams/teammates.html' %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_team_view_right.html' with menu_team='item--active' %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/team_view.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/team_view.js' %}"></script>
+{% endblock %}

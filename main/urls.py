@@ -100,7 +100,7 @@ urlpatterns = [
                   path('edit/edit/photo/delete', edit_profile.delete_profile_photo),
 
                   # Промотр конкретной команды
-                  path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
+                  path('team/<int:group_id>/', teams_views.team_user_view, name='team_view'),
                   # Создание команды
                   path('create_team/', teams_views.create_team, name='create_team'),
                   # Присоединение к команде (по ключу)
