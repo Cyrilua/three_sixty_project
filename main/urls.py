@@ -102,7 +102,7 @@ urlpatterns = [
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='group_user_view'),
                   # Создание команды
-                  path('create_command/', teams_views.create_team, name='create_group'),
+                  path('create_team/', teams_views.create_team, name='create_team'),
                   # Присоединение к команде (по ключу)
                   path('connect_to_command/', teams_views.connect_to_team_to_key, name='connect_to_group'),
                   # Присоединение к команде (по ссылке)
@@ -111,6 +111,9 @@ urlpatterns = [
                   path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
                   # Отправить уведомление о приглашении
                   path('<int:profile_id>/invite/<int:team_id>/', teams_views.send_notification_profile),
+
+                  # Список всх команд
+                  path('teams/', teams_views.teams_view, name='teams_view'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
@@ -233,7 +236,7 @@ urlpatterns = [
                   #
                   path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
 
-                 ############ Only for debug ###############
-                 path('test/', test.test)
+                  ############ Only for debug ###############
+                  path('test/', test.test)
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

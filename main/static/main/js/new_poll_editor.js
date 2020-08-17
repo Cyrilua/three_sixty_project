@@ -24,14 +24,23 @@ $(function () {
         if (color !== '') {
             pollHeader.addClass(color);
             if (color === 'red') {
+                $('.taking-poll').attr({
+                    'data-color': 'red',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
             } else if (color === 'blue') {
+                $('.taking-poll').attr({
+                    'data-color': 'blue',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#001AFF');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
             } else if (color === 'purple') {
+                $('.taking-poll').attr({
+                    'data-color': 'purple',
+                });
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#DB00FF');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#DB00FF');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -39,6 +48,9 @@ $(function () {
                 throw new Error('Unexpected attribute on color change');
             }
         } else {
+            $('.taking-poll').attr({
+                'data-color': 'grey',
+            });
             document.documentElement.style.setProperty('--mdc-theme-primary', '#C4C4C4');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#C4C4C4');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'black');
@@ -418,11 +430,11 @@ $(function () {
                     });
                     menu.eq(1).removeClass('disabled');
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participant)
+                // participant.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
             },
             complete: function () {
@@ -528,6 +540,7 @@ $(function () {
             $('input[name=participants]:checked').each(function (key, elem) {
                 checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
+            checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
             data = {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
@@ -580,6 +593,27 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
+
+                    if (step === '3') {
+                        let allParticipants = $('input[type=checkbox][name=participants]');
+                        let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                        if (participants.length > 0) {
+                            $('#sendPoll').prop({
+                                'disabled': false,
+                            });
+                            menu.eq(1).removeClass('disabled');
+                            if (allParticipants.length === participants.length) {
+                                $('.select__all ').addClass('all-checked');
+                            }
+                        }
+                        $('.select__all').removeClass('hide');
+                        // console.log(participants)
+                        // participants.css({
+                        //     // 'order': -10000,
+                        //     'background-color': '#F0F1F6',
+                        // });
+                    }
+
                 } else if (partUrl === 'teams') {
                     search.attr({
                         'placeholder': 'Поиск по командам...',
@@ -588,6 +622,9 @@ $(function () {
                     search.prop({
                         'disabled': false,
                     });
+                    if (step === '3') {
+                        $('.select__all').addClass('hide');
+                    }
                 } else if (step === '1') {
                     if (partUrl === 'preview') {
                         if (pollId === undefined) {
@@ -626,14 +663,15 @@ $(function () {
                                 'disabled': false,
                             });
                             menu.eq(1).removeClass('disabled');
+                            if (accessStep3) {
+                                menu.eq(2).removeClass('disabled');
+                            }
                         } else if (step === '3') {
                             $('#sendPoll').prop({
                                 'disabled': false,
                             });
                             menu.eq(1).removeClass('disabled');
-                            if (accessStep3) {
-                                menu.eq(2).removeClass('disabled');
-                            }
+                            menu.eq(2).removeClass('disabled');
                         }
                     } else {
                         if (step === '2') {
@@ -646,6 +684,7 @@ $(function () {
                                 'disabled': true,
                             });
                             menu.eq(1).removeClass('disabled');
+                            menu.eq(2).removeClass('disabled');
                         }
                     }
                 }
@@ -664,33 +703,66 @@ $(function () {
     });
 
     // 2 шаг - При выборе цели можно нажать кнопку ДАЛЕЕ
-    body.on('change', 'input[type=radio][name=participants]', function () {
-        let scroll = window.pageYOffset;
+    body.on('change', 'input[type=radio][name^=participants]', function () {
+        // let scroll = window.pageYOffset;
         // console.log(scroll)
+        // if ($('.teams').length > 0) {
+        //     // $('.participant-active').each(function (key, elem) {
+        //     //     $(elem).css({
+        //     //         'order': 'initial',
+        //     //     });
+        //     // });
+        //     // participant.css({
+        //     //     'order': -10000,
+        //     // });
+        // } else {
+        //     // $('.participant-active').each(function (key, elem) {
+        //     //     $(elem).css({
+        //     //         // 'order': 'initial',
+        //     //         'background-color': '#FAFAFA',
+        //     //     });
+        //     // });
+        //     // participant.css({
+        //     //     // 'order': -10000,
+        //     //     'background-color': '#F0F1F6',
+        //     // });
+        // }
+        // window.scrollTo(0, scroll);
+
+
+        // let participant = $(this).parent().parent().parent();
+        // $('.participant-active').removeClass('participant-active');
+        // participant.addClass('participant-active');
+
+
         let participant = $(this).parent().parent().parent();
-        if ($('.teams').length > 0) {
-            // $('.participant-active').each(function (key, elem) {
-            //     $(elem).css({
-            //         'order': 'initial',
-            //     });
-            // });
-            // participant.css({
-            //     'order': -10000,
-            // });
-        } else {
-            $('.participant-active').each(function (key, elem) {
-                $(elem).css({
-                    // 'order': 'initial',
-                    'background-color': '#FAFAFA',
+        console.log(participant)
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'participants') {
+            $('.participant-active').removeClass('participant-active');
+        } else if (category === 'teams') {
+            console.log(0)
+            if (!$(this).hasClass('changeEnd')) {
+                console.log(1)
+                $('.participant-active')
+                    .removeClass('participant-active')
+                    .children('.radio').children('.mdc-radio').children('[type=radio]').prop({
+                    'checked': false,
                 });
-            });
-            participant.css({
-                // 'order': -10000,
-                'background-color': '#F0F1F6',
-            });
+                participant.addClass('participant-active');
+                let radioWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                console.log(radioWithThisId.not(':checked'))
+                radioWithThisId.not(':checked')
+                    .addClass('changeEnd')
+                    .trigger('click');
+            } else {
+                console.log(2)
+                $(this).removeClass('changeEnd');
+                participant.addClass('participant-active');
+            }
         }
-        window.scrollTo(0, scroll);
         participant.addClass('participant-active');
+
         $('#nextToStep3').prop({
             'disabled': false,
         });
@@ -704,7 +776,8 @@ $(function () {
     });
 
     function ajaxStepFrom2To3(el) {
-        let checkedTarget = $('input[name=participants]:checked').attr('data-participant-id');
+        let checkedTarget = $('input[name^=participants]:checked').attr('data-participant-id');
+        console.log(checkedTarget)
         $.ajax({
             url: 'step/3/from/2/',
             type: 'post',
@@ -737,11 +810,27 @@ $(function () {
                     'data-step': '3',
                 });
 
-                if ($('input[type=checkbox][name=participants]:checked').length > 0) {
+                // if ($('input[type=checkbox][name=participants]:checked').length > 0) {
+                //     $('#sendPoll').prop({
+                //         'disabled': false,
+                //     })
+                // }
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
-                    })
+                    });
+                    menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
                 menu.eq(1).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
@@ -801,6 +890,7 @@ $(function () {
             $('input[name=participants]:checked').each(function (key, elem) {
                 checkedInterviewed.push($(elem).attr('data-participant-id'));
             });
+            checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
             data = {
                 input: input,
                 pollId: pollId,
@@ -855,10 +945,27 @@ $(function () {
                         });
                         menu.eq(1).removeClass('disabled');
                     } else if (step === '3') {
-                        $('#sendPoll').prop({
-                            'disabled': true,
-                        });
+                        // $('#sendPoll').prop({
+                        //     'disabled': true,
+                        // });
                         menu.eq(1).removeClass('disabled');
+
+                        let allParticipants = $('input[type=checkbox][name=participants]');
+                        let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                        if (participants.length > 0) {
+                            $('#sendPoll').prop({
+                                'disabled': false,
+                            });
+                            menu.eq(1).removeClass('disabled');
+                            if (allParticipants.length === participants.length) {
+                                $('.select__all ').addClass('all-checked');
+                            }
+                        }
+                        // console.log(participants)
+                        // participants.css({
+                        //     // 'order': -10000,
+                        //     'background-color': '#F0F1F6',
+                        // });
                     }
                 }
             },
@@ -868,24 +975,88 @@ $(function () {
         })
     });
 
-    // 3 шаг - активация кнопки ОТПРАВИТЬ
-    body.on('change', 'input[type=checkbox][name=participants]', function () {
-        let checked = $('input[name=participants]:checked');
-        let allCheckbox = $('input[name=participants]');
-        if (checked.length > 0) {
-            $('#sendPoll').prop({
-                'disabled': false,
-            });
-        } else {
-            $('#sendPoll').prop({
-                'disabled': true,
-            });
-        }
+    // 3 шаг - выбор тех, кому отправить
+    body.on('change changeEnd', 'input[type=checkbox][name=participants]', function (event) {
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'participants') {
+            let checked = $('input[name=participants]:checked');
+            let allCheckbox = $('input[name=participants]');
+            if (checked.length > 0) {
+                $('#sendPoll').prop({
+                    'disabled': false,
+                });
+            } else {
+                $('#sendPoll').prop({
+                    'disabled': true,
+                });
+            }
+            if ($(this).prop('checked')) {
+                $(this).parent().parent().parent().addClass('participant-active');
+            } else {
+                $(this).parent().parent().parent().removeClass('participant-active');
+            }
 
-        if (checked.length === allCheckbox.length) {
-            $('.select__all').addClass('all-checked');
+            if (checked.length === allCheckbox.length) {
+                $('.select__all').addClass('all-checked');
+            } else {
+                $('.select__all').removeClass('all-checked');
+            }
+        } else if (category === 'teams') {
+            let participantBlockInTeam = $(this).parent().parent().parent().parent();
+            let checkboxesInTeam = participantBlockInTeam.children('.participant').children('.checkbox');
+            let checkedInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]:checked');
+            let allCheckboxInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]');
+            let allChecked = $('input[name=participants]:checked');
+            if (allChecked.length > 0) {
+                $('#sendPoll').prop({
+                    'disabled': false,
+                });
+            } else {
+                $('#sendPoll').prop({
+                    'disabled': true,
+                });
+            }
+            if (checkedInTeam.length === allCheckboxInTeam.length) {
+                participantBlockInTeam.parent().parent().children('.team__up').children('.team__actions')
+                    .children('.team__select-all').addClass('team-checked');
+            } else {
+                participantBlockInTeam.parent().parent().children('.team__up').children('.team__actions')
+                    .children('.team__select-all').removeClass('team-checked');
+            }
+
+            if (!$(this).hasClass('changeEnd')) {
+                if ($(this).prop('checked')) {
+                    let checkboxWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                    checkboxWithThisId.not(':checked')
+                        .addClass('changeEnd')
+                        .trigger('click');
+                } else {
+                    let checkboxWithThisId = $(`[data-participant-id=${$(this).attr('data-participant-id')}]`);
+                    checkboxWithThisId.filter(':checked')
+                        .addClass('changeEnd')
+                        .trigger('click');
+                }
+            } else {
+                $(this).removeClass('changeEnd');
+            }
+        }
+    });
+
+    // body.on('changeEnd', 'input[type=checkbox][name=participants]', function () {
+    //
+    // })
+
+    body.on('click', '.team__select-all', function (el) {
+        if ($(this).hasClass('team-checked')) {
+            let checked = $(this).closest('.team').children('.team__down').children('.participants')
+                .children('.participant').children('.checkbox').children('.mdc-checkbox')
+                .children('input[name=participants]');
+            checked.trigger('click');
         } else {
-            $('.select__all').removeClass('all-checked');
+            let noChecked = $(this).closest('.team').children('.team__down').children('.participants')
+                .children('.participant').children('.checkbox').children('.mdc-checkbox')
+                .children('input[name=participants]').not(':checked');
+            noChecked.trigger('click');
         }
     });
 
@@ -899,6 +1070,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/2/from/3/',
             type: 'post',
@@ -931,11 +1103,24 @@ $(function () {
                     'data-step': '2',
                 });
 
-                if ($('input[type=radio][name=participants]:checked').length > 0) {
+                // if ($('input[type=radio][name=participants]:checked').length > 0) {
+                //     $('#nextToStep3').prop({
+                //         'disabled': false,
+                //     })
+                // }
+
+                let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
+                if (participant.length > 0) {
                     $('#nextToStep3').prop({
                         'disabled': false,
-                    })
+                    });
+                    menu.eq(1).removeClass('disabled');
                 }
+                // console.log(participant)
+                // participant.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
 
                 menu.eq(2).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
@@ -960,6 +1145,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'send/',
             type: 'post',
@@ -1033,6 +1219,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/1/from/3/',
             type: 'post',
@@ -1126,18 +1313,22 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(2).addClass('item--active');
 
-                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
                     menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
             },
             complete: function () {
                 // $(el.target).prop({
@@ -1205,18 +1396,22 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
 
-                let participant = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                let allParticipants = $('input[type=checkbox][name=participants]');
+                let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
+                if (participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
                     menu.eq(1).removeClass('disabled');
+                    if (allParticipants.length === participants.length) {
+                        $('.select__all ').addClass('all-checked');
+                    }
                 }
-                console.log(participant)
-                participant.css({
-                    // 'order': -10000,
-                    'background-color': '#F0F1F6',
-                });
+                // console.log(participants)
+                // participants.css({
+                //     // 'order': -10000,
+                //     'background-color': '#F0F1F6',
+                // });
             },
             complete: function () {
                 // $(el.target).prop({
@@ -1242,6 +1437,7 @@ $(function () {
         $('input[name=participants]:checked').each(function (key, elem) {
             checkedInterviewed.push($(elem).attr('data-participant-id'));
         });
+        checkedInterviewed = checkedInterviewed.filter((elem, index) => checkedInterviewed.indexOf(elem) === index);
         $.ajax({
             url: 'step/1/from/3/notMaster/',
             type: 'post',
@@ -1293,26 +1489,10 @@ $(function () {
     }
 
     body.on('click', '.select__all', function (el) {
-        if (!$(this).hasClass('all-checked')) {
-            $('input[name=participants]').prop({
-                'checked': true,
-            });
-            $(this).addClass('all-checked');
+        if ($(this).hasClass('all-checked')) {
+            $('input[type=checkbox][name=participants]').trigger('click');
         } else {
-            $('input[name=participants]').prop({
-                'checked': false,
-            });
-            $(this).removeClass('all-checked');
-        }
-
-        if ($('input[name=participants]:checked').length > 0) {
-            $('#sendPoll').prop({
-                'disabled': false,
-            });
-        } else {
-            $('#sendPoll').prop({
-                'disabled': true,
-            });
+            $('input[type=checkbox][name=participants]').not(':checked').trigger('click');
         }
     });
 
@@ -1364,20 +1544,20 @@ $(function () {
         });
 
         // Изменение цвета
-        let currentColor = $('.color__variable--select');
+        let currentColor = $('.color__variable--select').attr('data-color');
         let pollHeader = $('.poll-editor__header');
         pollHeader.removeClass('red blue purple');
-        if (currentColor.hasClass('blue')) {
+        if (currentColor === 'blue') {
             pollHeader.addClass('blue');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#001AFF');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#001AFF');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
-        } else if (currentColor.hasClass('red')) {
+        } else if (currentColor === 'red') {
             pollHeader.addClass('red');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
             document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
-        } else if (currentColor.hasClass('purple')) {
+        } else if (currentColor === 'purple') {
             pollHeader.addClass('purple');
             document.documentElement.style.setProperty('--mdc-theme-primary', '#DB00FF');
             document.documentElement.style.setProperty('--mdc-theme-secondary', '#DB00FF');

@@ -298,6 +298,10 @@
   display: none;
 }
 
+.category-item > .participants .participant.participant-active {
+  background-color: #F0F1F6;
+}
+
 .participants {
   display: flex;
   flex-direction: column;
@@ -384,6 +388,9 @@
 .select-teams .teams .team.team--selected .team__up .team__actions .team__action:after {
   content: "Свернуть";
 }
+.select-teams .teams .team.team--selected .team__up .team__actions .team__select-all {
+  display: block;
+}
 .select-teams .teams .team.team--selected .team__down {
   display: block;
 }
@@ -430,6 +437,10 @@
 }
 .select-teams .teams .team .team__up .team__actions {
   margin: 0 0 auto auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .select-teams .teams .team .team__up .team__actions .team__action {
   font-style: normal;
@@ -437,9 +448,27 @@
   font-size: 14px;
   line-height: 16px;
   color: #2269D5;
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
 }
 .select-teams .teams .team .team__up .team__actions .team__action:after {
   content: "Развернуть";
+}
+.select-teams .teams .team .team__up .team__actions .team__select-all {
+  margin-top: 32px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D4;
+  display: none;
+}
+.select-teams .teams .team .team__up .team__actions .team__select-all.team-checked:before {
+  content: "Отменить выделение";
+}
+.select-teams .teams .team .team__up .team__actions .team__select-all:before {
+  content: "Выбрать всех";
 }
 .select-teams .teams .team .team__down {
   margin-top: 10px;
