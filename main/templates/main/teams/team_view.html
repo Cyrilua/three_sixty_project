@@ -33,7 +33,9 @@
         </div>
         <div class="head__bottom rounded-block">
             <input type="text" class="search input-field" placeholder="Поиск по участникам...">
-            <button class="button-white send-invites">Пригласить ещё</button>
+            {% if is_leader %}
+                <button class="button-white send-invites">Пригласить ещё</button>
+            {% endif %}
         </div>
         <div class="content__body">
             {% include 'main/teams/teammates.html' %}

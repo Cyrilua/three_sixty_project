@@ -4,8 +4,10 @@
         <li class="menu__item {{ menu_team }}" data-step="1">
             <a href="{% url 'main:team_view' group_id=8 %}" class="item__link">Команда</a>
         </li>
-        <li class="menu__item {{ menu_setting }}" data-step="3">
-            <a class="item__link">Настройки</a>
-        </li>
+        {% if is_leader %}
+            <li class="menu__item {{ menu_setting }}" data-step="3">
+                <a href="{% url 'main:team_setting' group_id=8 %}" class="item__link">Настройки</a>
+            </li>
+        {% endif %}
     </ul>
 </div>
