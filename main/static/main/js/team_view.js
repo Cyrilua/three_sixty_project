@@ -12,9 +12,9 @@ $(function () {
         return;
     };
 
-    // Поиск команды
+    // Поиск тимметов
     let ajaxInput;
-    body.on('input', '.head__search', function (event) {
+    body.on('input', '.search', function (event) {
         let search = $(this).val();
         ajaxInput = $.ajax({
             url: 'search/',
@@ -30,7 +30,7 @@ $(function () {
             },
             success: function (response) {
                 content.empty();
-                content[0].append(response.content); // ..teams.html
+                content[0].append(response.content); // ..teammates.html
             },
             complete: function () {
                 $('.content__body').removeClass('disable');
@@ -50,10 +50,9 @@ $(function () {
     // Выход из команды
     body.on('click', '.team__leave', function (event) {
         let team = $(this).parent();
-        let teamId = team.attr('data-team-id');
         let id;
         $.ajax({
-            url: `/team/${teamId}/leave/`,
+            url: `leave/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
@@ -94,7 +93,13 @@ $(function () {
                 }
             },
             success: function (response) {
-                $(team).remove();
+                window.onbeforeunload = function () {
+                    return;
+                };
+                window.onunload = function () {
+                    return;
+                };
+                location.href = '/teams/';
             },
             complete: function () {
                 ajaxRequests[id].finish = true;
