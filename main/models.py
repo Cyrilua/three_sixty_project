@@ -224,6 +224,7 @@ class NeedPassPoll(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_viewed = models.BooleanField(default=False)
     is_rendered = models.BooleanField(default=False)
+    version = models.IntegerField(default=0)
     objects = models.Manager()
 
     class Meta:
