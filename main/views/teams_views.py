@@ -162,3 +162,8 @@ def send_notification_profile(request, profile_id: int, team_id: int) -> JsonRes
 def teams_view(request):
     args = {}
     return render(request, 'main/teams/teams_view.html', args)
+
+
+def team_setting(request, team_id):
+    args = {}
+    return render(request, 'main/teams/team_setting.html', args)
