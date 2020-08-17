@@ -250,6 +250,7 @@ class Questions(models.Model):
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=100)
     version = models.IntegerField(default=0)
+    ordinal_number = models.IntegerField(default=0)
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
@@ -258,6 +259,7 @@ class Questions(models.Model):
 
     class Meta:
         db_table = "Questions"
+        ordering = ['ordinal_number']
 
     def __str__(self):
         return self.text

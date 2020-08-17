@@ -204,10 +204,10 @@ urlpatterns = [
                        create_poll_from_template.render_step_2_from_step_3),
                   # Переход на третий шаг для не мастера (второй шаг для пользователя)
                   path('poll/editor/template/<int:template_id>/step/3/from/1/notMaster/',
-                       create_poll_from_template.render_step_3_from_step_1),
+                       create_poll_from_template.render_step_3_from_step_1_not_master),
                   # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
                   path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
-                       create_poll_from_template.render_step_1_from_step_3),
+                       create_poll_from_template.render_step_1_from_step_3_not_master),
                   # Загрузка команд на третьем шаге
                   path('poll/editor/template/<int:template_id>/step/3/category/teams/',
                        create_poll_from_template.render_category_teams_on_step_3),

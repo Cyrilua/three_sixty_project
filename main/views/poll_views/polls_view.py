@@ -205,7 +205,6 @@ def remove_template(request) -> JsonResponse:
 
 def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
-        print(poll_id)
         try:
             poll: Poll = Poll.objects.get(id=poll_id)
             need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=get_user_profile(request))
