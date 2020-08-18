@@ -371,10 +371,9 @@ def _save_information_from_step_3(request: WSGIRequest) -> Poll:
             need_pass.poll = poll
         need_pass.version = version
         need_pass.save()
-    # todo посмотреть работоспособность
+    # todo удаляются пользователи, которые не состоят в ккакой-либо команде
     profiles_for_delete = NeedPassPoll.objects.filter(poll=poll).exclude(version=version)
-    print(profiles_for_delete)
-    #profiles_for_delete.delete()
+    profiles_for_delete.delete()
     return poll
 
 
@@ -691,7 +690,7 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
 
 
 def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
-    # todo fix bug (коряво работает поиск на русском, находит инициатора опроса)
+    # todo fix bug (коряво работает поиск на русском)
     if request.is_ajax():
         try:
             poll_id = int(request.POST['pollId'])
@@ -706,13 +705,15 @@ def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
         if mode == 'participants':
             content_participants_args = {
                 'participants': _build_team_profiles_list(
-                    result_search, profile.company, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
+                    result_search, profile.company, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)],
+                    unbilding_user=profile)
             }
             content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                              content_participants_args).rendered_content
         elif mode == 'teams':
             collected_teams = _build_team_list(result_search,
-                                               [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
+                                               [i.profile for i in NeedPassPoll.objects.filter(poll=poll)],
+                                               unbilding_user=profile)
             content_teams_args = {
                 'teams': collected_teams
             }
