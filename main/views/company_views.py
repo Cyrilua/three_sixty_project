@@ -70,7 +70,7 @@ def create_company(request):
             return redirect('/communications/')
         else:
             args['company_form'] = company_form
-    return render(request, 'main/companies/add_new_company.html', args)
+    return render(request, 'main/companies/old/add_new_company.html', args)
 
 
 def connect_to_company_to_key(request):
@@ -94,7 +94,7 @@ def connect_to_company_to_key(request):
             add_user_to_company(profile, company)
             return redirect('/communications/')
 
-    return render(request, 'main/companies/connect_to_company.html', args)
+    return render(request, 'main/companies/old/connect_to_company.html', args)
 
 
 def add_user_to_company(profile, company):
@@ -227,21 +227,22 @@ def company_view(request, id_company):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
-    company = Company.objects.get(id=id_company)
-
-    if company is None:
-        return redirect('/communications/')
-
-    args = {
-        'title': company.name,
-        'positions': PositionCompany.objects.filter(company=company),
-        'platforms': PlatformCompany.objects.filter(company=company),
-        'company_name': company.name,
-        'owner': {'pk': company.owner.profile.pk,
-                  'name': company.owner.profile.name,
-                  'surname': company.owner.profile.surname},
-        'link_to_enter': request.scheme + "://" + request.get_host() + "/invite/c/" + company.key,
-    }
+    # company = Company.objects.get(id=id_company)
+    #
+    # if company is None:
+    #     return redirect('/communications/')
+    #
+    # args = {
+    #     'title': company.name,
+    #     'positions': PositionCompany.objects.filter(company=company),
+    #     'platforms': PlatformCompany.objects.filter(company=company),
+    #     'company_name': company.name,
+    #     'owner': {'pk': company.owner.profile.pk,
+    #               'name': company.owner.profile.name,
+    #               'surname': company.owner.profile.surname},
+    #     'link_to_enter': request.scheme + "://" + request.get_host() + "/invite/c/" + company.key,
+    # }
+    args = {}
 
     return render(request, 'main/companies/company_view.html', args)
 
