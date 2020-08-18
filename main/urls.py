@@ -170,6 +170,8 @@ urlpatterns = [
                   path('polls/loading/<int:count_polls>/', polls_view.loading_polls),
                   # Маячок о новом опросе для прохождения
                   path('polls/new_notif/', polls_view.load_notification_new_poll),
+                  # Создание нового опроса
+                  path('polls/poll/create/', create_poll.poll_create_redirect, name='poll_create'),
                   # Создание нового опроса через шаблон
                   path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
                        name='create_poll_from_template'),

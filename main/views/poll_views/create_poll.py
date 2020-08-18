@@ -3,38 +3,6 @@ from main.models import Poll
 from django.shortcuts import redirect, render
 
 
-def choose_poll(request):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    args = {
-        'title': "Опросы",
-        'companys': build_company(request),
-        'teams': build_teams(request)
-    }
-
-    return render(request, 'main/poll/polls_view.html', args)
-
-
-def build_company(request):
-    company = get_user_profile(request).company
-    result = [{
-        'name': company.name,
-        'url': '/respondent_choice_c/',
-    }]
-    return result
-
-
-def build_teams(request):
-    profile = get_user_profile(request)
-    result = []
-    for group in profile.groups.all():
-        result.append({
-            'name': group.name,
-            'url': '/respondent_choice_t/{}/'.format(group.id),
-        })
-    return result
-
-
 def poll_create(request, poll_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
