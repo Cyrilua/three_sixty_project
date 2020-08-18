@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from main.views.auxiliary_general_methods import *
-from main.views.notifications_views import create_notifications
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, \
     AnswerChoice, NeedPassPoll, CreatedPoll
 from django.shortcuts import redirect, render

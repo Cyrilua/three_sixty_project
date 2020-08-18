@@ -90,31 +90,21 @@ class VerificationCode (models.Model):
         return self.code
 
 
-class Notifications (models.Model):
+class Invitation (models.Model):
     TYPE_CHOICES = [
-        ('my_poll', 0),
-        ('invite_command', 1),
-        ('invite_company', 2),
-        ('alien_poll', 3)
+        (0, 'team'),
+        (1, 'company'),
     ]
 
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='my_poll')
-    name = models.CharField(max_length=50, default='')
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='profile')
-    # url хранится в формате фоматируемой строки для возможности ставки ключа
-    url = models.CharField(max_length=100, default='')
-    key = models.CharField(max_length=100, null=True)
-    on_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='on_profile', null=True)
-    from_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='from_profile', null=True)
+    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='team')
+    invitation_group_id = models.IntegerField(default=0)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
-    completed = models.BooleanField(default=False)
+    initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+')
     objects = models.Manager()
 
     class Meta:
-        db_table = "Notifications"
-
-    def __str__(self):
-        return self.url
+        db_table = "Invitation"
 
 
 class Company(models.Model):
