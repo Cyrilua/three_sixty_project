@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 from .auxiliary_general_methods import *
-from main.models import TestTable, Profile, NeedPassPoll, Poll
+from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import loader, Context
@@ -9,18 +9,9 @@ from django.contrib.sites.models import Site
 
 
 def test(request: WSGIRequest):
-    poll = Poll.objects.get(id=86)
-    mail_subject = 'Новый опрос'
-    link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
-    message = render_to_string('main/taking_poll_notifications_email.html', {
-        'target': {
-            'name': poll.target.name,
-            'surname': poll.target.surname
-        },
-        'link': link
-    })
-    email = EmailMessage(
-        mail_subject, message, to=['koroliov_2015@mail.ru', 'test@test.ru']
-    )
-    email.send()
+    profile = get_user_profile(request)
+    platforms = PlatformCompany.objects.filter(company=profile.company)
+    for i in platforms:
+        print(i)
+    print(platforms)
     return render(request, 'main/test.html')
