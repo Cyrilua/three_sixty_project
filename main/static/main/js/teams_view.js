@@ -70,7 +70,7 @@ $(function () {
                         'display': 'none',
                     });
                     Snackbar.show({
-                        text: 'Команда удалена',
+                        text: 'Вы покинули команду',
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',

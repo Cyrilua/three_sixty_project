@@ -2,7 +2,7 @@
 {% if teammates %}
     <div class="teammates">
         {% for teammate in teammates %}
-            <div class="teammate rounded-block">
+            <div class="teammate rounded-block" data-real-id="{{ teammate.id }}">
                 <img src="{{ teammate.photo }}" alt="" class="photo">
                 <div class="info">
                     <div class="info__top">
@@ -74,8 +74,14 @@
                         </div>
                     </div>
                 </div>
-                {% if is_my_profile %}
-                    <div class="team__leave"></div>
+                {% if is_leader %}
+                    {% if not teammate.is_my_profile %}
+                        <div class="team__leave" id="kick"></div>
+                    {% endif %}
+                {% else %}
+                    {% if teammate.is_my_profile %}
+                        <div class="team__leave" id="leaveTeam"></div>
+                    {% endif %}
                 {% endif %}
             </div>
         {% endfor %}
