@@ -42,7 +42,7 @@ def _build_poll(poll: (TemplatesPoll, Poll)) -> dict:
         'name': poll.name_poll,
         'description': poll.description,
         'questions': _build_questions(poll.questions.all(), is_template),
-        'id': poll.id,
+        'id': poll.pk,
     }
     return result
 
@@ -56,7 +56,7 @@ def _build_questions(questions: list, from_template: bool) -> list:
         collected_question = {
             'is_template': True,
             'type': settings.type,
-            'id': question.id if not from_template else '',
+            'id': question.pk if not from_template else '',
             'name': question.text,
             'answers': answers,
             'countAnswers': answers.count(),
@@ -154,30 +154,33 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     return settings
 
 
-def _build_team_list(teams: (list, filter), checked_profiles: list) -> list:
+def _build_team_list(teams: (list, filter), checked_profiles: list, unbilding_user=None) -> list:
     result = []
     for team in teams:
         team: Group
         profiles = team.profile_set.all()
         collected_poll = {
-            'id': team.id,
+            'id': team.pk,
             'name': team.name,
             'numbers': profiles.count(),
             'descriptions': team.description,
-            'participants': _build_team_profiles_list(profiles, team, checked_profiles),
+            'participants': _build_team_profiles_list(profiles, team, checked_profiles, unbilding_user),
             'href': ''
         }
         result.append(collected_poll)
     return result
 
 
-def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company), checked_profiles: list) -> list:
+def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company), checked_profiles: list,
+                              unbilding_user=None) -> list:
     result = []
     for profile in profiles:
+        if profile == unbilding_user:
+            continue
         profile: Profile
         collected_profile = {
-            'href': '/{}/'.format(profile.id),
-            'id': profile.id,
+            'href': '/{}/'.format(profile.pk),
+            'id': profile.pk,
             'name': profile.name,
             'surname': profile.surname,
             'patronymic': profile.patronymic,
@@ -196,7 +199,7 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 def _get_roles(profile: Profile) -> list:
     roles = []
-    if profile.company.owner.id == profile.id:
+    if profile.company.owner.pk == profile.pk:
         roles.append('boss')
     if SurveyWizard.objects.filter(profile=profile).exists():
         roles.append('master')
@@ -354,8 +357,6 @@ def _save_information_from_step_3(request: WSGIRequest) -> Poll:
         return None
     first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
     version = 1 if first_respondent is None else first_respondent.version + 1
-    print(version)
-    print(list_profiles)
     for profile_id in list_profiles:
         try:
             profile = Profile.objects.get(id=int(profile_id))
@@ -370,6 +371,7 @@ def _save_information_from_step_3(request: WSGIRequest) -> Poll:
             need_pass.poll = poll
         need_pass.version = version
         need_pass.save()
+    # todo посмотреть работоспособность
     profiles_for_delete = NeedPassPoll.objects.filter(poll=poll).exclude(version=version)
     print(profiles_for_delete)
     #profiles_for_delete.delete()
@@ -409,7 +411,7 @@ def _get_rendered_page_for_step_3(request: WSGIRequest, poll: Poll):
         'categories': categories,
         'headMove': move,
         'headMain': main,
-        'pollId': poll.id
+        'pollId': poll.pk
     }
 
 
@@ -479,7 +481,7 @@ def _build_created_poll(poll: Poll) -> dict:
         'name': poll.name_poll,
         'description': poll.description,
         'questions': _build_questions(poll.questions.all(), False),
-        'id': poll.id,
+        'id': poll.pk,
     }
     return result
 
@@ -552,7 +554,7 @@ def _get_rendered_page_for_step_2(request: WSGIRequest, poll: Poll) -> dict:
                                         categories_args).rendered_content
 
     return {
-        'pollId': poll.id,
+        'pollId': poll.pk,
         'headMain': head_main,
         'headMove': head_move,
         'categories': categories
@@ -578,7 +580,7 @@ def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
             }
         content = SimpleTemplateResponse('main/poll/taking_poll_preview.html',
                                          {'poll': created_poll}).rendered_content
-        return JsonResponse({'content': content, 'pollId': poll.id}, status=200)
+        return JsonResponse({'content': content, 'pollId': poll.pk}, status=200)
 
 
 def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
@@ -624,18 +626,7 @@ def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
         created_poll.save()
 
         sending_emails(request, poll)
-
-        # todo create notifications
-
         return JsonResponse({}, status=200)
-
-
-def _add_notifications(profile: Profile, poll: Poll):
-    create_notifications(profile, poll.name_poll, 'my_poll', poll.pk, on_profile=poll.target)
-    for need_pass in NeedPassPoll.objects.filter(poll=poll):
-        profile_need_pass: Profile = need_pass.profile
-        create_notifications(profile_need_pass, poll.name_poll, 'alien_poll')
-
 
 
 def create_unique_key(poll: Poll):
@@ -667,11 +658,18 @@ def sending_emails(request: WSGIRequest, poll: Poll):
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        print(request.POST)
         poll = _save_information_from_step_3(request)
         if poll is None:
             return JsonResponse({}, status=400)
-        args = _render_category_teams(request, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
+        profile = get_user_profile(request)
+        company = profile.company
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            teams = company.group_set.all()
+        else:
+            teams = profile.groups.all()
+        args = {
+            'teams': _build_team_list(teams, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)], profile)
+        }
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                          args).rendered_content
         return JsonResponse({'content': content}, status=200)
@@ -682,14 +680,18 @@ def render_category_participants_on_step_3(request: WSGIRequest, template_id: in
         poll = _save_information_from_step_3(request)
         if poll is None:
             return JsonResponse({}, status=400)
-        args = _render_category_participants(request, [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
+        profile = get_user_profile(request)
+        company = profile.company
+        profiles = company.profile_set.all().exclude(pk=profile.pk)
+        args = {'participants': _build_team_profiles_list(profiles, company,
+                                                          [i.profile for i in NeedPassPoll.objects.filter(poll=poll)])}
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          args).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
 def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
-    # todo fix bug
+    # todo fix bug (коряво работает поиск на русском, находит инициатора опроса)
     if request.is_ajax():
         try:
             poll_id = int(request.POST['pollId'])

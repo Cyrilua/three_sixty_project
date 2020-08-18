@@ -3,7 +3,6 @@ import datetime
 from main.models import BirthDate, SurveyWizard, Moderator, NeedPassPoll, CreatedPoll, Invitation, Poll, Group, Company
 from main.views.auxiliary_general_methods import *
 from django.shortcuts import redirect, render
-
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -19,7 +18,7 @@ def get_render_user_profile(request):
     profile = get_user_profile(request)
     try:
         photo = profile.profilephoto.photo
-    except:
+    except ObjectDoesNotExist:
         photo = None
 
     profile_data = _build_profile_data(auth.get_user(request), get_user_profile(request))
