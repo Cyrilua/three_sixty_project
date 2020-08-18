@@ -1,13 +1,13 @@
 {% load static %}
-<div class="menu-r unselectable">
-    <ul class="menu rounded-block">
-        <li class="menu__item {{ menu_team }}" data-step="1">
-            <a href="{% url 'main:team_view' group_id=8 %}" class="item__link">Команда</a>
-        </li>
-        {% if not is_leader %}
+{% if is_leader %}
+    <div class="menu-r unselectable">
+        <ul class="menu rounded-block">
+            <li class="menu__item {{ menu_team }}" data-step="1">
+                <a href="{% url 'main:team_view' group_id=8 %}" class="item__link">Команда</a>
+            </li>
             <li class="menu__item {{ menu_setting }}" data-step="3">
                 <a href="{% url 'main:team_setting' team_id=8 %}" class="item__link">Настройки</a>
             </li>
-        {% endif %}
-    </ul>
-</div>
+        </ul>
+    </div>
+{% endif %}

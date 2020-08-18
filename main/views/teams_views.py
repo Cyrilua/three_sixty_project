@@ -166,3 +166,8 @@ def teams_view(request):
 def team_setting(request, team_id):
     args = {}
     return render(request, 'main/teams/team_setting.html', args)
+
+
+def team_new_invites(request, team_id):
+    args = {}
+    return render(request, 'main/teams/team_new_invites.html', args)

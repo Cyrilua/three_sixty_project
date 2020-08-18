@@ -114,8 +114,10 @@ urlpatterns = [
 
                   # Список всх команд
                   path('teams/', teams_views.teams_view, name='teams_view'),
-                  # Список всх команд
+                  # Настройки команды
                   path('team/<int:team_id>/setting', teams_views.team_setting, name='team_setting'),
+                  # Приглашение новых участников через команду
+                  path('team/<int:team_id>/invites', teams_views.team_new_invites, name='team_new_invites'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),

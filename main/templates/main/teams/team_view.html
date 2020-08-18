@@ -12,9 +12,9 @@
         <div class="content__head rounded-block">
             <div class="head__top">
                 <div class="info">
-                    <h1 class="team__name">Крутая команда</h1>
+                    <h1 class="team__name">{{ team.name }}</h1>
                     <div class="company-substrate">
-                        <a href="#" class="company__href">ООО Крутая компания</a>
+                        <a href="{{ company.href }}" class="company__href">{{ company.name }}</a>
                     </div>
                 </div>
                 <div class="actions">
@@ -23,18 +23,15 @@
             </div>
             <div class="head__middle">
                 <h3 class="subtitle">Описание</h3>
-                <div class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum
-                    dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                <div class="description">
+                    {{ team.description }}
                 </div>
             </div>
         </div>
         <div class="head__bottom rounded-block">
-            <input type="text" class="search input-field" placeholder="Поиск по участникам...">
-            {% if is_leader %}
-                <button class="button-white send-invites">Пригласить ещё</button>
+            <input type="text" class="search input-field" placeholder="Поиск по участникам..." autocomplete="off">
+            {% if not is_leader %}
+                <button class="button-white send-invites button-href" data-href="{% url 'main:team_new_invites' team_id=8 %}">Пригласить ещё</button>
             {% endif %}
         </div>
         <div class="content__body">
