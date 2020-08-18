@@ -3,7 +3,6 @@ import uuid
 from main.models import Questions, Poll, Answers, AnswerChoice, Settings, TemplatesPoll, Group, \
     CreatedPoll, SurveyWizard
 from main.views.auxiliary_general_methods import *
-from main.views.notifications_views import create_notifications
 from django.shortcuts import redirect, render
 
 

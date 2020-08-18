@@ -4,7 +4,7 @@ from django.urls import path, include, reverse
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from .views import profile_views, user_views, teams_views, company_views, poll_views_old, \
-    auxiliary_general_methods, notifications_views, test
+    auxiliary_general_methods, test
 from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
 
@@ -157,9 +157,6 @@ urlpatterns = [
                   # Контроллер, на который ссылается поиск HR
                   path('add_hr/<int:profile_id>', company_views.add_hr, name='add_hr_method'),
 
-                  # Выполнение уведомления
-                  path('notifications/<int:notification_id>/', notifications_views.redirect_from_notification),
-
                   ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
                   path('polls/', polls_view.polls_view, name='new_poll_view'),
@@ -237,8 +234,11 @@ urlpatterns = [
                   path('polls/template/remove/', polls_view.remove_template),
                   # Отметить опрос опросмотренным
                   path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
-                  #
+                  # Прохождение опроса
                   path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
+                  # Прохождение опроса через ссылку
+                  path('compiling_poll_link/<str:poll_key>/', compiling_poll.compiling_poll_link,
+                       name='compiling_poll_link'),
 
                   ############ Only for debug ###############
                   path('test/', test.test)
