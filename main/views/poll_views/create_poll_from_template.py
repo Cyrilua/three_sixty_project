@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from main.views.auxiliary_general_methods import *
+from main.views.notifications_views import create_notifications
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, \
     AnswerChoice, NeedPassPoll, CreatedPoll
 from django.shortcuts import redirect, render
@@ -239,7 +240,6 @@ def _render_category_teams(request: WSGIRequest, checked_profiles) -> dict:
 
 def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        # todo сохранять изменения при смене категорий
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
@@ -505,7 +505,10 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
     poll.description = data[data_key.format('description')]
     poll.color = data[data_key.format('color')]
     poll.creation_date = datetime.today()
-    poll.initiator = get_user_profile(request)
+    profile = get_user_profile(request)
+    if not SurveyWizard.objects.filter(profile=profile).exists():
+        poll.target = profile
+    poll.initiator = profile
     poll.save()
     return poll
 
@@ -581,7 +584,6 @@ def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
 
 def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        # TODO
         try:
             poll_id = int(request.POST['pollId'])
             poll = Poll.objects.get(id=poll_id)
@@ -622,24 +624,46 @@ def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
         created_poll.profile = profile
         created_poll.save()
 
-        sending_emails(poll)
+        sending_emails(request, poll)
+
+        # todo create notifications
 
         return JsonResponse({}, status=200)
 
 
+def _add_notifications(profile: Profile, poll: Poll):
+    create_notifications(profile, poll.name_poll, 'my_poll', poll.pk, on_profile=poll.target)
+    for need_pass in NeedPassPoll.objects.filter(poll=poll):
+        profile_need_pass: Profile = need_pass.profile
+        create_notifications(profile_need_pass, poll.name_poll, 'alien_poll')
+
+
+
 def create_unique_key(poll: Poll):
-    poll_id_changed = poll.id % 1000 + 1000
+    poll_id_changed = poll.pk % 1000 + 1000
     initiator_id_changed = poll.initiator.id % 1000 + 1000
     target_id_changed = poll.initiator.id % 1000 + 1000
-    date: datetime = poll.creation_date
-    key = '{}{}{}{}'.format(poll_id_changed, initiator_id_changed, target_id_changed, date)
+    creation_date: datetime = poll.creation_date
+    key = '{}{}{}{}'.format(poll_id_changed, initiator_id_changed, target_id_changed, creation_date)
     poll.key = key
     poll.save()
 
 
-def sending_emails(poll: Poll):
+def sending_emails(request: WSGIRequest, poll: Poll):
     # todo
-    emails = [i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
+    mail_subject = 'Новый опрос'
+    link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
+    message = render_to_string('main/taking_poll_notifications_email.html', {
+        'target': {
+            'name': poll.target.name,
+            'surname': poll.target.surname
+        },
+        'link': link
+    })
+    email = EmailMessage(
+        mail_subject, message, to=[i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
+    )
+    email.send()
 
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:

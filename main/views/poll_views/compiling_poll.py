@@ -9,6 +9,12 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.template.response import SimpleTemplateResponse
 
 
-def compiling_poll(request, poll_id) -> render:
+def compiling_poll(request: WSGIRequest, poll_id: int) -> render:
     print('test')
+    # todo
+    return render(request, 'main/poll/taking_poll.html', {})
+
+
+def compiling_poll_link(request: WSGIRequest, poll_key: int) -> render:
+    # todo
     return render(request, 'main/poll/taking_poll.html', {})
