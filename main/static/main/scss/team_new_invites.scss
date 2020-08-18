@@ -26,11 +26,11 @@
   }
 
   .content__body {
-    .teammates {
+    .users {
       display: flex;
       flex-direction: column;
 
-      .teammate {
+      .user {
         padding: 20px 30px;
         display: flex;
         flex-direction: row;
@@ -53,7 +53,7 @@
             flex-wrap: wrap;
             align-items: center;
 
-            .teammate-href {
+            .user-href {
               font-style: normal;
               font-weight: bold;
               font-size: 24px;
@@ -61,7 +61,7 @@
               color: #2269D5;
             }
 
-            .teammate__role {
+            .user__role {
               margin-left: 5px;
             }
           }

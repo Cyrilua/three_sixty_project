@@ -20,55 +20,55 @@
   background-position: 9px 50%;
   padding-left: 42px;
 }
-.content .content__body .teammates {
+.content .content__body .users {
   display: flex;
   flex-direction: column;
 }
-.content .content__body .teammates .teammate {
+.content .content__body .users .user {
   padding: 20px 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 10px;
 }
-.content .content__body .teammates .teammate .photo {
+.content .content__body .users .user .photo {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   background-size: cover;
 }
-.content .content__body .teammates .teammate .info {
+.content .content__body .users .user .info {
   margin-left: 10px;
   margin-right: auto;
 }
-.content .content__body .teammates .teammate .info .info__top {
+.content .content__body .users .user .info .info__top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
 }
-.content .content__body .teammates .teammate .info .info__top .teammate-href {
+.content .content__body .users .user .info .info__top .user-href {
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
   color: #2269D5;
 }
-.content .content__body .teammates .teammate .info .info__top .teammate__role {
+.content .content__body .users .user .info .info__top .user__role {
   margin-left: 5px;
 }
-.content .content__body .teammates .teammate .info .info__bottom {
+.content .content__body .users .user .info .info__bottom {
   max-width: 600px;
 }
-.content .content__body .teammates .teammate .info .info__bottom .positions-n-platforms {
+.content .content__body .users .user .info .info__bottom .positions-n-platforms {
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
 }
-.content .content__body .teammates .teammate .info .info__bottom .positions-n-platforms .position,
-.content .content__body .teammates .teammate .info .info__bottom .positions-n-platforms .platform {
+.content .content__body .users .user .info .info__bottom .positions-n-platforms .position,
+.content .content__body .users .user .info .info__bottom .positions-n-platforms .platform {
   margin-right: 5px;
 }
-.content .content__body .teammates .teammate .invite {
+.content .content__body .users .user .invite {
   margin-top: 15px;
   width: 100px;
 }
