@@ -12,6 +12,11 @@ $(function () {
         return;
     };
 
+    // Опрос по команде
+    body.on('click', '.new-poll', function (event) {
+       // TODO
+    });
+
     // Поиск тимметов
     let ajaxInput;
     body.on('input', '.search', function (event) {
@@ -26,14 +31,14 @@ $(function () {
                 if (ajaxInput) {
                     ajaxInput.abort();
                 }
-                content.addClass('disable');
+                content.addClass('disabled');
             },
             success: function (response) {
                 content.empty();
                 content[0].append(response.content); // ..teammates.html
             },
             complete: function () {
-                $('.content__body').removeClass('disable');
+                $('.content__body').removeClass('disabled');
             },
             error: function () {
                 // Snackbar.show({

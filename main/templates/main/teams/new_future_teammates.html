@@ -1,15 +1,15 @@
 {% load static %}
-{% if teammates %}
-    <div class="teammates">
-        {% for teammate in teammates %}
-            <div class="teammate rounded-block" data-real-id="{{ teammate.id }}">
-                <img src="{{ teammate.photo }}" alt="" class="photo">
+{% if users %}
+    <div class="users">
+        {% for user in users %}
+            <div class="user rounded-block" data-real-id="{{ user.id }}">
+                <img src="{{ user.photo }}" alt="" class="photo">
                 <div class="info">
                     <div class="info__top">
-                        <a href="{{ teammate.href }}"
-                           class="teammate-href">{{ teammate.surname }} {{ teammate.name }} {{ teammate.patronymic }}</a>
-                        {% for role in teammate.roles %}
-                            <div class="teammate__role _hint unselectable">
+                        <a href="{{ user.href }}"
+                           class="user-href">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                        {% for role in user.roles %}
+                            <div class="user__role _hint unselectable">
                                 <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
                                 </div>
                                 <div class="_hint-down">
@@ -27,23 +27,10 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        {% if not teammate.is_leader %}
-                            <div class="teammate__role _hint unselectable">
-                                <div class="role-mini role-leader _hint-up">
-                                </div>
-                                <div class="_hint-down">
-                                    <div class="_hint-down-block">
-                                        <div class="role-information">
-                                            <div class="leader__info"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
                     </div>
                     <div class="info__bottom">
                         <div class="positions-n-platforms">
-                            {% for position in teammate.positions %}
+                            {% for position in user.positions %}
                                 <div class="position _hint">
                                     <div class="role _hint-up">
                                         {{ position }}
@@ -57,7 +44,7 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            {% for platform in teammate.platforms %}
+                            {% for platform in user.platforms %}
                                 <div class="platform _hint">
                                     <div class="role _hint-up">
                                         {{ platform }}
@@ -74,15 +61,7 @@
                         </div>
                     </div>
                 </div>
-                {% if is_leader %}
-                    {% if not teammate.is_my_profile %}
-                        <div class="team__leave" id="kick"></div>
-                    {% endif %}
-                {% else %}
-                    {% if teammate.is_my_profile %}
-                        <div class="team__leave" id="leaveTeam"></div>
-                    {% endif %}
-                {% endif %}
+                <button class="button-white invite" {% if user.is_in_team %}disabled{% endif %}>Пригласить</button>
             </div>
         {% endfor %}
     </div>
