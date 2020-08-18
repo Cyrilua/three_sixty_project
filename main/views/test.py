@@ -10,7 +10,6 @@ from django.contrib.sites.models import Site
 
 def test(request: WSGIRequest):
     poll = Poll.objects.get(id=86)
-    print([i.profile for i in NeedPassPoll.objects.filter(poll=poll)])
     mail_subject = 'Новый опрос'
     link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
     message = render_to_string('main/taking_poll_notifications_email.html', {
@@ -21,7 +20,7 @@ def test(request: WSGIRequest):
         'link': link
     })
     email = EmailMessage(
-        mail_subject, message, to=[i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
+        mail_subject, message, to=['koroliov_2015@mail.ru', 'test@test.ru']
     )
     email.send()
     return render(request, 'main/test.html')

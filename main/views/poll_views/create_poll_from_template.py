@@ -640,19 +640,23 @@ def create_unique_key(poll: Poll):
 
 def sending_emails(request: WSGIRequest, poll: Poll):
     # todo
-    mail_subject = 'Новый опрос'
-    link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
-    message = render_to_string('main/taking_poll_notifications_email.html', {
-        'target': {
-            'name': poll.target.name,
-            'surname': poll.target.surname
-        },
-        'link': link
-    })
-    email = EmailMessage(
-        mail_subject, message, to=[i.profile.user.email for i in NeedPassPoll.objects.filter(poll=poll)]
-    )
-    email.send()
+    for need_pass in NeedPassPoll.objects.filter(poll=poll):
+        need_pass: NeedPassPoll
+        email = need_pass.profile.user.email
+        print(email)
+        mail_subject = 'Новый опрос'
+        link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
+        message = render_to_string('main/taking_poll_notifications_email.html', {
+            'target': {
+                'name': poll.target.name,
+                'surname': poll.target.surname
+            },
+            'link': link
+        })
+        email = EmailMessage(
+            mail_subject, message, to=[email]
+        )
+        email.send()
 
 
 def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
