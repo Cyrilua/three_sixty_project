@@ -186,7 +186,8 @@ def sending_emails(request: WSGIRequest, poll: Poll):
         need_pass: NeedPassPoll
         email = need_pass.profile.user.email
         mail_subject = 'Новый опрос'
-        link = "{}://{}".format(request._get_scheme(), request.get_host()) + '/compiling_poll_link/{}/'.format(poll.key)
+        link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
+               '/poll/compiling_poll_link/{}/'.format(poll.key)
         message = render_to_string('main/taking_poll_notifications_email.html', {
             'target': {
                 'name': poll.target.name,

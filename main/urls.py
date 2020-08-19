@@ -108,16 +108,10 @@ urlpatterns = [
                   # Страница просмотра опросов и шаблонов
                   path('polls/', include(polls_view_urls), name='new_poll_view'),
 
-                  # Просмотр результата опроса
-                  path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
+
                   # Создание нового опроса через шаблон
                   path('poll/', include(poll_urls), name='poll'),
 
-                  # Прохождение опроса
-                  path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
-                  # Прохождение опроса через ссылку
-                  path('compiling_poll_link/<str:poll_key>/', compiling_poll.compiling_poll_link,
-                       name='compiling_poll_link'),
 
                   ############ Only for debug ###############
                   path('test/', test.test)

@@ -320,7 +320,6 @@ def company_view(request, id_company):
                 'countTeams': Group.objects.filter(company=company).count()
             }
         }
-        print(args)
         return render(request, 'main/companies/company_view.html', args)
 
 
