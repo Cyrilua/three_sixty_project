@@ -1,0 +1,55 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_teams="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="content">
+        {% csrf_token %}
+        <div class="settings rounded-block">
+            <div class="settings__body">
+                <div class="name">
+                    <h3 class="subtitle">Название</h3>
+                    <input type="text" class="input-field" id="teamName" placeholder="Введите название команды"
+                           value="{{ team.name }}" maxlength="40">
+                </div>
+                <div class="description">
+                    <h3 class="subtitle">Описание</h3>
+                    <textarea class="input-field" placeholder="Введите описание" id="teamDescription"
+                              maxlength="500">{{ team.description }}</textarea>
+                </div>
+                <div class="href-invite">
+                    <h3 class="subtitle">Ссылка для вступления</h3>
+                    <textarea id="href-invite" readonly>{{ team.hrefForInvite }}</textarea>
+                    <a class="copy" id="copy">Скопировать</a>
+                </div>
+                <a class="remove-team" id="remove-team">Удалить команду</a>
+            </div>
+            <div class="settings__footer">
+                <button class="button-red" id="saveChanges" disabled>Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_team_view_right.html' with menu_setting='item--active' %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/team_setting.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/team_setting.js' %}"></script>
+{% endblock %}

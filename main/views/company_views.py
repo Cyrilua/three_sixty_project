@@ -2,8 +2,10 @@ import uuid
 
 from django.shortcuts import redirect, render
 from main.forms import CompanyForm
-from main.models import Company, PlatformCompany, PositionCompany, PositionCompany, PlatformCompany
+from main.models import Company, PlatformCompany, PositionCompany, PositionCompany, PlatformCompany, ProfilePhoto, \
+    SurveyWizard, Moderator, Group
 from main.views.auxiliary_general_methods import *
+from django.core.handlers.wsgi import WSGIRequest
 
 
 def add_new_platform(request):
@@ -70,7 +72,7 @@ def create_company(request):
             return redirect('/')
         else:
             args['company_form'] = company_form
-    return render(request, 'main/companies/add_new_company.html', args)
+    return render(request, 'main/companies/old/add_new_company.html', args)
 
 
 def connect_to_company_to_key(request):
@@ -94,7 +96,7 @@ def connect_to_company_to_key(request):
             add_user_to_company(profile, company)
             return redirect('/')
 
-    return render(request, 'main/companies/connect_to_company.html', args)
+    return render(request, 'main/companies/old/connect_to_company.html', args)
 
 
 def add_user_to_company(profile, company):
@@ -223,28 +225,6 @@ def add_platform_in_company(request):
     return render(request, 'main/add_new_platform.html', args)
 
 
-def company_view(request, id_company):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-
-    company = Company.objects.get(id=id_company)
-
-    if company is None:
-        return redirect('/')
-
-    args = {
-        'title': company.name,
-        'positions': PositionCompany.objects.filter(company=company),
-        'platforms': PlatformCompany.objects.filter(company=company),
-        'company_name': company.name,
-        'owner': {'pk': company.owner.profile.pk,
-                  'name': company.owner.profile.name,
-                  'surname': company.owner.profile.surname},
-        'link_to_enter': request.scheme + "://" + request.get_host() + "/invite/c/" + company.key,
-    }
-
-    return render(request, 'main/companies/company_view.html', args)
-
 
 def choose_position(request):
     if auth.get_user(request).is_anonymous:
@@ -321,67 +301,72 @@ def choose_platform(request):
     return render(request, 'main/platform_choice.html', args)
 
 
-def search_admins(request):
-    result = find_user(request,
-                       action_with_selected_user='main:add_admin_method',
-                       limited_access=True,
-                       function_determining_access=determine_access)
-    return result
+######## new company view ##########
 
-
-def determine_access(request):
-    user = auth.get_user(request)
-    company = get_user_profile(request).company
-    user_is_admin = user_is_admin_in_current_company(request)
-    user_is_owner = user == company.owner
-    return user_is_admin or user_is_owner
-
-
-def add_admins(request, profile_id):
+def company_view(request, id_company):
+    # todo
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+    if request.method == "GET":
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            # todo throw exception
+            pass
+        args = {
+            'users': _build_profiles(company),
+            'company': {
+                'positions': PositionCompany.objects.filter(company=company),
+                'platforms': PlatformCompany.objects.filter(company=company),
+                'countParticipants': company.profile_set.all().count(),
+                'countTeams': Group.objects.filter(company=company).count()
+            }
+        }
+        return render(request, 'main/companies/company_view.html', args)
 
-    company = get_user_profile(request).company
-    user_is_owner_current_company = auth.get_user(request) == company.owner
-    if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
-        return redirect('/')
 
-    profile_new_admin = Profile.objects.get(id=profile_id)
-    new_admin = Moderator()
-    new_admin.company = company
-    new_admin.profile = profile_new_admin
-    new_admin.save()
-    return redirect('/')
-
-
-def user_is_admin_in_current_company(request):
-    profile = get_user_profile(request)
-    try:
-        result = Moderator.objects.get(profile=profile).company == profile.company
-    except:
-        result = False
+def _build_profiles(company: Company):
+    result = []
+    profiles = company.profile_set.all()
+    for profile in profiles:
+        profile: Profile
+        try:
+            photo = ProfilePhoto.objects.get(profile=profile).photo
+        except ObjectDoesNotExist:
+            photo = None
+        collected_profile = {
+            'id': profile.pk,
+            'photo': photo,
+            'href': '/{}/'.format(profile.pk),
+            'name': profile.name,
+            'surname': profile.surname,
+            'patronymic': profile.patronymic,
+            'roles': _get_roles(profile),
+            'new_roles': _get_new_roles(profile),
+            'positions': profile.positions.all(),
+            'new_positions': PositionCompany.objects.filter(company=company).exclude(profile=profile),
+            'platforms': profile.platforms.all(),
+            'new_platforms': PlatformCompany.objects.filter(company=company).exclude(profile=profile),
+        }
+        result.append(collected_profile)
     return result
 
 
-def search_hr(request):
-    result = find_user(request, action_with_selected_user='main:add_hr_method',
-                       limited_access=True,
-                       function_determining_access=determine_access)
-    return result
+def _get_roles(profile: Profile) -> list:
+    roles = []
+    if profile.company.owner.pk == profile.pk:
+        roles.append('boss')
+    if SurveyWizard.objects.filter(profile=profile).exists():
+        roles.append('master')
+    if Moderator.objects.filter(profile=profile).exists():
+        roles.append('moderator')
+    return roles
 
 
-def add_hr(request, profile_id):
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
+def _get_new_roles(profile: Profile) -> list:
+    roles = []
+    if not SurveyWizard.objects.filter(profile=profile).exists():
+        roles.append('master')
+    if not Moderator.objects.filter(profile=profile).exists():
+        roles.append('moderator')
+    return roles
 
-    company = get_user_profile(request).company
-    user_is_owner_current_company = auth.get_user(request) == company.owner
-    if user_is_admin_in_current_company(request) or not user_is_owner_current_company:
-        return redirect('/')
-
-    profile_new_hr = Profile.objects.get(id=profile_id)
-    new_hr = SurveyWizard()
-    new_hr.profile = profile_new_hr
-    new_hr.company = company
-    new_hr.save()
-    return redirect('/')

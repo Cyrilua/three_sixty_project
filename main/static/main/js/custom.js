@@ -105,7 +105,7 @@ $(function () {
     body.on('click', '.button-href', function (el) {
         if (!$(el.target).hasClass('delete-img')) {
             let href = $(this).attr('data-href');
-            $(location).attr({'href': href});
+            location.href = href;
         }
     })
 });

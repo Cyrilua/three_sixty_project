@@ -98,7 +98,7 @@ $(function () {
         questions.each(function (key, el) {
             let type = $(el).attr('data-question-type');
             template.questions.push({
-                id: $(el).attr('data-question-id'),
+                id: createId(),
                 serialNumber: key + 1,
                 type: type,
                 name: $(el).children('.question__head').children('.question__name ').text(),
@@ -130,5 +130,13 @@ $(function () {
             }
         });
         return template;
+    }
+
+    function createId() {
+        let result = "";
+        let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (let i = 0; i < 33; i++)
+            result += possible.charAt(Math.floor(Math.random() * possible.length));
+        return result;
     }
 });

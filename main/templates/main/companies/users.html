@@ -1,0 +1,251 @@
+{% load static %}
+{% if users %}
+    <div class="users unselectable">
+        {% for user in users %}
+            <div class="user user--view" data-real-id="{{ user.id }}">
+                <div class="user__view rounded-block">
+                    <img src="{{ user.photo.url }}" alt="" class="photo">
+                    <div class="info">
+                        <div class="info__top">
+                            <a href="{{ user.href }}"
+                               class="user-href">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                            {% for role in user.roles %}
+                                <div class="user__role _hint unselectable">
+                                    <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="role-information">
+                                                {% if role == 'boss' %}
+                                                    <div class="boss__info"></div>
+                                                {% elif role == 'master' %}
+                                                    <div class="master__info"></div>
+                                                {% elif role == 'moderator' %}
+                                                    <div class="moderator__info"></div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="info__bottom">
+                            <div class="positions-n-platforms">
+                                {% for position in user.positions %}
+                                    <div class="position _hint">
+                                        <div class="role _hint-up">
+                                            {{ position }}
+                                        </div>
+                                        <div class="_hint-down">
+                                            <div class="_hint-down-block">
+                                                <div class="position-information role-information">
+                                                    <div class="position__info"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% for platform in user.platforms %}
+                                    <div class="platform _hint">
+                                        <div class="role _hint-up">
+                                            {{ platform }}
+                                        </div>
+                                        <div class="_hint-down">
+                                            <div class="_hint-down-block">
+                                                <div class="platform-information role-information">
+                                                    <div class="platform__info"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team__leave edit" id="edit"></div>
+                </div>
+                <div class="user__edit rounded-block">
+                    <div class="edit__up">
+                        <img src="{{ user.photo.url }}" alt="" class="photo">
+                        <div class="main">
+                            <div class="user__name">
+                                <a href="{{ user.href }}"
+                                   class="user__href">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                            </div>
+                            <div class="user__roles">
+                                <h3 class="subtitle">Роли</h3>
+                                <div class="roles">
+                                    {% for role in user.roles %}
+                                        <div class="user__role _hint unselectable">
+                                            <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                                <div class="role__remove remove-item" id="removeRole">
+                                                    <div class="cross-in-circle">
+                                                        <div class="circle">
+                                                            <div class="line-1">
+                                                                <div class="line-2"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% if role == 'boss' %}
+                                                    Босс
+                                                {% elif role == 'master' %}
+                                                    Мастер опросов
+                                                {% elif role == 'moderator' %}
+                                                    Модератор
+                                                {% endif %}
+                                            </div>
+                                            <div class="_hint-down">
+                                                <div class="_hint-down-block">
+                                                    <div class="role-information">
+                                                        {% if role == 'boss' %}
+                                                            <div class="boss__info"></div>
+                                                        {% elif role == 'master' %}
+                                                            <div class="master__info"></div>
+                                                        {% elif role == 'moderator' %}
+                                                            <div class="moderator__info"></div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <span class="empty {% if user.roles %}hide{% endif %}">Нет ролей</span>
+                                    <div class="role__substrate _hint-click unselectable {% if not user.new_roles %}hide{% endif %}">
+                                        <div class="role__add _hint-up-click">
+                                            <div class="cross-in-circle">
+                                                <div class="circle">
+                                                    <div class="line-1">
+                                                        <div class="line-2"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="_hint-down-click">
+                                            <div class="_hint-down-block add__menu">
+                                                <div class="menu">
+                                                    {% for new_role in new_roles %}
+                                                        <div class="menu__item">
+                                                            <div class="item__block"
+                                                                 data-name="{{ new_role.name }}"
+                                                                 data-id="{{ new_role.id }}">{{ new_role.name }}</div>
+                                                            <div class="item__line"></div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <div class="team__leave edit" id="edit"></div>
+                            <a href="#" id="kick">Выгнать из компании</a>
+                        </div>
+                    </div>
+                    <div class="edit__bottom">
+                        <div class="edit__left">
+                            <h3 class="subtitle">Должности</h3>
+                            <div class="positions">
+                                {% for position in user.positions %}
+                                    <div class="position" data-name="{{ position.name }}"
+                                         data-id="{{ position.id }}">
+                                        <div class="role">
+                                            <div class="position__remove remove-item" id="removePosition">
+                                                <div class="cross-in-circle">
+                                                    <div class="circle">
+                                                        <div class="line-1">
+                                                            <div class="line-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{ position.name }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <span class="empty {% if user.roles %}hide{% endif %}">Нет должностей</span>
+                                <div class="position__substrate _hint-click unselectable {% if not user.new_positions %}hide{% endif %}">
+                                    <div class="position__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_position in user.new_positions %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_position.name }}"
+                                                             data-id="{{ new_position.id }}">{{ new_position.name }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="edit__right">
+                            <h3 class="subtitle">Отделы</h3>
+                            <div class="platforms">
+                                {% for platform in user.platforms %}
+                                    <div class="platform" data-name="{{ platform.name }}"
+                                         data-id="{{ platform.id }}">
+                                        <div class="role">
+                                            <div class="platform__remove remove-item" id="removePlatform">
+                                                <div class="cross-in-circle">
+                                                    <div class="circle">
+                                                        <div class="line-1">
+                                                            <div class="line-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{ platform.name }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <span class="empty {% if user.roles %}hide{% endif %}">Нет отделов</span>
+                                <div class="platform__substrate _hint-click unselectable {% if not user.new_platforms %}hide{% endif %}">
+                                    <div class="platform__add _hint-up-click">
+                                        <div class="cross-in-circle">
+                                            <div class="circle">
+                                                <div class="line-1">
+                                                    <div class="line-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_hint-down-click">
+                                        <div class="_hint-down-block add__menu">
+                                            <div class="menu">
+                                                {% for new_platform in user.new_platforms %}
+                                                    <div class="menu__item">
+                                                        <div class="item__block"
+                                                             data-name="{{ new_platform.name }}"
+                                                             data-id="{{ new_platform.id }}">{{ new_platform.name }}</div>
+                                                        <div class="item__line"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% include 'main/includes/bad_search.html' with text=error.text %}
+{% endif %}

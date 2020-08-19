@@ -3,7 +3,7 @@ import datetime
 from main.forms import PhotoProfileForm
 from main.models import ProfilePhoto, PlatformCompany, PositionCompany, BirthDate
 from main.views.auxiliary_general_methods import *
-from .render_profile import build_profile_data
+from .render_profile import _build_profile_data
 from main.views import validators
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import PasswordChangeForm
@@ -61,7 +61,7 @@ def edit_profile(request) -> render:
         photo = profile.profilephoto.photo
     except:
         photo = None
-    profile_data = build_profile_data(user, profile)
+    profile_data = _build_profile_data(user, profile)
 
     args = {
         'title': "Настройки",

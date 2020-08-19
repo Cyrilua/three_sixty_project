@@ -4,12 +4,12 @@
         {% for team in teams %}
             <div class="team rounded-block" data-team-id="{{ team.id }}">
                 <div class="team__up">
-                    <img src="{{ team.photo }}" alt="" class="team__photo">
+                    <img src="{% static 'main/images/team.svg' %}" alt="" class="team__photo">
                     <div class="info">
                         <div class="name">
-                            <a href="{{ team.href }}" class="team__href">{{ team.name }}</a>
+                            <a href="{{ team.href }}" target="_blank" class="team__href">{{ team.name }}</a>
                         </div>
-                        <span class="team__numbers">{{ team.numbers }}</span>
+                        <span class="team__numbers">{{ team.numbers }} участников</span>
                         <span class="team__descriptions">{{ team.descriptions }}</span>
                     </div>
                     <div class="team__actions">
@@ -23,8 +23,8 @@
                                 <img src="{{ participant.photo }}" alt="" class="participant__photo">
                                 <div class="info">
                                     <div class="name">
-                                        <a href="{{ participant.href }}"
-                                           class="participant__href">{{ participant.surname }} {{ participant.nume }} {{ participant.patronymic }}</a>
+                                        <a href="{{ participant.href }}" target="_blank"
+                                           class="participant__href">{{ participant.surname }} {{ participant.name }} {{ participant.patronymic }}</a>
                                         {% for role in participant.roles %}
                                             <div class="participant__role _hint unselectable">
                                                 <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
@@ -93,7 +93,7 @@
                                     <div class="mdc-radio mdc-radio--touch">
                                         <input class="mdc-radio__native-control" type="radio"
                                                id="radio-{{ participant.id }}"
-                                               data-participant-id="{{ participant.id }}" name="participants" {% if participant.is_checked %}checked{% endif %}>
+                                               data-participant-id="{{ participant.id }}" name="participants-{{ team.id }}" {% if participant.is_checked %}checked{% endif %}>
                                         <div class="mdc-radio__background">
                                             <div class="mdc-radio__outer-circle"></div>
                                             <div class="mdc-radio__inner-circle"></div>

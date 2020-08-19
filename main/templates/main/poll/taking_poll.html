@@ -1,0 +1,29 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_polls="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+
+        {% include 'main/poll/taking_poll_preview.html' with is_not_preview="True"%}
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/taking_poll.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src={% static 'main/js/taking_poll.js' %}></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+{% endblock %}

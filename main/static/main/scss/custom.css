@@ -12,6 +12,26 @@
   /* Non-prefixed version, currently not supported by any browser */
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  margin-left: 7px;
+  box-sizing: content-box;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbcbcb;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9f9f9f;
+}
+
 * {
   font-family: "Roboto", sans-serif;
   padding: 0;
@@ -951,6 +971,7 @@ button {
 }
 
 .snackbar-container.custom {
+  max-width: 910px;
   background-color: #000000 !important;
   border-radius: 5px !important;
   -webkit-box-shadow: -2px 2px 7px 0px rgba(0, 0, 0, 0.5) !important;
@@ -962,14 +983,18 @@ button {
 .snackbar-container.custom.no-animation {
   animation: none !important;
 }
+.snackbar-container.custom.center {
+  margin-left: auto;
+  margin-right: auto;
+}
 .snackbar-container.custom p {
   font-style: normal !important;
   font-weight: bold !important;
   font-size: 18px !important;
   line-height: 21px !important;
-  color: #FFFFFF !important;
 }
 .snackbar-container.custom button {
+  text-transform: capitalize;
   font-style: normal !important;
   font-weight: bold !important;
   font-size: 18px !important;
@@ -984,6 +1009,46 @@ button {
   to {
     transform: translateY(0);
   }
+}
+.team__leave {
+  cursor: pointer;
+  opacity: 0.1;
+  transition: 0.2s opacity;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  background-image: url("../images/icon/exit_to_app-24px.svg");
+  background-size: cover;
+}
+.team__leave::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  padding: 2px 4px;
+  border-radius: 2px;
+  visibility: hidden;
+  content: "Покинуть";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 14px;
+  background-color: transparent;
+  color: transparent;
+  transform: translateX(-50%) scaleX(0) scaleY(0);
+  cursor: default;
+  transition: 0.2s all;
+  pointer-events: none;
+}
+.team__leave:hover {
+  opacity: 0.7;
+}
+.team__leave:hover::before {
+  visibility: visible;
+  top: -20px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.75);
+  transform: translateX(-50%);
 }
 
 /*# sourceMappingURL=custom.css.map */
