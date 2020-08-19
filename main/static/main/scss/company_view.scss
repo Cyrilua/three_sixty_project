@@ -469,6 +469,93 @@
 
                   .role {
                     margin-right: 5px;
+
+                    &.role-boss {
+                      &:hover .role__remove, {
+                        .circle {
+                          border-color: #ff1841;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #ff1841;
+                        }
+                      }
+
+                      .role__remove, {
+                        background-color: #fafafa;
+
+                        .circle {
+                          border-color: #ff1841;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #ff1841;
+                        }
+                      }
+                    }
+
+                    &.role-moderator {
+                      &:hover .role__remove, {
+                        .circle {
+                          border-color: #001aff;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #001aff;
+                        }
+                      }
+
+                      .role__remove, {
+                        background-color: #fafafa;
+
+                        .circle {
+                          border-color: #001aff;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #001aff;
+                        }
+                      }
+                    }
+
+                    &.role-master {
+                      &:hover .role__remove, {
+                        .circle {
+                          border-color: #db00ff;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #db00ff;
+                        }
+                      }
+
+                      .role__remove, {
+                        background-color: #fafafa;
+
+                        .circle {
+                          border-color: #db00ff;
+                        }
+
+                        .line-1,
+                        .line-2 {
+                          background-color: #db00ff;
+                        }
+                      }
+                    }
+
+                    .role__remove, {
+                      width: 14px;
+                      height: 14px;
+                      margin-right: 6px;
+                      border-radius: 50%;
+                      transform: rotate(45deg);
+                      cursor: pointer;
+                    }
                   }
                 }
               }

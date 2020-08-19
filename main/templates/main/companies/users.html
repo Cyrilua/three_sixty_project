@@ -78,6 +78,15 @@
                                     {% for role in user.roles %}
                                         <div class="user__role _hint unselectable">
                                             <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                                <div class="role__remove remove-item" id="removeRole">
+                                                    <div class="cross-in-circle">
+                                                        <div class="circle">
+                                                            <div class="line-1">
+                                                                <div class="line-2"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 {% if role == 'boss' %}
                                                     Босс
                                                 {% elif role == 'master' %}
@@ -143,7 +152,7 @@
                                     <div class="position" data-name="{{ position.name }}"
                                          data-id="{{ position.id }}">
                                         <div class="role">
-                                            <div class="position__remove remove-item">
+                                            <div class="position__remove remove-item" id="removePosition">
                                                 <div class="cross-in-circle">
                                                     <div class="circle">
                                                         <div class="line-1">
