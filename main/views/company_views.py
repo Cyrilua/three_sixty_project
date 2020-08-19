@@ -332,10 +332,9 @@ def _build_profiles(company: Company):
     for profile in profiles:
         profile: Profile
         try:
-            photo = profile.profilephoto.photo
+            photo = ProfilePhoto.objects.get(profile=profile).photo
         except ObjectDoesNotExist:
             photo = None
-        print(type(photo))
         collected_profile = {
             'id': profile.pk,
             'photo': photo,

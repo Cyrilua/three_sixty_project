@@ -7,15 +7,12 @@ from .views import profile_views, user_views, teams_views, company_views, poll_v
     auxiliary_general_methods, test
 from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
-
+from main import loadable_urls
+from .loadable_urls import register, edit_profile, polls_view, poll
 app_name = "main"
 urlpatterns = [
                   # Регистрация
-                  path('register/', user_views.user_register, name='register'),
-                  # Отправка кода подтверждения
-                  path('register/register/send_email', user_views.send_email),
-                  # Проверка кода
-                  path('register/register/complete', user_views.check_verification_code),
+                  path('register/', include(register)),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
@@ -55,49 +52,7 @@ urlpatterns = [
                   # Просмотр профиля
                   path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
-                  path('edit/', edit_profile.edit_profile, name='edit'),
-                  # Удаление платформы из профиля
-                  path('edit/platform/remove/<int:platform_id>', edit_profile.remove_platform),
-                  # Удаление должности из профиля
-                  path('edit/position/remove/<int:position_id>', edit_profile.remove_position),
-                  # Добавление платформы
-                  path('edit/platform/add/<int:platform_id>', edit_profile.add_platform),
-                  # Добавление должности
-                  path('edit/position/add/<int:position_id>', edit_profile.add_position),
-                  # Проверка имени
-                  path('edit/check_input/name', edit_profile.check_name),
-                  # Проверка фамилии
-                  path('edit/check_input/surname', edit_profile.check_surname),
-                  # Проверка отчества
-                  path('edit/check_input/patronymic', edit_profile.check_patronymic),
-                  # Сохранение ФИО
-                  path('edit/edit/save/name', edit_profile.save_changes_fcs),
-                  # Проверка даты
-                  path('edit/check_input/birthdate', edit_profile.check_birth_date),
-                  # Сохранение даты
-                  path('edit/edit/save/birthdate', edit_profile.save_birth_date),
-                  # Проверка корректности ввода почты
-                  path('edit/check_input/email', edit_profile.check_email),
-                  # Сохранение новой почты
-                  path('edit/edit/save/email', edit_profile.save_email),
-                  # Oтправка сообщения с подтверждением
-                  path('edit/edit/save/email/send_mail', edit_profile.send_email_verification_code),
-                  # Проверка кода из письма
-                  path('edit/edit/save/email_code', edit_profile.check_email_code),
-                  # Проверка логина
-                  path('edit/check_input/username', edit_profile.check_login),
-                  # Сохранение логина
-                  path('edit/edit/save/username', edit_profile.save_login),
-                  # Проверка нового пароля 1
-                  path('edit/check_input/password1', edit_profile.check_new_password_1),
-                  # Проверка нового пароля 2
-                  path('edit/check_input/password2', edit_profile.check_new_password_2),
-                  # Сохранение нового пароля
-                  path('edit/edit/save/password', edit_profile.save_new_password),
-                  # Загрузка аватарки
-                  path('edit/edit/photo/update', edit_profile.upload_profile_photo),
-                  # Удаление аватарки
-                  path('edit/edit/photo/delete', edit_profile.delete_profile_photo),
+                  path('edit/', include(edit_profile), name='edit'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='team_view'),
@@ -151,83 +106,13 @@ urlpatterns = [
 
                   ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
-                  path('polls/', polls_view.polls_view, name='new_poll_view'),
-                  #
-                  path('poll/editor/', create_poll_from_template.create_poll_from_template, name='poll_editor_id'),
-                  #
-                  path('poll/editor/new/', create_poll.poll_create_redirect, name='poll_editor'),
+                  path('polls/', include(polls_view), name='new_poll_view'),
+
                   # Просмотр результата опроса
                   path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
-                  # Динамическая подгрузка опросов
-                  path('polls/loading/<int:count_polls>/', polls_view.loading_polls),
-                  # Маячок о новом опросе для прохождения
-                  path('polls/new_notif/', polls_view.load_notification_new_poll),
-                  # Создание нового опроса
-                  path('polls/poll/create/', create_poll.poll_create_redirect, name='poll_create'),
                   # Создание нового опроса через шаблон
-                  path('poll/editor/template/<int:template_id>/', create_poll_from_template.create_poll_from_template,
-                       name='create_poll_from_template'),
-                  # Сохранение шаблона
-                  path('poll/editor/template/<int:template_id>/save_as/', create_poll_from_template.save_template,
-                       name='save_template'),
-                  # Переход с первого на второй шаг
-                  path('poll/editor/template/<int:template_id>/step/2/from/1/',
-                       create_poll_from_template.render_step_2_from_step_1, name='choose_respondents'),
-                  # Загрузка команд на втором шаге
-                  path('poll/editor/template/<int:template_id>/step/2/category/teams/',
-                       create_poll_from_template.render_category_teams_on_step_2),
-                  # Загрузка участников компании на втором шаге
-                  path('poll/editor/template/<int:template_id>/step/2/category/participants/',
-                       create_poll_from_template.render_category_participants_on_step_2),
-                  # Поиск на втором шаге
-                  path('poll/editor/template/<int:template_id>/step/2/search/',
-                       create_poll_from_template.search_step_2),
-                  # Переход на первый шаг со второго
-                  path('poll/editor/template/<int:template_id>/step/1/from/2/',
-                       create_poll_from_template.render_step_1_from_step_2),
-                  # Переход на первый шаг с третьего
-                  path('poll/editor/template/<int:template_id>/step/1/from/3/',
-                       create_poll_from_template.render_step_1_from_step_3),
-                  # Переход на третий шаг с первого
-                  path('poll/editor/template/<int:template_id>/step/3/from/1/',
-                       create_poll_from_template.render_step_3_from_step_1),
-                  # Переход на третий шаг со второго
-                  path('poll/editor/template/<int:template_id>/step/3/from/2/',
-                       create_poll_from_template.render_step_3_from_step_2),
-                  # Переход на третий шаг со второго
-                  path('poll/editor/template/<int:template_id>/step/2/from/3/',
-                       create_poll_from_template.render_step_2_from_step_3),
-                  # Переход на третий шаг для не мастера (второй шаг для пользователя)
-                  path('poll/editor/template/<int:template_id>/step/3/from/1/notMaster/',
-                       create_poll_from_template.render_step_3_from_step_1_not_master),
-                  # Перехо на первый шаг с третьего для не мастера (на первый со второго для пользователя)
-                  path('poll/editor/template/<int:template_id>/step/1/from/3/notMaster/',
-                       create_poll_from_template.render_step_1_from_step_3_not_master),
-                  # Загрузка команд на третьем шаге
-                  path('poll/editor/template/<int:template_id>/step/3/category/teams/',
-                       create_poll_from_template.render_category_teams_on_step_3),
-                  # Загрузка участников компании на третьем шаге
-                  path('poll/editor/template/<int:template_id>/step/3/category/participants/',
-                       create_poll_from_template.render_category_participants_on_step_3),
-                  # Поиск на третьем шаге
-                  path('poll/editor/template/<int:template_id>/step/3/search/',
-                       create_poll_from_template.search_step_3),
-                  # Превьюшка для опроса
-                  path('poll/editor/template/<int:template_id>/step/1/category/preview/',
-                       create_poll_from_template.poll_preview),
-                  # Возврат к редактированию опроса
-                  path('poll/editor/template/<int:template_id>/step/1/category/editor/',
-                       create_poll_from_template.poll_editor),
-                  # Отмена создания опроса
-                  path('poll/editor/template/<int:template_id>/cancel/',
-                       create_poll_from_template.cancel_created_poll),
-                  # Отправить опросы опрашиваемым и разослать уведомления на почту
-                  path('poll/editor/template/<int:template_id>/send/',
-                       create_poll_from_template.send_poll),
-                  # Удаление шаблона
-                  path('polls/template/remove/', polls_view.remove_template),
-                  # Отметить опрос опросмотренным
-                  path('polls/viewing/<int:poll_id>', polls_view.mark_as_viewed),
+                  path('poll/', include(poll), name='poll'),
+
                   # Прохождение опроса
                   path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
                   # Прохождение опроса через ссылку
