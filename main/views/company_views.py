@@ -225,9 +225,6 @@ def add_platform_in_company(request):
     return render(request, 'main/add_new_platform.html', args)
 
 
-
-
-
 def choose_position(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -323,6 +320,7 @@ def company_view(request, id_company):
                 'countTeams': Group.objects.filter(company=company).count()
             }
         }
+        print(args)
         return render(request, 'main/companies/company_view.html', args)
 
 
@@ -343,8 +341,11 @@ def _build_profiles(company: Company):
             'surname': profile.surname,
             'patronymic': profile.patronymic,
             'roles': _get_roles(profile),
+            'new_roles': _get_new_roles(profile),
             'positions': profile.positions.all(),
+            'new_positions': PositionCompany.objects.filter(company=company).exclude(profile=profile),
             'platforms': profile.platforms.all(),
+            'new_platforms': PlatformCompany.objects.filter(company=company).exclude(profile=profile),
         }
         result.append(collected_profile)
     return result
@@ -357,6 +358,15 @@ def _get_roles(profile: Profile) -> list:
     if SurveyWizard.objects.filter(profile=profile).exists():
         roles.append('master')
     if Moderator.objects.filter(profile=profile).exists():
+        roles.append('moderator')
+    return roles
+
+
+def _get_new_roles(profile: Profile) -> list:
+    roles = []
+    if not SurveyWizard.objects.filter(profile=profile).exists():
+        roles.append('master')
+    if not Moderator.objects.filter(profile=profile).exists():
         roles.append('moderator')
     return roles
 

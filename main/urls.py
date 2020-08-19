@@ -8,11 +8,11 @@ from .views import profile_views, user_views, teams_views, company_views, poll_v
 from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
 from main import urls_loadable
-from .urls_loadable import register, edit_profile_urls, polls_view, poll
+from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls
 app_name = "main"
 urlpatterns = [
                   # Регистрация
-                  path('register/', include(register)),
+                  path('register/', include(register_urls)),
                   # Начальная страница
                   path('', user_views.user_login, name='login'),
                   # Выход
@@ -106,12 +106,12 @@ urlpatterns = [
 
                   ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
-                  path('polls/', include(polls_view), name='new_poll_view'),
+                  path('polls/', include(polls_view_urls), name='new_poll_view'),
 
                   # Просмотр результата опроса
                   path('poll/result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
                   # Создание нового опроса через шаблон
-                  path('poll/', include(poll), name='poll'),
+                  path('poll/', include(poll_urls), name='poll'),
 
                   # Прохождение опроса
                   path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll'),
