@@ -1,2 +1,2 @@
-<button class="button-white head__btn" id="backToStep2" data-href="#">Назад</button>
+<button class="button-white head__btn" id="{% if is_master %}backToStep2{% else %}backToStep1NotMaster{% endif %}" data-href="#">Назад</button>
 <button class="button-red head__btn" id="sendPoll" data-href="#" disabled>Отправить</button>

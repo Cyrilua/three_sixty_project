@@ -1,0 +1,39 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_teams="active" only %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="content">
+        {% csrf_token %}
+        <div class="content__head rounded-block">
+            <input class="head__search input-field" placeholder="Поиск по командам...">
+            <button class="head__button button-white button-href" type="button" data-href="/create_team/">
+                Создать команду
+            </button>
+        </div>
+        <div class="content__body">
+            {% include 'main/teams/teams.html' %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/teams_view.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/teams_view.js' %}"></script>
+{% endblock %}

@@ -1,22 +1,19 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
-from . import notifications_views
 from .auxiliary_general_methods import *
-from main.models import TestTable, Profile
+from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany
 from django.http import JsonResponse
 from django.conf import settings
+from django.core.handlers.wsgi import WSGIRequest
+from django.template import loader, Context
 
 
-def test(request):
-    profiles = Profile.objects.all()
-    number = 1
-    for profile in profiles:
-        if profile.surname is None or profile.surname == '':
-            profile.surname = 'Surname{}'.format(number)
-            profile.patronymic = 'Patronymic{}'.format(number)
-            profile.save()
-            number += 1
-            print(number)
+def test(request: WSGIRequest):
+    profile = get_user_profile(request)
+    platforms = PlatformCompany.objects.filter(company=profile.company)
+    for i in platforms:
+        print(i)
+    print(platforms)
     return render(request, 'main/test.html')
 
 

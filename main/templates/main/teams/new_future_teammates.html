@@ -1,0 +1,70 @@
+{% load static %}
+{% if users %}
+    <div class="users">
+        {% for user in users %}
+            <div class="user rounded-block" data-real-id="{{ user.id }}">
+                <img src="{{ user.photo }}" alt="" class="photo">
+                <div class="info">
+                    <div class="info__top">
+                        <a href="{{ user.href }}"
+                           class="user-href">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
+                        {% for role in user.roles %}
+                            <div class="user__role _hint unselectable">
+                                <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="role-information">
+                                            {% if role == 'boss' %}
+                                                <div class="boss__info"></div>
+                                            {% elif role == 'master' %}
+                                                <div class="master__info"></div>
+                                            {% elif role == 'moderator' %}
+                                                <div class="moderator__info"></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="info__bottom">
+                        <div class="positions-n-platforms">
+                            {% for position in user.positions %}
+                                <div class="position _hint">
+                                    <div class="role _hint-up">
+                                        {{ position }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="position-information role-information">
+                                                <div class="position__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% for platform in user.platforms %}
+                                <div class="platform _hint">
+                                    <div class="role _hint-up">
+                                        {{ platform }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="platform-information role-information">
+                                                <div class="platform__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <button class="button-white invite" {% if user.is_in_team %}disabled{% endif %}>Пригласить</button>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% include 'main/includes/bad_search.html' with text=error.text %}
+{% endif %}

@@ -1,0 +1,91 @@
+{% load static %}
+{% if teammates %}
+    <div class="teammates">
+        {% for teammate in teammates %}
+            <div class="teammate rounded-block" data-real-id="{{ teammate.id }}">
+                <img src="{{ teammate.photo }}" alt="" class="photo">
+                <div class="info">
+                    <div class="info__top">
+                        <a href="{{ teammate.href }}"
+                           class="teammate-href">{{ teammate.surname }} {{ teammate.name }} {{ teammate.patronymic }}</a>
+                        {% for role in teammate.roles %}
+                            <div class="teammate__role _hint unselectable">
+                                <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="role-information">
+                                            {% if role == 'boss' %}
+                                                <div class="boss__info"></div>
+                                            {% elif role == 'master' %}
+                                                <div class="master__info"></div>
+                                            {% elif role == 'moderator' %}
+                                                <div class="moderator__info"></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if not teammate.is_leader %}
+                            <div class="teammate__role _hint unselectable">
+                                <div class="role-mini role-leader _hint-up">
+                                </div>
+                                <div class="_hint-down">
+                                    <div class="_hint-down-block">
+                                        <div class="role-information">
+                                            <div class="leader__info"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="info__bottom">
+                        <div class="positions-n-platforms">
+                            {% for position in teammate.positions %}
+                                <div class="position _hint">
+                                    <div class="role _hint-up">
+                                        {{ position }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="position-information role-information">
+                                                <div class="position__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% for platform in teammate.platforms %}
+                                <div class="platform _hint">
+                                    <div class="role _hint-up">
+                                        {{ platform }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="platform-information role-information">
+                                                <div class="platform__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% if is_leader %}
+                    {% if not teammate.is_my_profile %}
+                        <div class="team__leave" id="kick"></div>
+                    {% endif %}
+                {% else %}
+                    {% if teammate.is_my_profile %}
+                        <div class="team__leave" id="leaveTeam"></div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% include 'main/includes/bad_search.html' with text=error.text %}
+{% endif %}

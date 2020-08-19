@@ -114,6 +114,8 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
     }
     for rendered_poll in rendered_polls:
         poll = rendered_poll.poll
+        if not poll.is_submitted:
+            continue
         collected_poll = _build_poll(poll)
         if type(rendered_poll) == NeedPassPoll:
             collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
@@ -134,11 +136,12 @@ def _build_poll(poll: Poll) -> dict:
     if poll.color is not None:
         collected_poll['color'] = poll.color
     target = poll.target
-    collected_poll['target'] = {
-        'name': target.name,
-        'surname': target.surname,
-        'patronymic': target.patronymic
-    }
+    if target is not None:
+        collected_poll['target'] = {
+            'name': target.name,
+            'surname': target.surname,
+            'patronymic': target.patronymic
+        }
     return collected_poll
 
 
@@ -204,11 +207,8 @@ def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
         try:
             poll: Poll = Poll.objects.get(id=poll_id)
-            need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll)
+            need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=get_user_profile(request))
         except ObjectDoesNotExist:
-            return JsonResponse({}, status=400)
-
-        if need_pass_poll.profile != get_user_profile(request):
             return JsonResponse({}, status=400)
 
         need_pass_poll.is_viewed = True

@@ -14,6 +14,7 @@
             {% if question.type == 'radio' %}
 
                 <div class="question rounded-block" data-question-type="radio" data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
@@ -70,7 +71,7 @@
                     </div>
                     <div class="question__answers">
                         {% for answer in question.answers %}
-                            <div class="answer">
+                            <div class="answer" data-real-id="{{ answer.id }}">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
                                         <div class="mdc-radio mdc-radio--disabled">
@@ -102,6 +103,7 @@
 
                 <div class="question rounded-block" data-question-type="checkbox"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
@@ -158,7 +160,7 @@
                     </div>
                     <div class="question__answers">
                         {% for answer in question.answers %}
-                            <div class="answer">
+                            <div class="answer" data-real-id="{{ answer.id }}">
                                 <div class="answer__icon">
                                     <div class="mdc-form-field">
                                         <div class="mdc-checkbox mdc-checkbox--disabled">
@@ -190,6 +192,7 @@
 
                 <div class="question rounded-block" data-question-type="range"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>
@@ -270,7 +273,7 @@
                                            class="input-transparent slider-range__min" min="0"
                                            max="100" value="{{ question.slider.min }}">
                                 </div>
-                                <div class="step">
+                                <div class="step" hidden>
                                     <label for="step_{{ question.id }}" class="min__label">С
                                         шагом</label>
                                     <input type="number" id="step_{{ question.id }}"
@@ -295,6 +298,7 @@
 
                 <div class="question rounded-block" data-question-type="openQuestion"
                      data-question-id="{{ question.id }}">
+                    <img src="{% static 'main/images/move.svg' %}" alt="" class="question__move">
                     <div class="question__main">
                         <textarea class="question__name textarea-border" placeholder="Вопрос"
                                   maxlength="150">{{ question.name }}</textarea>

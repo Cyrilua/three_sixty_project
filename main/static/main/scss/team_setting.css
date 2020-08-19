@@ -1,0 +1,85 @@
+.content .settings .settings__body {
+  padding: 0 110px 47px;
+  border-bottom: 1px solid #E5E5E5;
+}
+.content .settings .settings__body .subtitle {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 21px;
+  color: #595757;
+  margin-top: 15px;
+}
+.content .settings .settings__body .name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.content .settings .settings__body .name #teamName {
+  width: 400px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.content .settings .settings__body .description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 45px;
+}
+.content .settings .settings__body .description #teamDescription {
+  width: 400px;
+  height: 100px;
+  resize: none;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.content .settings .settings__body .href-invite {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.content .settings .settings__body .href-invite .subtitle {
+  margin-top: 0;
+}
+.content .settings .settings__body .href-invite #href-invite {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.content .settings .settings__body .href-invite #copy {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D5;
+  margin-left: 25px;
+  margin-right: auto;
+}
+.content .settings .settings__body .remove-team {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D5;
+}
+.content .settings .settings__footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+.content .settings .settings__footer #saveChanges {
+  width: 180px;
+}
+
+/*# sourceMappingURL=team_setting.css.map */

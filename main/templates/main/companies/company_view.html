@@ -1,77 +1,133 @@
 {% extends 'main/wrapper.html' %}
-
 {% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_teams="active" only %}
+{% endblock %}
 
 {% block content-user %}
 
-    <div class="row">
-{#        <div class="col-md-1"></div>#}
-        <div class="col-md-12 rounded-block">
-            <div>
-                <h2 style="text-align: center">Компания "{{ company_name }}"</h2>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div>
-                            <h4>Создатель</h4>
-                            <a href="{% url 'main:profile' owner.pk %}">{{ owner.name }} {{ owner.surname }}</a>
-                        </div>
-                        <hr>
-                        <div>
-                            <h4>Опросы</h4>
-                            <a href="{% url 'main:respondent_choice_company' %}">Созадать опрос для компании</a>
-                        </div>
-                        <hr>
-                        {% if link_to_enter %}
-                            <div>
-                                <h4>Ссылка для регистрации</h4>
-                                <div>
-                                    <label id="linkToEnter" hidden>{{ link_to_enter }}</label>
-                                    <button class="btn btn-secondary" onclick="copyText('#linkToEnter')">Скопировать
-                                    </button>
+    <div class="content">
+        {% csrf_token %}
+        <div class="content__head rounded-block">
+            <div class="head__top">
+                <div class="info">
+                    <h1 class="company__name">ООО Крутая компания</h1>
+                </div>
+                <div class="actions">
+                    <button type="button" class="new-poll button-red" id="newPoll">Провести опрос</button>
+                </div>
+            </div>
+            <div class="head__middle-1">
+                <h3 class="subtitle">Описание</h3>
+                <div class="description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                </div>
+            </div>
+            <div class="head__middle-2">
+                <div class="positions">
+                    <h3 class="subtitle">Должности</h3>
+                    <div class="positions__content">
+                        {% if company.positions %}
+                            {% for position in company.positions %}
+                                <div class="position _hint">
+                                    <div class="role _hint-up">
+                                        {{ position }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="position-information role-information">
+                                                <div class="position__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div>
-                                <a href="{% url 'main:add_new_platform_in_company' %}">Добавить платформу для
-                                    компании</a>
-                                <br>
-                                <a href="{% url 'main:add_new_position_in_company' %}">Добавить должность для
-                                    компании</a>
-                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty">Нет должностей</div>
                         {% endif %}
                     </div>
-                    <div class="col-md-6">
-                        <div style="text-align: center">
-                            {% if platforms %}
-                                <h4>Платформы</h4>
-                                <ol>
-                                    {% for platform in platforms %}
-                                        <li>
-                                            {{ platform }}
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            {% endif %}
-                        </div>
-                        <div style="text-align: center">
-                            <h4 style="text-align: center">Должности</h4>
-                            {% if positions %}
-                                <ol>
-                                    {% for position in positions %}
-                                        <li>
-                                            {{ position }}
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            {% else %}
-                                <i><a href="{% url 'main:add_new_position_in_company' %}">Необходимо добавить должности</a></i>
-                            {% endif %}
-                        </div>
+                </div>
+                <div class="platforms">
+                    <h3 class="subtitle">Отделы</h3>
+                    <div class="platforms__content">
+                        {% if company.platforms %}
+                            {% for platform in company.platforms %}
+                                <div class="platform _hint">
+                                    <div class="role _hint-up">
+                                        {{ platform }}
+                                    </div>
+                                    <div class="_hint-down">
+                                        <div class="_hint-down-block">
+                                            <div class="platform-information role-information">
+                                                <div class="platform__info"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty">Нет должностей</div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+        <div class="head__bottom categories-block">
+            <div class="substrate">
+                <div class="sort rounded-block unselectable">
+                    <div class="category active-sort" data-category="" data-part-url="participants">
+                        <div class="category__title">Участники ({{ company.countParticipants }})
+                            {#                                <div class="category__notice hide"></div>#}
+                        </div>
+                    </div>
+                    <div class="category" data-category="" data-part-url="teams">
+                        <div class="category__title">Команды ({{ company.countTeams }})
+                            {#                            <div class="category__notice hide"></div>#}
+                        </div>
+                    </div>
+                    <div class="loader-round hide">
+                        <div class="loader__status"></div>
+                        {#            <img src="{% static 'main/images/icon/cached-24px.svg' %}" alt="" class="update">#}
+                    </div>
+                </div>
+                <div class="unselectable search-down rounded-block">
+                    <input type="text" class="search input-field" placeholder="Поиск по участникам..."
+                           autocomplete="off">
+                    {#                    <div class="search ">#}
+                    {#                        <input type="text" class="input-field input__search" data-mode="participants"#}
+                    {#                               placeholder="Поиск по участникам...">#}
+                    {#                    </div>#}
+                </div>
+            </div>
+        </div>
+        <div class="content__body">
+            {% include 'main/companies/teams.html' %}
+            {% include 'main/companies/users.html' %}
+        </div>
     </div>
 
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_company_view_right.html' with menu_company='item--active' %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/company_view.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/company_view.js' %}"></script>
 {% endblock %}
