@@ -10,7 +10,6 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils.datastructures import MultiValueDictKeyError
 import django.core.mail
 from .create_poll_views import start_create, editor, choose_target, choose_respodents
-from . import create_poll_views
 from django.template.loader import render_to_string
 
 
@@ -28,7 +27,7 @@ def create_poll_from_template(request, template_id) -> render:
     profile = get_user_profile(request)
     args = {
         'title': "Создание опроса из шаблона",
-        'poll': create_poll_views.start_create.build_poll(template),
+        'poll': start_create.build_poll(template),
     }
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
@@ -38,22 +37,22 @@ def create_poll_from_template(request, template_id) -> render:
 
 def save_template(request: WSGIRequest, template_id: int) -> JsonResponse:
     if request.is_ajax():
-        return create_poll_views.editor.save_template(request)
+        return editor.save_template(request)
 
 
 def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        return create_poll_views.choose_target.render_category_teams_on_step_2(request)
+        return choose_target.render_category_teams_on_step_2(request)
 
 
 def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        return create_poll_views.choose_target.render_category_participants_on_step_2(request)
+        return choose_target.render_category_participants_on_step_2(request)
 
 
 def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
     if request.is_ajax():
-        return create_poll_views.choose_target.search(request)
+        return choose_target.search(request)
 
 
 def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:

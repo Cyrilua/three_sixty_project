@@ -3,7 +3,7 @@
     <div class="users">
         {% for user in users %}
             <div class="user rounded-block" data-real-id="{{ user.id }}">
-                <img src="{{ user.photo }}" alt="" class="photo">
+                <img src="{{ user.photo.url }}" alt="" class="photo">
                 <div class="info">
                     <div class="info__top">
                         <a href="{{ user.href }}"
