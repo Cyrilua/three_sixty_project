@@ -714,22 +714,7 @@ $(function () {
                 }
                 el.remove();
             },
-            statusCode: {
-                400: function () {
-                    throw new Error('Error 400 - Некорректный запрос');
-                },
-                403: function () {
-                    throw new Error('Error 403 - Доступ запрещён');
-                },
-                404: function () {
-                    throw new Error('Error 404 - Страница не найдена');
-                },
-                500: function () {
-                    throw new Error('Error 500 - Внутренняя ошибка сервера');
-                }
-            },
             error: function () {
-                throw new Error('Что - то пошло не так :(');
             }
         })
     });
@@ -1001,22 +986,7 @@ $(function () {
                     }
                     checkBtnPost(btn, elem)
                 },
-                statusCode: {
-                    400: function () {
-                        throw new Error('Error 400 - Некорректный запрос');
-                    },
-                    403: function () {
-                        throw new Error('Error 403 - Доступ запрещён');
-                    },
-                    404: function () {
-                        throw new Error('Error 404 - Страница не найдена');
-                    },
-                    500: function () {
-                        throw new Error('Error 500 - Внутренняя ошибка сервера');
-                    }
-                },
                 error: function () {
-                    throw new Error('Что - то пошло не так :(');
                 }
             });
         }
