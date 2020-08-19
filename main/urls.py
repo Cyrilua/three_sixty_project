@@ -7,8 +7,8 @@ from .views import profile_views, user_views, teams_views, company_views, poll_v
     auxiliary_general_methods, test
 from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
-from main import loadable_urls
-from .loadable_urls import register, edit_profile, polls_view, poll
+from main import urls_loadable
+from .urls_loadable import register, edit_profile_urls, polls_view, poll
 app_name = "main"
 urlpatterns = [
                   # Регистрация
@@ -52,7 +52,7 @@ urlpatterns = [
                   # Просмотр профиля
                   path('<int:profile_id>/', render_profile.profile_view, name='profile'),
                   # Редактирование профиля
-                  path('edit/', include(edit_profile), name='edit'),
+                  path('edit/', include(edit_profile_urls), name='edit'),
 
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='team_view'),

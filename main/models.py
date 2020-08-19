@@ -193,6 +193,7 @@ class Poll(models.Model):
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
     questions = models.ManyToManyField('Questions')
     is_submitted = models.BooleanField(default=False)
+    new_template = models.OneToOneField(TemplatesPoll, on_delete=models.CASCADE, null=True)
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):

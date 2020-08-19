@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from ..views.profile_views import edit_profile
 
 urlpatterns = [

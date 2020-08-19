@@ -10,7 +10,7 @@ urlpatterns = [
     # Маячок о новом опросе для прохождения
     path('new_notif/', polls_view.load_notification_new_poll),
     # Создание нового опроса todo
-    path('editor/template/create/', create_poll.poll_create, name='poll_create'),
+    path('poll/create/', create_poll.redirect_for_create, name='poll_create'),
     # Удаление шаблона
     path('template/remove/', polls_view.remove_template),
     # Отметить опрос опросмотренным
