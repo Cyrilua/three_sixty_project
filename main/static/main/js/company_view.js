@@ -99,13 +99,12 @@ $(function () {
     body.on('click', '#addRole', function (el) {
         let typeSubstrate = $(el.target).closest('._hint-click');
         let rolesBlock = typeSubstrate.parent();
-        let roleName = $(this).attr('data-name');
+        let roleName = $(this).attr('data-role');
         let menuRoles = typeSubstrate.children('._hint-down-click').children('._hint-down-block').children('.menu');
-        console.log('typeSubstrate', typeSubstrate)
-        console.log('rolesBlock', rolesBlock)
-        console.log('name', roleName)
-        // console.log('id', id)
-        console.log('menuRoles', menuRoles)
+        // console.log('typeSubstrate', typeSubstrate)
+        // console.log('rolesBlock', rolesBlock)
+        // console.log('name', roleName)
+        // console.log('menuRoles', menuRoles)
 
         if (rolesBlock.children('.position').length === 0) {
             rolesBlock.children('.empty').addClass('hide');
@@ -123,7 +122,7 @@ $(function () {
         //         csrfmiddlewaretoken: csrf,
         //         type: 'position',
         //         // id: id,
-        //         name: name, // На всякий случай
+        //         name: name,
         //     },
         //     success: function (response) {
         //         if (rolesBlock.children('.position').length === 0) {
@@ -148,7 +147,6 @@ $(function () {
         let platformsBlock = platform.parent();
         let addPlatform = platformsBlock.children('.platform__substrate');
         let menuPlatform = addPlatform.children('._hint-down-click').children('._hint-down-block').children('.menu');
-        // console.log(platformsBlock, menuPlatform)
         $.ajax({
             url: `/edit/platform/remove/${id}`,
             type: 'post',
@@ -162,7 +160,7 @@ $(function () {
                 if (menuPlatform.children('.menu__item').length === 0) {
                     addPlatform.removeClass('hide');
                 }
-                menuPlatform.prepend(getNewItem(name, id));
+                menuPlatform.prepend(getNewItem('platform', name, id));
                 platform.remove();
                 if (platformsBlock.children('.platform').length === 0) {
                     platformsBlock.children('.empty').removeClass('hide');
@@ -194,7 +192,7 @@ $(function () {
                 if (menuPosition.children('.menu__item').length === 0) {
                     addPosition.removeClass('hide');
                 }
-                menuPosition.prepend(getNewItem(name, id));
+                menuPosition.prepend(getNewItem('position', name, id));
                 position.remove();
                 if (positionsBlock.children('.position').length === 0) {
                     positionsBlock.children('.empty').removeClass('hide');
@@ -203,6 +201,63 @@ $(function () {
             error: function () {
             }
         })
+    });
+
+    // Удаление ролей
+    body.on('click', '#removeRole', function () {
+        let userRole = $(this).parent().parent();
+        let roleName = userRole.attr('data-role');
+        if (roleName === 'boss') {
+            Snackbar.show({
+                text: 'Нельзя удалить роль босса',
+                textColor: '#ff1841',
+                showAction: false,
+                duration: 4000,
+                customClass: 'custom',
+            });
+            return;
+        }
+        // let id = user__role.attr('data-id');
+        let rolesBlock = userRole.parent();
+        let addRole = rolesBlock.children('.role__substrate');
+        let menuRole = addRole.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        // console.log('user__role', userRole)
+        // console.log('roleName', roleName)
+        // console.log('rolesBlock', rolesBlock)
+        // console.log('addRole', addRole)
+        // console.log('menuRole', menuRole)
+
+        if (menuRole.children('.menu__item').length === 0) {
+            addRole.removeClass('hide');
+        }
+        menuRole.prepend(getNewItemForRole(roleName));
+        userRole.remove();
+        if (rolesBlock.children('.user__role').length === 0) {
+            rolesBlock.children('.empty').removeClass('hide');
+        }
+
+        // $.ajax({
+        //     url: `/edit/position/remove/${id}`,
+        //     type: 'post',
+        //     data: {
+        //         csrfmiddlewaretoken: csrf,
+        //         type: 'user__role',
+        //         // id: id,
+        //         name: roleName,
+        //     },
+        //     success: function (response) {
+        //         if (menuRole.children('.menu__item').length === 0) {
+        //             addRole.removeClass('hide');
+        //         }
+        //         menuRole.prepend(getNewItem(roleName, id));
+        //         userRole.remove();
+        //         if (rolesBlock.children('.user__role').length === 0) {
+        //             rolesBlock.children('.empty').removeClass('hide');
+        //         }
+        //     },
+        //     error: function () {
+        //     }
+        // });
     });
 
     // Редактирование юзеров
@@ -265,10 +320,11 @@ $(function () {
     /**
      * getNewItem
      *
+     * @param {string} type
      * @param {string} name
      * @param {string} id
      */
-    function getNewItem(name, id) {
+    function getNewItem(type, name, id) {
         let newItem = document.createElement('div');
         newItem.classList.add('menu__item');
         let itemBlock = document.createElement('div');
@@ -276,7 +332,7 @@ $(function () {
         $(itemBlock).attr({
             'data-name': name,
             'data-id': id,
-            'id': 'addPlatform',
+            'id': `add${type[0].toUpperCase() + type.slice(1)}`,
         });
         itemBlock.innerText = name;
         let itemLine = document.createElement('div');
@@ -293,12 +349,17 @@ $(function () {
      */
     function getNewRole(roleName) {
         let userRole = document.createElement('div');
-        $(userRole).addClass('user__role _hint unselectable');
+        $(userRole)
+            .addClass('user__role _hint unselectable')
+            .attr({
+                'data-role': roleName,
+            });
 
         let role = document.createElement('div');
         if (roleName === 'boss') {
-            $(role).addClass('role role-boss _hint-up');
-            role.innerText = 'Босс';
+            throw new Error('An unexpected role');
+            // $(role).addClass('role role-boss _hint-up');
+            // role.innerText = 'Босс';
         } else if (roleName === 'moderator') {
             $(role).addClass('role role-moderator _hint-up');
             role.innerText = 'Модератор';
@@ -339,7 +400,8 @@ $(function () {
         $(roleInfo).addClass('role-information');
         let info = document.createElement('div');
         if (roleName === 'boss') {
-            $(info).addClass('boss__info');
+            throw new Error('An unexpected role');
+            // $(info).addClass('boss__info');
         } else if (roleName === 'moderator') {
             $(info).addClass('moderator__info');
         } else if (roleName === 'master') {
@@ -354,5 +416,36 @@ $(function () {
         $(roleInfo).prepend(info);
 
         return userRole;
+    }
+
+    /**
+     * getNewItem
+     *
+     * @param {string} role
+     */
+    function getNewItemForRole(role) {
+        let newItem = document.createElement('div');
+        newItem.classList.add('menu__item');
+        let itemBlock = document.createElement('div');
+        itemBlock.classList.add('item__block');
+        $(itemBlock).attr({
+            'data-role': role,
+            'id': `addRole`,
+        });
+        if (role === 'boss') {
+            throw new Error('An unexpected role');
+            // itemBlock.innerText = 'Босс';
+        } else if (role === 'moderator') {
+            itemBlock.innerText = 'Модератор';
+        } else if (role === 'master') {
+            itemBlock.innerText = 'Мастер опросов';
+        } else {
+            throw new Error('An unexpected role');
+        }
+        let itemLine = document.createElement('div');
+        itemLine.classList.add('item__line');
+        newItem.prepend(itemLine);
+        newItem.prepend(itemBlock);
+        return newItem;
     }
 });
