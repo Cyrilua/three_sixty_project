@@ -226,6 +226,7 @@ $(function () {
                     if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
+                        checkView();
                     }
                     if (response.is_last) {
                         categoryContentBlock.addClass('full');
@@ -244,22 +245,7 @@ $(function () {
                     } else {
                     }
                 },
-                statusCode: {
-                    400: function () {
-                        throw new Error('Error 400 - Некорректный запрос');
-                    },
-                    403: function () {
-                        throw new Error('Error 403 - Доступ запрещён');
-                    },
-                    404: function () {
-                        throw new Error('Error 404 - Страница не найдена');
-                    },
-                    500: function () {
-                        throw new Error('Error 500 - Внутренняя ошибка сервера');
-                    }
-                },
                 error: function () {
-                    throw new Error('Что - то пошло не так :(');
                 },
             });
         }
@@ -301,22 +287,7 @@ $(function () {
                 complete: function () {
                     $(target).removeClass('visible-load');
                 },
-                statusCode: {
-                    400: function () {
-                        throw new Error('Error 400 - Некорректный запрос');
-                    },
-                    403: function () {
-                        throw new Error('Error 403 - Доступ запрещён');
-                    },
-                    404: function () {
-                        throw new Error('Error 404 - Страница не найдена');
-                    },
-                    500: function () {
-                        throw new Error('Error 500 - Внутренняя ошибка сервера');
-                    }
-                },
                 error: function () {
-                    throw new Error('Что - то пошло не так :(');
                 },
             })
         } else {
@@ -337,6 +308,7 @@ $(function () {
     function checkView() {
         if (category === 'polls') {
             let noViewed = $('.no-viewed');
+            // console.log(noViewed)
             for (let i = 0; i < noViewed.length; i++) {
                 visible(noViewed[i]);
             }
@@ -371,6 +343,6 @@ $(function () {
         let heightClient = document.documentElement.clientHeight;
         let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(partPolls, scroll);
-        checkView();
+        // checkView();
     }
 });
