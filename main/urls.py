@@ -107,8 +107,6 @@ urlpatterns = [
                   ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
                   path('polls/', include(polls_view_urls), name='new_poll_view'),
-
-
                   # Создание нового опроса через шаблон
                   path('poll/', include(poll_urls), name='poll'),
 
