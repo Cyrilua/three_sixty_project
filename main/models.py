@@ -198,9 +198,8 @@ class Poll(models.Model):
 
     def delete(self, *args, **kwargs):
         # TODO удаление ответов
-        questions = self.questions.all()
-        for question in questions:
-            question.delete()
+        self.questions.all().delete()
+        self.answers_set.all().delete()
         super(Poll, self).delete(*args, **kwargs)
 
     class Meta:
@@ -294,7 +293,7 @@ class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     choices = models.ManyToManyField('Choice')
-    range_overage = models.IntegerField(default=0)
+    range_sum = models.IntegerField(default=0)
     open_answer = models.ManyToManyField('OpenQuestion')
     count_profile_answers = models.IntegerField(default=0)
     objects = models.Manager()
@@ -310,6 +309,7 @@ class Answers(models.Model):
 
 class OpenQuestion(models.Model):
     text = models.CharField(max_length=100, default='')
+    objects = models.Manager()
 
     class Meta:
         db_table = 'OpenQuestion'
@@ -321,6 +321,7 @@ class OpenQuestion(models.Model):
 class Choice(models.Model):
     answer_choice = models.OneToOneField(AnswerChoice, on_delete=models.CASCADE)
     count = models.IntegerField(default=0)
+    objects = models.Manager()
 
     class Meta:
         db_table = 'Choice'
