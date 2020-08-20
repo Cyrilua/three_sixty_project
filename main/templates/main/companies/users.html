@@ -10,7 +10,7 @@
                             <a href="{{ user.href }}"
                                class="user-href">{{ user.surname }} {{ user.name }} {{ user.patronymic }}</a>
                             {% for role in user.roles %}
-                                <div class="user__role _hint unselectable">
+                                <div class="user__role _hint unselectable" data-role="{{ role }}">
                                     <div class="role-mini {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
                                     </div>
                                     <div class="_hint-down">
@@ -32,9 +32,10 @@
                         <div class="info__bottom">
                             <div class="positions-n-platforms">
                                 {% for position in user.positions %}
-                                    <div class="position _hint">
+                                    <div class="position _hint" data-name="{{ position.name }}"
+                                         data-id="{{ position.id }}">
                                         <div class="role _hint-up">
-                                            {{ position }}
+                                            {{ position.name }}
                                         </div>
                                         <div class="_hint-down">
                                             <div class="_hint-down-block">
@@ -46,9 +47,10 @@
                                     </div>
                                 {% endfor %}
                                 {% for platform in user.platforms %}
-                                    <div class="platform _hint">
+                                    <div class="platform _hint" data-name="{{ platform.name }}"
+                                         data-id="{{ platform.id }}">
                                         <div class="role _hint-up">
-                                            {{ platform }}
+                                            {{ platform.name }}
                                         </div>
                                         <div class="_hint-down">
                                             <div class="_hint-down-block">

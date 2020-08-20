@@ -2,10 +2,6 @@ $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
 
-
-    // let addPosition = $('.position__substrate');
-    // let menuPosition = addPosition.children('._hint-down-click').children('._hint-down-block').children('.menu');
-
     let openAdd;
     // Открыть меню (Добавить)
     body.on('click', '._hint-up-click', function () {
@@ -35,27 +31,37 @@ $(function () {
     body.on('click', '#addPlatform', function (el) {
         let typeSubstrate = $(el.target).closest('._hint-click');
         let platformsBlock = typeSubstrate.parent();
-        let name = $(this).attr('data-name');
-        let id = $(this).attr('data-id');
+        let namePlatform = $(this).attr('data-name');
+        let idPlatform = $(this).attr('data-id');
         let menuPlatform = typeSubstrate.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = platformsBlock.parent().parent().parent().parent();
+        let pNp = user.children('.user__view').children('.info').children('.info__bottom').children('.positions-n-platforms');
+        let lastPlatformView = pNp.children('.platform:last');
+        let userId = user.attr('data-real-id');
 
         $.ajax({
-            url: `/edit/platform/add/${id}`,
+            url: `user/${userId}/edit/platform/${idPlatform}/add/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                type: 'platform',
-                id: id,
-                name: name, // На всякий случай
+                namePlatform: namePlatform, // На всякий случай
             },
             success: function (response) {
+                // edit
                 if (platformsBlock.children('.platform').length === 0) {
                     platformsBlock.children('.empty').addClass('hide');
                 }
-                $(typeSubstrate).before(getNewRoundedStrip('platform', name, id));
+                $(typeSubstrate).before(getNewRoundedStrip('platform', namePlatform, idPlatform));
                 $(el.target).parent().remove();
                 if (menuPlatform.children('.menu__item').length < 1) {
                     $(typeSubstrate).addClass('hide');
+                }
+
+                // view
+                if (lastPlatformView.length === 1) {
+                    lastPlatformView.after(getNewRoundedStrip('platform', namePlatform, idPlatform, false));
+                } else {
+                    pNp.append(getNewRoundedStrip('platform', namePlatform, idPlatform, false));
                 }
             },
             error: function () {
@@ -67,27 +73,38 @@ $(function () {
     body.on('click', '#addPosition', function (el) {
         let typeSubstrate = $(el.target).closest('._hint-click');
         let positionsBlock = typeSubstrate.parent();
-        let name = $(this).attr('data-name');
-        let id = $(this).attr('data-id');
+        let namePosition = $(this).attr('data-name');
+        let idPosition = $(this).attr('data-id');
         let menuPosition = typeSubstrate.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = positionsBlock.parent().parent().parent().parent();
+        let pNp = user.children('.user__view').children('.info').children('.info__bottom').children('.positions-n-platforms');
+        let lastPositionView = pNp.children('.position:last');
+        let userId = user.attr('data-real-id');
+        // console.log(lastPositionView)
 
         $.ajax({
-            url: `/edit/position/add/${id}`,
+            url: `user/${userId}/edit/position/${idPosition}/add/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                type: 'position',
-                id: id,
-                name: name, // На всякий случай
+                namePosition: namePosition, // На всякий случай
             },
             success: function (response) {
+                // edit
                 if (positionsBlock.children('.position').length === 0) {
                     positionsBlock.children('.empty').addClass('hide');
                 }
-                $(typeSubstrate).before(getNewRoundedStrip('position', name, id));
+                $(typeSubstrate).before(getNewRoundedStrip('position', namePosition, idPosition));
                 $(el.target).parent().remove();
                 if (menuPosition.children('.menu__item').length < 1) {
                     $(typeSubstrate).addClass('hide');
+                }
+
+                // view
+                if (lastPositionView.length === 1) {
+                    lastPositionView.after(getNewRoundedStrip('position', namePosition, idPosition, false));
+                } else {
+                    pNp.prepend(getNewRoundedStrip('position', namePosition, idPosition, false));
                 }
             },
             error: function () {
@@ -101,70 +118,74 @@ $(function () {
         let rolesBlock = typeSubstrate.parent();
         let roleName = $(this).attr('data-role');
         let menuRoles = typeSubstrate.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = rolesBlock.parent().parent().parent().parent().parent();
+        let userInfoTop = user.children('.user__view').children('.info').children('.info__top');
+        let userId = user.attr('data-real-id');
+
         // console.log('typeSubstrate', typeSubstrate)
         // console.log('rolesBlock', rolesBlock)
         // console.log('name', roleName)
         // console.log('menuRoles', menuRoles)
 
-        if (rolesBlock.children('.position').length === 0) {
-            rolesBlock.children('.empty').addClass('hide');
-        }
-        $(typeSubstrate).before(getNewRole(roleName));
-        $(el.target).parent().remove();
-        if (menuRoles.children('.menu__item').length < 1) {
-            $(typeSubstrate).addClass('hide');
-        }
+        $.ajax({
+            url: `user/${userId}/edit/role/add/`,   // roleName = master | moderator
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                roleName: roleName,
+            },
+            success: function (response) {
+                // edit
+                if (rolesBlock.children('.user__role').length === 0) {
+                    rolesBlock.children('.empty').addClass('hide');
+                }
+                $(typeSubstrate).before(getNewRole(roleName));
+                $(el.target).parent().remove();
+                if (menuRoles.children('.menu__item').length < 1) {
+                    $(typeSubstrate).addClass('hide');
+                }
 
-        // $.ajax({
-        //     url: `/edit/position/add/${id}`,
-        //     type: 'post',
-        //     data: {
-        //         csrfmiddlewaretoken: csrf,
-        //         type: 'position',
-        //         // id: id,
-        //         name: name,
-        //     },
-        //     success: function (response) {
-        //         if (rolesBlock.children('.position').length === 0) {
-        //             rolesBlock.children('.empty').addClass('hide');
-        //         }
-        //         $(typeSubstrate).before(getNewRoundedStrip('position', name));
-        //         $(el.target).parent().remove();
-        //         if (menuRoles.children('.menu__item').length < 1) {
-        //             $(typeSubstrate).addClass('hide');
-        //         }
-        //     },
-        //     error: function () {
-        //     }
-        // });
+                // view
+                userInfoTop.append(getNewRoleMini(roleName));
+            },
+            error: function () {
+            }
+        });
     });
 
     // Удаление отделов
     body.on('click', '#removePlatform', function () {
         let platform = $(this).parent().parent();
-        let name = platform.attr('data-name');
-        let id = platform.attr('data-id');
+        let namePlatform = platform.attr('data-name');
+        let idPlatform = platform.attr('data-id');
         let platformsBlock = platform.parent();
         let addPlatform = platformsBlock.children('.platform__substrate');
         let menuPlatform = addPlatform.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = platformsBlock.parent().parent().parent().parent();
+        let pNp = user.children('.user__view').children('.info').children('.info__bottom').children('.positions-n-platforms');
+        let target = pNp.children(`.platform[data-id="${idPlatform}"]`);
+        let userId = user.attr('data-real-id');
+        // console.log(user, pNp, target, `.platform[data-id="${id}"]`)
         $.ajax({
-            url: `/edit/platform/remove/${id}`,
+            url: `user/${userId}/edit/platform/${idPlatform}/remove/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                type: 'platform',
-                id: id,
-                name: name, // На всякий случай
+                namePlatform: namePlatform, // На всякий случай
             },
             success: function (response) {
+                // edit
                 if (menuPlatform.children('.menu__item').length === 0) {
                     addPlatform.removeClass('hide');
                 }
-                menuPlatform.prepend(getNewItem('platform', name, id));
+                menuPlatform.prepend(getNewItem('platform', namePlatform, idPlatform));
                 platform.remove();
                 if (platformsBlock.children('.platform').length === 0) {
                     platformsBlock.children('.empty').removeClass('hide');
                 }
+
+                //view
+                target.remove();
             },
             error: function () {
             }
@@ -174,29 +195,36 @@ $(function () {
     // Удаление должностей
     body.on('click', '#removePosition', function () {
         let position = $(this).parent().parent();
-        let name = position.attr('data-name');
-        let id = position.attr('data-id');
+        let namePosition = position.attr('data-name');
+        let idPosition = position.attr('data-id');
         let positionsBlock = position.parent();
         let addPosition = positionsBlock.children('.position__substrate');
         let menuPosition = addPosition.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = positionsBlock.parent().parent().parent().parent();
+        let pNp = user.children('.user__view').children('.info').children('.info__bottom').children('.positions-n-platforms');
+        let target = pNp.children(`.position[data-id="${idPosition}"]`);
+        let userId = user.attr('data-real-id');
+        // console.log(user, pNp, target, `.position[data-id="${id}"]`)
         $.ajax({
-            url: `/edit/position/remove/${id}`,
+            url: `user/${userId}/edit/position/${idPosition}/remove/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
-                type: 'position',
-                id: id,
-                name: name, // На всякий случай
+                namePosition: namePosition, // На всякий случай
             },
             success: function (response) {
+                // edit
                 if (menuPosition.children('.menu__item').length === 0) {
                     addPosition.removeClass('hide');
                 }
-                menuPosition.prepend(getNewItem('position', name, id));
+                menuPosition.prepend(getNewItem('position', namePosition, idPosition));
                 position.remove();
                 if (positionsBlock.children('.position').length === 0) {
                     positionsBlock.children('.empty').removeClass('hide');
                 }
+
+                //view
+                target.remove();
             },
             error: function () {
             }
@@ -217,54 +245,50 @@ $(function () {
             });
             return;
         }
-        // let id = user__role.attr('data-id');
         let rolesBlock = userRole.parent();
         let addRole = rolesBlock.children('.role__substrate');
         let menuRole = addRole.children('._hint-down-click').children('._hint-down-block').children('.menu');
+        let user = userRole.parent().parent().parent().parent().parent().parent();
+        let userViewRole = user.children('.user__view').children('.info').children('.info__top').children(`.user__role[data-role=${roleName}]`);
+        let userId = user.attr('data-real-id');
+        // console.log(userViewRole)
         // console.log('user__role', userRole)
         // console.log('roleName', roleName)
         // console.log('rolesBlock', rolesBlock)
         // console.log('addRole', addRole)
         // console.log('menuRole', menuRole)
 
-        if (menuRole.children('.menu__item').length === 0) {
-            addRole.removeClass('hide');
-        }
-        menuRole.prepend(getNewItemForRole(roleName));
-        userRole.remove();
-        if (rolesBlock.children('.user__role').length === 0) {
-            rolesBlock.children('.empty').removeClass('hide');
-        }
+        $.ajax({
+            url: `user/${userId}/edit/role/remove/`,   // roleName = master | moderator
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                roleName: roleName,
+            },
+            success: function (response) {
+                // edit
+                if (menuRole.children('.menu__item').length === 0) {
+                    addRole.removeClass('hide');
+                }
+                menuRole.prepend(getNewItemForRole(roleName));
+                userRole.remove();
+                if (rolesBlock.children('.user__role').length === 0) {
+                    rolesBlock.children('.empty').removeClass('hide');
+                }
 
-        // $.ajax({
-        //     url: `/edit/position/remove/${id}`,
-        //     type: 'post',
-        //     data: {
-        //         csrfmiddlewaretoken: csrf,
-        //         type: 'user__role',
-        //         // id: id,
-        //         name: roleName,
-        //     },
-        //     success: function (response) {
-        //         if (menuRole.children('.menu__item').length === 0) {
-        //             addRole.removeClass('hide');
-        //         }
-        //         menuRole.prepend(getNewItem(roleName, id));
-        //         userRole.remove();
-        //         if (rolesBlock.children('.user__role').length === 0) {
-        //             rolesBlock.children('.empty').removeClass('hide');
-        //         }
-        //     },
-        //     error: function () {
-        //     }
-        // });
+                //view
+                userViewRole.remove();
+            },
+            error: function () {
+            }
+        });
     });
 
     // Редактирование юзеров
     body.on('click', '#edit', function (event) {
         let user = $(this).closest('.user');
         if (user.hasClass('user--view')) {
-            let beforePos = user[0].getBoundingClientRect()
+            let beforePos = user[0].getBoundingClientRect();
             $('.user--edit').removeClass('user--edit').addClass('user--view');
             user.removeClass('user--view').addClass('user--edit');
             let afterPos = user[0].getBoundingClientRect()
@@ -281,39 +305,68 @@ $(function () {
      *
      * @param {string} type
      * @param {string} name
-     * @param {string} id
+     * @param {number, string} id
+     * @param {boolean} removable
      */
-    function getNewRoundedStrip(type, name, id) {
+    function getNewRoundedStrip(type, name, id, removable = true) {
+        if (type !== 'position' && type !== 'platform') {
+            throw new Error('An expected type');
+        }
         let newEl = document.createElement('div');
-        newEl.classList.add(type);
         $(newEl).attr({
             'data-name': name,
             'data-id': id,
         });
+        if (removable) {
+            $(newEl).addClass(type);
+
+        } else {
+            $(newEl).addClass(`${type} _hint`);
+        }
         let role = document.createElement('div');
-        role.classList.add('role');
+        if (removable) {
+            $(role).addClass('role');
+        } else {
+            $(role).addClass('role _hint-up');
+        }
         role.innerText = name;
-        let remove = document.createElement('div');
-        let removeClassList = remove.classList;
-        removeClassList.add(`${type}__remove`);
-        removeClassList.add('remove-item');
-        $(remove).attr({
-            'id': `remove${type[0].toUpperCase() + type.slice(1)}`,
-        });
-        let cross = document.createElement('div');
-        cross.classList.add('cross-in-circle');
-        let circle = document.createElement('div');
-        circle.classList.add('circle');
-        let line1 = document.createElement('div');
-        line1.classList.add('line-1');
-        let line2 = document.createElement('div');
-        line2.classList.add('line-2');
+        if (removable) {
+            let remove = document.createElement('div');
+            let removeClassList = remove.classList;
+            removeClassList.add(`${type}__remove`);
+            removeClassList.add('remove-item');
+            $(remove).attr({
+                'id': `remove${type[0].toUpperCase() + type.slice(1)}`,
+            });
+            let cross = document.createElement('div');
+            cross.classList.add('cross-in-circle');
+            let circle = document.createElement('div');
+            circle.classList.add('circle');
+            let line1 = document.createElement('div');
+            line1.classList.add('line-1');
+            let line2 = document.createElement('div');
+            line2.classList.add('line-2');
+            role.prepend(remove);
+            remove.prepend(cross);
+            cross.prepend(circle);
+            circle.prepend(line1);
+            line1.prepend(line2);
+        } else {
+            let hint = document.createElement('div');
+            $(hint).addClass('_hint-down');
+            let hintBlock = document.createElement('div');
+            $(hintBlock).addClass('_hint-down-block');
+            let roleInfo = document.createElement('div');
+            $(roleInfo).addClass(`${type}-information role-information`);
+            let info = document.createElement('div');
+            $(info).addClass(`${type}__info`);
+
+            $(newEl).prepend(hint);
+            $(hint).prepend(hintBlock);
+            $(hintBlock).prepend(roleInfo);
+            $(roleInfo).prepend(info);
+        }
         newEl.prepend(role);
-        role.prepend(remove);
-        remove.prepend(cross);
-        cross.prepend(circle);
-        circle.prepend(line1);
-        line1.prepend(line2);
         return newEl;
     }
 
@@ -348,6 +401,9 @@ $(function () {
      * @param {string} roleName
      */
     function getNewRole(roleName) {
+        if (roleName !== 'master' && roleName !== 'moderator') {
+            throw new Error('An expected type');
+        }
         let userRole = document.createElement('div');
         $(userRole)
             .addClass('user__role _hint unselectable')
@@ -356,15 +412,13 @@ $(function () {
             });
 
         let role = document.createElement('div');
+        $(role).addClass(`role role-${roleName} _hint-up`);
         if (roleName === 'boss') {
             throw new Error('An unexpected role');
-            // $(role).addClass('role role-boss _hint-up');
             // role.innerText = 'Босс';
         } else if (roleName === 'moderator') {
-            $(role).addClass('role role-moderator _hint-up');
             role.innerText = 'Модератор';
         } else if (roleName === 'master') {
-            $(role).addClass('role role-master _hint-up');
             role.innerText = 'Мастер опросов';
         } else {
             throw new Error('An unexpected role');
@@ -391,6 +445,49 @@ $(function () {
         cross.prepend(circle);
         circle.prepend(line1);
         line1.prepend(line2);
+
+        let hint = document.createElement('div');
+        $(hint).addClass('_hint-down');
+        let hintBlock = document.createElement('div');
+        $(hintBlock).addClass('_hint-down-block');
+        let roleInfo = document.createElement('div');
+        $(roleInfo).addClass('role-information');
+        let info = document.createElement('div');
+        $(info).addClass(`${roleName}__info`);
+
+        $(userRole).append(hint);
+        $(hint).prepend(hintBlock);
+        $(hintBlock).prepend(roleInfo);
+        $(roleInfo).prepend(info);
+
+        return userRole;
+    }
+
+    /**
+     * getNewRoleMini
+     *
+     * @param {string} roleName
+     */
+    function getNewRoleMini(roleName) {
+        let userRole = document.createElement('div');
+        $(userRole)
+            .addClass('user__role _hint unselectable')
+            .attr({
+                'data-role': roleName,
+            });
+
+        let role = document.createElement('div');
+        if (roleName === 'boss') {
+            throw new Error('An unexpected role');
+            // $(role).addClass('role-mini role-boss _hint-up')
+        } else if (roleName === 'moderator') {
+            $(role).addClass('role-mini role-moderator _hint-up')
+        } else if (roleName === 'master') {
+            $(role).addClass('role-mini role-master _hint-up')
+        } else {
+            throw new Error('An unexpected role');
+        }
+        $(userRole).prepend(role);
 
         let hint = document.createElement('div');
         $(hint).addClass('_hint-down');
