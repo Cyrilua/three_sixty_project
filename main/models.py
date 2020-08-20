@@ -272,10 +272,7 @@ class Settings(models.Model):
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
-        answers = self.answer_choice.all()
-        for answer in answers:
-            answer: AnswerChoice
-            answer.delete()
+        self.answer_choice.all().delete()
         super(Settings, self).delete(*args, **kwargs)
 
     class Meta:
@@ -287,7 +284,7 @@ class AnswerChoice(models.Model):
     objects = models.Manager()
 
     class Meta:
-        db_table = "Answer choice"
+        db_table = "AnswerChoice"
 
     def __str__(self):
         return self.text
@@ -296,13 +293,40 @@ class AnswerChoice(models.Model):
 class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
-    choices = models.ForeignKey(AnswerChoice, null=True, on_delete=models.CASCADE)
-    text = models.CharField(max_length=200, null=True)
-    range_number = models.IntegerField(null=True)
+    choices = models.ManyToManyField('Choice')
+    range_overage = models.IntegerField(default=0)
+    open_answer = models.ManyToManyField('OpenQuestion')
+    count_profile_answers = models.IntegerField(default=0)
     objects = models.Manager()
+
+    def delete(self, *args, **kwargs):
+        self.choices.all().delete()
+        self.open_answer.all().delete()
+        super(Answers, self).delete(*args, **kwargs)
 
     class Meta:
         db_table = "Answer"
+
+
+class OpenQuestion(models.Model):
+    text = models.CharField(max_length=100, default='')
+
+    class Meta:
+        db_table = 'OpenQuestion'
+
+    def __str__(self):
+        return self.text
+
+
+class Choice(models.Model):
+    answer_choice = models.OneToOneField(AnswerChoice, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'Choice'
+
+    def __str__(self):
+        return self.answer_choice
 
 
 class TestTable(models.Model):

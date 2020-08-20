@@ -40,8 +40,8 @@ def _build_templates(profile: Profile) -> dict:
 def _collect_template(template: TemplatesPoll) -> dict:
     collected_template = {
         'name': template.name_poll,
-        'url': "/poll/editor/template/{}/".format(template.id),
-        'id': template.id
+        'url': "/poll/editor/template/{}/".format(template.pk),
+        'id': template.pk
     }
     if not template.is_general:
         collected_template['color'] = template.color
@@ -113,13 +113,18 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         }
     }
     for rendered_poll in rendered_polls:
+        rendered_poll: NeedPassPoll
         poll = rendered_poll.poll
         if not poll.is_submitted:
             continue
         collected_poll = _build_poll(poll)
         if type(rendered_poll) == NeedPassPoll:
             collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
+            collected_poll['url'] = '/poll/compiling_poll/{}/'.format(poll.pk)
+            rendered_poll.is_rendered = True
+            rendered_poll.save()
         args['data']['polls'].append(collected_poll)
+
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
     result = response.rendered_content
     return result
@@ -130,8 +135,8 @@ def _build_poll(poll: Poll) -> dict:
         'title': poll.name_poll,
         'answers_count': poll.count_passed,
         'date': build_date(poll.creation_date),
-        'url': '/poll/result/{}/'.format(poll.id),
-        'id': poll.id,
+        'url': '/poll/result/{}/'.format(poll.pk),
+        'id': poll.pk,
     }
     if poll.color is not None:
         collected_poll['color'] = poll.color
@@ -154,7 +159,7 @@ def load_notification_new_poll(request) -> JsonResponse:
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
         rendered_polls = _render_new_not_viewed_polls(polls)
-
+        print(polls)
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls, 'newElems': rendered_polls}, status=200)
         return JsonResponse({}, status=200)
@@ -205,6 +210,7 @@ def remove_template(request) -> JsonResponse:
 
 def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
+
         try:
             poll: Poll = Poll.objects.get(id=poll_id)
             need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=get_user_profile(request))

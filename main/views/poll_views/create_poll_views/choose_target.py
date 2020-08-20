@@ -116,12 +116,13 @@ def build_profile(profile) -> dict:
 
 def _get_roles(profile: Profile) -> list:
     roles = []
-    if profile.company.owner.pk == profile.pk:
-        roles.append('boss')
-    if SurveyWizard.objects.filter(profile=profile).exists():
-        roles.append('master')
-    if Moderator.objects.filter(profile=profile).exists():
-        roles.append('moderator')
+    if profile.company is not None:
+        if profile.company.owner.pk == profile.pk:
+            roles.append('boss')
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            roles.append('master')
+        if Moderator.objects.filter(profile=profile).exists():
+            roles.append('moderator')
     return roles
 
 
