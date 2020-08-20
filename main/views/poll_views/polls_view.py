@@ -113,6 +113,7 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         }
     }
     for rendered_poll in rendered_polls:
+        rendered_poll: NeedPassPoll
         poll = rendered_poll.poll
         if not poll.is_submitted:
             continue
@@ -120,6 +121,8 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         if type(rendered_poll) == NeedPassPoll:
             collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
             collected_poll['url'] = '/poll/compiling_poll/{}/'.format(poll.pk)
+            rendered_poll.is_rendered = True
+            rendered_poll.save()
         args['data']['polls'].append(collected_poll)
 
     response = SimpleTemplateResponse('main/includes/item_polls.html', args)
