@@ -292,7 +292,7 @@ class AnswerChoice(models.Model):
 
 class Answers(models.Model):
     question = models.OneToOneField(Questions, on_delete=models.CASCADE)
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True)
     choices = models.ManyToManyField('Choice')
     range_overage = models.IntegerField(default=0)
     open_answer = models.ManyToManyField('OpenQuestion')

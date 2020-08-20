@@ -29,6 +29,7 @@ def create_poll_from_template(request, template_id) -> render:
         'title': "Создание опроса из шаблона",
         'poll': start_create.build_poll(template),
     }
+    print(args)
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
 
@@ -173,6 +174,7 @@ def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
         poll.is_submitted = True
         poll.save()
         _create_unique_key(poll)
+        _create_answers(poll)
 
         profile = get_user_profile(request)
         created_poll = CreatedPoll()
@@ -189,7 +191,7 @@ def _create_answers(poll: Poll):
         question: Questions
         answer = Answers()
         answer.question = question
-        answer.poll = poll,
+        answer.poll = poll
         answer.save()
         for choice in question.settings.answer_choice.all():
             new_choice = Choice()
