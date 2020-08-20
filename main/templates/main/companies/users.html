@@ -76,7 +76,7 @@
                                 <h3 class="subtitle">Роли</h3>
                                 <div class="roles">
                                     {% for role in user.roles %}
-                                        <div class="user__role _hint unselectable">
+                                        <div class="user__role _hint unselectable" data-role="{{ role }}">
                                             <div class="role {% if role == 'boss' %}role-boss{% elif role == 'master' %}role-master{% elif role == 'moderator' %}role-moderator{% endif %} _hint-up">
                                                 <div class="role__remove remove-item" id="removeRole">
                                                     <div class="cross-in-circle">
@@ -127,7 +127,7 @@
                                                     {% for new_role in user.new_roles %}
                                                         <div class="menu__item">
                                                             <div class="item__block" id="addRole"
-                                                                 data-name="{{ new_role }}">
+                                                                 data-role="{{ new_role }}">
                                                                 {% if new_role == 'moderator' %}
                                                                     Модератор
                                                                 {% elif new_role == 'master' %}
