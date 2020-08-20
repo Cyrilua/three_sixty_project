@@ -208,7 +208,6 @@
 .content .content__body .users .user .role__substrate .role__add {
   border-radius: 50%;
   cursor: pointer;
-  z-index: 310;
 }
 .content .content__body .users .user .position__substrate .add__menu,
 .content .content__body .users .user .platform__substrate .add__menu,
@@ -216,7 +215,6 @@
   position: absolute;
   left: -97px;
   top: 16px;
-  z-index: 300;
 }
 .content .content__body .users .user .position__substrate .add__menu::before,
 .content .content__body .users .user .platform__substrate .add__menu::before,
@@ -373,6 +371,19 @@
   flex-direction: column;
   background: #F0F1F6;
   padding: 20px 30px;
+}
+.content .content__body .users .user .user__edit [class*=__substrate] ._hint-up-click {
+  z-index: 10;
+}
+.content .content__body .users .user .user__edit [class*=__substrate] ._hint-down-click {
+  z-index: 15;
+}
+.content .content__body .users .user .user__edit [class*=__substrate] ._hint-down-click ._hint-down-block {
+  z-index: 9;
+}
+.content .content__body .users .user .user__edit [class*=__substrate] ._hint-down-click ._hint-down-block::before, .content .content__body .users .user .user__edit [class*=__substrate] ._hint-down-click ._hint-down-block::after {
+  z-index: 9;
+  pointer-events: none;
 }
 .content .content__body .users .user .user__edit .role__substrate {
   margin-bottom: 0;
