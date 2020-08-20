@@ -238,14 +238,14 @@
           .role__add {
             border-radius: 50%;
             cursor: pointer;
-            z-index: 310;
+            //z-index: 10;
           }
 
           .add__menu {
             position: absolute;
             left: -97px;
             top: 16px;
-            z-index: 300;
+            //z-index: 10;
 
             &::before {
               content: '';
@@ -415,6 +415,26 @@
           flex-direction: column;
           background: #F0F1F6;
           padding: 20px 30px;
+
+          [class*="__substrate" ] {
+            ._hint-up-click {
+              z-index: 10;
+            }
+
+            ._hint-down-click {
+              z-index: 15;
+
+              ._hint-down-block {
+                z-index: 9;
+
+                &::before,
+                &::after {
+                  z-index: 9;
+                  pointer-events: none;
+                }
+              }
+            }
+          }
 
           .role__substrate {
             margin-bottom: 0;
