@@ -44,3 +44,10 @@ def _build_poll_compiling(poll: Poll):
 def compiling_poll_link(request: WSGIRequest, poll_key: int) -> render:
     # todo
     return render(request, 'main/poll/taking_poll.html', {})
+
+
+def send_answer(request: WSGIRequest, poll_id: int):
+    if request.is_ajax():
+        print('i am ajax')
+    print(request.POST)
+    return redirect('/polls/')
