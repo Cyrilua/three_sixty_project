@@ -156,7 +156,7 @@ def load_notification_new_poll(request) -> JsonResponse:
         polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False)
         count_polls = polls.count()
         rendered_polls = _render_new_not_viewed_polls(polls)
-
+        print(polls)
         if count_polls > 0:
             return JsonResponse({'notifications': count_polls, 'newElems': rendered_polls}, status=200)
         return JsonResponse({}, status=200)
@@ -207,6 +207,7 @@ def remove_template(request) -> JsonResponse:
 
 def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
+
         try:
             poll: Poll = Poll.objects.get(id=poll_id)
             need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=get_user_profile(request))
