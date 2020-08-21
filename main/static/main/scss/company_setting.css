@@ -82,6 +82,7 @@
   align-items: center;
   justify-content: space-between;
   height: 50px;
+  transition: 0.2s background-color;
 }
 .content .content__body .setting.setting-vertical .area .area__body .area__item:hover {
   background-color: #F0F1F6;

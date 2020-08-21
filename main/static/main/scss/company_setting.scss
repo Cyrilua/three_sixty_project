@@ -93,6 +93,7 @@
               align-items: center;
               justify-content: space-between;
               height: 50px;
+              transition: .2s background-color;
 
               &:hover {
                 background-color: #F0F1F6;
