@@ -74,7 +74,7 @@ def send_answer(request: WSGIRequest, poll_id: int):
         poll = Poll.objects.filter(id=poll_id)
         _collect_answers(request, poll.first().questions.all().count())
         poll.update(count_passed=F('count_passed') + 1)
-        NeedPassPoll.objects.filter(poll=poll.first(), profile=get_user_profile(request)).delete()
+        #NeedPassPoll.objects.filter(poll=poll.first(), profile=get_user_profile(request)).delete()
         return JsonResponse({}, status=200)
 
 
