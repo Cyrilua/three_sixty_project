@@ -6,7 +6,7 @@ $(function () {
 
     // Новый опрос внутри компании
     body.on('click', '#newPoll', function (event) {
-        //TODO 
+        //TODO
     });
 
     // Поиск

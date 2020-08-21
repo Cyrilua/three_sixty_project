@@ -12,7 +12,7 @@
         <div class="content__head rounded-block">
             <div class="head__top">
                 <div class="info">
-                    <h1 class="company__name">ООО Крутая компания</h1>
+                    <h1 class="company__name">{{ company.name }}</h1>
                 </div>
                 <div class="actions">
                     <button type="button" class="new-poll button-red" id="newPoll">Провести опрос</button>
@@ -21,12 +21,7 @@
             <div class="head__middle-1">
                 <h3 class="subtitle">Описание</h3>
                 <div class="description">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua.
+                    {{ company.description }}
                 </div>
             </div>
             <div class="head__middle-2">
