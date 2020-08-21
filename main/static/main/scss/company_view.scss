@@ -140,6 +140,34 @@
   .content__body {
     padding-bottom: 20%;
 
+    &.loading {
+      pointer-events: none;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        content: '';
+        background-color: rgba(0, 0, 0, 0.1);
+        animation: .5s linear 1 blackout;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: calc(50% - 12.5px);
+        width: 25px;
+        height: 25px;
+        background: rgb(219, 0, 255);
+        background: linear-gradient(121deg, rgba(219, 0, 255, 1) 0%, rgba(255, 24, 65, 1) 100%);
+        animation: .5s linear 1 blackout, 1.5s linear infinite loadingCube;
+      }
+    }
+
     .teams {
       display: flex;
       flex-direction: column;
@@ -595,7 +623,7 @@
                 }
               }
 
-              #kick {
+              #dismiss {
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -681,13 +709,59 @@
                     }
                   }
                 }
-
-
               }
             }
           }
         }
       }
     }
+  }
+}
+
+@keyframes blackout {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loadingCube {
+  0% {
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    transform: rotate(270deg);
+  }
+  20% {
+    border-radius: 0;
+    width: 25px;
+    height: 25px;
+    transform: translateX(-12.5px) translateY(12.5px) rotate(90deg);
+  }
+  40% {
+    border-radius: 0;
+    width: 25px;
+    height: 25px;
+    transform: translateX(12.5px) translateY(12.5px) rotate(180deg);
+  }
+  60% {
+    border-radius: 0;
+    width: 25px;
+    height: 25px;
+    transform: translateX(12.5px) translateY(-12.5px) rotate(270deg);
+  }
+  80% {
+    border-radius: 0;
+    width: 25px;
+    height: 25px;
+    transform: translateX(-12.5px) translateY(-12.5px) rotate(360deg);
+  }
+  100% {
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    transform: rotate(180deg);
   }
 }

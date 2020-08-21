@@ -81,34 +81,24 @@
         <div class="head__bottom categories-block">
             <div class="substrate">
                 <div class="sort rounded-block unselectable">
-                    <div class="category active-sort" data-category="" data-part-url="participants">
-                        <div class="category__title">Участники ({{ company.countParticipants }})
-                            {#                                <div class="category__notice hide"></div>#}
-                        </div>
-                    </div>
-                    <div class="category" data-category="" data-part-url="teams">
+                    <div class="category" data-category="teams">
                         <div class="category__title">Команды ({{ company.countTeams }})
-                            {#                            <div class="category__notice hide"></div>#}
                         </div>
                     </div>
-                    <div class="loader-round hide">
-                        <div class="loader__status"></div>
-                        {#            <img src="{% static 'main/images/icon/cached-24px.svg' %}" alt="" class="update">#}
+                    <div class="category" data-category="users">
+                        <div class="category__title">Участники ({{ company.countParticipants }})
+                        </div>
                     </div>
                 </div>
                 <div class="unselectable search-down rounded-block">
                     <input type="text" class="search input-field" placeholder="Поиск по участникам..."
                            autocomplete="off">
-                    {#                    <div class="search ">#}
-                    {#                        <input type="text" class="input-field input__search" data-mode="participants"#}
-                    {#                               placeholder="Поиск по участникам...">#}
-                    {#                    </div>#}
                 </div>
             </div>
         </div>
         <div class="content__body">
-            {% include 'main/companies/teams.html' %}
-            {% include 'main/companies/users.html' %}
+            {#                        {% include 'main/companies/teams.html' %}#}
+            {#            {% include 'main/companies/users.html' %}#}
         </div>
     </div>
 

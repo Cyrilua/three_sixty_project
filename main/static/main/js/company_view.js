@@ -1,6 +1,182 @@
 $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    const content = $('.content__body');
+    let ajaxLoad;
+
+    // Поиск
+    body.on('input', '.search', function (event) {
+        let category = $('.active-sort').attr('data-category');
+        let input = $(this).val();
+        loading(category, category, input);
+    });
+
+    // Смена категории
+    body.on('click', '.category', function (event) {
+        let active = $('.active-sort');
+        let activeCategory = active.attr('data-category');
+        let selectedCategory = $(this).attr('data-category');
+        // console.log(activeCategory)
+        if (activeCategory !== selectedCategory) {
+            loading(activeCategory, selectedCategory);
+        }
+    });
+
+    // Дуйствия при уходе со страницы
+    window.onbeforeunload = function () {
+        completeRequests(ajaxDismisses);
+        completeRequests(ajaxRemoveTeams);
+        return;
+    };
+    window.onunload = function () {
+        return;
+    };
+
+    // Удаление команд
+    let ajaxRemoveTeams = [];
+    body.on('click', '#removeTeam', function (event) {
+        let team = $(this).parent();
+        let teamName = team.children('.team__info').children('.team__name').children('.team__name').text();
+        let teamId = team.attr('data-team-id');
+        let id;
+        // console.log(user, teamId)
+        $.ajax({
+            url: `team/${teamId}/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemoveTeams[id]) {
+                    id = ajaxRemoveTeams.length;
+                    ajax.abort();
+                    ajaxRemoveTeams.push({
+                        request: request,
+                        finish: false,
+                    });
+                    team.addClass('hide');
+                    // $(team).css({
+                    //     'display': 'none',
+                    // });
+                    Snackbar.show({
+                        text: `Команда ${teamName} была удалена`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            ajaxRemoveTeams[id].finish = true;
+                            $(ele).remove();
+                            team.removeClass('hide');
+                            // $(team).css({
+                            //     'display': 'flex',
+                            // });
+                        },
+                        onClose: function () {
+                            if (!ajaxRemoveTeams[id].finish) {
+                                $.ajax(request);
+                            }
+                        }
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                team.remove();
+            },
+            complete: function () {
+                ajaxRemoveTeams[id].finish = true;
+            },
+            error: function () {
+                team.removeClass('hide');
+                // $(user).css({
+                //     'display': 'flex',
+                // });
+                Snackbar.show({
+                    text: 'Произошла ошибка при выходе вo команды.',
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        })
+    });
+
+    // Удаление юзеров из компании
+    let ajaxDismisses = [];
+    body.on('click', '#dismiss', function (event) {
+        let user = $(this).parent().parent().parent().parent();
+        let userName = user.children('.user__view').children('.info').children('.info__top').children('.user-href').text();
+        let userId = user.attr('data-real-id');
+        let id;
+        // console.log(user, userId)
+        $.ajax({
+            url: `user/${userId}/dismiss/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxDismisses[id]) {
+                    id = ajaxDismisses.length;
+                    ajax.abort();
+                    ajaxDismisses.push({
+                        request: request,
+                        finish: false,
+                    });
+                    user.addClass('hide');
+                    // $(team).css({
+                    //     'display': 'none',
+                    // });
+                    Snackbar.show({
+                        text: `${userName} был удален из компании`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            ajaxDismisses[id].finish = true;
+                            $(ele).remove();
+                            user.removeClass('hide');
+                            // $(team).css({
+                            //     'display': 'flex',
+                            // });
+                        },
+                        onClose: function () {
+                            if (!ajaxDismisses[id].finish) {
+                                $.ajax(request);
+                            }
+                        }
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                user.remove();
+            },
+            complete: function () {
+                ajaxDismisses[id].finish = true;
+            },
+            error: function () {
+                user.removeClass('hide');
+                // $(user).css({
+                //     'display': 'flex',
+                // });
+                Snackbar.show({
+                    text: 'Произошла ошибка при выходе вo команды.',
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        })
+    });
 
     let openAdd;
     // Открыть меню (Добавить)
@@ -28,8 +204,8 @@ $(function () {
     });
 
     // Добавление отделов
-    body.on('click', '#addPlatform', function (el) {
-        let typeSubstrate = $(el.target).closest('._hint-click');
+    body.on('click', '#addPlatform', function (event) {
+        let typeSubstrate = $(event.target).closest('._hint-click');
         let platformsBlock = typeSubstrate.parent();
         let namePlatform = $(this).attr('data-name');
         let idPlatform = $(this).attr('data-id');
@@ -52,7 +228,7 @@ $(function () {
                     platformsBlock.children('.empty').addClass('hide');
                 }
                 $(typeSubstrate).before(getNewRoundedStrip('platform', namePlatform, idPlatform));
-                $(el.target).parent().remove();
+                $(event.target).parent().remove();
                 if (menuPlatform.children('.menu__item').length < 1) {
                     $(typeSubstrate).addClass('hide');
                 }
@@ -70,8 +246,8 @@ $(function () {
     });
 
     // Добавление должностей
-    body.on('click', '#addPosition', function (el) {
-        let typeSubstrate = $(el.target).closest('._hint-click');
+    body.on('click', '#addPosition', function (event) {
+        let typeSubstrate = $(event.target).closest('._hint-click');
         let positionsBlock = typeSubstrate.parent();
         let namePosition = $(this).attr('data-name');
         let idPosition = $(this).attr('data-id');
@@ -95,7 +271,7 @@ $(function () {
                     positionsBlock.children('.empty').addClass('hide');
                 }
                 $(typeSubstrate).before(getNewRoundedStrip('position', namePosition, idPosition));
-                $(el.target).parent().remove();
+                $(event.target).parent().remove();
                 if (menuPosition.children('.menu__item').length < 1) {
                     $(typeSubstrate).addClass('hide');
                 }
@@ -113,8 +289,8 @@ $(function () {
     });
 
     // Добавление ролей
-    body.on('click', '#addRole', function (el) {
-        let typeSubstrate = $(el.target).closest('._hint-click');
+    body.on('click', '#addRole', function (event) {
+        let typeSubstrate = $(event.target).closest('._hint-click');
         let rolesBlock = typeSubstrate.parent();
         let roleName = $(this).attr('data-role');
         let menuRoles = typeSubstrate.children('._hint-down-click').children('._hint-down-block').children('.menu');
@@ -140,7 +316,7 @@ $(function () {
                     rolesBlock.children('.empty').addClass('hide');
                 }
                 $(typeSubstrate).before(getNewRole(roleName));
-                $(el.target).parent().remove();
+                $(event.target).parent().remove();
                 if (menuRoles.children('.menu__item').length < 1) {
                     $(typeSubstrate).addClass('hide');
                 }
@@ -297,6 +473,9 @@ $(function () {
             user.removeClass('user--edit').addClass('user--view');
         }
     });
+
+    // Первый запуск
+    run();
 
     // Functions
 
@@ -544,5 +723,76 @@ $(function () {
         newItem.prepend(itemLine);
         newItem.prepend(itemBlock);
         return newItem;
+    }
+
+    // При уходе со страницы завершить все действия, если они не были завершены и не были отменены
+    function completeRequests(ajaxRequests) {
+        for (let id = 0; id < ajaxRequests.length; id++) {
+            if (!ajaxRequests[id].finish) {
+                $.ajax(ajaxRequests[id].request);
+            }
+        }
+    }
+
+    // Первый запуск
+    function run() {
+        $('.category[data-category=teams]').trigger('click');
+        // loading('teams')
+    }
+
+    /**
+     * loading
+     *
+     * @param {string} activeCategory
+     * @param {string} selectedCategory
+     * @param {string} input
+     */
+    function loading(activeCategory, selectedCategory, input) {
+        let search = $('.search');
+        $.ajax({
+            url: 'load/',
+            type: 'get',
+            data: {
+                category: selectedCategory,
+                search: input,
+                //TODO Количество подгружаемых элементов
+            },
+            beforeSend: function (ajax) {
+                if (ajaxLoad) {
+                    ajaxLoad.abort();
+                }
+                ajaxLoad = ajax;
+                content.addClass('loading');
+                if (!input) {
+                    search.prop({
+                        'disabled': true,
+                    });
+                }
+            },
+            success: function (response) {
+                $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
+                $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
+                content
+                    .empty()
+                    .prepend(response.content);
+            },
+            complete: function (response, status) {
+                content.removeClass('loading');
+                if (!input) {
+                    search.prop({
+                        'disabled': false,
+                    });
+                }
+            },
+            error: function () {
+                Snackbar.show({
+                    text: 'Произошла ошибка при загрузке данных.',
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        });
     }
 });
