@@ -4,6 +4,11 @@ $(function () {
     const content = $('.content__body');
     let ajaxLoad;
 
+    // Новый опрос внутри компании
+    body.on('click', '#newPoll', function (event) {
+        //TODO 
+    });
+
     // Поиск
     body.on('input', '.search', function (event) {
         let category = $('.active-sort').attr('data-category');
