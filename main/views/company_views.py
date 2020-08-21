@@ -323,6 +323,27 @@ def company_view(request, id_company):
         return render(request, 'main/companies/company_view.html', args)
 
 
+def company_setting(request, id_company):
+    # todo
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    if request.method == "GET":
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            # todo throw exception
+            pass
+        args = {
+            # 'users': _build_profiles(company),
+            'company': {
+                'positions': PositionCompany.objects.filter(company=company),
+                'platforms': PlatformCompany.objects.filter(company=company),
+                'countParticipants': company.profile_set.all().count(),
+                'countTeams': Group.objects.filter(company=company).count()
+            }
+        }
+        return render(request, 'main/companies/company_setting.html', args)
+
+
 def _build_profiles(company: Company):
     result = []
     profiles = company.profile_set.all()

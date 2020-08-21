@@ -9,6 +9,7 @@ from .views.poll_views import create_poll, polls_view, result_poll, create_poll_
 from .views.profile_views import render_profile, edit_profile
 from main import urls_loadable
 from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls
+
 app_name = "main"
 urlpatterns = [
                   # Регистрация
@@ -78,7 +79,9 @@ urlpatterns = [
                   path('add_company/', company_views.create_company, name='add_company'),
                   # Просмотр компании (список должностей и платформ, название компании,
                   #     ее владелец и ключ для присоединения)
-                  path('company_view/<int:id_company>/', company_views.company_view, name='company_view'),
+                  path('company/<int:id_company>/', company_views.company_view, name='company_view'),
+                  # Настроки команды
+                  path('company/<int:id_company>/setting/', company_views.company_setting, name='company_setting'),
                   # Присоединение к компании (по ключу)
                   path('connect_to_company/', company_views.connect_to_company_to_key, name='connect_to_company'),
                   # Присоеддинение к компании (по ссылке)
@@ -109,7 +112,6 @@ urlpatterns = [
                   path('polls/', include(polls_view_urls), name='new_poll_view'),
                   # Создание нового опроса через шаблон
                   path('poll/', include(poll_urls), name='poll'),
-
 
                   ############ Only for debug ###############
                   path('test/', test.test)

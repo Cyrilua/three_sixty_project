@@ -496,6 +496,11 @@ button {
 
 // Input
 
+.input-no-outline {
+  border: none;
+  outline: none;
+}
+
 .input-field {
   height: 40px;
   font-weight: normal;

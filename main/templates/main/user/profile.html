@@ -60,7 +60,9 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <a href="{{ profile.company.url }}"
+{#                        <a href="{{ profile.company.url }}"#}
+                        {#                           class="center-content-information-company hide">{{ profile.company.name }}</a>#}
+                        <a href="{% url 'main:company_view' id_company=5 %}"
                            class="center-content-information-company hide">{{ profile.company.name }}</a>
                     </div>
                     <div class="center-content-information-platforms_n_positions">
