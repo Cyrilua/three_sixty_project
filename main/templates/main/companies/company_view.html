@@ -15,7 +15,9 @@
                     <h1 class="company__name">{{ company.name }}</h1>
                 </div>
                 <div class="actions">
-                    <button type="button" class="new-poll button-red" id="newPoll">Провести опрос</button>
+                    {% if profile.is_boss or profile.is_master %}
+                        <button type="button" class="new-poll button-red" id="newPoll">Провести опрос</button>
+                    {% endif %}
                 </div>
             </div>
             <div class="head__middle-1">

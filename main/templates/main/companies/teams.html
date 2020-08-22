@@ -11,7 +11,9 @@
                     <span class="team__quantity-users">{{ team.quantity }} участников</span>
                     <span class="team__description">{{ team.description }}</span>
                 </div>
-                <div class="team__leave team__remove" id="removeTeam"></div>
+                {% if profile.is_boss or profile.is_moderator %}
+                    <div class="team__leave team__remove" id="removeTeam"></div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

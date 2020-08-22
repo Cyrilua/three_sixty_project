@@ -1,5 +1,5 @@
 {% load static %}
-{% if not is_boss or is_moderator %}
+{% if profile.is_boss or profile.is_moderator %}
     <div class="menu-r unselectable">
         <ul class="menu rounded-block">
             <li class="menu__item {{ menu_company }}">
