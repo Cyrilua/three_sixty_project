@@ -1,5 +1,4 @@
 .content {
-  height: 700px;
   padding: 0;
   margin-bottom: 20vh;
 }
@@ -19,6 +18,25 @@
   justify-content: space-between;
   margin-bottom: 30px;
 }
+.content .content__body .setting.setting-no-input {
+  align-items: center;
+}
+.content .content__body .setting.setting-no-input .subtitle {
+  margin: 0;
+}
+.content .content__body .setting.setting-no-input #href-invite {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.content .content__body .setting.setting-no-input #copy {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D5;
+  margin: 0 auto 0 25px;
+}
 .content .content__body .setting.setting-vertical {
   flex-direction: column;
   justify-content: flex-start;
@@ -35,6 +53,9 @@
   flex-direction: column;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.content .content__body .setting.setting-vertical .area.loading::after {
+  top: calc(50% - 12.5px);
 }
 .content .content__body .setting.setting-vertical .area .area__head {
   display: flex;
@@ -59,7 +80,7 @@
   width: 80px;
 }
 .content .content__body .setting.setting-vertical .area .area__body {
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 .content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar {
   width: 5px;
@@ -83,6 +104,9 @@
   justify-content: space-between;
   height: 50px;
   transition: 0.2s background-color;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item.hide {
+  display: none;
 }
 .content .content__body .setting.setting-vertical .area .area__body .area__item:hover {
   background-color: #F0F1F6;
@@ -126,6 +150,7 @@
 }
 .content .content__footer {
   border-top: 1px solid #E5E5E5;
+  height: 100px;
 }
 .content .content__footer .actions {
   display: flex;
@@ -136,10 +161,6 @@
 }
 .content .content__footer .actions #saveChanges {
   width: 180px;
-}
-
-.loading::after {
-  top: calc(50% - 12.5px);
 }
 
 /*# sourceMappingURL=company_setting.css.map */

@@ -21,6 +21,12 @@
                     <textarea class="input-field" placeholder="Введите описание" id="companyDescription"
                               maxlength="500">{{ company.description }}</textarea>
                 </div>
+
+                <div class="setting setting-no-input">
+                    <h3 class="subtitle">Ссылка для вступления</h3>
+                    <textarea id="href-invite" readonly>{{ company.hrefForInvite }}</textarea>
+                    <a class="copy" id="copy">Скопировать</a>
+                </div>
             </div>
             <div class="content__bottom">
                 <div class="setting setting-vertical">
@@ -32,50 +38,14 @@
                             <button class="button-white area__add" id="addPosition" disabled>Добавить</button>
                         </div>
                         <div class="area__body">
-                            <div class="area__item" title="Тимлид шлывао ывао ждывоа sdjfsdj алдывалывао" data-position-id="1">
-                                <div class="item__text">Тимлид шлывао ывао ждывоа sdjfsdj алдывалывао</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="2">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="3">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="4">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="5">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="6">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="7">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="8">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="9">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="10">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
-                            <div class="area__item" data-position-id="11">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
-                            </div>
+                            {% for position in company.positions %}
+                                <div class="area__item" title="{{ position.name }}"
+                                     data-position-id="{{ position.id }}">
+                                    <div class="item__text">{{ position.name }}</div>
+                                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt=""
+                                         class="item__remove" id="positionRemove">
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -88,10 +58,14 @@
                             <button class="button-white area__add" id="addPlatform" disabled>Добавить</button>
                         </div>
                         <div class="area__body">
-                            <div class="area__item" data-platform-id="1">
-                                <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="platformRemove">
-                            </div>
+                            {% for platform in company.platforms %}
+                                <div class="area__item" title="{{ platform.name }}"
+                                     data-platform-id="{{ platform.id }}">
+                                    <div class="item__text">{{ platform.name }}</div>
+                                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt=""
+                                         class="item__remove" id="platformRemove">
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

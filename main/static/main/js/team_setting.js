@@ -27,6 +27,7 @@ $(function () {
             data: {
                 name: newName,
                 description: newDescription,
+                csrfmiddlewaretoken: csrf,
             },
             beforeSend: function () {
                 content.addClass('disabled');
@@ -114,6 +115,11 @@ $(function () {
                 if (ajaxTeamRemove === undefined) {
                     ajax.abort();
                     ajaxTeamRemove = request;
+                    let t = setTimeout(function () {
+                        if (ajaxTeamRemove !== undefined) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: 'Команда будет удалена через 5 секунд',
                         customClass: 'custom no-animation center',
@@ -123,14 +129,10 @@ $(function () {
                         pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
-                            ajaxTeamRemove = undefined;
+                            clearTimeout(t);
                             $(ele).remove();
+                            ajaxTeamRemove = undefined;
                         },
-                        onClose: function () {
-                            if (ajaxTeamRemove !== undefined) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }

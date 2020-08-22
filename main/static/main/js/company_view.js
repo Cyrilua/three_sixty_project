@@ -2,6 +2,9 @@ $(function () {
     const body = $('body');
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     const content = $('.content__body');
+
+    let ajaxRemoveTeams = [];
+    let ajaxDismisses = [];
     let ajaxLoad;
 
     // Новый опрос внутри компании
@@ -38,7 +41,6 @@ $(function () {
     };
 
     // Удаление команд
-    let ajaxRemoveTeams = [];
     body.on('click', '#removeTeam', function (event) {
         let team = $(this).parent();
         let teamName = team.children('.team__info').children('.team__name').children('.team__name').text();
@@ -60,9 +62,11 @@ $(function () {
                         finish: false,
                     });
                     team.addClass('hide');
-                    // $(team).css({
-                    //     'display': 'none',
-                    // });
+                    let t = setTimeout(function () {
+                        if (!ajaxRemoveTeams[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: `Команда ${teamName} была удалена`,
                         customClass: 'custom no-animation center',
@@ -72,18 +76,11 @@ $(function () {
                         pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
-                            ajaxRemoveTeams[id].finish = true;
+                            clearTimeout(t);
                             $(ele).remove();
+                            ajaxRemoveTeams[id].finish = true;
                             team.removeClass('hide');
-                            // $(team).css({
-                            //     'display': 'flex',
-                            // });
                         },
-                        onClose: function () {
-                            if (!ajaxRemoveTeams[id].finish) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }
@@ -96,9 +93,6 @@ $(function () {
             },
             error: function () {
                 team.removeClass('hide');
-                // $(user).css({
-                //     'display': 'flex',
-                // });
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
@@ -111,7 +105,6 @@ $(function () {
     });
 
     // Удаление юзеров из компании
-    let ajaxDismisses = [];
     body.on('click', '#dismiss', function (event) {
         let user = $(this).parent().parent().parent().parent();
         let userName = user.children('.user__view').children('.info').children('.info__top').children('.user-href').text();
@@ -133,9 +126,11 @@ $(function () {
                         finish: false,
                     });
                     user.addClass('hide');
-                    // $(team).css({
-                    //     'display': 'none',
-                    // });
+                    let t = setTimeout(function () {
+                        if (!ajaxDismisses[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: `${userName} был удален из компании`,
                         customClass: 'custom no-animation center',
@@ -145,18 +140,11 @@ $(function () {
                         pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
-                            ajaxDismisses[id].finish = true;
+                            clearTimeout(t);
                             $(ele).remove();
+                            ajaxDismisses[id].finish = true;
                             user.removeClass('hide');
-                            // $(team).css({
-                            //     'display': 'flex',
-                            // });
                         },
-                        onClose: function () {
-                            if (!ajaxDismisses[id].finish) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }

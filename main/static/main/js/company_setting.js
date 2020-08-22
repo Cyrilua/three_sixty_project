@@ -4,9 +4,155 @@ $(function () {
     let name = $('#companyName').val().toString();
     let description = $('#companyDescription').val().replace(/[\r\n]/g, '');
 
+    let ajaxRemove = [];
+
+    // Завершить все дествия перед закрытием страницы
+    window.onbeforeunload = function () {
+        completeRequests(ajaxRemove);
+        return;
+    };
+    window.onunload = function () {
+        return;
+    };
+
+    // Скопировать пригласительную ссылку
+    body.on('click', '#copy', function (event) {
+        const invite = $('#href-invite');
+        invite
+            .css({
+                display: 'block',
+            })
+            .select();
+        document.execCommand("copy");
+        invite.css({
+            display: 'none',
+        })
+    });
+
     // Удаление должности
     body.on('click', '#positionRemove', function (event) {
-        
+        let position = $(this).parent();
+        let positionId = position.attr('data-position-id');
+        let positionName = position.children('.item__text').text();
+        let id;
+        $.ajax({
+            url: `position/${positionId}/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemove[id]) {
+                    id = ajaxRemove.length;
+                    ajax.abort();
+                    ajaxRemove.push({
+                        request: request,
+                        finish: false,
+                    });
+                    position.addClass('hide');
+                    let t = setTimeout(function () {
+                        if (!ajaxRemove[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
+                    Snackbar.show({
+                        text: `Должность "${positionName}" была удалена`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            clearTimeout(t);
+                            $(ele).remove();
+                            ajaxRemove[id].finish = true;
+                            position.removeClass('hide');
+                        },
+                    });
+                } else {
+                    position.addClass('hide');
+                }
+            },
+            success: function (response) {
+                position.remove();
+            },
+            complete: function () {
+            },
+            error: function () {
+                position.removeClass('hide');
+                Snackbar.show({
+                    text: `Ошибка удаления должности "${positionName}"`,
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        });
+    });
+
+    // Удаление отдела
+    body.on('click', '#platformRemove', function (event) {
+        let platform = $(this).parent();
+        let platformId = platform.attr('data-platform-id');
+        let platformName = platform.children('.item__text').text();
+        let id;
+        $.ajax({
+            url: `position/${platformId}/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemove[id]) {
+                    id = ajaxRemove.length;
+                    ajax.abort();
+                    ajaxRemove.push({
+                        request: request,
+                        finish: false,
+                    });
+                    platform.addClass('hide');
+                    let t = setTimeout(function () {
+                        if (!ajaxRemove[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
+                    Snackbar.show({
+                        text: `Отдел "${platformName}" была удален`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            clearTimeout(t);
+                            $(ele).remove();
+                            ajaxRemove[id].finish = true;
+                            platform.removeClass('hide');
+                        },
+                    });
+                } else {
+                    platform.addClass('hide');
+                }
+            },
+            success: function (response) {
+                platform.remove();
+            },
+            complete: function () {
+            },
+            error: function () {
+                platform.removeClass('hide');
+                Snackbar.show({
+                    text: `Ошибка удаления отдела "${platformName}"`,
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        });
     });
 
     // Добавление должности
@@ -19,6 +165,7 @@ $(function () {
                 type: 'post',
                 data: {
                     namePosition: namePosition,
+                    csrfmiddlewaretoken: csrf,
                 },
                 beforeSend: function (ajax) {
                     $('#positions').addClass('loading');
@@ -35,7 +182,7 @@ $(function () {
                 },
                 error: function () {
                     Snackbar.show({
-                        text: 'Произошла ошибка при добавлении должности.',
+                        text: `Произошла ошибка при добавлении должности.`,
                         textColor: '#ff0000',
                         customClass: 'custom no-animation',
                         showAction: false,
@@ -46,7 +193,7 @@ $(function () {
         }
     });
 
-    // Добавление платформы
+    // Добавление отдела
     body.on('click', '#addPlatform', function (event) {
         let name = $('#namePlatform');
         let namePlatform = name.val();
@@ -56,6 +203,7 @@ $(function () {
                 type: 'post',
                 data: {
                     namePlatform: namePlatform,
+                    csrfmiddlewaretoken: csrf,
                 },
                 beforeSend: function (ajax) {
                     $('#platforms').addClass('loading');
@@ -97,7 +245,7 @@ $(function () {
         }
     });
 
-    // Ввод названия платформы
+    // Ввод названия отдела
     body.on('input', '#namePlatform', function (event) {
         let val = $(this).val();
         if (val.length > 0) {
@@ -121,6 +269,7 @@ $(function () {
             data: {
                 name: newName,
                 description: newDescription,
+                csrfmiddlewaretoken: csrf,
             },
             beforeSend: function () {
                 content.addClass('disabled');
@@ -132,7 +281,7 @@ $(function () {
                     'disabled': true,
                 });
                 Snackbar.show({
-                    text: 'Сохранения сохранены.',
+                    text: 'Изменения сохранены.',
                     textColor: '#07bd00',
                     customClass: 'custom no-animation',
                     showAction: false,
@@ -217,8 +366,18 @@ $(function () {
             .addClass('item__remove')
             .attr({
                 'src': '/static/main/images/icon/clear-24px.svg',
+                'id': `${type}Remove`,
             });
         $(item).append(remove);
         return item
+    }
+
+    // При уходе со страницы завершить все действия, если они не были завершены и не были отменены
+    function completeRequests(ajaxRequests) {
+        for (let id = 0; id < ajaxRequests.length; id++) {
+            if (!ajaxRequests[id].finish) {
+                $.ajax(ajaxRequests[id].request);
+            }
+        }
     }
 });

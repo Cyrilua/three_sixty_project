@@ -69,6 +69,11 @@ $(function () {
                     $(team).css({
                         'display': 'none',
                     });
+                    let t = setTimeout(function () {
+                        if (!ajaxRequests[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: 'Вы покинули команду',
                         customClass: 'custom no-animation center',
@@ -78,17 +83,13 @@ $(function () {
                         pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
+                            clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
                             $(team).css({
                                 'display': 'flex',
                             });
                         },
-                        onClose: function () {
-                            if (!ajaxRequests[id].finish) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }
