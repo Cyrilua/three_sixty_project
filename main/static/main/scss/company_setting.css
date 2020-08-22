@@ -106,10 +106,10 @@
 .content .content__body .content__top .subtitle {
   margin-top: 10px;
 }
-.content .content__body .content__top #teamName {
+.content .content__body .content__top #companyName {
   width: 400px;
 }
-.content .content__body .content__top #teamDescription {
+.content .content__body .content__top #companyDescription {
   width: 400px;
   height: 100px;
   resize: none;
@@ -136,6 +136,10 @@
 }
 .content .content__footer .actions #saveChanges {
   width: 180px;
+}
+
+.loading::after {
+  top: calc(50% - 12.5px);
 }
 
 /*# sourceMappingURL=company_setting.css.map */

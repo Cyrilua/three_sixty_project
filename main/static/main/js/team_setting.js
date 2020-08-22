@@ -4,7 +4,9 @@ $(function () {
     const content = $('.content');
     let name = $('#teamName').val().toString();
     let description = $('#teamDescription').val().replace(/[\r\n]/g, '');
+    let ajaxTeamRemove;
 
+    // Завершить все дествия перед закрытием страницы
     window.onbeforeunload = function () {
         if (ajaxTeamRemove !== undefined) {
             $.ajax(ajaxTeamRemove);
@@ -15,7 +17,7 @@ $(function () {
         return;
     };
 
-    // Сохранение иизменений
+    // Сохранение изменений
     body.on('click', '#saveChanges', function (event) {
         let newName = $('#teamName').val();
         let newDescription = $('#teamDescription').val();
@@ -101,7 +103,6 @@ $(function () {
     });
 
     // Удаление команды
-    let ajaxTeamRemove;
     body.on('click', '#remove-team', function (event) {
         $.ajax({
             url: `remove/`,

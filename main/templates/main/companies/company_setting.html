@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block sidebar-nav %}
-    {% include 'main/includes/menu.html' with menu_teams="active" only %}
+    {% include 'main/includes/menu.html' %}
 {% endblock %}
 
 {% block content-user %}
@@ -13,82 +13,84 @@
             <div class="content__top">
                 <div class="setting">
                     <h3 class="subtitle">Название</h3>
-                    <input type="text" class="input-field" id="teamName" placeholder="Введите название копании"
-                           value="{{ team.name }}" maxlength="40">
+                    <input type="text" class="input-field" id="companyName" placeholder="Введите название копании"
+                           value="{{ company.name }}" maxlength="40">
                 </div>
                 <div class="setting">
                     <h3 class="subtitle">Описание</h3>
-                    <textarea class="input-field" placeholder="Введите описание" id="teamDescription"
-                              maxlength="500">{{ team.description }}</textarea>
+                    <textarea class="input-field" placeholder="Введите описание" id="companyDescription"
+                              maxlength="500">{{ company.description }}</textarea>
                 </div>
             </div>
             <div class="content__bottom">
                 <div class="setting setting-vertical">
                     <h3 class="subtitle">Должности</h3>
-                    <div class="area">
+                    <div class="area" id="positions">
                         <div class="area__head">
-                            <input type="text" class="input-no-outline area__new-name" id="namePosition" placeholder="Придумайте название...">
-                            <button class="button-white area__add" id="addPosition">Добавить</button>
+                            <input type="text" class="input-no-outline area__new-name" id="namePosition"
+                                   placeholder="Придумайте название...">
+                            <button class="button-white area__add" id="addPosition" disabled>Добавить</button>
                         </div>
                         <div class="area__body">
-                            <div class="area__item" title="Тимлид шлывао ывао ждывоа sdjfsdj алдывалывао">
+                            <div class="area__item" title="Тимлид шлывао ывао ждывоа sdjfsdj алдывалывао" data-position-id="1">
                                 <div class="item__text">Тимлид шлывао ывао ждывоа sdjfsdj алдывалывао</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="2">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="3">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="4">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="5">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="6">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="7">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="8">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="9">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="10">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
-                            <div class="area__item">
+                            <div class="area__item" data-position-id="11">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="positionRemove">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="setting setting-vertical">
                     <h3 class="subtitle">Отделы</h3>
-                    <div class="area">
+                    <div class="area" id="platforms">
                         <div class="area__head">
-                            <input type="text" class="input-no-outline area__new-name" id="namePlatform" placeholder="Придумайте название...">
-                            <button class="button-white area__add" id="addPlatform">Добавить</button>
+                            <input type="text" class="input-no-outline area__new-name" id="namePlatform"
+                                   placeholder="Придумайте название...">
+                            <button class="button-white area__add" id="addPlatform" disabled>Добавить</button>
                         </div>
                         <div class="area__body">
-                            <div class="area__item">
+                            <div class="area__item" data-platform-id="1">
                                 <div class="item__text">Тимлид</div>
-                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove">
+                                <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt="" class="item__remove" id="platformRemove">
                             </div>
                         </div>
                     </div>
@@ -97,7 +99,7 @@
         </div>
         <div class="content__footer">
             <div class="actions">
-                <button class="button-red" id="saveChanges">Сохранить</button>
+                <button class="button-red" id="saveChanges" disabled>Сохранить</button>
             </div>
         </div>
     </div>
