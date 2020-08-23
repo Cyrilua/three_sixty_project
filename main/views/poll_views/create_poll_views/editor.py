@@ -12,15 +12,25 @@ from .start_create import build_questions, build_poll
 
 def save_template(request: WSGIRequest) -> JsonResponse:
     # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
-
+    poll = None
     try:
-        template_id = int(request.POST['templateId'])
-        template = TemplatesPoll.objects.get(template_id)
-    except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
-        template = TemplatesPoll()
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(id=poll_id)
+    except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
+        try:
+            template_id = int(request.POST['templateId'])
+            template = TemplatesPoll.objects.get(id=template_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            template = TemplatesPoll()
+    else:
+        template = poll.new_template
+        if template is None:
+            template = TemplatesPoll()
     _change_template(request, template)
     version = _create_new_questions_or_change(request, template)
     template.questions.all().exclude(version=version).delete()
+    if poll is not None:
+        poll.new_template = template
     return JsonResponse({'templateId': template.pk}, status=200)
 
 

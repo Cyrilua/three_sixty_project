@@ -66,7 +66,7 @@ def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse
         return JsonResponse({}, status=400)
     profile = get_user_profile(request)
     company = profile.company
-    profiles = company.profile_set.all().exclude(pk=profile.pk)
+    profiles = company.profile_set.all()
     args = {'participants': _build_team_profiles_list(profiles, company, poll.target)}
     content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                      args).rendered_content
