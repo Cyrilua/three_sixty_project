@@ -129,6 +129,9 @@
 }
 .editor .editor__category .substrate .search-down {
   padding-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .editor .editor__category .substrate .search-down .search {
   width: 850px;
