@@ -19,6 +19,7 @@ def save_template(request: WSGIRequest) -> JsonResponse:
     except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
         try:
             template_id = int(request.POST['templateId'])
+            print(template_id)
             template = TemplatesPoll.objects.get(id=template_id)
         except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
             template = TemplatesPoll()
@@ -32,6 +33,12 @@ def save_template(request: WSGIRequest) -> JsonResponse:
     if poll is not None:
         poll.new_template = template
     return JsonResponse({'templateId': template.pk}, status=200)
+
+
+def _save_template_from_poll(poll: Poll):
+    template = poll.new_template
+    if template is None:
+        template = TemplatesPoll()
 
 
 def _change_template(request: WSGIRequest, template: TemplatesPoll):
@@ -121,6 +128,15 @@ def save_information(request: WSGIRequest) -> Poll:
         poll = Poll()
     if category == "editor":
         poll = _create_or_change_poll(request, poll)
+        if poll.new_template is None:
+            try:
+                template_id = int(request.POST['templateId'])
+                template = TemplatesPoll.objects.get(id=template_id)
+            except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
+                pass
+            else:
+                poll.new_template = template
+                poll.save()
         version = _create_new_questions_or_change(request, poll)
         poll.questions.all().exclude(version=version).delete()
         return poll
@@ -170,6 +186,15 @@ def poll_preview(request: WSGIRequest) -> JsonResponse:
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
         poll = _create_or_change_poll(request, Poll())
     version = _create_new_questions_or_change(request, poll)
+    if poll.new_template is None:
+        try:
+            template_id = int(request.POST['templateId'])
+            template = TemplatesPoll.objects.get(id=template_id)
+        except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
+            pass
+        else:
+            poll.new_template = template
+            poll.save()
     poll.questions.all().exclude(version=version).delete()
     created_poll = build_poll(poll)
     if poll.target is not None:
