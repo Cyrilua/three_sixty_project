@@ -11,7 +11,6 @@ from .start_create import build_questions, build_poll
 
 
 def save_template(request: WSGIRequest) -> JsonResponse:
-    # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
