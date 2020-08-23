@@ -12,30 +12,26 @@ from .start_create import build_questions, build_poll
 
 def save_template(request: WSGIRequest) -> JsonResponse:
     # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
-    print(request.POST)
+
     try:
-        poll_id = int(request.POST['pollId'])
-        poll = Poll.objects.get(poll_id)
+        template_id = int(request.POST['templateId'])
+        template = TemplatesPoll.objects.get(template_id)
     except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
-        template = _create_new_template(request)
-    #_create_new_questions_or_change(request, template)
-    return JsonResponse({}, status=200)
+        template = TemplatesPoll()
+    _change_template(request, template)
+    version = _create_new_questions_or_change(request, template)
+    template.questions.all().exclude(version=version).delete()
+    return JsonResponse({'templateId': template.pk}, status=200)
 
 
-def _create_template_from_poll(request: WSGIRequest):
-    pass
-
-
-def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
+def _change_template(request: WSGIRequest, template: TemplatesPoll):
     data = request.POST
     data_key = 'template[{}]'
-    new_template = TemplatesPoll()
-    new_template.name_poll = data[data_key.format('name')]
-    new_template.description = data[data_key.format('description')]
-    new_template.owner = get_user_profile(request)
-    new_template.color = None if data[data_key.format('color')] == '' else data[data_key.format('color')]
-    new_template.save()
-    return new_template
+    template.name_poll = data[data_key.format('name')]
+    template.description = data[data_key.format('description')]
+    template.owner = get_user_profile(request)
+    template.color = None if data[data_key.format('color')] == '' else data[data_key.format('color')]
+    template.save()
 
 
 def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> int:
@@ -156,6 +152,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
 
 
 def poll_preview(request: WSGIRequest) -> JsonResponse:
+    print(request.POST)
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
