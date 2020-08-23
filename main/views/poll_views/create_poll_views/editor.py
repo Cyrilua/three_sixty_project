@@ -32,6 +32,11 @@ def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
 def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> int:
     data = request.POST
     try:
+        if data['category'] == 'preview':
+            return poll
+    except MultiValueDictKeyError:
+        pass
+    try:
         count_questions = int(data['template[countQuestion]'])
     except ValueError:
         return None
@@ -96,14 +101,22 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
 
 def save_information(request: WSGIRequest) -> Poll:
     try:
+        category = request.POST['category']
+    except MultiValueDictKeyError:
+        return None
+    try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
-        poll = _create_or_change_poll(request, poll)
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-        poll = _create_or_change_poll(request, Poll())
-    version = _create_new_questions_or_change(request, poll)
-    poll.questions.all().exclude(version=version).delete()
-    return poll
+        poll = Poll()
+    if category == "editor":
+        poll = _create_or_change_poll(request, poll)
+        version = _create_new_questions_or_change(request, poll)
+        poll.questions.all().exclude(version=version).delete()
+        return poll
+    elif category == "preview":
+        return poll
+    return None
 
 
 def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
