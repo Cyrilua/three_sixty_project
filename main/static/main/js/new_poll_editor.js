@@ -293,17 +293,29 @@ $(function () {
     });
 
     function ajaxSaveAs(el) {
-        let template = getTemplate();
         let status = $(el).parent().children('.save__status');
-        console.log(template)
+        let data;
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'preview') {
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'preview',
+            }
+        } else if (category === 'editor') {
+            let template = getTemplate();
+            console.log(template)
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'editor',
+                template: template,
+            }
+        }
         $.ajax({
             url: 'save_as/',
             type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-                pollId: pollId,
-                template: template,
-            },
+            data: data,
             beforeSend: function () {
                 menu.addClass('disabled');
                 editor.addClass('disabled');
@@ -364,8 +376,7 @@ $(function () {
     });
 
     function ajaxStepFrom1To2(el) {
-        let id = editor.attr('data-poll-id');
-        let template = getTemplate();
+        // let id = editor.attr('data-poll-id');
         let data;
         let category = $('.active-sort').attr('data-part-url');
         // let step = editor.attr('data-step');
@@ -376,6 +387,8 @@ $(function () {
                 category: 'preview',
             }
         } else if (category === 'editor') {
+            let template = getTemplate();
+            console.log(template)
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
@@ -383,7 +396,6 @@ $(function () {
                 template: template,
             }
         }
-        console.log(template)
         $.ajax({
             url: 'step/2/from/1/',
             type: 'post',
@@ -1272,16 +1284,28 @@ $(function () {
     }
 
     function ajaxStepFrom1To3(el) {
-        let template = getTemplate();
-        console.log(template)
+        let data;
+        let category = $('.active-sort').attr('data-part-url');
+        if (category === 'preview') {
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'preview',
+            }
+        } else if (category === 'editor') {
+            let template = getTemplate();
+            console.log(template)
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'editor',
+                template: template,
+            }
+        }
         $.ajax({
             url: 'step/3/from/1/',
             type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-                pollId: pollId,
-                template: template,
-            },
+            data: data,
             beforeSend: function () {
                 // $(el.target).prop({
                 //     'disabled': true,
@@ -1351,16 +1375,29 @@ $(function () {
     });
 
     function ajaxStepFrom1To3NotMaster(el) {
-        let template = getTemplate();
-        console.log(template)
+        let data;
+        let category = $('.active-sort').attr('data-part-url');
+        // let step = editor.attr('data-step');
+        if (category === 'preview') {
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'preview',
+            }
+        } else if (category === 'editor') {
+            let template = getTemplate();
+            console.log(template)
+            data = {
+                csrfmiddlewaretoken: csrf,
+                pollId: pollId,
+                category: 'editor',
+                template: template,
+            }
+        }
         $.ajax({
             url: 'step/3/from/1/notMaster/',
             type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-                pollId: pollId,
-                template: template,
-            },
+            data: data,
             beforeSend: function () {
                 // $(el.target).prop({
                 //     'disabled': true,
