@@ -12,33 +12,73 @@ from .start_create import build_questions, build_poll
 
 def save_template(request: WSGIRequest) -> JsonResponse:
     # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
-    poll = None
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
     except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
         try:
             template_id = int(request.POST['templateId'])
-            print(template_id)
             template = TemplatesPoll.objects.get(id=template_id)
         except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
             template = TemplatesPoll()
+        _change_template(request, template)
+        version = _create_new_questions_or_change(request, template)
+        template.questions.all().exclude(version=version).delete()
     else:
-        template = poll.new_template
-        if template is None:
-            template = TemplatesPoll()
-    _change_template(request, template)
-    version = _create_new_questions_or_change(request, template)
-    template.questions.all().exclude(version=version).delete()
-    if poll is not None:
-        poll.new_template = template
+        try:
+            category = request.POST['category']
+        except MultiValueDictKeyError:
+            return JsonResponse({}, status=400)
+        else:
+            if category == 'editor':
+                template = poll.new_template
+                if template is None:
+                    template = TemplatesPoll()
+                _change_template(request, template)
+                version = _create_new_questions_or_change(request, template)
+                template.questions.all().exclude(version=version).delete()
+            elif category == 'preview':
+                template = _save_template_from_poll(poll)
+            else:
+                return JsonResponse({}, status=400)
     return JsonResponse({'templateId': template.pk}, status=200)
 
 
-def _save_template_from_poll(poll: Poll):
-    template = poll.new_template
+def _save_template_from_poll(poll: Poll) -> TemplatesPoll:
+    template: TemplatesPoll = poll.new_template
     if template is None:
         template = TemplatesPoll()
+    template.name_poll = poll.name_poll
+    template.description = poll.description
+    template.color = poll.color
+    template.owner = poll.initiator
+    template.save()
+    _create_questions_from_poll(poll, template)
+    return template
+
+
+def _create_questions_from_poll(poll: Poll, template: TemplatesPoll):
+    template.questions.all().delete()
+    for question in poll.questions.all():
+        question: Questions
+        new_question = Questions()
+        new_question.text = question.text
+        new_question.ordinal_number = question.ordinal_number
+
+        settings: Settings = question.settings
+        new_settings = Settings()
+        new_settings.type = settings.type
+        new_settings.max = settings.max
+        new_settings.min = settings.min
+        new_settings.save()
+        for choice in settings.answer_choice.all():
+            new_choice = AnswerChoice()
+            new_choice.text = choice.text
+            new_choice.save()
+            new_settings.answer_choice.add(new_choice)
+
+        new_question.settings = new_settings
+        new_question.save()
 
 
 def _change_template(request: WSGIRequest, template: TemplatesPoll):
