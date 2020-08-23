@@ -12,9 +12,18 @@ from .start_create import build_questions, build_poll
 
 def save_template(request: WSGIRequest) -> JsonResponse:
     # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
-    template = _create_new_template(request)
-    _create_new_questions_or_change(request, template)
+    print(request.POST)
+    try:
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(poll_id)
+    except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+        template = _create_new_template(request)
+    #_create_new_questions_or_change(request, template)
     return JsonResponse({}, status=200)
+
+
+def _create_template_from_poll(request: WSGIRequest):
+    pass
 
 
 def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
@@ -31,11 +40,6 @@ def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
 
 def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> int:
     data = request.POST
-    try:
-        if data['category'] == 'preview':
-            return poll
-    except MultiValueDictKeyError:
-        pass
     try:
         count_questions = int(data['template[countQuestion]'])
     except ValueError:
