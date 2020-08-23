@@ -11,6 +11,7 @@ $(function () {
     let listKeys = [];
     let accessStep3 = false;
     let pollId;
+    let templateId;
 
     run();
 
@@ -300,6 +301,7 @@ $(function () {
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
+                templateId: templateId,
                 category: 'preview',
             }
         } else if (category === 'editor') {
@@ -308,6 +310,7 @@ $(function () {
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
+                templateId: templateId,
                 category: 'editor',
                 template: template,
             }
@@ -322,9 +325,10 @@ $(function () {
                 status.removeClass('status--loading status--error status--done')
                     .addClass('status--loading');
             },
-            success: function () {
-                // status.removeClass('status--loading status--error status--done')
-                //     .addClass('status--done');
+            success: function (response) {
+                if (!templateId) {
+                    templateId = response.templateId;
+                }
                 Snackbar.show({
                     text: 'Шаблон успешно создан',
                     showAction: true,
