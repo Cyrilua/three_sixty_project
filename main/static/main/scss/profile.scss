@@ -1,4 +1,4 @@
-.profile {
+.content {
   display: flex;
   z-index: 50;
 
@@ -593,6 +593,75 @@
           //    }
           //  }
           //}
+        }
+      }
+    }
+  }
+}
+
+.content {
+  .body__top {
+    position: sticky;
+    top: 56px;
+    z-index: 100;
+  }
+
+  .content__body {
+    display: flex;
+    flex-direction: column;
+
+    .notification {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      &.hide {
+        display: none;
+      }
+
+      &[data-type="poll"] {
+
+      }
+
+      &[data-type="result"] {
+
+      }
+
+      &[data-type="invite"] {
+
+      }
+
+      .notification__image {
+
+      }
+
+      .notification__info {
+        .notification__title {
+
+        }
+
+        .notification__more {
+          .notification__target {
+
+          }
+        }
+
+        .notification__about {
+
+        }
+
+        .notification__date {
+
+        }
+      }
+
+      .notification__actions {
+        .notification__close {
+
+        }
+
+        .notification__open {
+
         }
       }
     }
