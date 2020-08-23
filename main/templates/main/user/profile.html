@@ -155,210 +155,216 @@
                             <div class="sort rounded-block unselectable">
                                 <div class="category" data-category="polls">
                                     <div class="category__title">Для прохождения
+                                        <div class="category__notice{% if data.new.polls == 0 %} hide{% endif %}"
+                                             id="polls-notif">1{{ data.new.polls }}</div>
                                     </div>
                                 </div>
                                 <div class="category" data-category="results">
                                     <div class="category__title">Мои опросы
+                                        <div class="category__notice{% if data.new.results == 0 %} hide{% endif %}"
+                                             id="polls-notif">{{ data.new.polls }}</div>
                                     </div>
                                 </div>
                                 <div class="category" data-category="invites">
                                     <div class="category__title">Приглашения
+                                        <div class="category__notice{% if data.new.invites == 0 %} hide{% endif %}"
+                                             id="polls-notif">{{ data.new.polls }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="body__bottom">
+                    <div class="body__bottom unselectable">
                         {% include 'main/companies/notifications.html' %}
                     </div>
                 </div>
 
-{#                <div class="categories-block center-content-notifications hidden">#}
-{#                    <div class="notifications-sort-substrate substrate">#}
-{#                        <div class="sort rounded-block unselectable">#}
-{#                            <div class="category active-sort"#}
-{#                                 data-category=".center-content-notifications-polls">#}
-{#                                <div class="category__title">Для прохождения#}
-{#                                    <div class="category__notice hide"></div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="category"#}
-{#                                 data-category=".center-content-notifications-my_polls">#}
-{#                                <div class="category__title">Мои опросы#}
-{#                                    <div class="category__notice hide"></div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="category"#}
-{#                                 data-category=".center-content-notifications-invites">#}
-{#                                <div class="category__title">Приглашения#}
-{#                                    <div class="category__notice hide"></div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{##}
-{#                    <div class="categories center-content-notifications-categories">#}
-{#                        <div class="category-content center-content-notifications-polls">#}
-{#                            {% if notifications.polls %}#}
-{#                                {% for notif in notifications.polls %}#}
-{#                                    <div class="category-item center-content-notification rounded-block">#}
-{#                                        <div class="notification-image">#}
-{#                                            <img src="{% static 'main/images/newPoll.svg' %}" alt=""#}
-{#                                                 class="notification-image-img">#}
-{#                                        </div>#}
-{#                                        <div class="notification-information">#}
-{#                                            <div class="notification-information-title">{{ notif.title }}</div>#}
-{#                                            <div class="notification-information-more">#}
-{#                                                О ком: <a href="{{ notif.more.url }}"#}
-{#                                                          class="notification-information-more-link">{{ notif.more.name }}</a>#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-about">#}
-{#                                                {{ notif.about }}#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
-{#                                        </div>#}
-{#                                        <div class="notification-actions">#}
-{#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
-{#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
-{#                                                    <div class="notification-actions-menu-mark">#}
-{#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
-{#                                                             class="notification-actions-menu-mark-img">#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
-{#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
-{#                                                        <div class="notification-actions-menu-item"#}
-{#                                                             id="notification-actions-menu-item">#}
-{#                                                            Скрыть#}
-{#                                                        </div>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="notification-actions-move">#}
-{#                                                <button class="notification-actions-move-btn button-red button-href"#}
-{#                                                        {% if notif.complited %}disabled{% endif %}#}
-{#                                                        data-href="{{ notif.url }}">Пройти#}
-{#                                                </button>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                            {% else %}#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{##}
-{##}
-{#                        <div class="category-content center-content-notifications-my_polls">#}
-{#                            {% if notifications.my_polls %}#}
-{#                                {% for notif in notifications.my_polls %}#}
-{#                                    <div class="category-item center-content-notification rounded-block">#}
-{#                                        <div class="notification-image">#}
-{#                                            <img src="{% static 'main/images/pollDone.svg' %}" alt=""#}
-{#                                                 class="notification-image-img">#}
-{#                                        </div>#}
-{#                                        <div class="notification-information">#}
-{#                                            <div class="notification-information-title">{{ notif.title }}</div>#}
-{#                                            <div class="notification-information-more">#}
-{#                                                О ком: <a href="{{ notif.more.url }}"#}
-{#                                                          class="notification-information-more-link">{{ notif.more.name }}</a>#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-about">#}
-{#                                                {{ notif.about }}#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
-{#                                        </div>#}
-{#                                        <div class="notification-actions">#}
-{#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
-{#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
-{#                                                    <div class="notification-actions-menu-mark">#}
-{#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
-{#                                                             class="notification-actions-menu-mark-img">#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
-{#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
-{#                                                        <div class="notification-actions-menu-item"#}
-{#                                                             id="notification-actions-menu-item">#}
-{#                                                            Скрыть#}
-{#                                                        </div>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="notification-actions-move">#}
-{#                                                <button class="notification-actions-move-btn button-{% if not notif.complited %}red{% else %}white{% endif %} button-href"#}
-{#                                                        data-href="{{ notif.url }}">Смотреть#}
-{#                                                </button>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                            {% else %}#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{##}
-{##}
-{#                        <div class="category-content center-content-notifications-invites">#}
-{#                            {% if notifications.invites %}#}
-{#                                {% for notif in notifications.invites %}#}
-{#                                    <div class="category-item center-content-notification rounded-block">#}
-{#                                        <div class="notification-image">#}
-{#                                            <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""#}
-{#                                                 class="notification-image-img">#}
-{#                                        </div>#}
-{#                                        <div class="notification-information">#}
-{#                                            <div class="notification-information-title">#}
-{#                                                <a href="{{ notif.title.url }}"#}
-{#                                                   class="notification-information-title-link">#}
-{#                                                    {{ notif.title.name }}#}
-{#                                                </a>#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-more">#}
-{#                                                От кого: <a href="{{ notif.more.url }}"#}
-{#                                                            class="notification-information-more-link">{{ notif.more.name }}</a>#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-about">#}
-{#                                                {{ notif.about }}#}
-{#                                            </div>#}
-{#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
-{#                                        </div>#}
-{#                                        <div class="notification-actions">#}
-{#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
-{#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
-{#                                                    <div class="notification-actions-menu-mark">#}
-{#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
-{#                                                             class="notification-actions-menu-mark-img">#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
-{#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
-{#                                                        <div class="notification-actions-menu-item"#}
-{#                                                             id="notification-actions-menu-item">#}
-{#                                                            Скрыть#}
-{#                                                        </div>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="notification-actions-move">#}
-{#                                                <button class="notification-actions-move-btn button-red button-href"#}
-{#                                                        {% if notif.complited %}disabled{% endif %}#}
-{#                                                        data-href="{{ notif.url }}">Вступить#}
-{#                                                </button>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                {% endfor %}#}
-{#                            {% else %}#}
-{#                            {% endif %}#}
-{##}
-{#                        </div>#}
-{##}
-{#                        <div class="category-empty center-content-notifications-empty">#}
-{#                            {% include 'main/includes/bad_search.html' with text="Сейчас<br>уведомлений нет" only %}#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                </div>#}
+                {#                <div class="categories-block center-content-notifications hidden">#}
+                {#                    <div class="notifications-sort-substrate substrate">#}
+                {#                        <div class="sort rounded-block unselectable">#}
+                {#                            <div class="category active-sort"#}
+                {#                                 data-category=".center-content-notifications-polls">#}
+                {#                                <div class="category__title">Для прохождения#}
+                {#                                    <div class="category__notice hide"></div>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                            <div class="category"#}
+                {#                                 data-category=".center-content-notifications-my_polls">#}
+                {#                                <div class="category__title">Мои опросы#}
+                {#                                    <div class="category__notice hide"></div>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                            <div class="category"#}
+                {#                                 data-category=".center-content-notifications-invites">#}
+                {#                                <div class="category__title">Приглашения#}
+                {#                                    <div class="category__notice hide"></div>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {##}
+                {##}
+                {#                    <div class="categories center-content-notifications-categories">#}
+                {#                        <div class="category-content center-content-notifications-polls">#}
+                {#                            {% if notifications.polls %}#}
+                {#                                {% for notif in notifications.polls %}#}
+                {#                                    <div class="category-item center-content-notification rounded-block">#}
+                {#                                        <div class="notification-image">#}
+                {#                                            <img src="{% static 'main/images/newPoll.svg' %}" alt=""#}
+                {#                                                 class="notification-image-img">#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-information">#}
+                {#                                            <div class="notification-information-title">{{ notif.title }}</div>#}
+                {#                                            <div class="notification-information-more">#}
+                {#                                                О ком: <a href="{{ notif.more.url }}"#}
+                {#                                                          class="notification-information-more-link">{{ notif.more.name }}</a>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-about">#}
+                {#                                                {{ notif.about }}#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-actions">#}
+                {#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
+                {#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
+                {#                                                    <div class="notification-actions-menu-mark">#}
+                {#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
+                {#                                                             class="notification-actions-menu-mark-img">#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
+                {#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
+                {#                                                        <div class="notification-actions-menu-item"#}
+                {#                                                             id="notification-actions-menu-item">#}
+                {#                                                            Скрыть#}
+                {#                                                        </div>#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-actions-move">#}
+                {#                                                <button class="notification-actions-move-btn button-red button-href"#}
+                {#                                                        {% if notif.complited %}disabled{% endif %}#}
+                {#                                                        data-href="{{ notif.url }}">Пройти#}
+                {#                                                </button>#}
+                {#                                            </div>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                {% endfor %}#}
+                {#                            {% else %}#}
+                {#                            {% endif %}#}
+                {#                        </div>#}
+                {##}
+                {##}
+                {#                        <div class="category-content center-content-notifications-my_polls">#}
+                {#                            {% if notifications.my_polls %}#}
+                {#                                {% for notif in notifications.my_polls %}#}
+                {#                                    <div class="category-item center-content-notification rounded-block">#}
+                {#                                        <div class="notification-image">#}
+                {#                                            <img src="{% static 'main/images/pollDone.svg' %}" alt=""#}
+                {#                                                 class="notification-image-img">#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-information">#}
+                {#                                            <div class="notification-information-title">{{ notif.title }}</div>#}
+                {#                                            <div class="notification-information-more">#}
+                {#                                                О ком: <a href="{{ notif.more.url }}"#}
+                {#                                                          class="notification-information-more-link">{{ notif.more.name }}</a>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-about">#}
+                {#                                                {{ notif.about }}#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-actions">#}
+                {#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
+                {#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
+                {#                                                    <div class="notification-actions-menu-mark">#}
+                {#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
+                {#                                                             class="notification-actions-menu-mark-img">#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
+                {#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
+                {#                                                        <div class="notification-actions-menu-item"#}
+                {#                                                             id="notification-actions-menu-item">#}
+                {#                                                            Скрыть#}
+                {#                                                        </div>#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-actions-move">#}
+                {#                                                <button class="notification-actions-move-btn button-{% if not notif.complited %}red{% else %}white{% endif %} button-href"#}
+                {#                                                        data-href="{{ notif.url }}">Смотреть#}
+                {#                                                </button>#}
+                {#                                            </div>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                {% endfor %}#}
+                {#                            {% else %}#}
+                {#                            {% endif %}#}
+                {#                        </div>#}
+                {##}
+                {##}
+                {#                        <div class="category-content center-content-notifications-invites">#}
+                {#                            {% if notifications.invites %}#}
+                {#                                {% for notif in notifications.invites %}#}
+                {#                                    <div class="category-item center-content-notification rounded-block">#}
+                {#                                        <div class="notification-image">#}
+                {#                                            <img src="{% static 'main/images/inviteTeam.svg' %}" alt=""#}
+                {#                                                 class="notification-image-img">#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-information">#}
+                {#                                            <div class="notification-information-title">#}
+                {#                                                <a href="{{ notif.title.url }}"#}
+                {#                                                   class="notification-information-title-link">#}
+                {#                                                    {{ notif.title.name }}#}
+                {#                                                </a>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-more">#}
+                {#                                                От кого: <a href="{{ notif.more.url }}"#}
+                {#                                                            class="notification-information-more-link">{{ notif.more.name }}</a>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-about">#}
+                {#                                                {{ notif.about }}#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-information-date">{{ notif.date }}</div>#}
+                {#                                        </div>#}
+                {#                                        <div class="notification-actions">#}
+                {#                                            <div class="notification-actions-menu _hint-wait unselectable">#}
+                {#                                                <div class="notification-actions-menu-up _hint-up-wait">#}
+                {#                                                    <div class="notification-actions-menu-mark">#}
+                {#                                                        <img src="{% static 'main/images/markDown.svg' %}" alt=""#}
+                {#                                                             class="notification-actions-menu-mark-img">#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                                <div class="notification-actions-menu-down _hint-down-wait">#}
+                {#                                                    <div class="notification-actions-menu-items _hint-down-block">#}
+                {#                                                        <div class="notification-actions-menu-item"#}
+                {#                                                             id="notification-actions-menu-item">#}
+                {#                                                            Скрыть#}
+                {#                                                        </div>#}
+                {#                                                    </div>#}
+                {#                                                </div>#}
+                {#                                            </div>#}
+                {#                                            <div class="notification-actions-move">#}
+                {#                                                <button class="notification-actions-move-btn button-red button-href"#}
+                {#                                                        {% if notif.complited %}disabled{% endif %}#}
+                {#                                                        data-href="{{ notif.url }}">Вступить#}
+                {#                                                </button>#}
+                {#                                            </div>#}
+                {#                                        </div>#}
+                {#                                    </div>#}
+                {#                                {% endfor %}#}
+                {#                            {% else %}#}
+                {#                            {% endif %}#}
+                {##}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="category-empty center-content-notifications-empty">#}
+                {#                            {% include 'main/includes/bad_search.html' with text="Сейчас<br>уведомлений нет" only %}#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {##}
+                {#                </div>#}
             </div>
         </div>
     {% endif %}
@@ -374,7 +380,7 @@
     <script type="text/javascript" src={% static 'main/js/profile.min.js' %}></script>
     <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
     <script src="{% static 'main/js/libraries/hint.min.js' %}"></script>
-{#    <script src="{% static 'main/js/libraries/topMenu.min.js' %}"></script>#}
+    {#    <script src="{% static 'main/js/libraries/topMenu.min.js' %}"></script>#}
 {% endblock %}
 
 {% block css %}

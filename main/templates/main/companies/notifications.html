@@ -1,11 +1,69 @@
 {% load static %}
 
+{% for notif in notifications %}
+    <div class="notification rounded-block" data-type="{{ notif.type }}">
+        <div class="notification__image"></div>
+        <div class="notification__info">
+            <div class="notification__title">{{ notif.title }}</div>
+            <div class="notification__more">
+                <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
+            </div>
+            <div class="notification__about">
+                {{ notif.about }}
+            </div>
+            <div class="notification__date">{{ notif.date }}</div>
+        </div>
+        <div class="notification__actions">
+            {#        <div class="notification__close team__leave"></div>#}
+            <button class="button-red notification__open"></button>
+        </div>
+    </div>
+{% endfor %}
+
 <div class="notification rounded-block" data-type="poll">
-    <img src="{% static 'main/images/newPoll.svg' %}" class="notification__image" alt="">
+    <div class="notification__image"></div>
+    <div class="notification__info">
+        <div class="notification__title">123 ыва sd fsdf вы fsadf ываы ffdsf dsf dfsd fsdf{{ notif.title }}</div>
+        <div class="notification__more">
+            <a href="{{ notif.more.url }}" class="notification__target">123 ыва sd fsdf вы fsadf ываы ffdsf dsf dfsd
+                fsdf123 ыва sd fsdf вы fsadf ываы ffdsf dsf dfsd fsdf123 ыва sd fsdf вы fsadf ываы ffdsf dsf dfsd
+                fsdf{{ notif.more.name }}</a>
+        </div>
+        <div class="notification__about">
+            123{{ notif.about }}
+        </div>
+        <div class="notification__date">123{{ notif.date }}</div>
+    </div>
+    <div class="notification__actions">
+        {#        <div class="notification__close team__leave"></div>#}
+        <button class="button-red notification__open"></button>
+    </div>
+</div>
+
+<div class="notification rounded-block" data-type="result">
+    <div class="notification__image"></div>
     <div class="notification__info">
         <div class="notification__title">{{ notif.title }}</div>
         <div class="notification__more">
-            О ком: <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
+            <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
+        </div>
+        <div class="notification__about">
+            {{ notif.about }}
+        </div>
+        <div class="notification__date">{{ notif.date }}</div>
+    </div>
+    <div class="notification__actions">
+        {#        <div class="notification__close team__leave"></div>#}
+        <button class="button-red notification__open"></button>
+    </div>
+</div>
+
+<div class="notification rounded-block" data-type="invite">
+    <div class="notification__image"></div>
+    <div class="notification__info">
+        <div class="notification__title">{{ notif.title }}</div>
+        <div class="notification__more">
+            <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
         </div>
         <div class="notification__about">
             {{ notif.about }}
@@ -15,41 +73,5 @@
     <div class="notification__actions">
         <div class="notification__close team__leave"></div>
         <button class="button-red notification__open"></button>
-    </div>
-</div>
-
-<div class="notification rounded-block" data-type="result">
-    <img src="{% static 'main/images/newPoll.svg' %}" class="notification__image" alt="">
-    <div class="notification__info">
-        <div class="notification__title">{{ notif.title }}</div>
-        <div class="notification__more">
-            О ком: <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
-        </div>
-        <div class="notification__about">
-            {{ notif.about }}
-        </div>
-        <div class="notification__date">{{ notif.date }}</div>
-    </div>
-    <div class="notification__actions">
-        <div class="notification__close team__leave"></div>
-        <button class="button-red"></button>
-    </div>
-</div>
-
-<div class="notification rounded-block" data-type="invite">
-    <img src="{% static 'main/images/newPoll.svg' %}" class="notification__image" alt="">
-    <div class="notification__info">
-        <div class="notification__title">{{ notif.title }}</div>
-        <div class="notification__more">
-            О ком: <a href="{{ notif.more.url }}" class="notification__target">{{ notif.more.name }}</a>
-        </div>
-        <div class="notification__about">
-            {{ notif.about }}
-        </div>
-        <div class="notification__date">{{ notif.date }}</div>
-    </div>
-    <div class="notification__actions">
-        <div class="notification__close team__leave"></div>
-        <button class="button-red"></button>
     </div>
 </div>
