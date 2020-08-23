@@ -1,8 +1,8 @@
-.profile {
+.content {
   display: flex;
   z-index: 50;
 }
-.profile .left-content {
+.content .left-content {
   display: flex;
   flex-direction: column;
   width: 220px;
@@ -14,31 +14,31 @@
   padding-right: 20px;
   z-index: 50;
 }
-.profile .left-content .left-content-photo {
+.content .left-content .left-content-photo {
   width: 180px;
   height: 180px;
   object-fit: cover;
   margin-bottom: 30px;
 }
-.profile .left-content .left-content-new_poll {
+.content .left-content .left-content-new_poll {
   width: 100%;
   margin-bottom: 14px;
 }
-.profile .left-content .left-content-new_team {
+.content .left-content .left-content-new_team {
   width: 100%;
 }
-.profile .center-content {
+.content .center-content {
   width: 680px;
   height: auto;
   z-index: 50;
 }
-.profile .center-content .center-content-information {
+.content .center-content .center-content-information {
   padding-bottom: 0;
   padding-left: 0;
   padding-right: 0;
   margin-bottom: 10px;
 }
-.profile .center-content .center-content-information .center-content-information-name {
+.content .center-content .center-content-information .center-content-information-name {
   display: inline-block;
   font-weight: bold;
   font-size: 36px;
@@ -47,7 +47,7 @@
   margin-left: 30px;
   margin-right: 30px;
 }
-.profile .center-content .center-content-information .center-content-information-roles_n_company {
+.content .center-content .center-content-information .center-content-information-roles_n_company {
   position: relative;
   min-height: 9px;
   height: auto;
@@ -60,18 +60,18 @@
   margin-left: 30px;
   margin-right: 30px;
 }
-.profile .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-role {
+.content .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-role {
   margin-right: 5px;
 }
-.profile .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-role:last-of-type {
+.content .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-role:last-of-type {
   margin-right: auto;
 }
-.profile .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-company {
+.content .center-content .center-content-information .center-content-information-roles_n_company .center-content-information-company {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions {
   padding-bottom: 15px;
   display: flex;
   margin-left: 30px;
@@ -80,28 +80,28 @@
   border-top: 1px solid #E5E5E5;
   margin-top: 13px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions {
   width: 50%;
   border-right: 1px solid #E5E5E5;
   padding-right: 30px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-title {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 10px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 9px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position {
   margin-right: 5px;
   margin-bottom: 4px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position-empty {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-positions .center-content-information-positions-data .center-content-information-position-empty {
   padding-top: 6px;
   height: 22px;
   font-weight: normal;
@@ -110,27 +110,27 @@
   color: #C4C4C4;
   margin-bottom: 4px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms {
   width: 50%;
   padding-left: 30px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-title {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 10px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 9px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform {
   margin-right: 5px;
   margin-bottom: 4px;
 }
-.profile .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform-empty {
+.content .center-content .center-content-information .center-content-information-platforms_n_positions .center-content-information-platforms .center-content-information-platforms-data .center-content-information-platform-empty {
   padding-top: 6px;
   height: 22px;
   font-weight: normal;
@@ -139,7 +139,7 @@
   color: #C4C4C4;
   margin-bottom: 4px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,116 +148,116 @@
   border-top: 1px solid #E5E5E5;
   cursor: pointer;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn:hover {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-btn:hover {
   background-color: #F0F1F6;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more {
   height: 47px;
   border-bottom: 1px solid #E5E5E5;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more:hover {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-btn.active-more:hover {
   background-color: #F0F1F6;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-btn .center-content-information-more-btn-text {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-btn .center-content-information-more-btn-text {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
   color: #2269D5;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details {
   display: none;
   margin: 15px 30px 0;
   padding-bottom: 30px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main {
   display: flex;
   margin-bottom: 18px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname {
   width: 50%;
   border-right: 1px solid #E5E5E5;
   padding-bottom: 10px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname .center-content-information-more-details-main-birthday-title {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname .center-content-information-more-details-main-birthday-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 13px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname .center-content-information-more-details-main-fullname-text {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-fullname .center-content-information-more-details-main-fullname-text {
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday {
   width: 50%;
   padding-left: 30px;
   padding-bottom: 10px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday .center-content-information-more-details-main-birthday-title {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday .center-content-information-more-details-main-birthday-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 13px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday .center-content-information-more-details-main-birthday-text {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-main .center-content-information-more-details-main-birthday .center-content-information-more-details-main-birthday-text {
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email {
   margin-bottom: 29px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email .center-content-information-more-details-main-email-title {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email .center-content-information-more-details-main-email-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 13px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email .center-content-information-more-details-main-email-text {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-email .center-content-information-more-details-main-email-text {
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
   color: #2269D5;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-title {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-title {
   font-weight: bold;
   font-size: 18px;
   line-height: 21px;
   color: #595757;
   margin-bottom: 13px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block {
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block.teams-empty {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block.teams-empty {
   font-weight: normal;
   font-size: 18px;
   line-height: 21px;
   color: #C4C4C4;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link {
   display: inline-block;
 }
-.profile .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link:not(:last-child)::after {
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details .center-content-information-more-details-teams .center-content-information-more-details-main-teams-block .center-content-information-more-details-main-team-link:not(:last-child)::after {
   content: ",";
   color: black;
 }
-.profile .center-content .center-content-notifications {
+.content .center-content .center-content-notifications {
   margin-bottom: 0;
 }
-.profile .center-content .center-content-notifications > .substrate {
+.content .center-content .center-content-notifications > .substrate {
   position: sticky;
   top: 56px;
   background-color: white;
@@ -265,12 +265,12 @@
   border-bottom-right-radius: 5px;
   z-index: 200;
 }
-.profile .center-content .center-content-notifications > .substrate.shadow-category {
+.content .center-content .center-content-notifications > .substrate.shadow-category {
   -webkit-box-shadow: 0 15px 10px -12px #8a8a8a;
   -moz-box-shadow: 0 15px 10px -12px #8a8a8a;
   box-shadow: 0 15px 10px -12px #8a8a8a;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort {
+.content .center-content .center-content-notifications .center-content-notifications-sort {
   padding-bottom: 0;
   padding-top: 0;
   height: 60px;
@@ -278,7 +278,7 @@
   flex-direction: row;
   margin-bottom: 10px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category {
   width: 204px;
   display: flex;
   align-items: center;
@@ -286,26 +286,26 @@
   border-bottom: 5px solid #939393;
   cursor: pointer;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:not(:last-child) {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:not(:last-child) {
   margin-right: 4px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover > .center-content-notifications-sort-category-title {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover, .content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:hover > .center-content-notifications-sort-category-title {
   background: #F0F1F6;
   color: #595757;
   border-bottom-color: #595757;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active > .center-content-notifications-sort-category-title, .profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort > .center-content-notifications-sort-category-title {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active, .content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort, .content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category:active > .center-content-notifications-sort-category-title, .content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category.active-sort > .center-content-notifications-sort-category-title {
   color: #001AFF;
   border-bottom-color: #001AFF;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title {
   position: relative;
   font-weight: bold;
   font-size: 16px;
   line-height: 19px;
   color: #939393;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice {
   position: absolute;
   bottom: calc(100% - 3px);
   left: 100%;
@@ -322,64 +322,64 @@
   line-height: 14px;
   color: #FFFFFF;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice:before {
+.content .center-content .center-content-notifications .center-content-notifications-sort .center-content-notifications-sort-category .center-content-notifications-sort-category-title .center-content-notifications-sort-category-notice:before {
   content: "+";
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification {
   padding-bottom: 20px;
   padding-top: 20px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image {
   width: 45px;
   margin-right: 10px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image .notification-image-img,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image .notification-image-img,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image .notification-image-img {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-image .notification-image-img,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-image .notification-image-img,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-image .notification-image-img {
   width: 45px;
   height: 45px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information {
   width: 385px;
   padding-right: 49px;
   box-sizing: content-box;
   border-right: 1px solid #E5E5E5;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-title,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-title,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-title {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-title,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-title,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-title {
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
   color: #000000;
   margin-bottom: 5px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more {
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
   color: #595757;
   margin-bottom: 5px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more .notification-information-more-link {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-more .notification-information-more-link,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-more .notification-information-more-link {
   font-weight: normal;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-about,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-about,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-about {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-about,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-about,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-about {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
@@ -389,47 +389,47 @@
   text-overflow: ellipsis;
   margin-bottom: 5px;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-date,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-date,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-date {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-information .notification-information-date,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-information .notification-information-date,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-information .notification-information-date {
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
   color: #C4C4C4;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions {
   width: 130px;
   position: relative;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu {
   width: 20px;
   height: 8px;
   margin: 0 0 0 auto;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up:hover {
   filter: brightness(0.7);
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up.active-option {
   filter: brightness(0.7);
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark {
   width: 20px;
   height: 8px;
   position: relative;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-up .notification-actions-menu-mark .notification-actions-menu-mark-img {
   filter: brightness(0.85);
   width: 20px;
   height: 8px;
@@ -437,14 +437,14 @@
   top: 0;
   left: 0;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down {
   z-index: 200;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items {
   width: 100px;
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -455,9 +455,9 @@
   left: calc(100px / -2 + 50% - 10px);
   top: calc(100% + 9px);
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::before {
   content: "";
   position: absolute;
   top: -20px;
@@ -466,9 +466,9 @@
   border-bottom: 10px solid #cccccc;
   cursor: pointer;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items::after {
   content: "";
   position: absolute;
   top: -18px;
@@ -477,9 +477,9 @@
   border-bottom: 10px solid #ffffff;
   cursor: pointer;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item {
   width: 98px;
   height: 30px;
   display: flex;
@@ -492,23 +492,40 @@
   cursor: pointer;
   margin: 5px 0;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-menu .notification-actions-menu-down .notification-actions-menu-items .notification-actions-menu-item:hover {
   background-color: #F0F1F6;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move {
   position: absolute;
   bottom: 0;
   right: 0;
 }
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
-.profile .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-my_polls .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn,
+.content .center-content .center-content-notifications .center-content-notifications-categories .center-content-notifications-invites .center-content-notification .notification-actions .notification-actions-move .notification-actions-move-btn {
   width: 90px;
   z-index: 100;
+}
+.content .body__top {
+  position: sticky;
+  top: 56px;
+  z-index: 100;
+}
+.content .content__body {
+  display: flex;
+  flex-direction: column;
+}
+.content .content__body .notification {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.content .content__body .notification.hide {
+  display: none;
 }
 
 /*# sourceMappingURL=profile.css.map */
