@@ -396,6 +396,7 @@ $(function () {
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
+                templateId: templateId,
                 category: 'editor',
                 template: template,
             }
@@ -573,6 +574,7 @@ $(function () {
                 data = {
                     pollId: pollId,
                     csrfmiddlewaretoken: csrf,
+                    templateId: templateId,
                     template: template,
                 }
             }
@@ -1302,6 +1304,7 @@ $(function () {
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
+                templateId: templateId,
                 category: 'editor',
                 template: template,
             }
@@ -1394,6 +1397,7 @@ $(function () {
             data = {
                 csrfmiddlewaretoken: csrf,
                 pollId: pollId,
+                templateId: templateId,
                 category: 'editor',
                 template: template,
             }
