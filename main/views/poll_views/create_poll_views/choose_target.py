@@ -66,7 +66,7 @@ def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse
         return JsonResponse({}, status=400)
     profile = get_user_profile(request)
     company = profile.company
-    profiles = company.profile_set.all().exclude(pk=profile.pk)
+    profiles = company.profile_set.all()
     args = {'participants': _build_team_profiles_list(profiles, company, poll.target)}
     content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                      args).rendered_content
@@ -102,6 +102,10 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 
 def build_profile(profile) -> dict:
+    try:
+        photo = profile.profilephoto.photo
+    except ObjectDoesNotExist:
+        photo = None
     return {
         'href': '/{}/'.format(profile.pk),
         'id': profile.pk,
@@ -111,6 +115,7 @@ def build_profile(profile) -> dict:
         'roles': _get_roles(profile),
         'positions': [i.name for i in profile.positions.all()],
         'platforms': [i.name for i in profile.platforms.all()],
+        'photo': photo
     }
 
 

@@ -12,21 +12,36 @@ from .start_create import build_questions, build_poll
 
 def save_template(request: WSGIRequest) -> JsonResponse:
     # todo за одно создание опроса - один шаблон (изменять уже сохраненный на этапе создания шаблон)
-    template = _create_new_template(request)
-    _create_new_questions_or_change(request, template)
-    return JsonResponse({}, status=200)
+    poll = None
+    try:
+        poll_id = int(request.POST['pollId'])
+        poll = Poll.objects.get(id=poll_id)
+    except (ObjectDoesNotExist, ValueError, MultiValueDictKeyError):
+        try:
+            template_id = int(request.POST['templateId'])
+            template = TemplatesPoll.objects.get(id=template_id)
+        except (ValueError, ObjectDoesNotExist, MultiValueDictKeyError):
+            template = TemplatesPoll()
+    else:
+        template = poll.new_template
+        if template is None:
+            template = TemplatesPoll()
+    _change_template(request, template)
+    version = _create_new_questions_or_change(request, template)
+    template.questions.all().exclude(version=version).delete()
+    if poll is not None:
+        poll.new_template = template
+    return JsonResponse({'templateId': template.pk}, status=200)
 
 
-def _create_new_template(request: WSGIRequest) -> TemplatesPoll:
+def _change_template(request: WSGIRequest, template: TemplatesPoll):
     data = request.POST
     data_key = 'template[{}]'
-    new_template = TemplatesPoll()
-    new_template.name_poll = data[data_key.format('name')]
-    new_template.description = data[data_key.format('description')]
-    new_template.owner = get_user_profile(request)
-    new_template.color = None if data[data_key.format('color')] == '' else data[data_key.format('color')]
-    new_template.save()
-    return new_template
+    template.name_poll = data[data_key.format('name')]
+    template.description = data[data_key.format('description')]
+    template.owner = get_user_profile(request)
+    template.color = None if data[data_key.format('color')] == '' else data[data_key.format('color')]
+    template.save()
 
 
 def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, Poll)) -> int:
@@ -96,14 +111,22 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
 
 def save_information(request: WSGIRequest) -> Poll:
     try:
+        category = request.POST['category']
+    except MultiValueDictKeyError:
+        return None
+    try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
-        poll = _create_or_change_poll(request, poll)
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
-        poll = _create_or_change_poll(request, Poll())
-    version = _create_new_questions_or_change(request, poll)
-    poll.questions.all().exclude(version=version).delete()
-    return poll
+        poll = Poll()
+    if category == "editor":
+        poll = _create_or_change_poll(request, poll)
+        version = _create_new_questions_or_change(request, poll)
+        poll.questions.all().exclude(version=version).delete()
+        return poll
+    elif category == "preview":
+        return poll
+    return None
 
 
 def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
@@ -139,6 +162,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
 
 
 def poll_preview(request: WSGIRequest) -> JsonResponse:
+    print(request.POST)
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
