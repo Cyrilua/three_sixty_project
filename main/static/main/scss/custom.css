@@ -991,6 +991,8 @@ button {
 .snackbar-container.custom.center {
   margin-left: auto;
   margin-right: auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .snackbar-container.custom p {
   font-style: normal !important;

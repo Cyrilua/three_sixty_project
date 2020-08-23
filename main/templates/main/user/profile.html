@@ -12,6 +12,7 @@
 
     {% if profile %}
         <div class="content">
+            {% csrf_token %}
             <div class="left-content rounded-block">
                 {% if photo and photo.url != '' %}
                     <img src="{{ photo.url }}" alt="" class="left-content-photo">
@@ -162,20 +163,30 @@
                                 <div class="category" data-category="results">
                                     <div class="category__title">Мои опросы
                                         <div class="category__notice{% if data.new.results == 0 %} hide{% endif %}"
-                                             id="polls-notif">{{ data.new.polls }}</div>
+                                             id="results-notif">{{ data.new.polls }}</div>
                                     </div>
                                 </div>
                                 <div class="category" data-category="invites">
                                     <div class="category__title">Приглашения
                                         <div class="category__notice{% if data.new.invites == 0 %} hide{% endif %}"
-                                             id="polls-notif">{{ data.new.polls }}</div>
+                                             id="invites-notif">{{ data.new.polls }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="body__bottom unselectable">
-                        {% include 'main/companies/notifications.html' %}
+                        <div class="show-new-poll rounded-block hide">
+                            <div class="label">
+                                <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
+                                <span class="text">Показать новые опросы</span>
+                                <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
+                            </div>
+                        </div>
+
+                        <div class="notifications">
+                            {% include 'main/companies/notifications.html' %}
+                        </div>
                     </div>
                 </div>
 
@@ -377,7 +388,7 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src={% static 'main/js/profile.min.js' %}></script>
+    <script type="text/javascript" src={% static 'main/js/profile.js' %}></script>
     <script src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
     <script src="{% static 'main/js/libraries/hint.min.js' %}"></script>
     {#    <script src="{% static 'main/js/libraries/topMenu.min.js' %}"></script>#}

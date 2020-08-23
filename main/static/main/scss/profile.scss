@@ -611,164 +611,210 @@
     flex-direction: column;
     margin-bottom: 20vh;
 
-    .notification {
+    .show-new-poll {
+      width: 100%;
+      height: 40px;
       display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 20px 30px;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 10px;
+      padding: 0;
+      cursor: pointer;
 
       &.hide {
         display: none;
       }
 
-      &[data-type="poll"] {
-        .notification__image {
-          background-image: url('../images/newPoll.svg');
-        }
-
-        .notification__more {
-          &::before {
-            content: 'О ком: ';
-          }
-        }
-
-        .notification__actions {
-          .notification__open {
-            width: 80px;
-
-            &::before {
-              content: 'Пройти';
-            }
+      &:hover {
+        .label {
+          .up {
+            //transform: translateY(-10px);
+            //animation: .5s linear infinite up;
           }
         }
       }
 
-      &[data-type="result"] {
-        .notification__image {
-          background-image: url('../images/pollDone.svg');
-        }
-
-        .notification__more {
-          &::before {
-            content: 'О ком: ';
-          }
-        }
-
-        .notification__actions {
-          .notification__open {
-            width: 90px;
-
-            &::before {
-              content: 'Смотреть';
-            }
-          }
-        }
-      }
-
-      &[data-type="invite"] {
-        .notification__image {
-          background-image: url('../images/inviteTeam.svg');
-          background-size: cover;
-        }
-
-        .notification__more {
-          &::before {
-            content: 'От кого: ';
-          }
-        }
-
-        .notification__actions {
-          .notification__open {
-            width: 90px;
-
-            &::before {
-              content: 'Вступить';
-            }
-          }
-        }
-      }
-
-      .notification__image {
-        height: 45px;
-        width: 45px;
-      }
-
-      .notification__info {
+      .label {
         display: flex;
-        flex-direction: column;
-        width: 435px;
-        margin-left: 10px;
-        margin-right: auto;
-        border-right: 1px solid #E5E5E5;
-        padding-right: 50px;
+        justify-content: center;
+        align-items: center;
 
-        .notification__title {
-          min-height: 28px;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 24px;
-          line-height: 28px;
-          color: #000000;
-        }
-
-        .notification__more {
-          min-height: 16px;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 14px;
-          line-height: 16px;
-          color: #595757;
-          margin-top: 5px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-
-          .notification__target {
-            font-weight: normal;
-          }
-        }
-
-        .notification__about {
-          min-height: 16px;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
-          line-height: 16px;
-          color: #595757;
-          margin-top: 5px;
-        }
-
-        .notification__date {
-          min-height: 16px;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
-          line-height: 16px;
-          color: #C4C4C4;
-          margin-top: 5px;
+        .up {
+          //transform: translateY(0);
+          //transition: all 100ms linear;
         }
       }
+    }
 
-      .notification__actions {
+    .notifications {
+      .notification {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: space-between;
+        padding: 20px 30px;
+        margin-bottom: 10px;
 
-        .notification__close {
-          background-image: url('../images/icon/clear-24px.svg');
-          margin-left: auto;
-          margin-right: 0;
-          margin-bottom: 15px;
+        &.is_unshown {
+          display: none;
+        }
 
-          &::before {
-            content: 'Скрыть';
+        &[data-type="poll"] {
+          .notification__image {
+            background-image: url('../images/newPoll.svg');
+          }
+
+          .notification__more {
+            &::before {
+              content: 'О ком: ';
+            }
+          }
+
+          .notification__actions {
+            .notification__open {
+              width: 80px;
+
+              &::before {
+                content: 'Пройти';
+              }
+            }
           }
         }
 
-        .notification__open {
-          margin-top: auto;
-          margin-bottom: 0;
+        &[data-type="result"] {
+          .notification__image {
+            background-image: url('../images/pollDone.svg');
+          }
+
+          .notification__more {
+            &::before {
+              content: 'О ком: ';
+            }
+          }
+
+          .notification__actions {
+            .notification__open {
+              width: 90px;
+
+              &::before {
+                content: 'Смотреть';
+              }
+            }
+          }
+        }
+
+        &[data-type="invite"] {
+          .notification__image {
+            background-image: url('../images/inviteTeam.svg');
+            background-size: cover;
+          }
+
+          .notification__more {
+            &::before {
+              content: 'От кого: ';
+            }
+          }
+
+          .notification__actions {
+            .notification__open {
+              width: 90px;
+
+              &::before {
+                content: 'Вступить';
+              }
+            }
+          }
+        }
+
+        .notification__image {
+          height: 45px;
+          width: 45px;
+        }
+
+        .notification__info {
+          display: flex;
+          flex-direction: column;
+          width: 435px;
+          margin-left: 10px;
+          margin-right: auto;
+          border-right: 1px solid #E5E5E5;
+          padding-right: 50px;
+
+          .notification__title {
+            min-height: 28px;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 28px;
+            color: #000000;
+          }
+
+          .notification__more {
+            min-height: 16px;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 16px;
+            color: #595757;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            .notification__target {
+              font-weight: normal;
+            }
+          }
+
+          .notification__about {
+            min-height: 16px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+            color: #595757;
+            margin-top: 5px;
+          }
+
+          .notification__date {
+            min-height: 16px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+            color: #C4C4C4;
+            margin-top: 5px;
+          }
+        }
+
+        .notification__actions {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .notification__close {
+            background-image: url('../images/icon/clear-24px.svg');
+            margin-left: auto;
+            margin-right: 0;
+            margin-bottom: 15px;
+
+            &::before {
+              content: 'Скрыть';
+            }
+          }
+
+          .notification__open {
+            display: flex;
+            margin-top: auto;
+            margin-bottom: 0;
+            text-decoration: none;
+
+            &:active {
+              color: #fafafa;
+            }
+            &::before {
+              margin: auto;
+            }
+          }
         }
       }
     }

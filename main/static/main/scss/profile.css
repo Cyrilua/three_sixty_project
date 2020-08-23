@@ -266,58 +266,76 @@
   flex-direction: column;
   margin-bottom: 20vh;
 }
-.content .content__body .notification {
+.content .content__body .show-new-poll {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0;
+  cursor: pointer;
+}
+.content .content__body .show-new-poll.hide {
+  display: none;
+}
+.content .content__body .show-new-poll .label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content .content__body .notifications .notification {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 20px 30px;
   margin-bottom: 10px;
 }
-.content .content__body .notification.hide {
+.content .content__body .notifications .notification.is_unshown {
   display: none;
 }
-.content .content__body .notification[data-type=poll] .notification__image {
+.content .content__body .notifications .notification[data-type=poll] .notification__image {
   background-image: url("../images/newPoll.svg");
 }
-.content .content__body .notification[data-type=poll] .notification__more::before {
+.content .content__body .notifications .notification[data-type=poll] .notification__more::before {
   content: "О ком: ";
 }
-.content .content__body .notification[data-type=poll] .notification__actions .notification__open {
+.content .content__body .notifications .notification[data-type=poll] .notification__actions .notification__open {
   width: 80px;
 }
-.content .content__body .notification[data-type=poll] .notification__actions .notification__open::before {
+.content .content__body .notifications .notification[data-type=poll] .notification__actions .notification__open::before {
   content: "Пройти";
 }
-.content .content__body .notification[data-type=result] .notification__image {
+.content .content__body .notifications .notification[data-type=result] .notification__image {
   background-image: url("../images/pollDone.svg");
 }
-.content .content__body .notification[data-type=result] .notification__more::before {
+.content .content__body .notifications .notification[data-type=result] .notification__more::before {
   content: "О ком: ";
 }
-.content .content__body .notification[data-type=result] .notification__actions .notification__open {
+.content .content__body .notifications .notification[data-type=result] .notification__actions .notification__open {
   width: 90px;
 }
-.content .content__body .notification[data-type=result] .notification__actions .notification__open::before {
+.content .content__body .notifications .notification[data-type=result] .notification__actions .notification__open::before {
   content: "Смотреть";
 }
-.content .content__body .notification[data-type=invite] .notification__image {
+.content .content__body .notifications .notification[data-type=invite] .notification__image {
   background-image: url("../images/inviteTeam.svg");
   background-size: cover;
 }
-.content .content__body .notification[data-type=invite] .notification__more::before {
+.content .content__body .notifications .notification[data-type=invite] .notification__more::before {
   content: "От кого: ";
 }
-.content .content__body .notification[data-type=invite] .notification__actions .notification__open {
+.content .content__body .notifications .notification[data-type=invite] .notification__actions .notification__open {
   width: 90px;
 }
-.content .content__body .notification[data-type=invite] .notification__actions .notification__open::before {
+.content .content__body .notifications .notification[data-type=invite] .notification__actions .notification__open::before {
   content: "Вступить";
 }
-.content .content__body .notification .notification__image {
+.content .content__body .notifications .notification .notification__image {
   height: 45px;
   width: 45px;
 }
-.content .content__body .notification .notification__info {
+.content .content__body .notifications .notification .notification__info {
   display: flex;
   flex-direction: column;
   width: 435px;
@@ -326,7 +344,7 @@
   border-right: 1px solid #E5E5E5;
   padding-right: 50px;
 }
-.content .content__body .notification .notification__info .notification__title {
+.content .content__body .notifications .notification .notification__info .notification__title {
   min-height: 28px;
   font-style: normal;
   font-weight: bold;
@@ -334,7 +352,7 @@
   line-height: 28px;
   color: #000000;
 }
-.content .content__body .notification .notification__info .notification__more {
+.content .content__body .notifications .notification .notification__info .notification__more {
   min-height: 16px;
   font-style: normal;
   font-weight: bold;
@@ -346,10 +364,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.content .content__body .notification .notification__info .notification__more .notification__target {
+.content .content__body .notifications .notification .notification__info .notification__more .notification__target {
   font-weight: normal;
 }
-.content .content__body .notification .notification__info .notification__about {
+.content .content__body .notifications .notification .notification__info .notification__about {
   min-height: 16px;
   font-style: normal;
   font-weight: normal;
@@ -358,7 +376,7 @@
   color: #595757;
   margin-top: 5px;
 }
-.content .content__body .notification .notification__info .notification__date {
+.content .content__body .notifications .notification .notification__info .notification__date {
   min-height: 16px;
   font-style: normal;
   font-weight: normal;
@@ -367,23 +385,31 @@
   color: #C4C4C4;
   margin-top: 5px;
 }
-.content .content__body .notification .notification__actions {
+.content .content__body .notifications .notification .notification__actions {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.content .content__body .notification .notification__actions .notification__close {
+.content .content__body .notifications .notification .notification__actions .notification__close {
   background-image: url("../images/icon/clear-24px.svg");
   margin-left: auto;
   margin-right: 0;
   margin-bottom: 15px;
 }
-.content .content__body .notification .notification__actions .notification__close::before {
+.content .content__body .notifications .notification .notification__actions .notification__close::before {
   content: "Скрыть";
 }
-.content .content__body .notification .notification__actions .notification__open {
+.content .content__body .notifications .notification .notification__actions .notification__open {
+  display: flex;
   margin-top: auto;
   margin-bottom: 0;
+  text-decoration: none;
+}
+.content .content__body .notifications .notification .notification__actions .notification__open:active {
+  color: #fafafa;
+}
+.content .content__body .notifications .notification .notification__actions .notification__open::before {
+  margin: auto;
 }
 
 /*# sourceMappingURL=profile.css.map */
