@@ -8,7 +8,7 @@ from .views import profile_views, user_views, teams_views, company_views, poll_v
 from .views.poll_views import create_poll, polls_view, result_poll, create_poll_from_template, compiling_poll
 from .views.profile_views import render_profile, edit_profile
 from main import urls_loadable
-from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls
+from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls, company_url, teams_url
 
 app_name = "main"
 urlpatterns = [
@@ -55,6 +55,7 @@ urlpatterns = [
                   # Редактирование профиля
                   path('edit/', include(edit_profile_urls), name='edit'),
 
+############################ Rework #################### (start)
                   # Промотр конкретной команды
                   path('team/<int:group_id>/', teams_views.team_user_view, name='team_view'),
                   # Создание команды
@@ -68,20 +69,9 @@ urlpatterns = [
                   # Отправить уведомление о приглашении
                   path('<int:profile_id>/invite/<int:team_id>/', teams_views.send_notification_profile),
 
-                  # Список всх команд
-                  path('teams/', teams_views.teams_view, name='teams_view'),
-                  # Настройки команды
-                  path('team/<int:team_id>/setting', teams_views.team_setting, name='team_setting'),
-                  # Приглашение новых участников через команду
-                  path('team/<int:team_id>/invites', teams_views.team_new_invites, name='team_new_invites'),
 
                   # Создание компании (для ясности стоит изменить url)
                   path('add_company/', company_views.create_company, name='add_company'),
-                  # Просмотр компании (список должностей и платформ, название компании,
-                  #     ее владелец и ключ для присоединения)
-                  path('company/<int:id_company>/', company_views.company_view, name='company_view'),
-                  # Настроки команды
-                  path('company/<int:id_company>/setting/', company_views.company_setting, name='company_setting'),
                   # Присоединение к компании (по ключу)
                   path('connect_to_company/', company_views.connect_to_company_to_key, name='connect_to_company'),
                   # Присоеддинение к компании (по ссылке)
@@ -106,12 +96,16 @@ urlpatterns = [
                   # Сохраняет конкретную платформу для пользователя
                   path('choose_platform/', company_views.choose_platform,
                        name="platform_choice"),
+############################ Rework #################### (end)
 
-                  ########## New poll ######################
                   # Страница просмотра опросов и шаблонов
                   path('polls/', include(polls_view_urls), name='new_poll_view'),
-                  # Создание нового опроса через шаблон
+                  # Создание нового
                   path('poll/', include(poll_urls), name='poll'),
+                  # Страница компании
+                  path('company/', include(company_url), name='company_view'),
+                  # Страница команд
+                  path('teams/', include(teams_url), name='teams_view'),
 
                   ############ Only for debug ###############
                   path('test/', test.test)

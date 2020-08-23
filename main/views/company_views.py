@@ -307,13 +307,20 @@ def company_view(request, id_company):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.method == "GET":
-        company = Company.objects.filter(pk=id_company).first()
+        company: Company = Company.objects.filter(pk=id_company).first()
         if company is None:
             # todo throw exception
             pass
+        profile = get_user_profile(request)
         args = {
             'users': _build_profiles(company),
+            'profile': {
+                'is_boss': company.owner == profile,
+                'is_master': SurveyWizard.objects.filter(profile=profile).exists()
+            },
             'company': {
+                'name': company.name,
+                'description': company.description,
                 'positions': PositionCompany.objects.filter(company=company),
                 'platforms': PlatformCompany.objects.filter(company=company),
                 'countParticipants': company.profile_set.all().count(),
