@@ -120,11 +120,9 @@ def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
         teams = company.group_set.all()
     else:
         teams = profile.groups.all()
-    ###############################################################
     args = {
         'teams': _build_team_list(teams, NeedPassPoll.objects.filter(poll=poll), profile)
     }
-    print(args)
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                      args).rendered_content
     return JsonResponse({'content': content}, status=200)

@@ -102,6 +102,10 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 
 def build_profile(profile) -> dict:
+    try:
+        photo = profile.profilephoto.photo
+    except ObjectDoesNotExist:
+        photo = None
     return {
         'href': '/{}/'.format(profile.pk),
         'id': profile.pk,
@@ -111,6 +115,7 @@ def build_profile(profile) -> dict:
         'roles': _get_roles(profile),
         'positions': [i.name for i in profile.positions.all()],
         'platforms': [i.name for i in profile.platforms.all()],
+        'photo': photo
     }
 
 
