@@ -103,7 +103,7 @@ urlpatterns = [
                   # Создание нового
                   path('poll/', include(poll_urls), name='poll'),
                   # Страница компании
-                  path('company/', include(company_url), name='company_view'),
+                  path('company/<int:id_company>/', include(company_url), name='company_view'),
                   # Страница команд
                   path('teams/', include(teams_url), name='teams_view'),
 

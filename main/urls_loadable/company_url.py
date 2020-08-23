@@ -4,7 +4,13 @@ from ..views import company_views
 
 urlpatterns = [
     # Просмотр компании
-    path('<int:id_company>/', company_views.company_view, name='company_view'),
+    path('', company_views.company_view, name='company_view'),
     # Настроки команды
-    path('<int:id_company>/setting/', company_views.company_setting, name='company_setting'),
+    path('setting/', company_views.company_setting, name='company_setting'),
+    # Добавить позицию
+    path('setting/position/add/', company_views.add_position),
+    # Загрузка команд
+    path('load/', company_views.load_teams_and_users),
+    # Удаление команды
+    path('team/<int:team_id>/remove/', company_views.remove_team)
 ]

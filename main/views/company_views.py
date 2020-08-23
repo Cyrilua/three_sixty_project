@@ -6,6 +6,9 @@ from main.models import Company, PlatformCompany, PositionCompany, PositionCompa
     SurveyWizard, Moderator, Group
 from main.views.auxiliary_general_methods import *
 from django.core.handlers.wsgi import WSGIRequest
+from django.http import JsonResponse
+from django.template.response import SimpleTemplateResponse
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 def add_new_platform(request):
@@ -302,7 +305,7 @@ def choose_platform(request):
 
 ######## new company view ##########
 
-def company_view(request, id_company):
+def company_view(request: WSGIRequest, id_company: int):
     # todo
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -313,7 +316,7 @@ def company_view(request, id_company):
             pass
         profile = get_user_profile(request)
         args = {
-            'users': _build_profiles(company),
+            #'users': _build_profiles(company),
             'profile': {
                 'is_boss': company.owner == profile,
                 'is_master': SurveyWizard.objects.filter(profile=profile).exists()
@@ -330,25 +333,32 @@ def company_view(request, id_company):
         return render(request, 'main/companies/company_view.html', args)
 
 
-def company_setting(request, id_company):
-    # todo
-    if auth.get_user(request).is_anonymous:
-        return redirect('/')
-    if request.method == "GET":
-        company = Company.objects.filter(pk=id_company).first()
+def load_teams_and_users(request: WSGIRequest, id_company: int) -> JsonResponse:
+    if request.is_ajax():
+        try:
+            category = request.GET['category']
+        except MultiValueDictKeyError:
+            return JsonResponse({}, status=404)
+        company: Company = Company.objects.filter(pk=id_company).first()
         if company is None:
-            # todo throw exception
-            pass
-        args = {
-            # 'users': _build_profiles(company),
-            'company': {
-                'positions': PositionCompany.objects.filter(company=company),
-                'platforms': PlatformCompany.objects.filter(company=company),
-                'countParticipants': company.profile_set.all().count(),
-                'countTeams': Group.objects.filter(company=company).count()
-            }
+            return JsonResponse({}, status=404)
+        if category == 'users':
+            content = _load_users(company, get_user_profile(request))
+        elif category == 'teams':
+            content = _load_teams(company, get_user_profile(request))
+        return JsonResponse({'content': content}, status=200)
+
+
+def _load_users(company: Company, profile: Profile):
+    collected_profiles = _build_profiles(company)
+    args = {
+        'users': collected_profiles,
+        'profile': {
+            'is_boss': company.owner == profile,
+            'is_moderator': Moderator.objects.filter(profile=profile).exists()
         }
-        return render(request, 'main/companies/company_setting.html', args)
+    }
+    return SimpleTemplateResponse('main/companies/users.html', args).rendered_content
 
 
 def _build_profiles(company: Company):
@@ -378,6 +388,78 @@ def _build_profiles(company: Company):
     return result
 
 
+def _load_teams(company: Company, profile: Profile):
+    teams = Group.objects.filter(company=company)
+    collected_teams = []
+    for team in teams:
+        team: Group
+        collected_teams.append({
+            'id': team.pk,
+            'href': '',  # todo
+            'name': team.name,
+            'quantity': team.profile_set.all().count(),
+            'description': team.description,
+        })
+    args = {
+        'teams': collected_teams,
+        'profile': {
+            'is_boss': company.owner == profile,
+            'is_moderator': Moderator.objects.filter(profile=profile).exists()
+        }
+    }
+    return SimpleTemplateResponse('main/companies/teams.html', args).rendered_content
+
+
+def remove_team(request: WSGIRequest, team_id: int):
+    if request.is_ajax():
+        profile = get_user_profile(request)
+        team = Group.objects.filter(id=team_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        team.delete()
+        return JsonResponse({}, status=200)
+
+
+def _profile_is_owner_or_moderator(profile: Profile):
+    company = profile.company
+    is_owner = False
+    if company is not None:
+        is_owner = company.owner == profile
+    return Moderator.objects.filter(profile=profile).exists() or is_owner
+
+
+def company_setting(request: WSGIRequest, id_company: int):
+    # todo
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    if request.method == "GET":
+        profile = get_user_profile(request)
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        args = {
+            'company': {
+                'name': company.name,
+                'description': company.description,
+                'hrefForInvite': '',  # todo
+                'positions': PositionCompany.objects.filter(company=company),
+                'platforms': PlatformCompany.objects.filter(company=company),
+                'countParticipants': company.profile_set.all().count(),
+                'countTeams': Group.objects.filter(company=company).count()
+            },
+            'profile': {
+                'is_boss': company.owner == profile,
+                'is_moderator': Moderator.objects.filter(profile=profile).exists()
+            }
+        }
+        return render(request, 'main/companies/company_setting.html', args)
+
+
+
+
+
 def _get_roles(profile: Profile) -> list:
     roles = []
     if profile.company.owner.pk == profile.pk:
@@ -396,4 +478,8 @@ def _get_new_roles(profile: Profile) -> list:
     if not Moderator.objects.filter(profile=profile).exists():
         roles.append('moderator')
     return roles
+
+
+def add_position(request):
+    pass
 
