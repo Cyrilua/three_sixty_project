@@ -1543,6 +1543,13 @@ $(function () {
         }
     });
 
+    body.on('click', '.participant', function (event) {
+        if ($(event.target).hasClass('participant') || $(event.target).hasClass('participant__photo') ||
+            $(event.target).hasClass('name') || $(event.target).hasClass('positions-n-platforms') ||
+            $(event.target).hasClass('info'))
+            $(this).children('.radio, .checkbox').children('.mdc-radio, .mdc-checkbox').children('input').trigger('click');
+    });
+
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {
