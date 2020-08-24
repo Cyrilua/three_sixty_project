@@ -5,6 +5,7 @@ from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import loader, Context
+from django.http import JsonResponse
 
 
 def test(request: WSGIRequest):

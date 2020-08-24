@@ -132,6 +132,8 @@ def _get_roles(profile: Profile) -> list:
 
 
 def search(request: WSGIRequest) -> JsonResponse:
+    # todo включить в поиск сортировку по должностям/платформам.
+    #  искать по цепочке символов начиная с начала имени/фамилии
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
