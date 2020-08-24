@@ -99,7 +99,7 @@ $(function () {
         let platformName = platform.children('.item__text').text();
         let id;
         $.ajax({
-            url: `position/${platformId}/remove/`,
+            url: `platform/${platformId}/remove/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
