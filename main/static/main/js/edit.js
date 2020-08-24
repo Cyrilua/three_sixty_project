@@ -610,34 +610,8 @@ $(function () {
                 name: name, // На всякий случай
             },
             success: function (response) {
-                let newEl = document.createElement('div');
-                newEl.classList.add(type);
-                $(newEl).attr({
-                    'data-name': name,
-                    'data-id': id,
-                });
-                let role = document.createElement('div');
-                role.classList.add('role');
-                role.innerText = name;
-                let remove = document.createElement('div');
-                let removeClassList = remove.classList;
-                removeClassList.add(`${type}__remove`);
-                removeClassList.add('remove-item');
-                let cross = document.createElement('div');
-                cross.classList.add('cross-in-circle');
-                let circle = document.createElement('div');
-                circle.classList.add('circle');
-                let line1 = document.createElement('div');
-                line1.classList.add('line-1');
-                let line2 = document.createElement('div');
-                line2.classList.add('line-2');
-                newEl.prepend(role);
-                role.prepend(remove);
-                remove.prepend(cross);
-                cross.prepend(circle);
-                circle.prepend(line1);
-                line1.prepend(line2);
-                $(typeSubstrate).before(newEl);
+                $(typeSubstrate).before(getNewRoundedStrip(type, name, id));
+                $(typeSubstrate).parent().children('.empty').addClass('hide');
                 $(el.target).parent().remove();
                 if ((type === 'platform' && menuPlatform.children('.menu__item').length < 1) || (type === 'position' && menuPosition.children('.menu__item').length < 1)) {
                     $(typeSubstrate).addClass('hide');
@@ -647,6 +621,45 @@ $(function () {
             }
         });
     });
+
+    /**
+     * Получить новый элемент для должности или отдела
+     *
+     * @param {string} type
+     * @param {string} name
+     * @param {string, int} id
+     * @returns {HTMLDivElement}
+     */
+    function getNewRoundedStrip(type, name, id) {
+        let newEl = document.createElement('div');
+        newEl.classList.add(type);
+        $(newEl).attr({
+            'data-name': name,
+            'data-id': id,
+        });
+        let role = document.createElement('div');
+        role.classList.add('role');
+        role.innerText = name;
+        let remove = document.createElement('div');
+        let removeClassList = remove.classList;
+        removeClassList.add(`${type}__remove`);
+        removeClassList.add('remove-item');
+        let cross = document.createElement('div');
+        cross.classList.add('cross-in-circle');
+        let circle = document.createElement('div');
+        circle.classList.add('circle');
+        let line1 = document.createElement('div');
+        line1.classList.add('line-1');
+        let line2 = document.createElement('div');
+        line2.classList.add('line-2');
+        newEl.prepend(role);
+        role.prepend(remove);
+        remove.prepend(cross);
+        cross.prepend(circle);
+        circle.prepend(line1);
+        line1.prepend(line2);
+        return newEl;
+    }
 
     // Удаление должностей и отделов
     body.on('click', '.remove-item', function () {
@@ -696,6 +709,9 @@ $(function () {
                     menuPosition.prepend(newItem);
                 } else {
                     throw new Error('Unexpected values');
+                }
+                if (el.parent().children('.platform, .position').length === 1) {
+                    el.parent().children('.empty').removeClass('hide');
                 }
                 el.remove();
             },
