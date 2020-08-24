@@ -78,11 +78,10 @@ $(function () {
                     });
                     Snackbar.show({
                         text: `${teammateName} был удален из команды`,
-                        customClass: 'custom no-animation center',
+                    customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
                             ajaxRequests[id].finish = true;
@@ -119,7 +118,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -155,11 +154,11 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: 'Вы покинули команду',
-                        customClass: 'custom no-animation center',
+                    customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
+                        // pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
                             clearTimeout(t);
@@ -192,7 +191,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

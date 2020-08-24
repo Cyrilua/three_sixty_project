@@ -186,7 +186,7 @@ $(function () {
                     Snackbar.show({
                         text: 'Произошла ошибка при загрузке данных.',
                         textColor: '#ff0000',
-                        customClass: 'custom center no-animation',
+                    customClass: 'custom center',
                         showAction: false,
                         duration: 3000,
                     });
