@@ -33,10 +33,10 @@
                         </div>
                         {% for template in data.templates.general %}
                             <div class="template-item unselectable">
-                                <div class="template__main button-href" data-href="{{ template.url }}"
+                                <a href="{% url 'main:create_poll_from_template' template_id=template.id %}" class="template__main" data-href="{{ template.url }}"
                                      data-id="{{ template.id }}">
                                     {% include 'main/includes/template_item.html' %}
-                                </div>
+                                </a>
                                 <div class="template__name">
                                     <div class="name" title="{{ template.name }}">{{ template.name }}</div>
                                 </div>
@@ -47,15 +47,15 @@
                         <h2 class="title">Мои шаблоны</h2>
                         <div class="my-templates">
                             {% for template in data.templates.my %}
-                                <div class="template-item {{ template.color }} unselectable">
-                                    <div class="template__main button-href" data-href="{{ template.url }}"
+                                <dis class="template-item {{ template.color }} unselectable">
+                                    <a href="{% url 'main:create_poll_from_template' template_id=template.id %}" class="template__main " data-href="{{ template.url }}"
                                          data-id="{{ template.id }}">
                                         {% include 'main/includes/template_item.html' with delete=' ' %}
-                                    </div>
+                                    </a>
                                     <div class="template__name">
                                         <div class="name" title="{{ template.name }}">{{ template.name }}</div>
                                     </div>
-                                </div>
+                                </dis>
                             {% endfor %}
                         </div>
                     </div>
