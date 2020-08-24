@@ -68,7 +68,7 @@ $(function () {
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: `Команда ${teamName} была удалена`,
+                        text: `Команда "${teamName}" была удалена`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
@@ -94,7 +94,7 @@ $(function () {
             error: function () {
                 team.removeClass('hide');
                 Snackbar.show({
-                    text: 'Произошла ошибка при выходе вo команды.',
+                    text: `Произошла ошибка при удалении "${teamName}"`,
                     textColor: '#ff0000',
                     customClass: 'custom no-animation',
                     showAction: false,
@@ -161,7 +161,7 @@ $(function () {
                 //     'display': 'flex',
                 // });
                 Snackbar.show({
-                    text: 'Произошла ошибка при выходе вo команды.',
+                    text: `Произошла ошибка при удалении ${userName}`,
                     textColor: '#ff0000',
                     customClass: 'custom no-animation',
                     showAction: false,
@@ -776,15 +776,17 @@ $(function () {
                         'disabled': false,
                     });
                 }
+                if (status === 'error') {
+                    Snackbar.show({
+                        text: 'Произошла ошибка при загрузке данных.',
+                        textColor: '#ff0000',
+                        customClass: 'custom center no-animation',
+                        showAction: false,
+                        duration: 3000,
+                    });
+                }
             },
             error: function () {
-                Snackbar.show({
-                    text: 'Произошла ошибка при загрузке данных.',
-                    textColor: '#ff0000',
-                    customClass: 'custom no-animation',
-                    showAction: false,
-                    duration: 3000,
-                });
             }
         });
     }
