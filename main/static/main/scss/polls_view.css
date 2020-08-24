@@ -51,10 +51,7 @@
   flex-wrap: wrap;
 }
 .content .templates .templates-block .templates-general .template-item {
-  margin: 0 30px 30px 0;
-}
-.content .templates .templates-block .templates-general .template-item:nth-child(4n) {
-  margin: 0 0 30px 0;
+  margin: 0 11.25px 30px 11.25px;
 }
 .content .templates .templates-block .my-templates-block .title {
   display: flex;
@@ -74,10 +71,7 @@
   flex-wrap: wrap;
 }
 .content .templates .templates-block .my-templates-block .my-templates .template-item {
-  margin: 0 30px 30px 0;
-}
-.content .templates .templates-block .my-templates-block .my-templates .template-item:nth-child(4n) {
-  margin: 0 0 30px 0;
+  margin: 0 11.25px 30px 11.25px;
 }
 .content .polls .substrate .sort {
   margin-bottom: 20px;
