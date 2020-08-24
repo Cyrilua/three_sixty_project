@@ -31,6 +31,15 @@ $(function () {
 
     let unshowPolls = $('.unshow-polls');
 
+    // Дуйствия при уходе со страницы
+    window.onbeforeunload = function () {
+        completeRequests(ajaxRemoveTemplates);
+        return;
+    };
+    window.onunload = function () {
+        return;
+    };
+
     // Сортировка
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
@@ -71,55 +80,81 @@ $(function () {
     });
 
     // Удаление шаблонов
+    let ajaxRemoveTemplates = [];
     body.on('click', '.delete', function (el) {
-        let timeOut = 3000;
         let id = $(this).parent().attr('data-id');
-        let timerId = setTimeout(function () {
-            $.ajax({
-                url: `template/remove/`,
-                type: 'post',
-                data: {
-                    csrfmiddlewaretoken: csrf,
-                    id: id,
-                },
-                success: function () {
-                    $(el.target).parent().parent().parent().parent().remove();
-                    if (myTemplates.children('.template-item').length < 1) {
-                        myTemplatesBlock.addClass('hide');
-                    }
-                },
-                error: function () {
+        let template = $(el.target).parent().parent().parent().parent();
+        let templateName;
 
-                },
-            });
-        }, timeOut);
-
-
-        Snackbar.show({
-            text: 'Шаблон будет удален через 3 секунды, Вы уверены?',
-            showAction: true,
-            duration: 3000,
-            actionText: "Отменить",
-            actionTextColor: 'red',
-            customClass: 'custom no-animation',
-            width: 400,
-            pos: 'bottom-center',
-            onActionClick: function (elem) {
-                clearTimeout(timerId);
-                $(elem).animate({
-                    opacity: 0,
-                }, 200);
+        $.ajax({
+            url: `template/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                id: id,
             },
-            // onClose: function (elem) {
-            //     $(elem).animate({
-            //         opacity: 0,
-            //     }, 200, function () {
-            //         // el.remove()
-            //
-            //     });
-            //
-            // },
-        });
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemoveTemplates[id]) {
+                    id = ajaxRemoveTemplates.length;
+                    ajax.abort();
+                    ajaxRemoveTemplates.push({
+                        request: request,
+                        finish: false,
+                    });
+                    template.addClass('hide');
+                    // if (myTemplates.children('.template-item').not('.hide').length < 1) {
+                    // myTemplatesBlock.addClass('hide');
+                    // $('.more')
+                    //     .trigger('click')
+                    // .addClass('hide');
+                    // }
+                    let t = setTimeout(function () {
+                        if (!ajaxRemoveTemplates[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
+                    Snackbar.show({
+                        text: `Шаблон "${templateName}" удален`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            clearTimeout(t);
+                            $(ele).remove();
+                            ajaxRemoveTemplates[id].finish = true;
+                            template.removeClass('hide');
+                        },
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                template.remove();
+                // if (myTemplates.children('.template-item').not('.hide').length < 1) {
+                // myTemplatesBlock.addClass('hide');
+                // $('.more').remove();
+                // }
+            },
+            complete: function () {
+                ajaxRemoveTemplates[id].finish = true;
+            },
+            error: function () {
+                template.removeClass('hide');
+                // if (myTemplates.children('.template-item').not('.hide').length === 1) {
+                // $('.more').trigger('click')
+                // }
+                Snackbar.show({
+                    text: `Произошла ошибка при шаблона "${templateName}"`,
+                    textColor: '#ff0000',
+                    customClass: 'custom no-animation',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        })
     });
 
     // Создание нового опроса/шаблона
@@ -344,5 +379,14 @@ $(function () {
         let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(partPolls, scroll);
         // checkView();
+    }
+
+    // При уходе со страницы завершить все действия, если они не были завершены и не были отменены
+    function completeRequests(ajaxRequests) {
+        for (let id = 0; id < ajaxRequests.length; id++) {
+            if (!ajaxRequests[id].finish) {
+                $.ajax(ajaxRequests[id].request);
+            }
+        }
     }
 });
