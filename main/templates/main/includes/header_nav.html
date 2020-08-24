@@ -12,43 +12,46 @@
             </div>
             <div class="head-menu-down">
                 <div class="head-menu-items">
-                    <div class="head-menu-item" id="head-menu-company">
-                        <div class="head-menu-item-text">
-                            {{ profile.company.name }}
-                        </div>
-                    </div>
-                    <div class="head-menu-line"></div>
-                    <div class="head-menu-item" id="head-menu-settings">Настройки</div>
-                    <div class="head-menu-line"></div>
-                    <div class="head-menu-item" id="head-menu-logout">Выйти</div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="head-menu">
-            <div class="head-menu-up">
-                <p class="head-menu-name">
-                    Лу Ми
-                </p>
-                <img src="{% static 'main/images/photo.svg' %}" alt="" class="head-menu-img">
-                <img src="{% static 'main/images/markDown.svg' %}" alt="" class="head-menu-mark">
-            </div>
-            <div class="head-menu-down">
-                <div class="head-menu-items">
-                    <div class="head-menu-item" id="head-menu-company">
-                        <div class="head-menu-item-text-block">
+                    {% if profile.company.id %}
+                        <a href="{% url 'main:company_view' id_company=profile.company.id %}" class="head-menu-item"
+                           id="head-menu-company">
                             <div class="head-menu-item-text">
-                                ООО Крутая компания вылаоыйцуйуйцуйцуйцу йцуйцуйц йц
+                                {{ profile.company.name }}
                             </div>
-                        </div>
-                    </div>
+                        </a>
+                    {% endif %}
                     <div class="head-menu-line"></div>
-                    <div class="head-menu-item" id="head-menu-settings">Настройки</div>
+                    <a href="{% url 'main:edit' %}" class="head-menu-item" id="head-menu-settings">Настройки</a>
                     <div class="head-menu-line"></div>
-                    <div class="head-menu-item" id="head-menu-logout">Выйти</div>
+                    <a href="{% url 'main:logout' %}" class="head-menu-item" id="head-menu-logout">Выйти</a>
                 </div>
             </div>
         </div>
+        {#    {% else %}#}
+        {#        <div class="head-menu">#}
+        {#            <div class="head-menu-up">#}
+        {#                <p class="head-menu-name">#}
+        {#                    Лу Ми#}
+        {#                </p>#}
+        {#                <img src="{% static 'main/images/photo.svg' %}" alt="" class="head-menu-img">#}
+        {#                <img src="{% static 'main/images/markDown.svg' %}" alt="" class="head-menu-mark">#}
+        {#            </div>#}
+        {#            <div class="head-menu-down">#}
+        {#                <div class="head-menu-items">#}
+        {#                    <a href="{% url 'main:company_view' id_company=5 %}" class="head-menu-item" id="head-menu-company">#}
+        {#                        <div class="head-menu-item-text-block">#}
+        {#                            <div class="head-menu-item-text">#}
+        {#                                ООО Крутая компания вылаоыйцуйуйцуйцуйцу йцуйцуйц йц#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </a>#}
+        {#                    <div class="head-menu-line"></div>#}
+        {#                    <a href="{% url 'main:edit' %}" class="head-menu-item" id="head-menu-settings">Настройки</a>#}
+        {#                    <div class="head-menu-line"></div>#}
+        {#                    <a href="{% url 'main:logout' %}" class="head-menu-item" id="head-menu-logout">Выйти</a>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        </div>#}
     {% endif %}
 {% elif not global_error %}
     <div class="head-menu-no-login">
