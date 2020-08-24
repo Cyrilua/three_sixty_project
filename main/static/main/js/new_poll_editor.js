@@ -645,10 +645,12 @@ $(function () {
                     }
                 } else if (step === '1') {
                     if (partUrl === 'preview') {
+                        $('.color').addClass('hide');
                         if (pollId === undefined) {
                             pollId = response.pollId;
                         }
                     } else if (partUrl === 'editor') {
+                        $('.color').removeClass('hide');
                         run();
                     }
 
