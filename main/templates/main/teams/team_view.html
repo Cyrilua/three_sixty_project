@@ -31,7 +31,7 @@
         <div class="head__bottom rounded-block">
             <input type="text" class="search input-field" placeholder="Поиск по участникам..." autocomplete="off">
             {% if not is_leader %}
-                <button class="button-white send-invites button-href" data-href="{% url 'main:team_new_invites' team_id=team.id %}">Пригласить ещё</button>
+                <a href="{% url 'main:team_new_invites' team_id=team.id %}" class="button-white send-invites a-button">Пригласить ещё</a>
             {% endif %}
         </div>
         <div class="content__body">
