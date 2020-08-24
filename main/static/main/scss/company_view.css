@@ -24,7 +24,7 @@
   color: #000000;
   margin-bottom: 8px;
 }
-.content .content__head .head__top .actions .new-poll {
+.content .content__head .head__top .actions #newPoll {
   width: 180px;
 }
 .content .content__head .head__middle-1 {

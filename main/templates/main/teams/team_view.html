@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <button type="button" class="new-poll button-red">Провести опрос</button>
+                    <a href="{% url 'main:create_poll_from_team' team_id=team.id %}" class="new-poll button-red a-button">Провести опрос</a>
                 </div>
             </div>
             <div class="head__middle">
