@@ -21,12 +21,14 @@
       margin-bottom: 30px;
     }
 
+    #createPoll,
     .left-content-new_poll {
       width: 100%;
       margin-bottom: 14px;
     }
 
-    .left-content-new_team {
+    #createTeam,
+    .left-content-new_team{
       width: 100%;
     }
   }
@@ -811,6 +813,7 @@
             &:active {
               color: #fafafa;
             }
+
             &::before {
               margin: auto;
             }

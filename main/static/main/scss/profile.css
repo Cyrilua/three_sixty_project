@@ -21,10 +21,12 @@
   object-fit: cover;
   margin-bottom: 30px;
 }
+.content .left-content #createPoll,
 .content .left-content .left-content-new_poll {
   width: 100%;
   margin-bottom: 14px;
 }
+.content .left-content #createTeam,
 .content .left-content .left-content-new_team {
   width: 100%;
 }
