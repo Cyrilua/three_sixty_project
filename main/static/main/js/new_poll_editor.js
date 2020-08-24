@@ -2088,8 +2088,8 @@ $(function () {
         let questions = $('.question');
         let template = {
             pollId: pollId,
-            name: $('.poll__name').val(),
-            description: $('.poll__description').val(),
+            name: getValueElement($('.poll__name'), true),
+            description: getValueElement($('.poll__description')),
             questions: [],
             color: $('.color__variable--select').attr('data-color'),
             countQuestion: questions.length,
@@ -2101,7 +2101,7 @@ $(function () {
                 id: $(el).attr('data-question-id'),
                 serialNumber: key + 1,
                 type: type,
-                name: $(el).children('.question__main').children('.question__name ').val(),
+                name: getValueElement($(el).children('.question__main').children('.question__name '), true),
                 // answers: [],
                 // countAnswers: answers.length,
                 // settingsSlider: {}
@@ -2111,7 +2111,7 @@ $(function () {
                 template.questions[key].answers = [];
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
-                    let answerText = $(elA).children('.answer__text').val();
+                    let answerText = getValueElement($(elA).children('.answer__text'), true);
                     let answerId = $(elA).attr('data-real-id');
                     template.questions[key].answers.push({
                         text: answerText,
@@ -2132,5 +2132,19 @@ $(function () {
             }
         });
         return template;
+    }
+
+    /**
+     *
+     * @param {jquery, HTMLElement} element
+     * @param {boolean} alternative
+     * @returns {string}
+     */
+    function getValueElement(element, alternative = false) {
+        let val = $(element).val();
+        if (alternative && val === '') {
+            val = $(element).attr('placeholder');
+        }
+        return val;
     }
 });
