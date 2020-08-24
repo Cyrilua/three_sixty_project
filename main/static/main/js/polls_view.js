@@ -119,7 +119,6 @@ $(function () {
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
                             clearTimeout(t);
@@ -149,7 +148,7 @@ $(function () {
                 Snackbar.show({
                     text: `Произошла ошибка при шаблона "${templateName}"`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

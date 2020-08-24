@@ -41,7 +41,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Сохранения сохранены.',
                     textColor: '#07bd00',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -53,7 +53,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при сохранении.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -122,11 +122,10 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: 'Команда будет удалена через 5 секунд',
-                        customClass: 'custom no-animation center',
+                    customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
                             clearTimeout(t);
@@ -153,7 +152,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при удалении команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

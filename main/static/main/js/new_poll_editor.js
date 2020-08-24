@@ -335,7 +335,7 @@ $(function () {
                     duration: 3000,
                     actionText: "Закрыть",
                     actionTextColor: 'green',
-                    customClass: 'custom',
+                    customClass: 'custom center',
                 });
             },
             error: function () {
@@ -347,7 +347,7 @@ $(function () {
                     duration: 3000,
                     actionText: "Повторить",
                     actionTextColor: 'red',
-                    customClass: 'custom',
+                    customClass: 'custom center',
                     onActionClick: function (el) {
                         $(el).animate({
                             opacity: 0,
