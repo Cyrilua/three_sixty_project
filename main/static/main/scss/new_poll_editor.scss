@@ -497,6 +497,7 @@
     }
 
     .positions-n-platforms {
+      min-height: 27px;
       display: flex;
       flex-wrap: wrap;
       margin-top: 10px;
@@ -504,6 +505,7 @@
       .position,
       .platform {
         margin-right: 5px;
+        margin-bottom: 5px;
       }
     }
   }
