@@ -58,8 +58,10 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <a href="{% url 'main:company_view' id_company=profile.company.id %}"
-                           class="info__company hide">{{ profile.company.name }}</a>
+                        {% if profile.company.id %}
+                            <a href="{% url 'main:company_view' id_company=profile.company.id %}"
+                               class="info__company hide">{{ profile.company.name }}</a>
+                        {% endif %}
                     </div>
                     <div class="edit__platforms-n-positions">
                         <div class="positions">

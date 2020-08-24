@@ -181,6 +181,7 @@ button {
   cursor: pointer;
 }
 .header__container .header__content .head-menu .head-menu-down .head-menu-items .head-menu-item {
+  text-decoration: none;
   display: flex;
   align-items: center;
   padding-left: 8px;

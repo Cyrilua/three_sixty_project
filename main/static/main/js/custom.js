@@ -87,19 +87,19 @@ $(function () {
         }
     });
 
-    // Переходы по кнопкам в меню (в шапке)
-    body.on('click', '.head-menu-item', function () {
-        let id = this.id;
-        if (id === 'head-menu-company') {
-            $(location).attr({href: '/company/5/'});
-        } else if (id === 'head-menu-settings') {
-            $(location).attr({href: '/edit/'});
-        } else if (id === 'head-menu-logout') {
-            $(location).attr({href: '/logout/'});
-        } else {
-            throw new Error('invalid argument value');
-        }
-    });
+    // // Переходы по кнопкам в меню (в шапке)
+    // body.on('click', '.head-menu-item', function () {
+    //     let id = this.id;
+    //     if (id === 'head-menu-company') {
+    //         $(location).attr({href: '/company/5/'});
+    //     } else if (id === 'head-menu-settings') {
+    //         $(location).attr({href: '/edit/'});
+    //     } else if (id === 'head-menu-logout') {
+    //         $(location).attr({href: '/logout/'});
+    //     } else {
+    //         throw new Error('invalid argument value');
+    //     }
+    // });
 
     // Переход на другие страницы по кнопкам (как ссылки)
     body.on('click', '.button-href', function (el) {

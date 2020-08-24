@@ -19,8 +19,8 @@
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
                 {% endif %}
-{#                <button class="left-content-new_poll button-red button-href" data-href="">Провести опрос</button>#}
-{#                <button class="left-content-new_team button-white button-href" data-href="#">Создать команду</button>#}
+                {#                <button class="left-content-new_poll button-red button-href" data-href="">Провести опрос</button>#}
+                {#                <button class="left-content-new_team button-white button-href" data-href="#">Создать команду</button>#}
                 <a href="{% url 'main:poll_create' %}" class="button-red a-button" id="createPoll">Провести опрос</a>
                 <a href="{% url 'main:create_team' %}" class="button-white a-button" id="createTeam">Провести опрос</a>
             </div>
@@ -58,8 +58,11 @@
                         {% endif %}
                         {#                        <a href="{{ profile.company.url }}"#}
                         {#                           class="center-content-information-company hide">{{ profile.company.name }}</a>#}
-                        <a href="{% url 'main:company_view' id_company=profile.company.id %}"
-                           class="center-content-information-company hide">{{ profile.company.name }}</a>
+
+                        {% if profile.company.id %}
+                            <a href="{% url 'main:company_view' id_company=profile.company.id %}"
+                               class="center-content-information-company hide">{{ profile.company.name }}</a>
+                        {% endif %}
                     </div>
                     <div class="center-content-information-platforms_n_positions">
                         <div class="center-content-information-positions">
