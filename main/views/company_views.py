@@ -411,9 +411,12 @@ def _load_teams(company: Company, profile: Profile):
     return SimpleTemplateResponse('main/companies/teams.html', args).rendered_content
 
 
-def remove_team(request: WSGIRequest, team_id: int):
+def remove_team(request: WSGIRequest, id_company: int, team_id: int):
     if request.is_ajax():
         profile = get_user_profile(request)
+        company = profile.company
+        if company is None:
+            return JsonResponse({}, status=404)
         team = Group.objects.filter(id=team_id).first()
         if team is None:
             return JsonResponse({}, status=404)
@@ -432,7 +435,6 @@ def _profile_is_owner_or_moderator(profile: Profile):
 
 
 def company_setting(request: WSGIRequest, id_company: int):
-    # todo
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.method == "GET":
@@ -529,4 +531,37 @@ def add_platform(request: WSGIRequest, id_company):
         platform.name = name_platform
         platform.company = company
         platform.save()
+        return JsonResponse({}, status=200)
+
+
+def remove_platform(request: WSGIRequest, id_company: int, platform_id: int) -> JsonResponse:
+    if request.is_ajax():
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if platform is None:
+            return JsonResponse({}, status=404)
+
+        platform.delete()
+        return JsonResponse({}, status=200)
+
+
+def save_settings_change(request: WSGIRequest, id_company: int):
+    if request.is_ajax():
+        profile = get_user_profile(request)
+        company_queryset = Company.objects.filter(pk=id_company)
+        company = company_queryset.first()
+        if company is None:
+            return JsonResponse({}, status=404)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        name = request.POST['name']
+        description = request.POST['description']
+        if not validate_user_input_in_company_settings(name) or not validate_user_input_in_company_settings(description):
+            return JsonResponse({}, status=400)
+        company_queryset.update(name=name, description=description)
         return JsonResponse({}, status=200)

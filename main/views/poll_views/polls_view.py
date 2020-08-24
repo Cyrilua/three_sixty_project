@@ -191,6 +191,8 @@ def remove_template(request) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
+        # todo throw exceptions.
+        #  Удалять только связь с пользователем. Удаление самого шаблона оставить на скрипт
         try:
             template_id = int(request.POST['id'])
         except ValueError:
