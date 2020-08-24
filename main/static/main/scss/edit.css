@@ -210,7 +210,7 @@
 .edit .center-content .info-n-edit .edit__platforms-n-positions .platforms .platforms__data .platform__substrate .platform__add {
   border-radius: 50%;
   cursor: pointer;
-  z-index: 310;
+  z-index: 300;
 }
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu,
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu,
@@ -220,7 +220,7 @@
   position: absolute;
   left: -97px;
   top: 16px;
-  z-index: 300;
+  z-index: 310;
 }
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu::before,
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu::before, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu::before,

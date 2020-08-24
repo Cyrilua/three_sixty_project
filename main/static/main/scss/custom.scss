@@ -417,6 +417,7 @@ button {
 
 // Buttons
 
+
 .button-red {
   background-color: #FF1841;
   height: 40px;
@@ -431,6 +432,21 @@ button {
   //padding: 0 12px;
   box-sizing: border-box;
 
+  &.a-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+
+    &:active {
+      //color: #fafafa;
+    }
+
+    &::before {
+      margin: auto;
+    }
+  }
+
   &:hover {
     /*border: none;*/
     /*background-color: rgba(255, 24, 65, 0.85);*/
@@ -440,6 +456,7 @@ button {
   &:active {
     background: #B61E39;
     border: 2px solid #FF1841;
+    color: #FAFAFA;
     //padding: 8px 12px;
     outline: none;
   }
@@ -471,11 +488,27 @@ button {
   //padding: 0 15px;
   box-sizing: border-box;
 
+  &.a-button {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+
+    &:active {
+      //color: #fafafa;
+    }
+
+    &::before {
+      margin: auto;
+    }
+  }
+
   &:hover {
   }
 
   &:active {
     border: 2px solid #FF1841;
+    color: #000000;
     outline: none;
     //padding: 8px 14px;
   }

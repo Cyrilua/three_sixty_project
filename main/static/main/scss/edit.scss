@@ -180,14 +180,14 @@
               .platform__add {
                 border-radius: 50%;
                 cursor: pointer;
-                z-index: 310;
+                z-index: 300;
               }
 
               .add__menu {
                 position: absolute;
                 left: -97px;
                 top: 16px;
-                z-index: 300;
+                z-index: 310;
 
                 &::before {
                   content: '';
