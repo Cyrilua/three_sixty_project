@@ -3,16 +3,61 @@ import uuid
 from main.forms import TeamForm
 from main.models import Group
 from .auxiliary_general_methods import *
-from . import auxiliary_general_methods
+from .company_views import _get_roles
 from django.shortcuts import redirect, render
 
 from django.http import JsonResponse
 
 
-def team_user_view(request, group_id: int) -> render:
-    args = {}
+def team_view(request, group_id: int) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    team: Group = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+    profile = get_user_profile(request)
+    args = {
+        'team': {
+            'id': team.pk,
+            'name': team.name,
+            'description': team.description,
+            'is_leader': profile == team.owner
+        },
+        'teammates': _build_teammates(team.profile_set.all(), team, profile)
+    }
+    company = team.company
+    if company is not None:
+        args['company'] = {
+            'href': '/company/{}/'.format(company.pk),
+            'name': company.name,
+        }
 
     return render(request, 'main/teams/team_view.html', args)
+
+
+def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> list:
+    result = []
+    for teammate in teammates:
+        teammate: Profile
+        try:
+            photo = teammate.profilephoto.photo
+        except ObjectDoesNotExist:
+            photo = None
+        collected_teammate = {
+            'id': teammate.pk,
+            'photo': photo,
+            'href': '/{}/'.format(teammate.pk),
+            'surname': teammate.surname,
+            'name': teammate.name,
+            'patronymic': teammate.patronymic,
+            'roles': _get_roles(teammate),
+            'is_leader': team.owner == teammate,
+            'positions': teammate.positions.all(),
+            'platforms': teammate.platforms.all(),
+            'is_my_profile': teammate == current_profile
+        }
+        result.append(collected_teammate)
+    return result
 
 
 def search_team_for_invite(request, profile_id: int) -> render:
@@ -52,8 +97,29 @@ def build_teams(commands: filter, alien_profile_id: int) -> list:
 
 
 def teams_view(request):
-    args = {}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    profile = get_user_profile(request)
+    args = {
+        'teams': _build_teams(profile.groups.all(), profile)
+    }
     return render(request, 'main/teams/teams_view.html', args)
+
+
+def _build_teams(teams: list, current_profile: Profile) -> list:
+    result = []
+    for team in teams:
+        team: Group
+        collected_team = {
+            'id': team.pk,
+            'href': '/team/{}/'.format(team.pk),
+            'name': team.name,
+            'description': team.description,
+            'quantity': team.profile_set.all().count(),
+            'i_am_leader': team.owner == current_profile
+        }
+        result.append(collected_team)
+    return result
 
 
 def team_setting(request, team_id):
