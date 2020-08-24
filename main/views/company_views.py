@@ -9,6 +9,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.template.response import SimpleTemplateResponse
 from django.utils.datastructures import MultiValueDictKeyError
+from .validators import validate_user_input_in_company_settings
 
 
 def add_new_platform(request):
@@ -457,9 +458,6 @@ def company_setting(request: WSGIRequest, id_company: int):
         return render(request, 'main/companies/company_setting.html', args)
 
 
-
-
-
 def _get_roles(profile: Profile) -> list:
     roles = []
     if profile.company.owner.pk == profile.pk:
@@ -480,6 +478,36 @@ def _get_new_roles(profile: Profile) -> list:
     return roles
 
 
-def add_position(request):
-    pass
+def add_position(request: WSGIRequest, id_company) -> JsonResponse:
+    if request.is_ajax():
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        name_position = request.POST['namePosition']
+        if not validate_user_input_in_company_settings(name_position):
+            return JsonResponse({}, status=400)
 
+        position = PositionCompany()
+        position.name = name_position
+        position.company = company
+        position.save()
+        return JsonResponse({}, status=200)
+
+
+def remove_position(request: WSGIRequest, id_company: int, position_id: int) -> JsonResponse:
+    if request.is_ajax():
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        position = PositionCompany.objects.filter(id=position_id).first()
+        if position is None:
+            return JsonResponse({}, status=404)
+
+        position.delete()
+        return JsonResponse({}, status=200)
