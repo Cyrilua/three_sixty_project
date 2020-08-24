@@ -11,6 +11,8 @@ urlpatterns = [
     path('setting/position/add/', company_views.add_position),
     # Удалить позицию
     path('setting/position/<int:position_id>/remove/', company_views.remove_position),
+    # Добавить платформу
+    path('setting/platform/add/', company_views.add_platform),
     # Загрузка команд
     path('load/', company_views.load_teams_and_users),
     # Удаление команды

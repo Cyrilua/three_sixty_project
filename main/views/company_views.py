@@ -511,3 +511,22 @@ def remove_position(request: WSGIRequest, id_company: int, position_id: int) -> 
 
         position.delete()
         return JsonResponse({}, status=200)
+
+
+def add_platform(request: WSGIRequest, id_company):
+    if request.is_ajax():
+        company = Company.objects.filter(pk=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+        name_platform = request.POST['namePlatform']
+        if not validate_user_input_in_company_settings(name_platform):
+            return JsonResponse({}, status=400)
+
+        platform = PlatformCompany()
+        platform.name = name_platform
+        platform.company = company
+        platform.save()
+        return JsonResponse({}, status=200)
