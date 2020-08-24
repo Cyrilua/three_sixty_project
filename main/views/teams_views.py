@@ -130,3 +130,7 @@ def team_setting(request, team_id):
 def team_new_invites(request, team_id):
     args = {}
     return render(request, 'main/teams/team_new_invites.html', args)
+
+
+def create_team(request):
+    pass

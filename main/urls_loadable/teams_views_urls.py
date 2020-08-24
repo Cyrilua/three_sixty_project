@@ -9,4 +9,6 @@ urlpatterns = [
     path('<int:team_id>/setting', teams_views.team_setting, name='team_setting'),
     # Приглашение новых участников через команду
     path('<int:team_id>/invites', teams_views.team_new_invites, name='team_new_invites'),
+    #
+    path('create_team/', teams_views.create_team, name='create_team')
 ]
