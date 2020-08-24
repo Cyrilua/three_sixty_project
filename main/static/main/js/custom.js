@@ -91,7 +91,7 @@ $(function () {
     body.on('click', '.head-menu-item', function () {
         let id = this.id;
         if (id === 'head-menu-company') {
-            $(location).attr({href: '/company_view/'});
+            $(location).attr({href: '/company/5/'});
         } else if (id === 'head-menu-settings') {
             $(location).attr({href: '/edit/'});
         } else if (id === 'head-menu-logout') {
