@@ -45,7 +45,7 @@ urlpatterns = [
     # Сохранение нового пароля
     path('edit/save/password', edit_profile.save_new_password),
     # Загрузка аватарки
-    path('edit/photo/update', edit_profile.upload_profile_photo, name='update_photo'),
+    path('edit/photo/update', edit_profile.upload_profile_photo),
     # Удаление аватарки
-    path('edit/photo/delete', edit_profile.delete_profile_photo, name='delete_photo'),
+    path('edit/photo/delete', edit_profile.delete_profile_photo),
 ]
