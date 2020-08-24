@@ -272,13 +272,19 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             beforeSend: function () {
-                content.addClass('disabled');
+                // content.addClass('disabled');
+                $('#saveChanges, #companyName, #companyDescription').prop({
+                    'disabled': true,
+                });
             },
             success: function () {
                 name = newName;
                 description = newDescription;
                 $('#saveChanges').prop({
                     'disabled': true,
+                });
+                $('#companyName, #companyDescription').prop({
+                    'disabled': false,
                 });
                 Snackbar.show({
                     text: 'Изменения сохранены.',
@@ -289,9 +295,12 @@ $(function () {
                 });
             },
             complete: function () {
-                content.removeClass('disabled');
+                // content.removeClass('disabled');
             },
             error: function () {
+                $('#saveChanges, #companyName, #companyDescription').prop({
+                    'disabled': false,
+                });
                 Snackbar.show({
                     text: 'Произошла ошибка при сохранении.',
                     textColor: '#ff0000',
