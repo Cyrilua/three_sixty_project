@@ -227,6 +227,8 @@ class NeedPassPoll(models.Model):
 class CreatedPoll(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     poll = models.OneToOneField('Poll', on_delete=models.CASCADE)
+    is_viewed = models.BooleanField(default=False)
+    is_rendered = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:

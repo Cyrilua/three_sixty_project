@@ -1,9 +1,12 @@
 import datetime
 
+from django.template.response import SimpleTemplateResponse
 from main.models import BirthDate, SurveyWizard, Moderator, NeedPassPoll, CreatedPoll, Invitation, Poll, Group, Company
 from main.views.auxiliary_general_methods import *
 from django.shortcuts import redirect, render
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import JsonResponse
 
 
 def profile_view(request, profile_id):
@@ -28,7 +31,7 @@ def get_render_user_profile(request):
         'photo': photo,
         'profile': profile_data[0],
         'roles': profile_data[1],
-        'notifications': _build_notifications(profile)
+        #'notifications': _build_notifications(profile)
     }
     return render(request, 'main/user/profile.html', args)
 
@@ -95,43 +98,46 @@ def _get_user_teams(profile):
     return teams
 
 
-def _build_notifications(profile: Profile) -> dict:
-    return {
-        'polls': _build_alien_polls(profile),
-        'my_polls': _build_my_polls(profile),
-        'invites': _invites
-    }
+def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
+    if request.is_ajax():
+        profile = get_user_profile(request)
+        if profile != Profile.objects.filter(id=profile_id).first():
+            # todo throw exception
+            pass
+        collected = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+        content = SimpleTemplateResponse('main/companies/notifications.html',
+                                         {'notifications': collected}).rendered_content
+        print(content)
+        return JsonResponse({'content': content})
 
 
-def _build_alien_polls(profile: Profile) -> list:
+def _build_notifications_poll(notifications_polls: list) -> list:
     result = []
-    for need_pass in NeedPassPoll.objects.filter(profile=profile):
-        poll_need_pass: Poll = need_pass.poll
-        result.append(_build_poll(poll_need_pass, True))
+    for notification in notifications_polls:
+        notification: (CreatedPoll, NeedPassPoll)
+        if type(notification) is CreatedPoll:
+            type_notification = 'result'
+            url = '/poll/result/{}/'.format(notification.poll.pk)
+        else:
+            url = '/compiling_poll/{}/'.format(notification.poll.pk)
+            type_notification = 'poll'
+        poll: Poll = notification.poll
+        target_poll: Profile = poll.target
+        collected_notification = {
+            'title': poll.name_poll,
+            'more': {
+                'url': '/{}/'.format(target_poll.pk),
+                'name': '{} {} {}'.format(target_poll.surname, target_poll.name, target_poll.patronymic)
+            },
+            'about': poll.description,
+            'date': poll.creation_date,
+            'url': url,
+            'is_viewed': notification.is_viewed,
+            'type': type_notification,
+            'id': notification.id,
+        }
+        result.append(collected_notification)
     return result
-
-
-def _build_my_polls(profile: Profile) -> list:
-    result = []
-    for created_poll in CreatedPoll.objects.filter(profile=profile):
-        result.append(_build_poll(created_poll.poll, False))
-    return result
-
-
-def _build_poll(poll: Poll, is_alien_polls: bool) -> dict:
-    target_poll: Profile = poll.target
-    collected_poll = {
-        'title': poll.name_poll,
-        'more': {
-            'url': '/{}/'.format(target_poll.pk),
-            'name': '{} {} {}'.format(target_poll.surname, target_poll.name, target_poll.patronymic)
-        },
-        'about': poll.description,
-        'date': poll.creation_date,
-        'complited': False,  # todo
-        'url': '' if is_alien_polls else '',  # todo
-    }
-    return collected_poll
 
 
 def _invites(profile: Profile) -> list:

@@ -10,8 +10,8 @@ from django.http import JsonResponse
 
 def test(request: WSGIRequest):
     profile = get_user_profile(request)
-    platforms = PlatformCompany.objects.filter(company=profile.company)
-    for i in platforms:
-        print(i)
-    print(platforms)
+    print(type(profile) == Profile)
+    print(type(profile) is Profile)
+    print(type(profile))
+    print(profile is Profile())
     return render(request, 'main/test.html')
