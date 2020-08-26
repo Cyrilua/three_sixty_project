@@ -78,7 +78,7 @@ $(function () {
                     });
                     Snackbar.show({
                         text: `${teammateName} был удален из команды`,
-                    customClass: 'custom center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
@@ -128,7 +128,8 @@ $(function () {
 
     // Выход из команды
     body.on('click', '#leaveTeam', function (event) {
-        let team = $(this).parent();
+        let teammate = $(this).parent();
+        let cont = $('.content');
         let id;
         $.ajax({
             url: `leave/`,
@@ -144,7 +145,8 @@ $(function () {
                         request: request,
                         finish: false,
                     });
-                    $(team).css({
+                    cont.addClass('disabled');
+                    $(teammate).css({
                         'display': 'none',
                     });
                     let t = setTimeout(function () {
@@ -154,7 +156,7 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: 'Вы покинули команду',
-                    customClass: 'custom center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
@@ -164,7 +166,7 @@ $(function () {
                             clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
-                            $(team).css({
+                            $(teammate).css({
                                 'display': 'flex',
                             });
                         },
@@ -185,7 +187,8 @@ $(function () {
                 ajaxRequests[id].finish = true;
             },
             error: function () {
-                $(team).css({
+                cont.removeClass('disabled');
+                $(teammate).css({
                     'display': 'flex',
                 });
                 Snackbar.show({
