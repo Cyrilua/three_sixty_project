@@ -38,15 +38,31 @@ def _test_send_email(request):
 
 
 def _test_filter(request):
-    user_input = 'Д'
+    team = Group.objects.get(id=8)
     profile = get_user_profile(request)
-    profiles = Group.objects.filter(id=8).first().profile_set.all()
-    result = PositionCompany.objects.filter(company=profile.company)
-    print(result)
-    temp_result = result.filter(name__istartswith=user_input)
-    print(temp_result)
-    test1 = temp_result.values_list('profile__id', flat=True)
-    print(test1)
-    profiles = profiles.filter(id__in=test1)
+    user_input = ['Д']
+    company = profile.company
+    profiles = team.profile_set.all()
+    for input_iter in user_input:
+        profiles = profiles.filter(
+            Q(name__istartswith=input_iter) |
+            Q(surname__istartswith=input_iter) |
+            Q(patronymic__istartswith=input_iter))
+        if company is not None:
+            id_profiles_by_positions = PositionCompany.objects \
+                .filter(company=company) \
+                .filter(name__istartswith=input_iter) \
+                .values_list('profile__id', flat=True)
+            print(id_profiles_by_positions)
+            profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
+            print(profiles_by_positions)
+            id_profiles_by_platforms = PlatformCompany.objects \
+                .filter(company=company) \
+                .filter(name__istartswith=input_iter) \
+                .values_list('profile__id', flat=True)
+            print(id_profiles_by_platforms)
+            profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
+            print(profiles_by_platforms)
+            profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
     print(profiles)
 
