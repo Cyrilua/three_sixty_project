@@ -133,4 +133,15 @@ def team_new_invites(request, team_id):
 
 
 def create_team(request):
-    pass
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    profile = get_user_profile(request)
+    new_group = Group()
+    new_group.owner = profile
+    new_group.name = 'Новая команда'
+    new_group.description = 'Описание'
+    new_group.company = profile.company
+    new_group.save()
+
+    profile.groups.add(new_group)
+    return redirect('/team/{}/'.format(new_group.pk))

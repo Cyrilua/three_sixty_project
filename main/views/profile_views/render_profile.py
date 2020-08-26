@@ -31,7 +31,7 @@ def get_render_user_profile(request):
         'photo': photo,
         'profile': profile_data[0],
         'roles': profile_data[1],
-        #'notifications': _build_notifications(profile)
+        'notifications': _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
     }
     return render(request, 'main/user/profile.html', args)
 
@@ -107,7 +107,6 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
         collected = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content
-        print(content)
         return JsonResponse({'content': content})
 
 
