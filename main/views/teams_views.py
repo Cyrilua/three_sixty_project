@@ -24,8 +24,6 @@ def team_view(request, group_id: int) -> render:
             'is_leader': profile == team.owner
         },
         'teammates': _build_teammates(team.profile_set.all(), team, profile),
-        'menu_team': 'team_view',  # todo
-        'menu_setting': 'team_settings',  # todo
     }
     company = team.company
     if company is not None:
@@ -74,8 +72,6 @@ def team_settings_view(request, group_id):
             'name': team.name,
             'description': team.description,
             'hrefForInvite': '',  # todo,
-            'menu_team': 'team_view',  # todo
-            'menu_setting': 'team_settings',  # todo
         }
     }
     return render(request, 'main/teams/team_setting.html', args)

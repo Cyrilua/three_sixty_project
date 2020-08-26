@@ -8,9 +8,10 @@ from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.utils.datastructures import MultiValueDictKeyError
-import django.core.mail
+from django.core.mail import send_mail
 from .create_poll_views import start_create, editor, choose_target, choose_respodents
 from django.template.loader import render_to_string
+from django.conf import settings
 
 
 def create_poll_from_template(request, template_id) -> render:
@@ -220,14 +221,16 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
         mail_subject = 'Новый опрос'
         link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
                '/poll/compiling_poll_link/{}/'.format(poll.key)
-        message = render_to_string('main/taking_poll_notifications_email.html', {
+        message = render_to_string('main/email/email.html', {
             'target': {
                 'name': poll.target.name,
                 'surname': poll.target.surname
             },
             'link': link
         })
-        email = django.core.mail.EmailMessage(
-            mail_subject, message, to=[email]
-        )
-        email.send()
+        #email = django.core.mail.EmailMessage(
+        #    mail_subject, message, to=[email]
+        #)
+        #email.send()
+        email_message = (mail_subject, message, settings.EMAIL_HOST_USER, email)
+        send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message='main/email/email.html')
