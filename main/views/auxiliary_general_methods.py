@@ -100,3 +100,16 @@ def build_date(input_date: date) -> dict:
     }
     return result
 
+
+def get_header_profile(profile: Profile) -> dict:
+    args = {
+        'name': profile.name,
+        'surname': profile.surname,
+    }
+    company = profile.company
+    if company is not None:
+        args['company'] = {
+            'id': company.pk,
+            'name': company.name,
+        }
+    return args

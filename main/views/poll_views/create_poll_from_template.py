@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from .create_poll_views import start_create, editor, choose_target, choose_respodents
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.template.loader import get_template
 
 
 def create_poll_from_template(request, template_id) -> render:
@@ -220,17 +221,14 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
         email = need_pass.profile.user.email
         mail_subject = 'Новый опрос'
         link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
-               '/poll/compiling_poll_link/{}/'.format(poll.key)
-        message = render_to_string('main/email/email.html', {
-            'target': {
+               '/poll/compiling_poll_link/{}/'.format(poll.key)  # todo check link
+
+        context = {
+            'user': {
                 'name': poll.target.name,
-                'surname': poll.target.surname
+                'patronymic': poll.target.patronymic
             },
-            'link': link
-        })
-        #email = django.core.mail.EmailMessage(
-        #    mail_subject, message, to=[email]
-        #)
-        #email.send()
-        email_message = (mail_subject, message, settings.EMAIL_HOST_USER, email)
-        send_mail(mail_subject, message, settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message='main/email/email.html')
+            'url': link
+        }
+        message = get_template('main/email/email.html').render(context)
+        send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
