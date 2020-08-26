@@ -105,7 +105,7 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
             # todo throw exception
             pass
         collected = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
-        content = SimpleTemplateResponse('main/companies/notifications.html',
+        content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content
         print(content)
         return JsonResponse({'content': content})

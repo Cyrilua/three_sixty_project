@@ -24,6 +24,8 @@ urlpatterns = [
     path('teams/', include(teams_views_urls)),
     # Промотр конкретной команды
     path('team/', include(team_urls)),
+    # Создание команды  # todo изменить url (добавить в team_url)
+    path('create_team/', teams_views.create_team, name='create_team'),
     # Поиск команды для присоединения в нее
     path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
 
