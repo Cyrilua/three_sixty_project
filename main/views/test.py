@@ -9,9 +9,16 @@ from django.template import loader, Context
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.template.loader import get_template
+from django.db.models import Q
 
 
 def test(request: WSGIRequest):
+    #_test_send_email(request)
+    _test_filter(request)
+    return render(request, 'main/test.html')
+
+
+def _test_send_email(request):
     poll = Poll.objects.filter(id=107).first()
     profile: Profile = get_user_profile(request)
     email = 'aleksandr.korolyov.99@mail.ru'
@@ -27,4 +34,16 @@ def test(request: WSGIRequest):
             }
     message = get_template('main/email/email.html').render(context)
     send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
-    return render(request, 'main/test.html')
+
+
+def _test_filter(request):
+    user_input = ['a', '1']
+    profile = get_user_profile(request)
+    profiles = profile.company.profile_set.all()
+    for input_iter in user_input:
+        profiles = profiles.filter(
+            Q(name__istartswith=input_iter) |
+            Q(surname__istartswith=input_iter) |
+            Q(patronymic__istartswith=input_iter))
+    print(profiles)
+

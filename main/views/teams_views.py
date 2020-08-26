@@ -7,6 +7,8 @@ from .company_views import _get_roles
 from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
+from django.db.models import Q
+from django.template.response import SimpleTemplateResponse
 
 
 def team_view(request, group_id: int) -> render:
@@ -206,9 +208,21 @@ def create_team(request):
 
 def search(request: WSGIRequest, group_id: int) -> JsonResponse:
     if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
         team = Group.objects.filter(id=group_id).first()
         if team is None:
             return JsonResponse({}, status=404)
-
-        user_input = request.POST.get('search', '')
+        profile = get_user_profile(request)
+        user_input = request.GET.get('search', '').split()
+        profiles = team.profile_set.all()
+        for input_iter in user_input:
+            profiles = profiles.filter(
+                Q(name__istartswith=input_iter) |
+                Q(surname__istartswith=input_iter) |
+                Q(patronymic__istartswith=input_iter))
+        completed_profiles = _build_teammates(profiles, team, profile)
+        content = SimpleTemplateResponse('main/teams/teammates.html',
+                                         {'teammates': completed_profiles}).rendered_content
+        return JsonResponse({'content': content}, status=200)
 
