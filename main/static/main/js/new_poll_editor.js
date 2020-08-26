@@ -12,6 +12,7 @@ $(function () {
     let accessStep3 = false;
     let pollId;
     let templateId;
+    let selectedInterviewed;
 
     run();
 
@@ -613,9 +614,11 @@ $(function () {
                     });
 
                     if (step === '3') {
+                        selectedInterviewed = response.countSelectedInterviewed;
+                        $('.head__count-selected').text(selectedInterviewed);
                         let allParticipants = $('input[type=checkbox][name=participants]');
                         let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                        if (participants.length > 0) {
+                        if (selectedInterviewed > 0 || participants.length > 0) {
                             $('#sendPoll').prop({
                                 'disabled': false,
                             });
@@ -641,14 +644,18 @@ $(function () {
                         'disabled': false,
                     });
                     if (step === '3') {
+                        selectedInterviewed = response.countSelectedInterviewed;
+                        $('.head__count-selected').text(selectedInterviewed);
                         $('.select__all').addClass('hide');
                     }
                 } else if (step === '1') {
                     if (partUrl === 'preview') {
+                        $('.color').addClass('hide');
                         if (pollId === undefined) {
                             pollId = response.pollId;
                         }
                     } else if (partUrl === 'editor') {
+                        $('.color').removeClass('hide');
                         run();
                     }
 
@@ -685,9 +692,11 @@ $(function () {
                                 menu.eq(2).removeClass('disabled');
                             }
                         } else if (step === '3') {
-                            $('#sendPoll').prop({
-                                'disabled': false,
-                            });
+                            if (selectedInterviewed > 0) {
+                                $('#sendPoll').prop({
+                                    'disabled': false,
+                                });
+                            }
                             menu.eq(1).removeClass('disabled');
                             menu.eq(2).removeClass('disabled');
                         }
@@ -698,9 +707,12 @@ $(function () {
                             });
                             menu.eq(1).removeClass('disabled');
                         } else if (step === '3') {
-                            $('#sendPoll').prop({
-                                'disabled': true,
-                            });
+                            if (selectedInterviewed === 0) {
+                                $('#sendPoll').prop({
+                                    'disabled': true,
+                                });
+                            }
+
                             menu.eq(1).removeClass('disabled');
                             menu.eq(2).removeClass('disabled');
                         }
@@ -812,6 +824,8 @@ $(function () {
                 editor.addClass('disabled');
             },
             success: function (response) {
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
                 let headMain = $('.head__main');
                 headMain.empty();
                 headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
@@ -835,7 +849,7 @@ $(function () {
                 // }
                 let allParticipants = $('input[type=checkbox][name=participants]');
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participants.length > 0) {
+                if (selectedInterviewed > 0 || participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
@@ -933,7 +947,7 @@ $(function () {
                 content.empty();
                 menu.addClass('disabled');
             },
-            complete: function () {
+            complete: function (response) {
                 ajaxSearch = undefined;
                 sort.removeClass('disabled');
                 loader.addClass('hide');
@@ -948,9 +962,13 @@ $(function () {
                         });
                         menu.eq(1).removeClass('disabled');
                     } else if (step === '3') {
-                        $('#sendPoll').prop({
-                            'disabled': false,
-                        });
+                        selectedInterviewed = response.countSelectedInterviewed;
+                        $('.head__count-selected').text(selectedInterviewed);
+                        if (selectedInterviewed > 0) {
+                            $('#sendPoll').prop({
+                                'disabled': false,
+                            });
+                        }
                         menu.eq(1).removeClass('disabled');
                         if (accessStep3) {
                             menu.eq(2).removeClass('disabled');
@@ -963,18 +981,20 @@ $(function () {
                         });
                         menu.eq(1).removeClass('disabled');
                     } else if (step === '3') {
+                        selectedInterviewed = response.countSelectedInterviewed;
+                        $('.head__count-selected').text(selectedInterviewed);
                         // $('#sendPoll').prop({
                         //     'disabled': true,
                         // });
                         menu.eq(1).removeClass('disabled');
+                            menu.eq(2).removeClass('disabled');
 
                         let allParticipants = $('input[type=checkbox][name=participants]');
                         let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                        if (participants.length > 0) {
+                        if (selectedInterviewed > 0 || participants.length > 0) {
                             $('#sendPoll').prop({
                                 'disabled': false,
                             });
-                            menu.eq(1).removeClass('disabled');
                             if (allParticipants.length === participants.length) {
                                 $('.select__all ').addClass('all-checked');
                             }
@@ -999,7 +1019,7 @@ $(function () {
         if (category === 'participants') {
             let checked = $('input[name=participants]:checked');
             let allCheckbox = $('input[name=participants]');
-            if (checked.length > 0) {
+            if (selectedInterviewed > 0 || checked.length > 0) {
                 $('#sendPoll').prop({
                     'disabled': false,
                 });
@@ -1025,7 +1045,7 @@ $(function () {
             let checkedInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]:checked');
             let allCheckboxInTeam = checkboxesInTeam.children('.mdc-checkbox').children('input[name=participants]');
             let allChecked = $('input[name=participants]:checked');
-            if (allChecked.length > 0) {
+            if (selectedInterviewed > 0 || allChecked.length > 0) {
                 $('#sendPoll').prop({
                     'disabled': false,
                 });
@@ -1064,6 +1084,7 @@ $(function () {
     //
     // })
 
+    // Выбрать всех
     body.on('click', '.team__select-all', function (el) {
         if ($(this).hasClass('team-checked')) {
             let checked = $(this).closest('.team').children('.team__down').children('.participants')
@@ -1321,6 +1342,8 @@ $(function () {
                 menu.addClass('disabled');
             },
             success: function (response) {
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -1346,7 +1369,7 @@ $(function () {
 
                 let allParticipants = $('input[type=checkbox][name=participants]');
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participants.length > 0) {
+                if (selectedInterviewed > 0 || participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
@@ -1414,6 +1437,8 @@ $(function () {
                 menu.addClass('disabled');
             },
             success: function (response) {
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -1443,7 +1468,7 @@ $(function () {
 
                 let allParticipants = $('input[type=checkbox][name=participants]');
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
-                if (participants.length > 0) {
+                if (selectedInterviewed > 0 || participants.length > 0) {
                     $('#sendPoll').prop({
                         'disabled': false,
                     });
@@ -1541,6 +1566,21 @@ $(function () {
         }
     });
 
+    body.on('click', '.participant', function (event) {
+        if ($(event.target).hasClass('participant') || $(event.target).hasClass('participant__photo') ||
+            $(event.target).hasClass('name') || $(event.target).hasClass('positions-n-platforms') ||
+            $(event.target).hasClass('info'))
+            $(this).children('.radio, .checkbox').children('.mdc-radio, .mdc-checkbox').children('input').trigger('click');
+    });
+
+    body.on('click', 'input[type=checkbox][name=participants]', function (event) {
+        let counter = $('.head__count-selected');
+        if ($(this).prop('checked')) {
+            counter.text(parseInt(counter.text()) + 1);
+        } else {
+            counter.text(parseInt(counter.text()) - 1);
+        }
+    });
 
     // Автоувеличение полей ввода
     function countLines(el, delta) {
@@ -2086,8 +2126,8 @@ $(function () {
         let questions = $('.question');
         let template = {
             pollId: pollId,
-            name: $('.poll__name').val(),
-            description: $('.poll__description').val(),
+            name: getValueElement($('.poll__name'), true),
+            description: getValueElement($('.poll__description')),
             questions: [],
             color: $('.color__variable--select').attr('data-color'),
             countQuestion: questions.length,
@@ -2099,7 +2139,7 @@ $(function () {
                 id: $(el).attr('data-question-id'),
                 serialNumber: key + 1,
                 type: type,
-                name: $(el).children('.question__main').children('.question__name ').val(),
+                name: getValueElement($(el).children('.question__main').children('.question__name '), true),
                 // answers: [],
                 // countAnswers: answers.length,
                 // settingsSlider: {}
@@ -2109,7 +2149,7 @@ $(function () {
                 template.questions[key].answers = [];
                 template.questions[key].countAnswers = answers.length;
                 $(answers).each(function (keyA, elA) {
-                    let answerText = $(elA).children('.answer__text').val();
+                    let answerText = getValueElement($(elA).children('.answer__text'), true);
                     let answerId = $(elA).attr('data-real-id');
                     template.questions[key].answers.push({
                         text: answerText,
@@ -2130,5 +2170,19 @@ $(function () {
             }
         });
         return template;
+    }
+
+    /**
+     *
+     * @param {jquery, HTMLElement} element
+     * @param {boolean} alternative
+     * @returns {string}
+     */
+    function getValueElement(element, alternative = false) {
+        let val = $(element).val();
+        if (alternative && val === '') {
+            val = $(element).attr('placeholder');
+        }
+        return val;
     }
 });

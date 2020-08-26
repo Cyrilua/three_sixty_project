@@ -12,10 +12,10 @@ $(function () {
         return;
     };
 
-    // Опрос по команде
-    body.on('click', '.new-poll', function (event) {
-        // TODO
-    });
+    // // Опрос по команде
+    // body.on('click', '.new-poll', function (event) {
+    //     // TODO
+    // });
 
     // Поиск тимметов
     let ajaxInput;

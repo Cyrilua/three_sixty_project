@@ -7,10 +7,10 @@ $(function () {
     let ajaxDismisses = [];
     let ajaxLoad;
 
-    // Новый опрос внутри компании
-    body.on('click', '#newPoll', function (event) {
-        //TODO
-    });
+    // // Новый опрос внутри компании
+    // body.on('click', '#newPoll', function (event) {
+    //     //TODO
+    // });
 
     // Поиск
     body.on('input', '.search', function (event) {

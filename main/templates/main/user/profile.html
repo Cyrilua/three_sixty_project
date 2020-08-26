@@ -22,7 +22,7 @@
                 {#                <button class="left-content-new_poll button-red button-href" data-href="">Провести опрос</button>#}
                 {#                <button class="left-content-new_team button-white button-href" data-href="#">Создать команду</button>#}
                 <a href="{% url 'main:poll_create' %}" class="button-red a-button" id="createPoll">Провести опрос</a>
-                <a href="{% url 'main:create_team' %}" class="button-white a-button" id="createTeam">Провести опрос</a>
+                <a href="{% url 'main:create_team' %}" class="button-white a-button" id="createTeam">Создать команду</a>
             </div>
             <div class="center-content">
                 <div class="center-content-information rounded-block">
@@ -190,7 +190,7 @@
                         </div>
 
                         <div class="notifications">
-                            {% include 'main/companies/notifications.html' %}
+{#                            {% include 'main/user/notifications.html' %}#}
                         </div>
                     </div>
                 </div>

@@ -82,6 +82,7 @@ $(function () {
     // Удаление шаблонов
     let ajaxRemoveTemplates = [];
     body.on('click', '.delete', function (el) {
+        el.preventDefault();
         let id = $(this).parent().attr('data-id');
         let template = $(el.target).parent().parent().parent().parent();
         let templateName;

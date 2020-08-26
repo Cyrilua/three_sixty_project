@@ -82,6 +82,16 @@
   border-top: 1px solid #E5E5E5;
   margin-top: 13px;
 }
+.edit .center-content .info-n-edit .edit__platforms-n-positions .empty {
+  padding-top: 4px;
+  margin-right: 5px;
+  height: 22px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #C4C4C4;
+  margin-bottom: 4px;
+}
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions {
   border-right: 1px solid #E5E5E5;
   padding-right: 30px;
