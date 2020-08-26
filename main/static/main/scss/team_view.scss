@@ -155,7 +155,17 @@
         }
 
         .team__leave {
+          &#kick {
+            background-image: url('../../main/images/icon/person_remove-24px.svg');
 
+            &::before {
+              content: 'Выгнать';
+            }
+          }
+
+          &#leaveTeam {
+
+          }
         }
       }
     }
