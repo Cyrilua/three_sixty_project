@@ -21,6 +21,7 @@ $(function () {
     let ajaxInput;
     body.on('input', '.search', function (event) {
         let search = $(this).val();
+        let teammates = content.children('.teammates');
         ajaxInput = $.ajax({
             url: 'search/',
             type: 'get',
@@ -34,8 +35,8 @@ $(function () {
                 content.addClass('disabled');
             },
             success: function (response) {
-                content.empty();
-                content[0].append(response.content); // ..teammates.html
+                teammates.empty();
+                teammates.append(response.content); // ..teammates.html
             },
             complete: function () {
                 $('.content__body').removeClass('disabled');
