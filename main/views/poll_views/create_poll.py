@@ -11,6 +11,11 @@ def redirect_for_create(request):
         return JsonResponse({'urlNewPoll': '/poll/editor/new/'}, status=200)
 
 
+def poll_create_from_team(request):
+    # todo
+    pass
+
+
 def poll_create(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')

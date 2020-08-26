@@ -5,6 +5,7 @@ from django.urls import path, include
 from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls, company_url, \
     teams_views_urls, team_urls, profile_urls, password_urls
 from .views import user_views, teams_views, company_views, test
+from .views.poll_views import create_poll
 
 app_name = "main"
 urlpatterns = [
@@ -24,8 +25,7 @@ urlpatterns = [
     path('teams/', include(teams_views_urls)),
     # Промотр конкретной команды
     path('team/', include(team_urls)),
-    # Создание команды  # todo изменить url (добавить в team_url)
-    path('create_team/', teams_views.create_team, name='create_team'),
+
     # Поиск команды для присоединения в нее
     path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
 
@@ -40,5 +40,9 @@ urlpatterns = [
     path('test/', test.test),
     # Создание компании (для ясности стоит изменить url)
     path('add_company/', company_views.create_company, name='add_company'),
+
+
+    ######## Only for development #############
+    path('poll/create/new/<int:team_id>/', create_poll.poll_create_from_team, name='create_poll_from_team'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + password_urls.urlpatterns

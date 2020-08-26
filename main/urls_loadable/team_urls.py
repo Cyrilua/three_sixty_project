@@ -14,4 +14,8 @@ app_name = "main"
 urlpatterns = [
     # Промотр конкретной команды
     path('<int:group_id>/', teams_views.team_view, name='team_view'),
+    # Настройки команды
+    path('<int:group_id>/settings/', teams_views.team_settings_view, name='team_settings'),
+    # Удаление команды
+    path('<int:group_id>/settings/remove/', teams_views.team_remove, name='team_remove'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
