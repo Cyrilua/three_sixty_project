@@ -55,9 +55,9 @@ $(function () {
 
     // Кикнуть из команды
     body.on('click', '#kick', function (event) {
-        let team = $(this).parent();
-        let teammateId = team.attr('data-real-id');
-        let teammateName = team.children('.info').children('.info__top').children('.teammate-href').text();
+        let teammate = $(this).parent();
+        let teammateId = teammate.attr('data-real-id');
+        let teammateName = teammate.children('.info').children('.info__top').children('.teammate-href').text();
         let id;
         $.ajax({
             url: `leave/`,
@@ -74,7 +74,7 @@ $(function () {
                         request: request,
                         finish: false,
                     });
-                    $(team).css({
+                    $(teammate).css({
                         'display': 'none',
                     });
                     Snackbar.show({
@@ -87,7 +87,7 @@ $(function () {
                         onActionClick: function (ele) {
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
-                            $(team).css({
+                            $(teammate).css({
                                 'display': 'flex',
                             });
                         },
@@ -113,7 +113,7 @@ $(function () {
                 ajaxRequests[id].finish = true;
             },
             error: function () {
-                $(team).css({
+                $(teammate).css({
                     'display': 'flex',
                 });
                 Snackbar.show({
@@ -167,6 +167,7 @@ $(function () {
                             clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
+                            cont.removeClass('disabled');
                             $(teammate).css({
                                 'display': 'flex',
                             });

@@ -105,6 +105,7 @@ $(function () {
 
     // Удаление команды
     body.on('click', '#remove-team', function (event) {
+        let menu = $('.menu__item ');
         $.ajax({
             url: `remove/`,
             type: 'post',
@@ -115,6 +116,8 @@ $(function () {
                 if (ajaxTeamRemove === undefined) {
                     ajax.abort();
                     ajaxTeamRemove = request;
+                    content.addClass('disabled');
+                    menu.addClass('disabled');
                     let t = setTimeout(function () {
                         if (ajaxTeamRemove !== undefined) {
                             $.ajax(request);
@@ -122,7 +125,7 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: 'Команда будет удалена через 5 секунд',
-                    customClass: 'custom center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
@@ -130,6 +133,8 @@ $(function () {
                         onActionClick: function (ele) {
                             clearTimeout(t);
                             $(ele).remove();
+                            content.removeClass('disabled');
+                            menu.removeClass('disabled');
                             ajaxTeamRemove = undefined;
                         },
                     });
@@ -149,6 +154,8 @@ $(function () {
                 ajaxTeamRemove = undefined;
             },
             error: function () {
+                content.removeClass('disabled');
+                menu.removeClass('disabled');
                 Snackbar.show({
                     text: 'Произошла ошибка при удалении команды.',
                     textColor: '#ff0000',
