@@ -31,6 +31,15 @@ $(function () {
 
     let unshowPolls = $('.unshow-polls');
 
+    // Дуйствия при уходе со страницы
+    window.onbeforeunload = function () {
+        completeRequests(ajaxRemoveTemplates);
+        return;
+    };
+    window.onunload = function () {
+        return;
+    };
+
     // Сортировка
     if ($('.mdc-select').length > 0) {
         const sortable = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
@@ -71,55 +80,81 @@ $(function () {
     });
 
     // Удаление шаблонов
+    let ajaxRemoveTemplates = [];
     body.on('click', '.delete', function (el) {
-        let timeOut = 3000;
+        el.preventDefault();
         let id = $(this).parent().attr('data-id');
-        let timerId = setTimeout(function () {
-            $.ajax({
-                url: `template/remove/`,
-                type: 'post',
-                data: {
-                    csrfmiddlewaretoken: csrf,
-                    id: id,
-                },
-                success: function () {
-                    $(el.target).parent().parent().parent().parent().remove();
-                    if (myTemplates.children('.template-item').length < 1) {
-                        myTemplatesBlock.addClass('hide');
-                    }
-                },
-                error: function () {
+        let template = $(el.target).parent().parent().parent().parent();
+        let templateName;
 
-                },
-            });
-        }, timeOut);
-
-
-        Snackbar.show({
-            text: 'Шаблон будет удален через 3 секунды, Вы уверены?',
-            showAction: true,
-            duration: 3000,
-            actionText: "Отменить",
-            actionTextColor: 'red',
-            customClass: 'custom no-animation',
-            width: 400,
-            pos: 'bottom-center',
-            onActionClick: function (elem) {
-                clearTimeout(timerId);
-                $(elem).animate({
-                    opacity: 0,
-                }, 200);
+        $.ajax({
+            url: `template/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+                id: id,
             },
-            // onClose: function (elem) {
-            //     $(elem).animate({
-            //         opacity: 0,
-            //     }, 200, function () {
-            //         // el.remove()
-            //
-            //     });
-            //
-            // },
-        });
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemoveTemplates[id]) {
+                    id = ajaxRemoveTemplates.length;
+                    ajax.abort();
+                    ajaxRemoveTemplates.push({
+                        request: request,
+                        finish: false,
+                    });
+                    template.addClass('hide');
+                    // if (myTemplates.children('.template-item').not('.hide').length < 1) {
+                    // myTemplatesBlock.addClass('hide');
+                    // $('.more')
+                    //     .trigger('click')
+                    // .addClass('hide');
+                    // }
+                    let t = setTimeout(function () {
+                        if (!ajaxRemoveTemplates[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
+                    Snackbar.show({
+                        text: `Шаблон "${templateName}" удален`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: 'yellow',
+                        width: '910px',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            clearTimeout(t);
+                            $(ele).remove();
+                            ajaxRemoveTemplates[id].finish = true;
+                            template.removeClass('hide');
+                        },
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                template.remove();
+                // if (myTemplates.children('.template-item').not('.hide').length < 1) {
+                // myTemplatesBlock.addClass('hide');
+                // $('.more').remove();
+                // }
+            },
+            complete: function () {
+                ajaxRemoveTemplates[id].finish = true;
+            },
+            error: function () {
+                template.removeClass('hide');
+                // if (myTemplates.children('.template-item').not('.hide').length === 1) {
+                // $('.more').trigger('click')
+                // }
+                Snackbar.show({
+                    text: `Произошла ошибка при шаблона "${templateName}"`,
+                    textColor: '#ff0000',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        })
     });
 
     // Создание нового опроса/шаблона
@@ -226,6 +261,7 @@ $(function () {
                     if (response.newElems !== '' && response.newElems !== null) {
                         categoryContentBlock[0].insertAdjacentHTML('beforeend', response.newElems);
                         countLoadedPolls = categoryContentBlock.children('.category-item').length;
+                        checkView();
                     }
                     if (response.is_last) {
                         categoryContentBlock.addClass('full');
@@ -244,22 +280,7 @@ $(function () {
                     } else {
                     }
                 },
-                statusCode: {
-                    400: function () {
-                        throw new Error('Error 400 - Некорректный запрос');
-                    },
-                    403: function () {
-                        throw new Error('Error 403 - Доступ запрещён');
-                    },
-                    404: function () {
-                        throw new Error('Error 404 - Страница не найдена');
-                    },
-                    500: function () {
-                        throw new Error('Error 500 - Внутренняя ошибка сервера');
-                    }
-                },
                 error: function () {
-                    throw new Error('Что - то пошло не так :(');
                 },
             });
         }
@@ -301,22 +322,7 @@ $(function () {
                 complete: function () {
                     $(target).removeClass('visible-load');
                 },
-                statusCode: {
-                    400: function () {
-                        throw new Error('Error 400 - Некорректный запрос');
-                    },
-                    403: function () {
-                        throw new Error('Error 403 - Доступ запрещён');
-                    },
-                    404: function () {
-                        throw new Error('Error 404 - Страница не найдена');
-                    },
-                    500: function () {
-                        throw new Error('Error 500 - Внутренняя ошибка сервера');
-                    }
-                },
                 error: function () {
-                    throw new Error('Что - то пошло не так :(');
                 },
             })
         } else {
@@ -337,6 +343,7 @@ $(function () {
     function checkView() {
         if (category === 'polls') {
             let noViewed = $('.no-viewed');
+            // console.log(noViewed)
             for (let i = 0; i < noViewed.length; i++) {
                 visible(noViewed[i]);
             }
@@ -371,6 +378,15 @@ $(function () {
         let heightClient = document.documentElement.clientHeight;
         let partPolls = Math.ceil(heightClient / 370) * 3 + 9;
         loading(partPolls, scroll);
-        checkView();
+        // checkView();
+    }
+
+    // При уходе со страницы завершить все действия, если они не были завершены и не были отменены
+    function completeRequests(ajaxRequests) {
+        for (let id = 0; id < ajaxRequests.length; id++) {
+            if (!ajaxRequests[id].finish) {
+                $.ajax(ajaxRequests[id].request);
+            }
+        }
     }
 });

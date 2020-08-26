@@ -3,7 +3,7 @@
     <div class="teammates">
         {% for teammate in teammates %}
             <div class="teammate rounded-block" data-real-id="{{ teammate.id }}">
-                <img src="{{ teammate.photo }}" alt="" class="photo">
+                <img src="{{ teammate.photo.url }}" alt="" class="photo">
                 <div class="info">
                     <div class="info__top">
                         <a href="{{ teammate.href }}"

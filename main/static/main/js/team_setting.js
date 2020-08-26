@@ -4,7 +4,9 @@ $(function () {
     const content = $('.content');
     let name = $('#teamName').val().toString();
     let description = $('#teamDescription').val().replace(/[\r\n]/g, '');
+    let ajaxTeamRemove;
 
+    // Завершить все дествия перед закрытием страницы
     window.onbeforeunload = function () {
         if (ajaxTeamRemove !== undefined) {
             $.ajax(ajaxTeamRemove);
@@ -15,7 +17,7 @@ $(function () {
         return;
     };
 
-    // Сохранение иизменений
+    // Сохранение изменений
     body.on('click', '#saveChanges', function (event) {
         let newName = $('#teamName').val();
         let newDescription = $('#teamDescription').val();
@@ -25,6 +27,7 @@ $(function () {
             data: {
                 name: newName,
                 description: newDescription,
+                csrfmiddlewaretoken: csrf,
             },
             beforeSend: function () {
                 content.addClass('disabled');
@@ -38,7 +41,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Сохранения сохранены.',
                     textColor: '#07bd00',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -50,7 +53,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при сохранении.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -101,7 +104,6 @@ $(function () {
     });
 
     // Удаление команды
-    let ajaxTeamRemove;
     body.on('click', '#remove-team', function (event) {
         $.ajax({
             url: `remove/`,
@@ -113,23 +115,23 @@ $(function () {
                 if (ajaxTeamRemove === undefined) {
                     ajax.abort();
                     ajaxTeamRemove = request;
+                    let t = setTimeout(function () {
+                        if (ajaxTeamRemove !== undefined) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: 'Команда будет удалена через 5 секунд',
-                        customClass: 'custom no-animation center',
+                    customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
-                            ajaxTeamRemove = undefined;
+                            clearTimeout(t);
                             $(ele).remove();
+                            ajaxTeamRemove = undefined;
                         },
-                        onClose: function () {
-                            if (ajaxTeamRemove !== undefined) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }
@@ -150,7 +152,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при удалении команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

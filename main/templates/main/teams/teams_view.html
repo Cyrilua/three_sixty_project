@@ -11,9 +11,9 @@
         {% csrf_token %}
         <div class="content__head rounded-block">
             <input class="head__search input-field" placeholder="Поиск по командам...">
-            <button class="head__button button-white button-href" type="button" data-href="/create_team/">
+            <a href="{% url 'main:create_team' %}" class="head__button button-white a-button">
                 Создать команду
-            </button>
+            </a>
         </div>
         <div class="content__body">
             {% include 'main/teams/teams.html' %}

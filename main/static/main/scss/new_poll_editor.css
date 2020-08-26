@@ -13,6 +13,7 @@
   border-bottom: 1px solid #E5E5E5;
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 .editor .editor__head .head__main {
   max-width: 620px;
@@ -33,6 +34,24 @@
   font-size: 18px;
   line-height: 21px;
   color: #595757;
+}
+.editor .editor__head .head__main .head__count-selected {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  display: inline-block;
+  text-align: center;
+  position: absolute;
+  right: 80px;
+  bottom: 30px;
+  transform: translateX(50%);
+}
+.editor .editor__head .head__main .head__count-selected::before {
+  content: "(";
+}
+.editor .editor__head .head__main .head__count-selected::after {
+  content: ")";
 }
 .editor .editor__head .head__main .save-as {
   margin-top: 20px;
@@ -129,6 +148,9 @@
 }
 .editor .editor__category .substrate .search-down {
   padding-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .editor .editor__category .substrate .search-down .search {
   width: 850px;
@@ -363,6 +385,7 @@
   margin-left: 5px;
 }
 .participant .info .positions-n-platforms {
+  min-height: 27px;
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
@@ -370,6 +393,7 @@
 .participant .info .positions-n-platforms .position,
 .participant .info .positions-n-platforms .platform {
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 .participant .radio,
 .participant .checkbox {

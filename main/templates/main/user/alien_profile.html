@@ -8,14 +8,16 @@
 
 {% block content-user %}
     {% if alien_profile %}
-        <div class="profile">
+        <div class="content">
             <div class="left-content rounded-block">
                 {% if photo and photo.url != '' %}
                     <img src="{{ photo.url }}" alt="" class="left-content-photo">
                 {% else %}
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
                 {% endif %}
-                <button class="left-content-new_poll button-red button-href" data-href="#">Пригласить в команду</button>
+                {#                <button class="left-content-new_poll button-red button-href" data-href="#">Пригласить в команду</button>#}
+                <a href="{% url 'main:search_team_for_invite' profile_id=alien_profile.id %}"
+                   class="button-red a-button" id="inviteToTeam">Пригласить в команду</a>
             </div>
             <div class="center-content">
                 <div class="center-content-information rounded-block">
@@ -53,8 +55,11 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <a href="{{ alien_profile.company.url }}"
-                           class="center-content-information-company hide">{{ alien_profile.company.name }}</a>
+
+                        {% if alien_profile.company.id %}
+                            <a href="{% url 'main:company_view' id_company=alien_profile.company.id %}"
+                               class="center-content-information-company hide">{{ alien_profile.company.name }}</a>
+                        {% endif %}
                     </div>
                     <div class="center-content-information-platforms_n_positions">
                         <div class="center-content-information-positions">

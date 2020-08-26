@@ -12,6 +12,7 @@
     border-bottom: 1px solid #E5E5E5;
     display: flex;
     justify-content: space-between;
+    position: relative;
 
     .head__main {
       max-width: 620px;
@@ -33,6 +34,25 @@
         font-size: 18px;
         line-height: 21px;
         color: #595757;
+      }
+
+      .head__count-selected {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
+        display: inline-block;
+        text-align: center;
+        position: absolute;
+        right: 80px;
+        bottom: 30px;
+        transform: translateX(50%);
+        &::before{
+          content: '(';
+        }
+        &::after{
+          content: ')';
+        }
       }
 
       .save-as {
@@ -156,6 +176,9 @@
 
       .search-down {
         padding-bottom: 25px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
         .search {
           width: 850px;
@@ -494,6 +517,7 @@
     }
 
     .positions-n-platforms {
+      min-height: 27px;
       display: flex;
       flex-wrap: wrap;
       margin-top: 10px;
@@ -501,6 +525,7 @@
       .position,
       .platform {
         margin-right: 5px;
+        margin-bottom: 5px;
       }
     }
   }
