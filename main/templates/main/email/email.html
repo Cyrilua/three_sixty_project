@@ -102,20 +102,19 @@
         outline: none;
         border: none;
         text-decoration: none;">
-                {#                <img src="{% static 'main/images/newLogo.svg' %}" alt="LOGO" style="width: 56px; height: 28px;">#}
             </a>
         </div>
         <div class="mail__body" style="display: block;
-        box-sizing: border-box;
-        width: 530px;
-        height: auto;
-        {#margin: 30px auto 260px;#}
-        margin-top: 30px; margin-left: auto; margin-right: auto; margin-bottom: 0;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 17px;
-        line-height: 20px;
-        color: #000000;">
+                box-sizing: border-box;
+                width: 530px;
+                height: auto;
+                {#margin: 30px auto 260px;#}
+                margin-top: 30px; margin-left: auto; margin-right: auto; margin-bottom: 0;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 17px;
+                line-height: 20px;
+                color: #000000;">
             <span class="mail__text" style="display: inline-block;
         box-sizing: border-box;
         margin-top: 25px;">Здравствуйте, <strong>{{ user.name }} {{ user.patronymic }}!</strong></span>
@@ -130,7 +129,8 @@
         margin-top: 25px;">Если запрос отправили не Вы, проигнорируйте это письмо.</span>
             <span style="display: block;
                 box-sizing: border-box;
-                margin: 40px 0 0 auto;">
+                margin: 40px 0 0 auto;
+                height: 20px;">
                 <span class="mail__end" style="display: block;
                 box-sizing: border-box;
                 float: right;
@@ -150,11 +150,13 @@
                 {#background-size: 82px 82px;#}
                 {#background-position: 50% 0;#}
                 ">
-            <img src="http://3.14.4.30/static/main/images/funnySmile.jpg"
-                 alt="smile" style="display: block;
+            <div  style="display: block;
             width: 82px;
             height: 82px;
-            margin: 0 auto 0;">
+            background-image: url('http://3.14.4.30/static/main/images/funnySmile.jpg');
+            background-size: 82px 82px;
+            background-repeat: no-repeat;
+            margin: 0 auto 0;"></div>
         </div>
     </div>
 </div>
