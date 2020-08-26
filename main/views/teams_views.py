@@ -23,7 +23,9 @@ def team_view(request, group_id: int) -> render:
             'description': team.description,
             'is_leader': profile == team.owner
         },
-        'teammates': _build_teammates(team.profile_set.all(), team, profile)
+        'teammates': _build_teammates(team.profile_set.all(), team, profile),
+        'menu_team': 'team_view',  # todo
+        'menu_setting': 'team_settings',  # todo
     }
     company = team.company
     if company is not None:
@@ -60,12 +62,34 @@ def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> 
     return result
 
 
+def team_settings_view(request, group_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    team: Group = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return redirect('/')
+    args = {
+        'team': {
+            'name': team.name,
+            'description': team.description,
+            'hrefForInvite': '',  # todo,
+            'menu_team': 'team_view',  # todo
+            'menu_setting': 'team_settings',  # todo
+        }
+    }
+    return render(request, 'main/teams/team_setting.html', args)
+
+
+def team_remove(request, group_id):
+    pass
+
+
 def search_team_for_invite(request, profile_id: int) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    try:
-        alien_profile = Profile.objects.get(id=profile_id)
-    except:
+    alien_profile = Profile.objects.filter(id=profile_id).first
+    if alien_profile is None:
         return redirect('/')
     alien_commands = alien_profile.groups.all()
 
