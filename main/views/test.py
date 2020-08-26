@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.conf import settings
 from .auxiliary_general_methods import *
-from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany
+from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany, Group, PositionCompany
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import loader, Context
@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.db.models import Q
+from itertools import chain
 
 
 def test(request: WSGIRequest):
@@ -37,13 +38,15 @@ def _test_send_email(request):
 
 
 def _test_filter(request):
-    user_input = ['a', '1']
+    user_input = 'Д'
     profile = get_user_profile(request)
-    profiles = profile.company.profile_set.all()
-    for input_iter in user_input:
-        profiles = profiles.filter(
-            Q(name__istartswith=input_iter) |
-            Q(surname__istartswith=input_iter) |
-            Q(patronymic__istartswith=input_iter))
+    profiles = Group.objects.filter(id=8).first().profile_set.all()
+    result = PositionCompany.objects.filter(company=profile.company)
+    print(result)
+    temp_result = result.filter(name__istartswith=user_input)
+    print(temp_result)
+    test1 = temp_result.values_list('profile__id', flat=True)
+    print(test1)
+    profiles = profiles.filter(id__in=test1)
     print(profiles)
 
