@@ -21,9 +21,10 @@ def team_view(request, group_id: int) -> render:
             'id': team.pk,
             'name': team.name,
             'description': team.description,
-            'is_leader': profile == team.owner
         },
+        'is_leader': profile == team.owner,
         'teammates': _build_teammates(team.profile_set.all(), team, profile),
+        'profile': get_header_profile(profile)
     }
     company = team.company
     if company is not None:
@@ -31,7 +32,7 @@ def team_view(request, group_id: int) -> render:
             'href': '/company/{}/'.format(company.pk),
             'name': company.name,
         }
-
+    print(args)
     return render(request, 'main/teams/team_view.html', args)
 
 
@@ -121,7 +122,8 @@ def teams_view(request):
         return redirect('/')
     profile = get_user_profile(request)
     args = {
-        'teams': _build_teams(profile.groups.all(), profile)
+        'teams': _build_teams(profile.groups.all(), profile),
+        'profile': get_header_profile(profile)
     }
     return render(request, 'main/teams/teams_view.html', args)
 
