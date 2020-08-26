@@ -1,11 +1,11 @@
 import uuid
 
 from main.forms import TeamForm
-from main.models import Group
+from main.models import Group, Moderator
 from .auxiliary_general_methods import *
 from .company_views import _get_roles
 from django.shortcuts import redirect, render
-
+from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 
 
@@ -23,8 +23,8 @@ def team_view(request, group_id: int) -> render:
             'description': team.description,
         },
         'is_leader': profile == team.owner,
+        'profile': get_header_profile(profile),
         'teammates': _build_teammates(team.profile_set.all(), team, profile),
-        'profile': get_header_profile(profile)
     }
     company = team.company
     if company is not None:
@@ -32,7 +32,6 @@ def team_view(request, group_id: int) -> render:
             'href': '/company/{}/'.format(company.pk),
             'name': company.name,
         }
-    print(args)
     return render(request, 'main/teams/team_view.html', args)
 
 
@@ -67,19 +66,60 @@ def team_settings_view(request, group_id):
 
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
-        return redirect('/')
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+    profile = get_user_profile(request)
     args = {
         'team': {
+            'id': team.pk,
             'name': team.name,
             'description': team.description,
             'hrefForInvite': '',  # todo,
-        }
+        },
+        'is_leader': profile == team.owner,
+        'profile': get_header_profile(profile),
     }
     return render(request, 'main/teams/team_setting.html', args)
 
 
 def team_remove(request, group_id):
-    pass
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    team: Group = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+
+    profile = get_user_profile(request)
+    if team.owner != profile or not _profile_is_owner_or_moderator(profile):
+        return render(request, 'main/errors/global_error.html', {'global_error': 403})
+    team.delete()
+    return redirect('/teams/')
+
+
+def _profile_is_owner_or_moderator(profile: Profile):
+    company = profile.company
+    is_owner = False
+    if company is not None:
+        is_owner = company.owner == profile
+    return Moderator.objects.filter(profile=profile).exists() or is_owner
+
+
+def team_change(request: WSGIRequest, group_id: int) -> redirect:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    if request.is_ajax():
+        team: Group = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+
+        profile = get_user_profile(request)
+        if team.owner != profile or not _profile_is_owner_or_moderator(profile):
+            return JsonResponse({}, status=403)
+
+        team.name = request.POST.get('name', team.name)
+        team.description = request.POST.get('description', team.description)
+        team.save()
+        return JsonResponse({}, status=200)
 
 
 def search_team_for_invite(request, profile_id: int) -> render:
@@ -144,11 +184,6 @@ def _build_teams(teams: list, current_profile: Profile) -> list:
     return result
 
 
-def team_setting(request, team_id):
-    args = {}
-    return render(request, 'main/teams/team_setting.html', args)
-
-
 def team_new_invites(request, team_id):
     args = {}
     return render(request, 'main/teams/team_new_invites.html', args)
@@ -167,3 +202,13 @@ def create_team(request):
 
     profile.groups.add(new_group)
     return redirect('/team/{}/'.format(new_group.pk))
+
+
+def search(request: WSGIRequest, group_id: int) -> JsonResponse:
+    if request.is_ajax():
+        team = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+
+        user_input = request.POST.get('search', '')
+

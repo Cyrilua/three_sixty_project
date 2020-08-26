@@ -12,9 +12,13 @@ from ..urls_loadable import register_urls, edit_profile_urls, polls_view_urls, p
 
 urlpatterns = [
     # Промотр конкретной команды
-    path('<int:group_id>/', teams_views.team_view, name='team_view'),
+    path('', teams_views.team_view, name='team_view'),
     # Настройки команды
-    path('<int:group_id>/settings/', teams_views.team_settings_view, name='team_setting'),
+    path('settings/', teams_views.team_settings_view, name='team_setting'),
     # Удаление команды
-    path('<int:group_id>/settings/remove/', teams_views.team_remove, name='team_remove'),
+    path('<settings/remove/', teams_views.team_remove, name='team_remove'),
+    # Удаление команды
+    path('settings/change/', teams_views.team_change, name='team_change'),
+    # Поиск
+    path('search/', teams_views.search, name='search')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
