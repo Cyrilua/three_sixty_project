@@ -172,7 +172,7 @@ $(function () {
             success: function (response) {
                 $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
                 $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
-                content
+                content.children('.notifications')
                     .empty()
                     .prepend(response.content);
                 category = selectedCategory;

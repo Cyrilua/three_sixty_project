@@ -94,7 +94,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-size: cover;
+  object-fit: cover;
 }
 .content .content__body .teammates .teammate .info {
   margin-left: 10px;
