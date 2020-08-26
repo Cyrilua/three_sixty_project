@@ -80,7 +80,6 @@ $(function () {
                 }
             },
             error: function () {
-                console.log('Что - то пошло не так :(');
             }
         })
     });

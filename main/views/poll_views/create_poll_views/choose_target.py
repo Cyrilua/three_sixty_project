@@ -66,7 +66,7 @@ def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse
         return JsonResponse({}, status=400)
     profile = get_user_profile(request)
     company = profile.company
-    profiles = company.profile_set.all().exclude(pk=profile.pk)
+    profiles = company.profile_set.all()
     args = {'participants': _build_team_profiles_list(profiles, company, poll.target)}
     content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                      args).rendered_content
@@ -102,6 +102,10 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 
 def build_profile(profile) -> dict:
+    try:
+        photo = profile.profilephoto.photo
+    except ObjectDoesNotExist:
+        photo = None
     return {
         'href': '/{}/'.format(profile.pk),
         'id': profile.pk,
@@ -111,21 +115,25 @@ def build_profile(profile) -> dict:
         'roles': _get_roles(profile),
         'positions': [i.name for i in profile.positions.all()],
         'platforms': [i.name for i in profile.platforms.all()],
+        'photo': photo
     }
 
 
 def _get_roles(profile: Profile) -> list:
     roles = []
-    if profile.company.owner.pk == profile.pk:
-        roles.append('boss')
-    if SurveyWizard.objects.filter(profile=profile).exists():
-        roles.append('master')
-    if Moderator.objects.filter(profile=profile).exists():
-        roles.append('moderator')
+    if profile.company is not None:
+        if profile.company.owner.pk == profile.pk:
+            roles.append('boss')
+        if SurveyWizard.objects.filter(profile=profile).exists():
+            roles.append('master')
+        if Moderator.objects.filter(profile=profile).exists():
+            roles.append('moderator')
     return roles
 
 
 def search(request: WSGIRequest) -> JsonResponse:
+    # todo включить в поиск сортировку по должностям/платформам.
+    #  искать по цепочке символов начиная с начала имени/фамилии
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)

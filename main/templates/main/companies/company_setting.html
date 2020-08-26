@@ -1,0 +1,99 @@
+{% extends 'main/wrapper.html' %}
+{% load static %}
+
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' %}
+{% endblock %}
+
+{% block content-user %}
+
+    <div class="content rounded-block unselectable">
+        {% csrf_token %}
+        <div class="content__body">
+            <div class="content__top">
+                <div class="setting">
+                    <h3 class="subtitle">Название</h3>
+                    <input type="text" class="input-field" id="companyName" placeholder="Введите название копании"
+                           value="{{ company.name }}" maxlength="40">
+                </div>
+                <div class="setting">
+                    <h3 class="subtitle">Описание</h3>
+                    <textarea class="input-field" placeholder="Введите описание" id="companyDescription"
+                              maxlength="500">{{ company.description }}</textarea>
+                </div>
+
+                <div class="setting setting-no-input">
+                    <h3 class="subtitle">Ссылка для вступления</h3>
+                    <textarea id="href-invite" readonly>{{ company.hrefForInvite }}</textarea>
+                    <a class="copy" id="copy">Скопировать</a>
+                </div>
+            </div>
+            <div class="content__bottom">
+                <div class="setting setting-vertical">
+                    <h3 class="subtitle">Должности</h3>
+                    <div class="area" id="positions">
+                        <div class="area__head">
+                            <input type="text" class="input-no-outline area__new-name" id="namePosition"
+                                   placeholder="Придумайте название...">
+                            <button class="button-white area__add" id="addPosition" disabled>Добавить</button>
+                        </div>
+                        <div class="area__body">
+                            {% for position in company.positions %}
+                                <div class="area__item" title="{{ position.name }}"
+                                     data-position-id="{{ position.id }}">
+                                    <div class="item__text">{{ position.name }}</div>
+                                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt=""
+                                         class="item__remove" id="positionRemove">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="setting setting-vertical">
+                    <h3 class="subtitle">Отделы</h3>
+                    <div class="area" id="platforms">
+                        <div class="area__head">
+                            <input type="text" class="input-no-outline area__new-name" id="namePlatform"
+                                   placeholder="Придумайте название...">
+                            <button class="button-white area__add" id="addPlatform" disabled>Добавить</button>
+                        </div>
+                        <div class="area__body">
+                            {% for platform in company.platforms %}
+                                <div class="area__item" title="{{ platform.name }}"
+                                     data-platform-id="{{ platform.id }}">
+                                    <div class="item__text">{{ platform.name }}</div>
+                                    <img src="{% static 'main/images/icon/clear-24px.svg' %}" alt=""
+                                         class="item__remove" id="platformRemove">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content__footer">
+            <div class="actions">
+                <button class="button-red" id="saveChanges" disabled>Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar-nav-right %}
+    {% include 'main/includes/menu_company_view_right.html' with menu_setting='item--active' %}
+    {% include 'main/includes/scroll_top.html' %}
+{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
+    <link rel="stylesheet" href="{% static 'main/scss/company_setting.min.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'main/js/libraries/scroll_top.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/libraries/hint.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main/js/company_setting.js' %}"></script>
+{% endblock %}

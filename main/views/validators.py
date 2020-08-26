@@ -7,9 +7,11 @@ from django.contrib.auth import password_validation, validators
 from django.core.validators import EmailValidator
 from main.models import Profile
 from .auxiliary_general_methods import check_code
+import emoji
 
 
-def validate_login(login: str):
+
+def validate_login(login: str) -> list:
     result = []
     login = login.lower()
     users = User.objects.all()
@@ -29,9 +31,8 @@ def validate_login(login: str):
         result.append('Логин содержит запрещенные символы')
     return result
 
-import emoji
 
-def validate_password1(password: str):
+def validate_password1(password: str) -> list:
     result = []
     try:
         password_validation.validate_password(password)
@@ -42,14 +43,14 @@ def validate_password1(password: str):
     return result
 
 
-def validate_password2(password2: str, password1: str):
+def validate_password2(password2: str, password1: str) -> list:
     result = []
     if password2 != password1:
         result.append('Пароли не совпадают')
     return result
 
 
-def validate_birth_date(date: str):
+def validate_birth_date(date: str) -> list:
     result = []
     current_date = datetime.datetime.today()
     old_date = datetime.datetime.strptime('1900-1-1', '%Y-%m-%d')
@@ -64,7 +65,7 @@ def validate_birth_date(date: str):
     return result
 
 
-def validate_email(email: str):
+def validate_email(email: str) -> list:
     result = []
     if len(email) != 0:
         try:
@@ -80,7 +81,7 @@ def validate_email(email: str):
     return result
 
 
-def validate_name(name: str):
+def validate_name(name: str) -> list:
     result = []
     len_name = len(name)
     if len_name < 2:
@@ -94,7 +95,7 @@ def validate_name(name: str):
     return result
 
 
-def validate_surname(surname: str):
+def validate_surname(surname: str) -> list:
     result = []
     len_name = len(surname)
     if len_name < 2:
@@ -108,7 +109,7 @@ def validate_surname(surname: str):
     return result
 
 
-def validate_patronymic(patronymic: str):
+def validate_patronymic(patronymic: str) -> list:
     result = []
     len_name = len(patronymic)
     if len_name < 2:
@@ -122,9 +123,14 @@ def validate_patronymic(patronymic: str):
     return result
 
 
-def validate_code(code: str, email: str):
+def validate_code(code: str, email: str) -> list:
     result = []
     result_check = check_code(code, email)
     if not result_check:
         result.append('Введен неверный код подтверждения')
     return result
+
+
+def validate_user_input_in_company_settings(user_input: str) -> bool:
+    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _\-0-9.,]')
+    return len(reg.sub('', user_input)) == len(user_input) and not bool(emoji.get_emoji_regexp().search(user_input))

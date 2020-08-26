@@ -69,26 +69,26 @@ $(function () {
                     $(team).css({
                         'display': 'none',
                     });
+                    let t = setTimeout(function () {
+                        if (!ajaxRequests[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: 'Вы покинули команду',
-                        customClass: 'custom no-animation center',
+                    customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
+                            clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
                             $(team).css({
                                 'display': 'flex',
                             });
                         },
-                        onClose: function () {
-                            if (!ajaxRequests[id].finish) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }
@@ -106,7 +106,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

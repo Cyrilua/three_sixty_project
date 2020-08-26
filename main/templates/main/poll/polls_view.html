@@ -33,10 +33,10 @@
                         </div>
                         {% for template in data.templates.general %}
                             <div class="template-item unselectable">
-                                <div class="template__main button-href" data-href="{{ template.url }}"
+                                <a href="{% url 'main:create_poll_from_template' template_id=template.id %}" class="template__main" data-href="{{ template.url }}"
                                      data-id="{{ template.id }}">
                                     {% include 'main/includes/template_item.html' %}
-                                </div>
+                                </a>
                                 <div class="template__name">
                                     <div class="name" title="{{ template.name }}">{{ template.name }}</div>
                                 </div>
@@ -47,15 +47,15 @@
                         <h2 class="title">Мои шаблоны</h2>
                         <div class="my-templates">
                             {% for template in data.templates.my %}
-                                <div class="template-item {{ template.color }} unselectable">
-                                    <div class="template__main button-href" data-href="{{ template.url }}"
+                                <dis class="template-item {{ template.color }} unselectable">
+                                    <a href="{% url 'main:create_poll_from_template' template_id=template.id %}" class="template__main " data-href="{{ template.url }}"
                                          data-id="{{ template.id }}">
                                         {% include 'main/includes/template_item.html' with delete=' ' %}
-                                    </div>
+                                    </a>
                                     <div class="template__name">
                                         <div class="name" title="{{ template.name }}">{{ template.name }}</div>
                                     </div>
-                                </div>
+                                </dis>
                             {% endfor %}
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="categories">
-                    <div class="show-new-poll rounded-block hide">
+                    <div class="show-new-poll rounded-block hide" id="showNewNotif">
                         <div class="label">
                             <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
                             <span class="text">Показать новые опросы</span>
@@ -139,16 +139,16 @@
                     </div>
                     <div class="category-content">
 
-{#                        {% if data.polls %}#}
-{#                            {% include 'main/includes/item_polls.html' %}#}
-{#                        {% else %}#}
-{#                            <div class="category-empty">#}
-{#                                {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}#}
-{#                            </div>#}
-{#                        {% endif %}#}
-{#                        <div class="category-empty ">#}
-{#                            {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}#}
-{#                        </div>#}
+                        {#                        {% if data.polls %}#}
+                        {#                            {% include 'main/includes/item_polls.html' %}#}
+                        {#                        {% else %}#}
+                        {#                            <div class="category-empty">#}
+                        {#                                {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}#}
+                        {#                            </div>#}
+                        {#                        {% endif %}#}
+                        {#                        <div class="category-empty ">#}
+                        {#                            {% include 'main/includes/bad_search.html' with text="Пока опросов нет" only %}#}
+                        {#                        </div>#}
                     </div>
                     <div class="_preloader hide">
                         {#                        <div class="_preloader__sub">#}
@@ -545,7 +545,7 @@
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
-{#    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">#}
+    {#    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">#}
     <link rel="stylesheet" href="{% static 'main/scss/polls_view.min.css' %}">
 {% endblock %}
 

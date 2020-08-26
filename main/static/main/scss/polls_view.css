@@ -46,15 +46,11 @@
   margin: 30px 30px 0;
 }
 .content .templates .templates-block .templates-general {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-.content .templates .templates-block .templates-general .template-item {
-  margin: 0 30px 30px 0;
-}
-.content .templates .templates-block .templates-general .template-item:nth-child(4n) {
-  margin: 0 0 30px 0;
+  margin: 30px 0 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-row-gap: 30px;
+  grid-column-gap: 30px;
 }
 .content .templates .templates-block .my-templates-block .title {
   display: flex;
@@ -68,16 +64,11 @@
   color: #595757;
 }
 .content .templates .templates-block .my-templates-block .my-templates {
-  margin: 30px 0 0;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-.content .templates .templates-block .my-templates-block .my-templates .template-item {
-  margin: 0 30px 30px 0;
-}
-.content .templates .templates-block .my-templates-block .my-templates .template-item:nth-child(4n) {
-  margin: 0 0 30px 0;
+  margin: 30px 0 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-row-gap: 30px;
+  grid-column-gap: 30px;
 }
 .content .polls .substrate .sort {
   margin-bottom: 20px;
@@ -114,6 +105,7 @@
 .content .polls .categories .category-content .poll-item {
   margin-bottom: 20px;
   margin-right: 20px;
+  text-decoration: none;
 }
 .content .polls .categories .category-content .poll-item:nth-of-type(3n) {
   margin-right: 0;

@@ -103,6 +103,17 @@
         border-top: 1px solid #E5E5E5;
         margin-top: 13px;
 
+        .empty {
+          padding-top: 4px;
+          margin-right: 5px;
+          height: 22px;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          color: #C4C4C4;
+          margin-bottom: 4px;
+        }
+
         .positions {
           border-right: 1px solid #E5E5E5;
           padding-right: 30px;
@@ -180,14 +191,14 @@
               .platform__add {
                 border-radius: 50%;
                 cursor: pointer;
-                z-index: 310;
+                z-index: 300;
               }
 
               .add__menu {
                 position: absolute;
                 left: -97px;
                 top: 16px;
-                z-index: 300;
+                z-index: 310;
 
                 &::before {
                   content: '';
@@ -472,6 +483,7 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
+
       #modal_close {
         margin-right: 12px;
       }

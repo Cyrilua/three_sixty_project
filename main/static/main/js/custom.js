@@ -1,22 +1,22 @@
-function copyText(el) {
-    let $tmp = $("<input>");
-    $("body").append($tmp);
-    $tmp.val($(el).text()).select();
-    document.execCommand("copy");
-    $tmp.remove();
-}
-
-function updateTextForRange(el1, el2) {
-    let range = document.getElementById(el1);
-    let label = document.getElementById(el2);
-    label.innerText = range.value;
-}
-
-function getCounterSymbols(el1, el2) {
-    let text = document.getElementById(el1);
-    let counter = document.getElementById(el2);
-    counter.innerText = (500 - text.value.length).toString();
-}
+// function copyText(el) {
+//     let $tmp = $("<input>");
+//     $("body").append($tmp);
+//     $tmp.val($(el).text()).select();
+//     document.execCommand("copy");
+//     $tmp.remove();
+// }
+//
+// function updateTextForRange(el1, el2) {
+//     let range = document.getElementById(el1);
+//     let label = document.getElementById(el2);
+//     label.innerText = range.value;
+// }
+//
+// function getCounterSymbols(el1, el2) {
+//     let text = document.getElementById(el1);
+//     let counter = document.getElementById(el2);
+//     counter.innerText = (500 - text.value.length).toString();
+// }
 
 $(function () {
     console.log('Time loading page ' + performance.now());
@@ -87,19 +87,19 @@ $(function () {
         }
     });
 
-    // Переходы по кнопкам в меню (в шапке)
-    body.on('click', '.head-menu-item', function () {
-        let id = this.id;
-        if (id === 'head-menu-company') {
-            $(location).attr({href: '/company_view/'});
-        } else if (id === 'head-menu-settings') {
-            $(location).attr({href: '/edit/'});
-        } else if (id === 'head-menu-logout') {
-            $(location).attr({href: '/logout/'});
-        } else {
-            throw new Error('invalid argument value');
-        }
-    });
+    // // Переходы по кнопкам в меню (в шапке)
+    // body.on('click', '.head-menu-item', function () {
+    //     let id = this.id;
+    //     if (id === 'head-menu-company') {
+    //         $(location).attr({href: '/company/5/'});
+    //     } else if (id === 'head-menu-settings') {
+    //         $(location).attr({href: '/edit/'});
+    //     } else if (id === 'head-menu-logout') {
+    //         $(location).attr({href: '/logout/'});
+    //     } else {
+    //         throw new Error('invalid argument value');
+    //     }
+    // });
 
     // Переход на другие страницы по кнопкам (как ссылки)
     body.on('click', '.button-href', function (el) {

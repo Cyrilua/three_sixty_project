@@ -24,7 +24,6 @@ def build_questions(questions: list, from_template: bool) -> list:
             'type': settings.type,
             'id': question.pk if not from_template else '',
             'name': question.text,
-            'answers': answers,
             'countAnswers': answers.count(),
             'slider': {
                 'min': settings.min,
@@ -32,5 +31,9 @@ def build_questions(questions: list, from_template: bool) -> list:
                 'step': settings.step
             }
         }
+        if from_template:
+            collected_question['answers'] = answers.values('text')
+        else:
+            collected_question['answers'] = answers.values('id', 'text')
         result.append(collected_question)
     return result

@@ -107,7 +107,11 @@ def _build_objects(list_objects: filter) -> list:
 
 def remove_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
-        platform = PlatformCompany.objects.get(id=platform_id)
+        try:
+            platform = PlatformCompany.objects.get(id=platform_id)
+        except ObjectDoesNotExist:
+            # todo throw exception
+            return JsonResponse({'resultStatus': 'error'}, status=200)
         platform.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
@@ -115,12 +119,14 @@ def remove_platform(request, platform_id: int) -> redirect:
 def remove_position(request, position_id: int) -> redirect:
     if request.is_ajax():
         position = PositionCompany.objects.get(id=position_id)
+        # todo throw exception
         position.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def add_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
+        # todo throw exception
         profile = get_user_profile(request)
         platform = PlatformCompany.objects.get(id=platform_id)
         platform.profile_set.add(profile)
@@ -129,6 +135,7 @@ def add_platform(request, platform_id: int) -> redirect:
 
 def add_position(request, position_id: int) -> redirect:
     if request.is_ajax():
+        # todo throw exception
         profile = get_user_profile(request)
         position = PositionCompany.objects.get(id=position_id)
         position.profile_set.add(profile)

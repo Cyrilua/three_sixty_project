@@ -52,16 +52,22 @@
       margin: 30px 30px 0;
 
       .templates-general {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
+        margin: 30px 0 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        grid-row-gap: 30px;
+        grid-column-gap: 30px;
+        //display: flex;
+        //justify-content: flex-start;
+        //flex-wrap: wrap;
 
         .template-item {
-          margin: 0 30px 30px 0;
-
-          &:nth-child(4n) {
-            margin: 0 0 30px 0;
-          }
+          //margin: 0 11.25px 30px 11.25px;
+          //margin: 0 30px 30px 0;
+          //
+          //&:nth-child(4n) {
+          //  margin: 0 0 30px 0;
+          //}
         }
       }
 
@@ -79,17 +85,24 @@
         }
 
         .my-templates {
-          margin: 30px 0 0;
-          display: flex;
-          justify-content: flex-start;
-          flex-wrap: wrap;
+          margin: 30px 0 30px;
+          //display: flex;
+          //justify-content: flex-start;
+          //flex-wrap: wrap;
+
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+          grid-row-gap: 30px;
+          grid-column-gap: 30px;
 
           .template-item {
-            margin: 0 30px 30px 0;
+            //margin: 0 11.25px 30px 11.25px;
 
-            &:nth-child(4n) {
-              margin: 0 0 30px 0;
-            }
+            //margin: 0 30px 30px 0;
+            //
+            //&:nth-child(4n) {
+            //  margin: 0 auto 30px 0;
+            //}
           }
         }
       }
@@ -175,6 +188,7 @@
         .poll-item {
           margin-bottom: 20px;
           margin-right: 20px;
+          text-decoration: none;
 
           &:nth-of-type(3n) {
             margin-right: 0;

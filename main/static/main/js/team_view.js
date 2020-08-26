@@ -12,10 +12,10 @@ $(function () {
         return;
     };
 
-    // Опрос по команде
-    body.on('click', '.new-poll', function (event) {
-       // TODO
-    });
+    // // Опрос по команде
+    // body.on('click', '.new-poll', function (event) {
+    //     // TODO
+    // });
 
     // Поиск тимметов
     let ajaxInput;
@@ -78,11 +78,10 @@ $(function () {
                     });
                     Snackbar.show({
                         text: `${teammateName} был удален из команды`,
-                        customClass: 'custom no-animation center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
                             ajaxRequests[id].finish = true;
@@ -119,7 +118,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -129,7 +128,8 @@ $(function () {
 
     // Выход из команды
     body.on('click', '#leaveTeam', function (event) {
-        let team = $(this).parent();
+        let teammate = $(this).parent();
+        let cont = $('.content');
         let id;
         $.ajax({
             url: `leave/`,
@@ -145,29 +145,31 @@ $(function () {
                         request: request,
                         finish: false,
                     });
-                    $(team).css({
+                    cont.addClass('disabled');
+                    $(teammate).css({
                         'display': 'none',
                     });
+                    let t = setTimeout(function () {
+                        if (!ajaxRequests[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
                     Snackbar.show({
                         text: 'Вы покинули команду',
-                        customClass: 'custom no-animation center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
-                        pos: 'bottom-center',
+                        // pos: 'bottom-center',
                         duration: 5000,
                         onActionClick: function (ele) {
+                            clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
-                            $(team).css({
+                            $(teammate).css({
                                 'display': 'flex',
                             });
                         },
-                        onClose: function () {
-                            if (!ajaxRequests[id].finish) {
-                                $.ajax(request);
-                            }
-                        }
                     });
                 } else {
                 }
@@ -185,13 +187,14 @@ $(function () {
                 ajaxRequests[id].finish = true;
             },
             error: function () {
-                $(team).css({
+                cont.removeClass('disabled');
+                $(teammate).css({
                     'display': 'flex',
                 });
                 Snackbar.show({
                     text: 'Произошла ошибка при выходе вo команды.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
