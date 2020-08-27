@@ -32,7 +32,7 @@ def poll_create(request):
 
 def build_poll() -> dict:
     result = {
-        'color': 'blue',
+        'color': None,
         'questions': build_questions(),
     }
     return result

@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from main.forms import TeamForm
 from main.models import Group, Moderator, PositionCompany, PlatformCompany
@@ -9,6 +10,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.db.models import Q
 from django.template.response import SimpleTemplateResponse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def team_view(request, group_id: int) -> render:
@@ -75,7 +77,8 @@ def team_settings_view(request, group_id):
             'id': team.pk,
             'name': team.name,
             'description': team.description,
-            'hrefForInvite': '',  # todo,
+            'hrefForInvite': ''.join(['http://', get_current_site(request).domain, '/team/{}/'.format(team.pk),
+                                      'invite_team/', team.key])
         },
         'is_leader': profile == team.owner,
         'profile': get_header_profile(profile),
@@ -186,7 +189,7 @@ def _build_teams(teams: list, current_profile: Profile) -> list:
     return result
 
 
-def team_new_invites(request, team_id):
+def team_new_invites(request, group_id):
     args = {}
     return render(request, 'main/teams/team_new_invites.html', args)
 
@@ -201,9 +204,21 @@ def create_team(request):
     new_group.description = 'Описание'
     new_group.company = profile.company
     new_group.save()
+    _create_unique_key(new_group)
 
     profile.groups.add(new_group)
     return redirect('/team/{}/'.format(new_group.pk))
+
+
+def _create_unique_key(team: Group):
+    team_id_changed = team.pk % 1000 + 1000
+    owner_id_changed = team.owner.pk % 1000 + 1000
+    date_now = datetime.today()
+    date_changed_str = '{}{}{}{}{}{}{}'.format(date_now.day, date_now.month,
+                                               date_now.year, date_now.hour, date_now.minute, date_now.second, date_now.microsecond)
+    key = '{}{}{}'.format(team_id_changed, owner_id_changed, date_changed_str)
+    team.key = key
+    team.save()
 
 
 def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
@@ -234,3 +249,16 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         content = SimpleTemplateResponse('main/teams/teams.html',
                                          {'teams': collected_teams}).rendered_content
         return JsonResponse({'content': content}, status=200)
+
+
+def join_using_link(request, group_id, key: str):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    team = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+    if team.key != key:
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+    profile = get_user_profile(request)
+    profile.groups.add(team)
+    return redirect('/team/{}/'.format(team.pk))

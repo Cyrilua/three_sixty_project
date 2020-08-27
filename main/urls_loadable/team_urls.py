@@ -20,5 +20,9 @@ urlpatterns = [
     # Удаление команды
     path('settings/change/', teams_views.team_change, name='team_change'),
     # Поиск
-    path('search/', teams_views.search_teammate, name='search')
+    path('search/', teams_views.search_teammate, name='search'),
+    # Приглашение новых участников через команду
+    path('invites/', teams_views.team_new_invites, name='team_new_invites'),
+    # Вступить в команду по ссылке
+    path('invite_team/<str:key>/', teams_views.join_using_link, name='join_using_link')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

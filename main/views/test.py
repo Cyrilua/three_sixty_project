@@ -12,11 +12,19 @@ from django.template.loader import get_template
 from django.db.models import Q
 from itertools import chain
 
+from django.contrib.sites.shortcuts import get_current_site
+
 
 def test(request: WSGIRequest):
     # _test_send_email(request)
-    _test_filter(request)
+    #_test_filter(request)
+    _create_link(request)
     return render(request, 'main/test.html')
+
+def _create_link(request: WSGIRequest):
+    print(get_current_site(request))
+    full_url = ''.join(['http://', get_current_site(request).domain, 'jdnviujdbsnvkisuhv'])
+    print(full_url)
 
 
 def _test_send_email(request):
