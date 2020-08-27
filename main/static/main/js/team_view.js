@@ -101,13 +101,7 @@ $(function () {
                 }
             },
             success: function (response) {
-                window.onbeforeunload = function () {
-                    return;
-                };
-                window.onunload = function () {
-                    return;
-                };
-                location.href = '/teams/';
+                teammate.remove();
             },
             complete: function () {
                 ajaxRequests[id].finish = true;
