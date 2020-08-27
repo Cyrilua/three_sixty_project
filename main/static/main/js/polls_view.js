@@ -157,21 +157,21 @@ $(function () {
         })
     });
 
-    // Создание нового опроса/шаблона
-    body.on('click', '.template-new', function () {
-        $.ajax({
-            url: 'poll/create/',
-            type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                window.location.href = response.urlNewPoll;
-            },
-            error: function () {
-            },
-        })
-    });
+    // // Создание нового опроса/шаблона
+    // body.on('click', '.template-new', function () {
+    //     $.ajax({
+    //         url: 'poll/create/',
+    //         type: 'post',
+    //         data: {
+    //             csrfmiddlewaretoken: csrf,
+    //         },
+    //         success: function (response) {
+    //             window.location.href = response.urlNewPoll;
+    //         },
+    //         error: function () {
+    //         },
+    //     })
+    // });
 
     // Проверка новых опросов для прохождения (каждую сеекунду)
     setInterval(function () {
