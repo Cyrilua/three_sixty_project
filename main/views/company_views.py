@@ -53,7 +53,6 @@ def company_view(request: WSGIRequest, id_company: int):
             pass
         profile = get_user_profile(request)
         args = {
-            #'users': _build_profiles(company),
             'company': {
                 'id': company.pk,
                 'name': company.name,
@@ -88,8 +87,10 @@ def load_teams_and_users(request: WSGIRequest, id_company: int) -> JsonResponse:
 
 
 def _load_users(company: Company, profile: Profile, search: str):
-    # todo search
-    collected_profiles = _build_profiles(company)
+    profiles = company.profiles_set.all()
+    if search != '':
+        profiles = get_search_result_for_profiles(profiles, search.split(), company)
+    collected_profiles = _build_profiles(profiles)
     args = {
         'users': collected_profiles,
         'profile': {
@@ -100,9 +101,8 @@ def _load_users(company: Company, profile: Profile, search: str):
     return SimpleTemplateResponse('main/companies/users.html', args).rendered_content
 
 
-def _build_profiles(company: Company):
+def _build_profiles(profiles: list):
     result = []
-    profiles = company.profile_set.all()
     for profile in profiles:
         profile: Profile
         try:
@@ -119,23 +119,24 @@ def _build_profiles(company: Company):
             'roles': _get_roles(profile),
             'new_roles': _get_new_roles(profile),
             'positions': profile.positions.all(),
-            'new_positions': PositionCompany.objects.filter(company=company).exclude(profile=profile),
+            'new_positions': PositionCompany.objects.filter(company=profile.company).exclude(profile=profile),
             'platforms': profile.platforms.all(),
-            'new_platforms': PlatformCompany.objects.filter(company=company).exclude(profile=profile),
+            'new_platforms': PlatformCompany.objects.filter(company=profile.company).exclude(profile=profile),
         }
         result.append(collected_profile)
     return result
 
 
 def _load_teams(company: Company, profile: Profile, search: str):
-    # todo search
     teams = Group.objects.filter(company=company)
+    if search != '':
+        teams = get_search_result_for_teams(teams, search)
     collected_teams = []
     for team in teams:
         team: Group
         collected_teams.append({
             'id': team.pk,
-            'href': '',  # todo
+            'href': '/team/{}/'.format(team.pk),
             'name': team.name,
             'quantity': team.profile_set.all().count(),
             'description': team.description,
