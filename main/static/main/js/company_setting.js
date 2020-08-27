@@ -24,6 +24,23 @@ $(function () {
             })
             .select();
         document.execCommand("copy");
+        if (invite.val() !== '' && window.getSelection().toString() === invite.val()) {
+            Snackbar.show({
+                text: 'Ссылка скопирована',
+                textColor: '#1ecb00',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        } else {
+            Snackbar.show({
+                text: 'Ошибка при копировании ссылки',
+                textColor: '#ff0000',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        }
         invite.css({
             display: 'none',
         })
