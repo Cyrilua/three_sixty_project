@@ -13,7 +13,7 @@ from django.db.models import Q
 
 
 def test(request: WSGIRequest):
-    #_test_send_email(request)
+    # _test_send_email(request)
     _test_filter(request)
     return render(request, 'main/test.html')
 
@@ -26,6 +26,7 @@ def _test_send_email(request):
     link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
            '/poll/compiling_poll_link/{}/'.format(poll.key)
     context = {
+                'type_email': 'notification',
                 'user': {
                     'name': profile.name,
                     'patronymic': profile.patronymic

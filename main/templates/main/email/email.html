@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="mail" style="background-color: #a1a1a1;
+<div class="mail" style="background-color: #fafafa;
         box-sizing: border-box;
         width: auto;
         height: auto;
@@ -43,20 +43,13 @@
                 line-height: 20px;
                 color: #000000;">
 
-
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">Здравствуйте, <strong>{{ user.name }} {{ user.patronymic }}!</strong></span>
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">
-                Мы получили запрос на восстановление пароля от вашей учётной записи на сайте ПРОЕКТ360, для создания нового пароля
-                <a href="{{ url }}" style="" target="_blank">перейдите&nbsp;по&nbsp;ссылке</a>&nbsp;.
-            </span>
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">Если запрос отправили не Вы, проигнорируйте это письмо.</span>
-
+            {% if type_email == 'reset' %}
+                {% include 'main/email/content/reset_pass.html' %}
+            {% elif type_email == 'verification' %}
+                {% include 'main/email/content/verification.html' %}
+            {% elif type_email == 'notification' %}
+                {% include 'main/email/content/notif.html' %}
+            {% endif %}
 
             <span style="display: block;
                 box-sizing: border-box;
