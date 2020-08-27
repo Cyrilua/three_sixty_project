@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ..views import teams_views
+from ..views.teams import teams_views
 
 urlpatterns = [
     # Список всх команд

@@ -4,8 +4,9 @@ from django.urls import path, include
 
 from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls, company_url, \
     teams_views_urls, team_urls, profile_urls, password_urls
-from .views import user_views, teams_views, company_views, test
+from .views import user_views, company_views, test
 from .views.poll_views import create_poll
+from .views.teams import team_views
 
 app_name = "main"
 urlpatterns = [
@@ -27,7 +28,7 @@ urlpatterns = [
     path('team/<int:group_id>/', include(team_urls)),
 
     # Поиск команды для присоединения в нее
-    path('<int:profile_id>/invite/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+    path('<int:profile_id>/invite/', team_views.search_team_for_invite, name='search_team_for_invite'),
 
     # Страница просмотра опросов и шаблонов
     path('polls/', include(polls_view_urls)),
