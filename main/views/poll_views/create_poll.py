@@ -7,8 +7,9 @@ from django.core.handlers.wsgi import WSGIRequest
 
 
 def redirect_for_create(request):
-    if request.is_ajax():
-        return JsonResponse({'urlNewPoll': '/poll/editor/new/'}, status=200)
+    #if request.is_ajax():
+    #return JsonResponse({'urlNewPoll': '/poll/editor/new/'}, status=200)
+    return redirect('/poll/editor/new/')
 
 
 def poll_create_from_team(request):

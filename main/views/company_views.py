@@ -54,10 +54,6 @@ def company_view(request: WSGIRequest, id_company: int):
         profile = get_user_profile(request)
         args = {
             #'users': _build_profiles(company),
-            'profile': {
-                'is_boss': company.owner == profile,
-                'is_master': SurveyWizard.objects.filter(profile=profile).exists()
-            },
             'company': {
                 'name': company.name,
                 'description': company.description,
@@ -65,8 +61,11 @@ def company_view(request: WSGIRequest, id_company: int):
                 'platforms': PlatformCompany.objects.filter(company=company),
                 'countParticipants': company.profile_set.all().count(),
                 'countTeams': Group.objects.filter(company=company).count()
-            }
+            },
+            'profile': get_header_profile(profile)
         }
+        args['profile']['is_boss'] = company.owner == profile
+        args['profile']['is_master'] = SurveyWizard.objects.filter(profile=profile).exists()
         return render(request, 'main/companies/company_view.html', args)
 
 

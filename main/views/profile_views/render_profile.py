@@ -49,6 +49,7 @@ def _build_profile_data(user, profile):
     if company is not None:
         roles = _get_user_roles(user, profile, company)
         profile_data['company'] = {
+            'id': company.id,
             'url': '/company_view/{}/'.format(company.id),
             'name': company.name,
         }

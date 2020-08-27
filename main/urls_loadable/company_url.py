@@ -20,5 +20,7 @@ urlpatterns = [
     # Загрузка команд
     path('load/', company_views.load_teams_and_users),
     # Удаление команды
-    path('team/<int:team_id>/remove/', company_views.remove_team)
+    path('team/<int:team_id>/remove/', company_views.remove_team),
+    #
+    #path('create_new_poll_from_company/<int:company_id>/', )
 ]
