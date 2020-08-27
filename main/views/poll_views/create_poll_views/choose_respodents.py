@@ -7,7 +7,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from main.models import Poll, Group, SurveyWizard, Company, \
     NeedPassPoll
 from main.views.auxiliary_general_methods import *
-from .choose_target import build_profile, _search_participants
+from .choose_target import build_profile, _search_teams
 
 
 def save_information(request: WSGIRequest) -> Poll:
@@ -152,9 +152,9 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     mode = request.POST['mode']
     user_input: str = request.POST['input']
     profile = get_user_profile(request)
-
+    company = profile.company
     if mode == 'participants':
-        result_search = _search_participants(user_input, profile)
+        result_search = get_search_result_for_profiles(company.profile_set.all(), user_input.split(), company)
         content_participants_args = {
             'participants': _build_team_profiles_list(result_search, profile.company,
                                                       NeedPassPoll.objects.filter(poll=poll),
@@ -163,7 +163,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          content_participants_args).rendered_content
     elif mode == 'teams':
-        result_search = _search_participants(user_input, profile)
+        result_search = _search_teams(user_input, profile)
         collected_teams = _build_team_list(result_search, NeedPassPoll.objects.filter(poll=poll),
                                            unbilding_user=profile)
         content_teams_args = {

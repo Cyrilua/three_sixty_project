@@ -215,25 +215,7 @@ def search(request: WSGIRequest, group_id: int) -> JsonResponse:
             return JsonResponse({}, status=404)
         profile = get_user_profile(request)
         user_input = request.GET.get('search', '').split()
-        company = profile.company
-        profiles = team.profile_set.all()
-        for input_iter in user_input:
-            profiles = profiles.filter(
-                Q(name__istartswith=input_iter) |
-                Q(surname__istartswith=input_iter) |
-                Q(patronymic__istartswith=input_iter))
-            if company is not None:
-                id_profiles_by_positions = PositionCompany.objects\
-                    .filter(company=company)\
-                    .filter(name__istartswith=input_iter)\
-                    .values_list('profile__id', flat=True)
-                profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
-                id_profiles_by_platforms = PlatformCompany.objects \
-                    .filter(company=company) \
-                    .filter(name__istartswith=input_iter) \
-                    .values_list('profile__id', flat=True)
-                profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
-                profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
+        profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
         content = SimpleTemplateResponse('main/teams/teammates.html',
                                          {'teammates': completed_profiles}).rendered_content

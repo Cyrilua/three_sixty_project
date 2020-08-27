@@ -132,19 +132,18 @@ def _get_roles(profile: Profile) -> list:
 
 
 def search(request: WSGIRequest) -> JsonResponse:
-    # todo включить в поиск сортировку по должностям/платформам.
-    #  искать по цепочке символов начиная с начала имени/фамилии
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
         mode = request.POST['mode']
         user_input: str = request.POST['input']
-    except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
+    except (ValueError, ObjectDoesNotExist):
         return JsonResponse({}, status=400)
 
     profile = get_user_profile(request)
     if mode == 'participants':
-        result_search = _search_participants(user_input, profile)
+        result_search = get_search_result_for_profiles(profile.company.profile_set.all(), user_input.split(), profile.company)
+        print(result_search)
         content_participants_args = {
             'participants': _build_team_profiles_list(result_search, profile.company, poll.target)
         }
@@ -162,14 +161,6 @@ def search(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content}, status=200)
 
-
-def _search_participants(user_input: str, profile: Profile):
-    profiles = profile.company.profile_set.all()
-    user_input_list = user_input.split(' ')
-    for input_iter in user_input_list:
-        profiles = profiles.filter(
-            Q(name__icontains=input_iter) | Q(surname__icontains=input_iter) | Q(patronymic__icontains=input_iter))
-    return profiles
 
 
 def _search_teams(user_input, profile):

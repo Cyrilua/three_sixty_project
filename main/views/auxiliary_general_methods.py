@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from main.models import Profile, VerificationCode
+from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company
+from django.db.models import Q
 
 UserModel = get_user_model()
 
@@ -113,3 +114,24 @@ def get_header_profile(profile: Profile) -> dict:
             'name': company.name,
         }
     return args
+
+
+def get_search_result_for_profiles(profiles, user_input: list, company: Company):
+    for input_iter in user_input:
+        profiles = profiles.filter(
+            Q(name__istartswith=input_iter) |
+            Q(surname__istartswith=input_iter) |
+            Q(patronymic__istartswith=input_iter))
+        if company is not None:
+            id_profiles_by_positions = PositionCompany.objects \
+                .filter(company=company) \
+                .filter(name__istartswith=input_iter) \
+                .values_list('profile__id', flat=True)
+            profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
+            id_profiles_by_platforms = PlatformCompany.objects \
+                .filter(company=company) \
+                .filter(name__istartswith=input_iter) \
+                .values_list('profile__id', flat=True)
+            profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
+            profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
+    return profiles
