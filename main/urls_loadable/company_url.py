@@ -22,4 +22,7 @@ urlpatterns = [
     path('load/', company_views.load_teams_and_users),
     # Удаление команды
     path('team/<int:team_id>/remove/', company_views.remove_team),
+    # Добавить роль пользователю
+    path('user/<int:profile_id>/edit/role/add/', company_views.assign_role_profile, name='assign_role_profile'),
+
 ]
