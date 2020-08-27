@@ -12,6 +12,11 @@ def redirect_for_create(request):
     return redirect('/poll/editor/new/')
 
 
+def create_new_poll_from_company(request, company_id):
+    # todo
+    pass
+
+
 def poll_create_from_team(request):
     # todo
     pass

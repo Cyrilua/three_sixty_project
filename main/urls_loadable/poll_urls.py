@@ -5,6 +5,7 @@ from ..views.poll_views import result_poll, compiling_poll
 urlpatterns = [
     # Создание опроса из шаблона
     path('editor/template/<int:template_id>/', include(editor_template_urls)),
+
     # Создание нового опроса
     path('editor/new/', include(editor_new_poll_urls)),
     # Просмотр результата опроса

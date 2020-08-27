@@ -55,6 +55,7 @@ def company_view(request: WSGIRequest, id_company: int):
         args = {
             #'users': _build_profiles(company),
             'company': {
+                'id': company.pk,
                 'name': company.name,
                 'description': company.description,
                 'positions': PositionCompany.objects.filter(company=company),

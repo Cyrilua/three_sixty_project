@@ -2,6 +2,7 @@ from django.urls import path
 
 from ..views import company_views
 
+
 urlpatterns = [
     # Просмотр компании
     path('', company_views.company_view, name='company_view'),
@@ -21,6 +22,4 @@ urlpatterns = [
     path('load/', company_views.load_teams_and_users),
     # Удаление команды
     path('team/<int:team_id>/remove/', company_views.remove_team),
-    #
-    #path('create_new_poll_from_company/<int:company_id>/', )
 ]
