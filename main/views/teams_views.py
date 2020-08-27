@@ -227,12 +227,9 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
         profile = get_user_profile(request)
-        user_input = request.GET.get('search', '').split()
+        user_input = request.GET.get('search', '')
         teams = profile.groups.all()
-        print(teams)
-        print(user_input)
         teams = get_search_result_for_teams(teams, user_input)
-        print(teams)
         collected_teams = _build_teams(teams, profile)
         content = SimpleTemplateResponse('main/teams/teams.html',
                                          {'teams': collected_teams}).rendered_content
