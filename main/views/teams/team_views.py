@@ -14,7 +14,7 @@ def team_view(request, group_id: int) -> render:
         return redirect('/')
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
     args = {
         'team': {
@@ -67,7 +67,7 @@ def team_settings_view(request, group_id):
 
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
     args = {
         'team': {
@@ -89,11 +89,11 @@ def team_remove(request, group_id):
 
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
     if team.owner != profile or not _profile_is_owner_or_moderator(profile):
-        return render(request, 'main/errors/global_error.html', {'global_error': 403})
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
     team.delete()
     return redirect('/teams/')
 
@@ -165,7 +165,7 @@ def team_new_invites(request, group_id):
         return redirect('/')
     team = Group.objects.filter(id=group_id).first()
     if team is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
     company = profile.company
     args = {
@@ -196,9 +196,9 @@ def join_using_link(request, group_id, key: str):
         return redirect('/')
     team = Group.objects.filter(id=group_id).first()
     if team is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     if team.key != key:
-        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
     profile.groups.add(team)
     return redirect('/team/{}/'.format(team.pk))

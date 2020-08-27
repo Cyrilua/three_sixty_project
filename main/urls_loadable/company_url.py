@@ -25,4 +25,6 @@ urlpatterns = [
     # Добавить роль пользователю
     path('user/<int:profile_id>/edit/role/add/', company_views.assign_role_profile, name='assign_role_profile'),
 
+    #
+    path('invite_company/<str:key>/', company_views.join_company_from_link, name='join_company_from_link'),
 ]

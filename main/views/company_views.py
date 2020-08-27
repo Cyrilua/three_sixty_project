@@ -10,6 +10,7 @@ from main.models import Company, PositionCompany, PlatformCompany, ProfilePhoto,
     SurveyWizard, Moderator, Group
 from main.views.auxiliary_general_methods import *
 from .validators import validate_user_input_in_company_settings
+from django.contrib.sites.shortcuts import get_current_site
 
 
 def create_company(request):
@@ -48,7 +49,7 @@ def company_view(request: WSGIRequest, id_company: int):
     if request.method == "GET":
         company: Company = Company.objects.filter(pk=id_company).first()
         if company is None:
-            return render(request, 'main/errors/global_error.html', {'global_error': 404})
+            return render(request, 'main/errors/global_error.html', {'global_error': '404'})
         profile = get_user_profile(request)
         args = {
             'company': {
@@ -179,12 +180,13 @@ def company_setting(request: WSGIRequest, id_company: int):
         profile = get_user_profile(request)
         company = Company.objects.filter(pk=id_company).first()
         if company is None:
-            return render(request, 'main/errors/global_error.html', {'global_error': 404})
+            return render(request, 'main/errors/global_error.html', {'global_error': '404'})
         args = {
             'company': {
                 'name': company.name,
                 'description': company.description,
-                'hrefForInvite': '',  # todo
+                'hrefForInvite': ''.join(['http://', get_current_site(request).domain, '/company/{}/'.format(company.pk),
+                                          'invite_company/', company.key]),
                 'positions': PositionCompany.objects.filter(company=company),
                 'platforms': PlatformCompany.objects.filter(company=company),
                 'countParticipants': company.profile_set.all().count(),
@@ -301,7 +303,8 @@ def save_settings_change(request: WSGIRequest, id_company: int):
         description = request.POST.get('description')
         if name is None or description is None:
             return JsonResponse({}, status=403)
-        if not validate_user_input_in_company_settings(name) or not validate_user_input_in_company_settings(description):
+        if not validate_user_input_in_company_settings(name) or not validate_user_input_in_company_settings(
+                description):
             return JsonResponse({}, status=400)
 
         company_queryset.update(name=name, description=description)
@@ -346,3 +349,20 @@ def assign_role_profile(request: WSGIRequest, id_company: int, profile_id: int) 
             return JsonResponse({}, status=400)
         return JsonResponse({}, status=200)
 
+
+def join_company_from_link(request: WSGIRequest, id_company: int, key: str):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+
+    company = Company.objects.filter(id=id_company).first()
+    if company is None or key != company.key:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
+    profile = get_user_profile(request)
+    if profile.company is not None:
+        print('i am here')
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
+    profile.company = company
+    profile.save()
+    return redirect('/company/{}/'.format(company.pk))
