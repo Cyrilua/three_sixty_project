@@ -26,5 +26,7 @@ urlpatterns = [
     # Вступить в команду по ссылке
     path('invite_team/<str:key>/', teams_views.join_using_link, name='join_using_link'),
     # Пригласить пользователя
-    path('invites/invite/<int:profile_id>', teams_views.join_user_from_page, name='join_user_from_page')
+    path('invites/invite/<int:profile_id>', teams_views.join_user_from_page, name='join_user_from_page'),
+    # Выгнать пользователя из команды
+    path('leave/', teams_views.kick_teammate, name='kick_teammate')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

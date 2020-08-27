@@ -278,15 +278,15 @@ def join_using_link(request, group_id, key: str):
 def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
     if request.is_ajax():
         if auth.get_user(request).is_anonymous:
-            return JsonResponse({}, status=400)
+            return JsonResponse({}, status=404)
 
         team = Group.objects.filter(id=group_id).first()
         if team is None:
-            return JsonResponse({}, status=400)
+            return JsonResponse({}, status=404)
 
         profile_added = Profile.objects.filter(id=profile_id).first()
         if profile_added is None:
-            return JsonResponse({}, status=400)
+            return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
         if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
@@ -302,4 +302,27 @@ def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
         new_invitation.is_viewed = False
         new_invitation.is_rendered = False
         new_invitation.save()
+        return JsonResponse({}, status=200)
+
+
+def kick_teammate(request: WSGIRequest, group_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        team = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        teammate_id = int(request.POST.get('teammateId', '-1'))
+        print(teammate_id)
+        teammate = Profile.objects.filter(id=teammate_id).first()
+        print(teammate)
+        if teammate is None:
+            return JsonResponse({}, status=403)
+        team.profile_set.remove(teammate)
         return JsonResponse({}, status=200)
