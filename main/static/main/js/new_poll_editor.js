@@ -12,7 +12,9 @@ $(function () {
     let accessStep3 = false;
     let pollId;
     let templateId;
+
     let selectedInterviewed;
+    let selectedTarget = false;
 
     run();
 
@@ -442,7 +444,7 @@ $(function () {
                 menu.eq(1).addClass('item--active');
 
                 let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                if (selectedTarget || participant.length > 0) {
                     $('#nextToStep3').prop({
                         'disabled': false,
                     });
@@ -528,6 +530,8 @@ $(function () {
             },
         });
     }
+
+
 
     // смена категорий (участники/команды)
     let timeOutId;
@@ -682,7 +686,7 @@ $(function () {
                         }
                     }
                 } else {
-                    if ($('input[name=participants]:checked').length > 0) {
+                    if ($('input[name^=participants]:checked').length > 0) {
                         if (step === '2') {
                             $('#nextToStep3').prop({
                                 'disabled': false,
@@ -955,12 +959,13 @@ $(function () {
                     .removeClass('status--loading status--done status--error')
                 menu.eq(0).removeClass('disabled');
 
-                if ($('input[name=participants]:checked').length > 0) {
+                if ($('input[name^=participants]:checked').length > 0) {
                     if (step === '2') {
                         $('#nextToStep3').prop({
                             'disabled': false,
                         });
                         menu.eq(1).removeClass('disabled');
+                        menu.eq(2).removeClass('disabled');
                     } else if (step === '3') {
                         selectedInterviewed = response.countSelectedInterviewed;
                         $('.head__count-selected').text(selectedInterviewed);
@@ -1149,7 +1154,7 @@ $(function () {
                 // }
 
                 let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
-                if (participant.length > 0) {
+                if (selectedTarget || participant.length > 0) {
                     $('#nextToStep3').prop({
                         'disabled': false,
                     });
