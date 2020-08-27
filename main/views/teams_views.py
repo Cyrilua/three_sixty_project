@@ -315,14 +315,14 @@ def kick_teammate(request: WSGIRequest, group_id: int):
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
+        teammate_id = int(request.POST.get('teammateId', '-1'))
+        teammate = Profile.objects.filter(id=teammate_id).first()
+        if teammate is None:
+            team.profile_set.remove(current_profile)
+            return JsonResponse({}, status=200)
+
         if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
 
-        teammate_id = int(request.POST.get('teammateId', '-1'))
-        print(teammate_id)
-        teammate = Profile.objects.filter(id=teammate_id).first()
-        print(teammate)
-        if teammate is None:
-            return JsonResponse({}, status=403)
         team.profile_set.remove(teammate)
         return JsonResponse({}, status=200)
