@@ -206,27 +206,31 @@ def join_using_link(request, group_id, key: str):
 
 def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
     if request.is_ajax():
+        print(profile_id)
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
 
         team = Group.objects.filter(id=group_id).first()
+        print(team)
         if team is None:
             return JsonResponse({}, status=404)
 
         profile_added = Profile.objects.filter(id=profile_id).first()
+        print(profile_added)
         if profile_added is None:
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
         if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
-        new_invitation, created = Invitation.objects.get_or_create(profile_id=profile_id, invitation_group_id=group_id)
-        new_invitation: Invitation
-        if created:
-            new_invitation.type = 'team'
-            new_invitation.profile = profile_added
-            new_invitation.initiator = current_profile
-            new_invitation.invitation_group_id = group_id
+        try:
+            new_invitation = Invitation.objects.get(profile_id=profile_id, invitation_group_id=group_id)
+        except ObjectDoesNotExist:
+            new_invitation = Invitation()
+        new_invitation.type = 'team'
+        new_invitation.profile = profile_added
+        new_invitation.initiator = current_profile
+        new_invitation.invitation_group_id = group_id
         new_invitation.date = date.today()
         new_invitation.is_viewed = False
         new_invitation.is_rendered = False
