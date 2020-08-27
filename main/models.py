@@ -101,6 +101,8 @@ class Invitation (models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+')
+    is_viewed = models.BooleanField(default=False)
+    is_rendered = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:

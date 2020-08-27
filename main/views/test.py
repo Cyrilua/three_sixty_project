@@ -21,10 +21,12 @@ def test(request: WSGIRequest):
     _create_link(request)
     return render(request, 'main/test.html')
 
+
 def _create_link(request: WSGIRequest):
-    print(get_current_site(request))
-    full_url = ''.join(['http://', get_current_site(request).domain, 'jdnviujdbsnvkisuhv'])
-    print(full_url)
+    profile = get_user_profile(request)
+    test_res = PositionCompany.objects.filter(profile=profile, company=profile.company)
+
+    print(test_res)
 
 
 def _test_send_email(request):

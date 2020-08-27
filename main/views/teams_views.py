@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from main.forms import TeamForm
-from main.models import Group, Moderator, PositionCompany, PlatformCompany
+from main.models import Group, Moderator, PositionCompany, PlatformCompany, ProfilePhoto, SurveyWizard, Invitation
 from .auxiliary_general_methods import *
 from .company_views import _get_roles
 from django.shortcuts import redirect, render
@@ -58,7 +58,8 @@ def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> 
             'is_leader': team.owner == teammate,
             'positions': teammate.positions.all(),
             'platforms': teammate.platforms.all(),
-            'is_my_profile': teammate == current_profile
+            'is_my_profile': teammate == current_profile,
+            'is_in_team': team.profile_set.filter(id=teammate.pk).exists()
         }
         result.append(collected_teammate)
     return result
@@ -190,7 +191,17 @@ def _build_teams(teams: list, current_profile: Profile) -> list:
 
 
 def team_new_invites(request, group_id):
-    args = {}
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    team = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': 404})
+    profile = get_user_profile(request)
+    company = profile.company
+    args = {
+        'users': _build_teammates(company.profile_set.all(), team, profile),
+        'profile': get_header_profile(profile)
+    }
     return render(request, 'main/teams/team_new_invites.html', args)
 
 
@@ -262,3 +273,33 @@ def join_using_link(request, group_id, key: str):
     profile = get_user_profile(request)
     profile.groups.add(team)
     return redirect('/team/{}/'.format(team.pk))
+
+
+def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=400)
+
+        team = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=400)
+
+        profile_added = Profile.objects.filter(id=profile_id).first()
+        if profile_added is None:
+            return JsonResponse({}, status=400)
+
+        current_profile = get_user_profile(request)
+        if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+        new_invitation, created = Invitation.objects.get_or_create(profile_id=profile_id, invitation_group_id=group_id)
+        new_invitation: Invitation
+        if created:
+            new_invitation.type = 'team'
+            new_invitation.profile = profile_added
+            new_invitation.initiator = current_profile
+            new_invitation.invitation_group_id = group_id
+        new_invitation.date = date.today()
+        new_invitation.is_viewed = False
+        new_invitation.is_rendered = False
+        new_invitation.save()
+        return JsonResponse({}, status=200)
