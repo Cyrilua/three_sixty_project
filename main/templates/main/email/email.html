@@ -1,79 +1,6 @@
 {% load static %}
 
-{#<style>#}
-{#    .mail {#}
-{#        background-color: #a1a1a1;#}
-{#        width: 100%;#}
-{#        height: 100%;#}
-{#    }#}
-{##}
-{#    .mail__content {#}
-{#        display: flex;#}
-{#        flex-direction: column;#}
-{#        width: 595px;#}
-{#        height: auto;#}
-{#        margin: 30px auto 30px;#}
-{#    }#}
-{##}
-{#    .mail__head {#}
-{#        display: flex;#}
-{#        flex-direction: row;#}
-{#        justify-content: flex-start;#}
-{#        align-items: center;#}
-{#        height: 57px;#}
-{#        width: 100%;#}
-{#        border-bottom: 1px solid #E5E5E5;#}
-{#    }#}
-{##}
-{#    .head__logo {#}
-{#        display: block;#}
-{#        margin-left: 30px;#}
-{#        width: 56px;#}
-{#        height: 28px;#}
-{#        background-image: url('../../../static/main/images/newLogo.svg');#}
-{#        background-repeat: no-repeat;#}
-{#        background-size: cover;#}
-{#        outline: none;#}
-{#        border: none;#}
-{#        text-decoration: none;#}
-{#    }#}
-{##}
-{#    .mail__body {#}
-{#        display: block;#}
-{#        width: 530px;#}
-{#        height: auto;#}
-{#        margin: 30px auto 0;#}
-{#        font-style: normal;#}
-{#        font-weight: normal;#}
-{#        font-size: 17px;#}
-{#        line-height: 20px;#}
-{#        color: #000000;#}
-{#    }#}
-{##}
-{#    .mail__text {#}
-{#        display: inline-block;#}
-{#        margin-top: 25px;#}
-{#    }#}
-{##}
-{#    .mail__end {#}
-{#        display: inline-block;#}
-{#        margin: 40px 0 0 auto;#}
-{#    }#}
-{##}
-{#    .mail__footer {#}
-{#        display: flex;#}
-{#        flex-direction: column;#}
-{#        justify-content: space-between;#}
-{#        margin-top: 260px;#}
-{#        padding-top: 100px;#}
-{#        background-image: url('../../../static/main/images/funnySmile.svg');#}
-{#        background-repeat: no-repeat;#}
-{#        background-size: 82px 82px;#}
-{#        background-position: 50% 0;#}
-{#    }#}
-{#</style>#}
-
-<div class="mail" style="background-color: #a1a1a1;
+<div class="mail" style="background-color: #fafafa;
         box-sizing: border-box;
         width: auto;
         height: auto;
@@ -115,18 +42,15 @@
                 font-size: 17px;
                 line-height: 20px;
                 color: #000000;">
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">Здравствуйте, <strong>{{ user.name }} {{ user.patronymic }}!</strong></span>
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">
-                Мы получили запрос на восстановление пароля от вашей учётной записи на сайте ПРОЕКТ360, для создания нового пароля
-                <a href="{{ url }}" style="" target="_blank">перейдите&nbsp;по&nbsp;ссылке</a>&nbsp;.
-            </span>
-            <span class="mail__text" style="display: inline-block;
-        box-sizing: border-box;
-        margin-top: 25px;">Если запрос отправили не Вы, проигнорируйте это письмо.</span>
+
+            {% if type_email == 'reset' %}
+                {% include 'main/email/content/reset_pass.html' %}
+            {% elif type_email == 'verification' %}
+                {% include 'main/email/content/verification.html' %}
+            {% elif type_email == 'notification' %}
+                {% include 'main/email/content/notif.html' %}
+            {% endif %}
+
             <span style="display: block;
                 box-sizing: border-box;
                 margin: 40px 0 0 auto;
@@ -150,7 +74,7 @@
                 {#background-size: 82px 82px;#}
                 {#background-position: 50% 0;#}
                 ">
-            <div  style="display: block;
+            <div class="smile" style="display: block;
             width: 82px;
             height: 82px;
             background-image: url('http://3.14.4.30/static/main/images/funnySmile.jpg');
