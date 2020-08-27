@@ -29,7 +29,6 @@ def user_register(request):
             return result_ajax
 
     if request.method == 'POST':
-        print('ia m here')
         result_post = request_post_method_processing(request, args)
         if result_post is not None:
             return result_post
@@ -118,6 +117,7 @@ def send_email(request) -> JsonResponse:
         name = request.POST['name']
         surname = request.POST['surname']
         code = create_verification_code(email)
+        print(code)
         send_email_validate_message(name, surname, email, code)
         return JsonResponse({}, status=200)
 

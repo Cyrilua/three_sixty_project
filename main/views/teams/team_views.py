@@ -206,17 +206,14 @@ def join_using_link(request, group_id, key: str):
 
 def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
     if request.is_ajax():
-        print(profile_id)
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
 
         team = Group.objects.filter(id=group_id).first()
-        print(team)
         if team is None:
             return JsonResponse({}, status=404)
 
         profile_added = Profile.objects.filter(id=profile_id).first()
-        print(profile_added)
         if profile_added is None:
             return JsonResponse({}, status=404)
 
