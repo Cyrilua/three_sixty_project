@@ -60,7 +60,7 @@ def render_category_teams_on_step_2(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        return create_poll_from_template.render_category_participants_on_step_2(request, -1)
+        return create_poll_from_template.render_category_teams_on_step_2(request, -1)
 
 
 def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse:

@@ -27,7 +27,7 @@ def validate_login(login: str) -> list:
         result.append('Логин должен начинаться с буквы')
 
     reg = re.compile('[^a-z0-9_]')
-    if len(reg.sub('', login)) != len(login) or bool(emoji.get_emoji_regexp().search(login)):
+    if len(reg.sub('', login)) != len(login) or bool(emoji.get_emoji_regexp().search_teammate(login)):
         result.append('Логин содержит запрещенные символы')
     return result
 
@@ -38,7 +38,7 @@ def validate_password1(password: str) -> list:
         password_validation.validate_password(password)
     except ValidationError as error:
         result = error.messages
-    if bool(emoji.get_emoji_regexp().search(password)):
+    if bool(emoji.get_emoji_regexp().search_teammate(password)):
         result.append('Пароль содержит запрещенные символы')
     return result
 
@@ -133,4 +133,4 @@ def validate_code(code: str, email: str) -> list:
 
 def validate_user_input_in_company_settings(user_input: str) -> bool:
     reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _\-0-9.,]')
-    return len(reg.sub('', user_input)) == len(user_input) and not bool(emoji.get_emoji_regexp().search(user_input))
+    return len(reg.sub('', user_input)) == len(user_input) and not bool(emoji.get_emoji_regexp().search_teammate(user_input))

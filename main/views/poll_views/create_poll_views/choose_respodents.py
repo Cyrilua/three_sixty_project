@@ -7,7 +7,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from main.models import Poll, Group, SurveyWizard, Company, \
     NeedPassPoll
 from main.views.auxiliary_general_methods import *
-from .choose_target import build_profile, _search_teams
+from .choose_target import build_profile
 
 
 def save_information(request: WSGIRequest) -> Poll:
@@ -143,7 +143,6 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
 
 
 def search_step_3(request: WSGIRequest) -> JsonResponse:
-    # todo fix bug (коряво работает поиск на русском)
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
@@ -163,7 +162,12 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          content_participants_args).rendered_content
     elif mode == 'teams':
-        result_search = _search_teams(user_input, profile)
+        user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
+        if user_is_master:
+            teams: QuerySet = Group.objects.filter(company=profile.company)
+        else:
+            teams: QuerySet = profile.groups.all()
+        result_search = get_search_result_for_teams(teams, user_input)
         collected_teams = _build_team_list(result_search, NeedPassPoll.objects.filter(poll=poll),
                                            unbilding_user=profile)
         content_teams_args = {

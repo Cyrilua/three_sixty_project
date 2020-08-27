@@ -206,7 +206,7 @@ def create_team(request):
     return redirect('/team/{}/'.format(new_group.pk))
 
 
-def search(request: WSGIRequest, group_id: int) -> JsonResponse:
+def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
     if request.is_ajax():
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
@@ -221,3 +221,19 @@ def search(request: WSGIRequest, group_id: int) -> JsonResponse:
                                          {'teammates': completed_profiles}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
+
+def search_teams(request: WSGIRequest) -> JsonResponse:
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        user_input = request.GET.get('search', '').split()
+        teams = profile.groups.all()
+        print(teams)
+        print(user_input)
+        teams = get_search_result_for_teams(teams, user_input)
+        print(teams)
+        collected_teams = _build_teams(teams, profile)
+        content = SimpleTemplateResponse('main/teams/teams.html',
+                                         {'teams': collected_teams}).rendered_content
+        return JsonResponse({'content': content}, status=200)

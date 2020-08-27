@@ -135,3 +135,7 @@ def get_search_result_for_profiles(profiles, user_input: list, company: Company)
             profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
             profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
     return profiles
+
+
+def get_search_result_for_teams(teams, user_input: str):
+    return teams.filter(name__istartswith=user_input)

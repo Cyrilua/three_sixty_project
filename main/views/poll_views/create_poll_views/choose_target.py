@@ -150,7 +150,12 @@ def search(request: WSGIRequest) -> JsonResponse:
         content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                          content_participants_args).rendered_content
     elif mode == 'teams':
-        result_search = _search_teams(user_input, profile)
+        user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
+        if user_is_master:
+            teams: QuerySet = Group.objects.filter(company=profile.company)
+        else:
+            teams: QuerySet = profile.groups.all()
+        result_search = get_search_result_for_teams(teams, user_input)
         collected_teams = _build_team_list(result_search, poll.target)
         content_teams_args = {
             'teams': collected_teams
@@ -160,16 +165,6 @@ def search(request: WSGIRequest) -> JsonResponse:
     else:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content}, status=200)
-
-
-
-def _search_teams(user_input, profile):
-    user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
-    if user_is_master:
-        teams: QuerySet = Group.objects.filter(company=profile.company)
-    else:
-        teams: QuerySet = profile.groups.all()
-    return teams.filter(name__icontains=user_input)
 
 
 def save_information(request: WSGIRequest) -> Poll:

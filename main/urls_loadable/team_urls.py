@@ -20,5 +20,5 @@ urlpatterns = [
     # Удаление команды
     path('settings/change/', teams_views.team_change, name='team_change'),
     # Поиск
-    path('search/', teams_views.search, name='search')
+    path('search/', teams_views.search_teammate, name='search')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
