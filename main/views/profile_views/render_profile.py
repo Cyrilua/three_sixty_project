@@ -93,12 +93,26 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
     if request.is_ajax():
         profile = get_user_profile(request)
         if profile != Profile.objects.filter(id=profile_id).first():
-            # todo throw exception
-            pass
-        collected = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+            return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
+        collected = _build_notifications(profile)
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content
         return JsonResponse({'content': content})
+
+
+def _build_notifications(profile: Profile):
+    result = []
+    for i in _build_notifications_poll(CreatedPoll.objects.filter(profile=profile)):
+        result.append(i)
+
+    for i in _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile)):
+        result.append(i)
+
+    for i in _build_invites(profile):
+        result.append(i)
+
+    return result
 
 
 def _build_notifications_poll(notifications_polls: list) -> list:
@@ -121,39 +135,39 @@ def _build_notifications_poll(notifications_polls: list) -> list:
             },
             'about': poll.description,
             'date': poll.creation_date,
-            'url': url,
+            'href': url,
             'is_viewed': notification.is_viewed,
             'type': type_notification,
             'id': notification.id,
         }
-        result.append(collected_notification)
-    return result
+        yield collected_notification
+        #result.append(collected_notification)
+    #return result
 
 
-def _invites(profile: Profile) -> list:
+def _build_invites(profile: Profile) -> list:
     result = []
     for invite in Invitation.objects.filter(profile=profile):
         invite: Invitation
-        group: (Group, Company) = None
+
         if invite.type == 'team':
-            try:
-                group = Group.objects.get(pk=invite.invitation_group_id)
-            except ObjectDoesNotExist:
-                continue
+            group = Group.objects.filter(pk=invite.invitation_group_id).first()
+            watch_url = '/team/{}/'.format(group.pk)
         elif invite.type == 'company':
-            try:
-                group = Company.objects.get(pk=invite.invitation_group_id)
-            except ObjectDoesNotExist:
-                continue
+            group = Company.objects.filter(pk=invite.invitation_group_id).first()
+            watch_url = 'company/{}/'.format(group.pk)
         else:
             continue
+        if group is None:
+            continue
+
         initiator: Profile = invite.initiator
         collected_notification = {
             'url': '',  # todo присоединение к объединению
             'date': invite.date,
             'title': {
                 'name': group.name,
-                'url': '',  # todo просмотр страницы объединения
+                'url': watch_url,
             },
             'more': {
                 'name': "{} {} {}".format(initiator.surname, initiator.name, initiator.patronymic),
@@ -162,8 +176,9 @@ def _invites(profile: Profile) -> list:
             'about': group.description,
             'complited': True  # todo
         }
-        result.append(collected_notification)
-    return result
+        yield collected_notification
+        #result.append(collected_notification)
+    #return result
 
 
 def get_other_profile_render(request, profile_id):
