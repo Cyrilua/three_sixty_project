@@ -93,26 +93,29 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
     if request.is_ajax():
         profile = get_user_profile(request)
         if profile != Profile.objects.filter(id=profile_id).first():
-            return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+            return JsonResponse({}, 404)
 
-        collected = _build_notifications(profile)
+        selected_category = request.GET.get('selectedCategory', '')
+        print(selected_category)
+        collected = _build_notifications(profile, selected_category)
+        if collected is None:
+            return JsonResponse({}, status=400)
+
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content
         return JsonResponse({'content': content})
 
 
-def _build_notifications(profile: Profile):
-    result = []
-    for i in _build_notifications_poll(CreatedPoll.objects.filter(profile=profile)):
-        result.append(i)
+def _build_notifications(profile: Profile, selected_category: str):
+    if selected_category == 'results':
+        return _build_notifications_poll(CreatedPoll.objects.filter(profile=profile))
 
-    for i in _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile)):
-        result.append(i)
+    elif selected_category == 'polls':
+        return _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
 
-    for i in _build_invites(profile):
-        result.append(i)
-
-    return result
+    elif selected_category == 'invites':
+        return _build_invites(profile)
+    return None
 
 
 def _build_notifications_poll(notifications_polls: list) -> list:
@@ -140,9 +143,8 @@ def _build_notifications_poll(notifications_polls: list) -> list:
             'type': type_notification,
             'id': notification.id,
         }
-        yield collected_notification
-        #result.append(collected_notification)
-    #return result
+        result.append(collected_notification)
+    return result
 
 
 def _build_invites(profile: Profile) -> list:

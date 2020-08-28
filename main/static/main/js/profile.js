@@ -156,7 +156,7 @@ $(function () {
      * @param {string} selectedCategory
      */
     function loading(activeCategory, selectedCategory) {
-        let data;
+        let data =  { selectedCategory: selectedCategory };
         $.ajax({
             url: 'loading',
             type: 'get',
