@@ -350,6 +350,39 @@ def assign_role_profile(request: WSGIRequest, id_company: int, profile_id: int) 
         return JsonResponse({}, status=200)
 
 
+def remove_role_from_profile(request: WSGIRequest, id_company: int, profile_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile_role = Profile.objects.filter(id=profile_id).first()
+        if changed_profile_role is None:
+            return JsonResponse({}, status=404)
+
+        role_name = request.POST.get('roleName', '')
+        if role_name == 'master':
+            if not _profile_is_owner_or_moderator(current_profile):
+                return JsonResponse({}, status=403)
+
+            SurveyWizard.objects.filter(profile=changed_profile_role).delete()
+
+        elif role_name == 'moderator':
+            if current_profile != company.owner:
+                return JsonResponse({}, status=403)
+
+            Moderator.objects.filter(profile=changed_profile_role).delete()
+
+        else:
+            return JsonResponse({}, status=404)
+
+        return JsonResponse({}, status=200)
+
+
 def join_company_from_link(request: WSGIRequest, id_company: int, key: str):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -360,9 +393,129 @@ def join_company_from_link(request: WSGIRequest, id_company: int, key: str):
 
     profile = get_user_profile(request)
     if profile.company is not None:
-        print('i am here')
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
 
     profile.company = company
     profile.save()
     return redirect('/company/{}/'.format(company.pk))
+
+
+def assign_position_profile(request: WSGIRequest, id_company: int, profile_id: int, position_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile: Profile = Profile.objects.filter(id=profile_id).first()
+        if changed_profile is None:
+            return JsonResponse({}, status=404)
+
+        added_position = PositionCompany.objects.filter(id=position_id).first()
+        if added_position is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile.positions.add(added_position)
+        return JsonResponse({}, status=200)
+
+
+def remove_position_profile(request: WSGIRequest, id_company: int, profile_id: int, position_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile: Profile = Profile.objects.filter(id=profile_id).first()
+        if changed_profile is None:
+            return JsonResponse({}, status=404)
+
+        removed_position = PositionCompany.objects.filter(id=position_id).first()
+        if removed_position is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile.positions.remove(removed_position)
+        return JsonResponse({}, status=200)
+
+
+def assign_platform_profile(request: WSGIRequest, id_company: int, profile_id: int, platform_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile: Profile = Profile.objects.filter(id=profile_id).first()
+        if changed_profile is None:
+            return JsonResponse({}, status=404)
+
+        added_platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if added_platform is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile.platforms.add(added_platform)
+        return JsonResponse({}, status=200)
+
+
+def remove_platform_profile(request: WSGIRequest, id_company: int, profile_id: int, platform_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile: Profile = Profile.objects.filter(id=profile_id).first()
+        if changed_profile is None:
+            return JsonResponse({}, status=404)
+
+        added_platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if added_platform is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile.platforms.remove(added_platform)
+        return JsonResponse({}, status=200)
+
+
+def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+        if not _profile_is_owner_or_moderator(current_profile):
+            return JsonResponse({}, status=403)
+
+        company = Company.objects.filter(id=id_company).first()
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        changed_profile = Profile.objects.filter(id=profile_id).first()
+        if changed_profile is None:
+            return JsonResponse({}, status=404)
+
+        company.profile_set.remove(changed_profile)
+        return JsonResponse({}, status=200)
