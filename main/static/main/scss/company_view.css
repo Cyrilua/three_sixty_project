@@ -152,6 +152,9 @@
   justify-content: space-between;
   padding: 20px 30px;
 }
+.content .content__body .teams .team.hide {
+  display: none;
+}
 .content .content__body .teams .team .team__icon {
   width: 70px;
 }

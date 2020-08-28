@@ -26,7 +26,10 @@ $(function () {
         let selectedCategory = $(this).attr('data-category');
         // console.log(activeCategory)
         if (activeCategory !== selectedCategory) {
-            loading(activeCategory, selectedCategory);
+            let search = $('.search');
+            search.val('');
+            let input = search.val();
+            loading(activeCategory, selectedCategory, input);
         }
     });
 
@@ -756,26 +759,38 @@ $(function () {
                 }
                 ajaxLoad = ajax;
                 content.addClass('loading');
-                if (!input) {
+
+                $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
+                $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
+
+                if (activeCategory !== selectedCategory) {
                     search.prop({
-                        'disabled': true,
-                    });
+                        disabled: true,
+                    })
                 }
             },
             success: function (response) {
-                $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
-                $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
                 content
                     .empty()
                     .prepend(response.content);
-            },
-            complete: function (response, status) {
-                content.removeClass('loading');
-                if (!input) {
-                    search.prop({
-                        'disabled': false,
+                if (selectedCategory === 'teams') {
+                    $('.search').attr({
+                        'placeholder': 'Поиск по командам...'
+                    });
+                } else if (selectedCategory === 'users') {
+                    $('.search').attr({
+                        'placeholder': 'Поиск по участникам...'
                     });
                 }
+
+            },
+            complete: function (response, status) {
+                if (activeCategory !== selectedCategory) {
+                    search.prop({
+                        disabled: false,
+                    })
+                }
+                content.removeClass('loading');
                 if (status === 'error') {
                     Snackbar.show({
                         text: 'Произошла ошибка при загрузке данных.',
@@ -787,6 +802,8 @@ $(function () {
                 }
             },
             error: function () {
+                $(`.active-sort[data-category=${selectedCategory}]`).removeClass('active-sort');
+                $(`.category[data-category=${activeCategory}]`).addClass('active-sort');
             }
         });
     }
