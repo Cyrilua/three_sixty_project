@@ -81,5 +81,60 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({'content': content}, status=200)
 
 
-def invite_from_alien_profile(request, profile_id):
-    pass
+def search_team_for_invite(request, profile_id: int) -> render:
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    alien_profile = Profile.objects.filter(id=profile_id).first()
+    if alien_profile is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+    current_profile = get_user_profile(request)
+
+    alien_commands = alien_profile.groups.all().values_list('id', flat=True)
+    teams = Group.objects.filter(company=current_profile.company)
+    teams = teams.exclude(id__in=alien_commands)
+    args = {
+        'title': "Пригласить в команду",
+        'teams': build_teams(teams, profile_id)
+    }
+    return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
+
+
+def build_teams(commands: filter, alien_profile_id: int) -> list:
+    result = []
+    for team in commands:
+        users = team.profile_set.all()
+        collected_team = {
+            'name': team.name,
+            'about': team.description,
+            'members': len(users),
+            'url': '/team/{}/'.format(team.id),
+            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id)
+        }
+        result.append(collected_team)
+    return result
+
+
+def invite_to_team(request:WSGIRequest, profile_id: int, group_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        current_profile = get_user_profile(request)
+
+        changed_profile_role = Profile.objects.filter(id=profile_id).first()
+        if changed_profile_role is None:
+            return JsonResponse({}, status=404)
+
+        try:
+            new_invitation = Invitation.objects.get(profile_id=profile_id, invitation_group_id=group_id)
+        except ObjectDoesNotExist:
+            new_invitation = Invitation()
+        new_invitation.type = 'team'
+        new_invitation.profile = changed_profile_role
+        new_invitation.initiator = current_profile
+        new_invitation.invitation_group_id = group_id
+        new_invitation.date = date.today()
+        new_invitation.is_viewed = False
+        new_invitation.is_rendered = False
+        new_invitation.save()
+        return JsonResponse({}, status=200)

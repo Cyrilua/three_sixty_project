@@ -58,15 +58,11 @@ def _build_profile_data(user, profile):
         profile_data['platforms'] = profile.platforms.all()
         profile_data['positions'] = profile.positions.all()
 
-    try:
-        profile_data['birthdate'] = BirthDate.objects.get(profile=profile).birthday
-    except ObjectDoesNotExist:
-        pass
+    birth_date = BirthDate.objects.filter(profile=profile).first()
+    if birth_date is not None:
+        profile_data['birthdate'] = birth_date.birthday
 
-    try:
-        profile_data['email'] = user.email
-    except ObjectDoesNotExist:
-        pass
+    profile_data['email'] = user.email
     return [profile_data, roles]
 
 
@@ -74,18 +70,11 @@ def _get_user_roles(user, profile, company):
     roles = []
     if company is not None and company.owner.id == user.id:
         roles.append('boss')
-    try:
-        SurveyWizard.objects.get(profile=profile)
-    except ObjectDoesNotExist:
-        pass
-    else:
+
+    if SurveyWizard.objects.filter(profile=profile).exists():
         roles.append('master')
 
-    try:
-        Moderator.objects.get(profile=profile)
-    except ObjectDoesNotExist:
-        pass
-    else:
+    if Moderator.objects.filter(profile=profile).exists():
         roles.append('moderator')
     return roles
 
@@ -181,7 +170,7 @@ def get_other_profile_render(request, profile_id):
     profile = Profile.objects.get(id=profile_id)
     try:
         photo = profile.profilephoto.photo
-    except:
+    except ObjectDoesNotExist:
         photo = None
 
     current_profile = get_user_profile(request)

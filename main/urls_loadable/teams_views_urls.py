@@ -10,5 +10,5 @@ urlpatterns = [
     # Поиск по командам
     path('search/', teams_views.search_teams, name='search'),
     # Добавить в команду со страницы чужого профиля
-    path('invite/<int:profile_id>/', teams_views.invite_from_alien_profile, name='search_team_for_invite')
+    path('invite/<int:profile_id>/', teams_views.search_team_for_invite, name='search_team_for_invite')
 ]
