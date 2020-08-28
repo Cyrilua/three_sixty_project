@@ -240,6 +240,7 @@ $(function () {
                 type: 'post',
                 data: {
                     csrfmiddlewaretoken: csrf,
+                    category: category,
                 },
                 beforeSend: function () {
                     $(target).addClass('visible-load');

@@ -6,4 +6,5 @@ urlpatterns = [
     # Просмотр профиля
     path('', render_profile.profile_view, name='profile'),
     path('loading', render_profile.loading, name='loading'),
+    path('new_notif/', render_profile.new_notification)
 ]
