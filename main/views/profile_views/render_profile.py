@@ -38,6 +38,7 @@ def get_render_user_profile(request):
 
 def _build_profile_data(user, profile):
     profile_data = {
+            'id': profile.id,
             'name': profile.name,
             'surname': profile.surname,
             'patronymic': profile.patronymic,
@@ -183,10 +184,12 @@ def get_other_profile_render(request, profile_id):
     except:
         photo = None
 
+    current_profile = get_user_profile(request)
     profile_data = _build_profile_data(profile.user, profile)
 
     args = {
         "title": "Просмотр профиля пользователя",
+        'profile': get_header_profile(current_profile),
         'photo': photo,
         'alien_profile': profile_data[0],
         'roles': profile_data[1],

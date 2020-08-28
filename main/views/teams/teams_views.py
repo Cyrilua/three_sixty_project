@@ -81,4 +81,5 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({'content': content}, status=200)
 
 
-
+def invite_from_alien_profile(request, profile_id):
+    pass

@@ -516,6 +516,8 @@ def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id:
         changed_profile = Profile.objects.filter(id=profile_id).first()
         if changed_profile is None:
             return JsonResponse({}, status=404)
-
+        teams = Group.objects.filter(company=company, profile=changed_profile)
+        for team in teams:
+            team.profile_set.remove(changed_profile)
         company.profile_set.remove(changed_profile)
         return JsonResponse({}, status=200)
