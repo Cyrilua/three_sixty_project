@@ -31,19 +31,26 @@ def get_render_user_profile(request):
         'photo': photo,
         'profile': profile_data[0],
         'roles': profile_data[1],
-        'notifications': _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+        'data': {
+            'new': {
+                'polls': NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count(),
+                'results': CreatedPoll.objects.filter(profile=profile, is_viewed=False).count(),
+                'invites': Invitation.objects.filter(profile=profile, is_viewed=False).count()
+            }
+        }
     }
+    print(args['data'])
     return render(request, 'main/user/profile.html', args)
 
 
 def _build_profile_data(user, profile):
     profile_data = {
-            'id': profile.id,
-            'name': profile.name,
-            'surname': profile.surname,
-            'patronymic': profile.patronymic,
-            'teams': _get_user_teams(profile)
-        }
+        'id': profile.id,
+        'name': profile.name,
+        'surname': profile.surname,
+        'patronymic': profile.patronymic,
+        'teams': _get_user_teams(profile)
+    }
 
     company = profile.company
     roles = []
@@ -90,7 +97,6 @@ def _get_user_teams(profile):
 
 
 def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
-    print(request.is_ajax())
     if request.is_ajax():
         profile = get_user_profile(request)
         if profile != Profile.objects.filter(id=profile_id).first():
@@ -111,7 +117,8 @@ def _build_notifications(profile: Profile, selected_category: str):
         return _build_notifications_poll(CreatedPoll.objects.filter(profile=profile))
 
     elif selected_category == 'polls':
-        return _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+        result = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+        return result
 
     elif selected_category == 'invites':
         return _build_invites(profile)
@@ -140,17 +147,19 @@ def _build_notifications_poll(notifications_polls: list) -> list:
             'date': poll.creation_date,
             'href': url,
             'is_viewed': notification.is_viewed,
-            'is_new': notification.is_rendered,
+
             'type': type_notification,
             'id': notification.id,
         }
         result.append(collected_notification)
+    notifications_polls.update(is_rendered=True)
     return result
 
 
 def _build_invites(profile: Profile) -> list:
     result = []
-    for invite in Invitation.objects.filter(profile=profile):
+    invitations = Invitation.objects.filter(profile=profile)
+    for invite in invitations:
         invite: Invitation
 
         if invite.type == 'team':
@@ -178,11 +187,12 @@ def _build_invites(profile: Profile) -> list:
             },
             'about': group.description,
             'is_viewed': invite.is_viewed,
-            'is_new': invite.is_rendered,
+            # 'is_new': invite.is_rendered,
             'type': 'invite',
             'id': invite.id,
         }
         result.append(collected_notification)
+    invitations.update(is_rendered=True)
     return result
 
 
@@ -194,12 +204,13 @@ def new_notification(request: WSGIRequest, profile_id: int):
 
         category = request.GET.get('category', '')
 
-
         if category == 'results':
-            collected_notifications = _build_notifications_poll(CreatedPoll.objects.filter(profile=profile))
+            collected_notifications = _build_notifications_poll(
+                CreatedPoll.objects.filter(profile=profile, is_viewed=False))
 
         elif category == 'polls':
-            collected_notifications = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+            collected_notifications = _build_notifications_poll(
+                NeedPassPoll.objects.filter(profile=profile, is_viewed=False))
 
         elif category == 'invites':
             collected_notifications = _build_invites(profile)
@@ -212,7 +223,7 @@ def new_notification(request: WSGIRequest, profile_id: int):
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
 
         content = SimpleTemplateResponse('main/includes/bad_search.html',
-                                        {'notifications': collected_notifications}).rendered_content
+                                         {'notifications': collected_notifications}).rendered_content
         args = {
             'notificationsCount':
                 {
@@ -222,10 +233,7 @@ def new_notification(request: WSGIRequest, profile_id: int):
                 },
             'content': content
         }
-        print(args)
         return JsonResponse(args, status=200)
-
-
 
 
 def get_other_profile_render(request, profile_id):
@@ -246,3 +254,27 @@ def get_other_profile_render(request, profile_id):
         'roles': profile_data[1],
     }
     return render(request, "main/user/alien_profile.html", args)
+
+
+def mark_notification_as_viewed(request: WSGIRequest, profile_id: int, notification_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        profile = get_user_profile(request)
+        if profile.pk != profile_id:
+            return JsonResponse({}, status=400)
+
+        category = request.POST.get('category', '')
+        if category == 'polls':
+            notification = NeedPassPoll.objects.filter(id=notification_id)
+        elif category == 'results':
+            notification = CreatedPoll.objects.filter(id=notification_id)
+        elif category == 'invites':
+            notification = Invitation.objects.filter(id=notification_id)
+        else:
+            return JsonResponse({}, status=400)
+        if notification.first() is None:
+            return JsonResponse({}, status=400)
+        notification.update(is_viewed=True)
+        return JsonResponse({}, status=200)
