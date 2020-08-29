@@ -39,7 +39,6 @@ def get_render_user_profile(request):
             }
         }
     }
-    print(args['data'])
     return render(request, 'main/user/profile.html', args)
 
 
@@ -106,6 +105,8 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
         collected = _build_notifications(profile, selected_category)
         if collected is None:
             return JsonResponse({}, status=400)
+
+        print(collected)
 
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content

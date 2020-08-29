@@ -16,8 +16,9 @@ def polls_view(request) -> render:
             'templates': _build_templates(profile),
             'new': {
                 'polls': NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
-            }
+            },
         },
+        'profile': get_header_profile(profile)
     }
     args['data']['quatity'] = {
         'templates': {

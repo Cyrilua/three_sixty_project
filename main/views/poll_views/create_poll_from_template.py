@@ -1,8 +1,5 @@
 from datetime import datetime
 
-from django.contrib import auth
-from django.core.exceptions import ObjectDoesNotExist
-from main.views.auxiliary_general_methods import get_user_profile
 from main.models import Poll, TemplatesPoll, SurveyWizard, NeedPassPoll, CreatedPoll, Questions, Answers, Choice
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
@@ -10,7 +7,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.mail import send_mail
 from .create_poll_views import start_create, editor, choose_target, choose_respodents
-from django.template.loader import render_to_string
+from ..auxiliary_general_methods import *
 from django.conf import settings
 from django.template.loader import get_template
 
@@ -30,8 +27,8 @@ def create_poll_from_template(request, template_id) -> render:
     args = {
         'title': "Создание опроса из шаблона",
         'poll': start_create.build_poll(template),
+        'profile': get_header_profile(profile),
     }
-    print(args)
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
 

@@ -7,7 +7,7 @@ urlpatterns = [
     path('editor/template/<int:template_id>/', include(editor_template_urls)),
 
     # Создание нового опроса
-    path('editor/new/', include(editor_new_poll_urls)),
+    path('editor/<int:poll_id>/', include(editor_new_poll_urls)),
     # Просмотр результата опроса
     path('result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
     # Прохождение опроса (рендер)
