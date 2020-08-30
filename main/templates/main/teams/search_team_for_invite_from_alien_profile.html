@@ -9,49 +9,21 @@
 {% block content-user %}
 
     <div class="content">
+        {% csrf_token %}
         <div class="search rounded-block">
-            <button class="search__button button-white button-href" data-href="#">Готово</button>
+            <a href="{% url 'main:profile' profile_id=alien_profile.id %}" class="search__button button-white a-button">Готово</a>
             <input type="text" class="search__input input-field" placeholder="Поиск по командам...">
         </div>
         <!-- /.search -->
         <div class="result">
-            {% csrf_token %}
-            <div class="teams show">
+            <div class="teams">
                 {% if teams %}
-                    {% for team in teams %}
-                        <div class="team show" data-name="{{ team.name }}">
-                            <div class="team__content rounded-block">
-                                <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                                <div class="team__details">
-                                    <div class="team__title">
-                                        <a href="{{ team.url }}" class="team__name">{{ team.name }}</a>
-                                    </div>
-                                    <span class="team__members">Количество участников: {{ team.members }}</span>
-                                    <span class="team__about">{{ team.about }}</span>
-                                </div>
-                                <button class="team__button button-white button-href-async"
-                                        data-href="{{ team.url_send_invite }}" {% if not team.is_may_be_invited %} disabled{% endif %}>Пригласить
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.team -->
-                    {% endfor %}
-{#                {% else %}#}
-{#                    {% include 'main/includes/bad_search.html' with text='Нет доступных команд. Создавайте команды, чтобы приглашать в них пользователей' %}#}
+                    {% include 'main/teams/teams_for_invites.html' %}
+                {% else %}
+                    {% include 'main/includes/bad_search.html' with text='По вашему запросу<br>ничего не найдено' %}
                 {% endif %}
             </div>
             <!-- /.teams -->
-
-            <div class="result__empty hide">
-                {% include 'main/includes/bad_search.html' with text="Нет доступных команд.<br>Создавайте команды, чтобы приглашать<br>в них пользователей" only %}
-            </div>
-            <!-- /.result_empty -->
-
-            <div class="result__not-find hide">
-                {% include 'main/includes/bad_search.html' with text="По вашему запросу<br>ничего не найдено" only %}
-            </div>
-            <!-- /.result__not-find -->
-
         </div>
         <!-- /.result -->
     </div>
