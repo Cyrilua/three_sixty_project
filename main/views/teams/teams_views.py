@@ -87,14 +87,14 @@ def search_team_for_invite(request, profile_id: int) -> render:
     alien_profile = Profile.objects.filter(id=profile_id).first()
     if alien_profile is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
-    current_profile = get_user_profile(request)
+    current_profile: Profile = get_user_profile(request)
 
     alien_commands = alien_profile.groups.all().values_list('id', flat=True)
-    teams = Group.objects.filter(company=current_profile.company)
-    teams = teams.exclude(id__in=alien_commands)
+    teams = current_profile.groups.all().exclude(id__in=alien_commands)
     args = {
         'title': "Пригласить в команду",
-        'teams': build_teams(teams, profile_id)
+        'teams': build_teams(teams, profile_id),
+        'profile': get_header_profile(current_profile)
     }
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
 
