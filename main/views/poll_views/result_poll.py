@@ -59,7 +59,6 @@ def _build_answers_choices(answer: Answers) -> list:
                 'percent': percent,
                 'value': range_answer.position_on_range
             })
-        print(result)
         return result
 
     if answer.question.settings.type == 'openQuestion':

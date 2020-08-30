@@ -52,10 +52,10 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     initiator_id = -1 if poll.initiator is None else poll.initiator.id
 
     profiles = get_possible_respondents(poll, company)
-    checked = NeedPassPoll.objects.filter(profile=profile, poll=poll)
+    checked = NeedPassPoll.objects.filter(poll=poll)
+    print(checked)
     categories_args = {
-        'participants': _build_team_profiles_list(profiles.exclude(id=target_id).exclude(id=initiator_id), company,
-                                                  checked, profile),
+        'participants': _build_team_profiles_list(profiles, company, checked, profile),
         'company': {
             'countParticipants': profiles.count(),
         }
@@ -102,7 +102,7 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
             continue
         profile: Profile
         collected_profile = build_profile(profile)
-        collected_profile['is_checked'] = checked_profiles.filter(id=profile.pk).exists()
+        collected_profile['is_checked'] = checked_profiles.filter(profile=profile).exists()
         if group is not None:
             collected_profile['is_leader'] = group.owner == profile
 
@@ -122,7 +122,7 @@ def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
     else:
         teams = profile.groups.all()
     args = {
-        'teams': _build_team_list(teams, NeedPassPoll.objects.filter(profile=profile, poll=poll), profile)
+        'teams': _build_team_list(teams, NeedPassPoll.objects.filter(poll=poll), profile)
     }
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                      args).rendered_content
@@ -137,7 +137,7 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
     company = profile.company
     profiles = get_possible_respondents(poll, company)
     args = {'participants': _build_team_profiles_list(profiles, company,
-                                                      NeedPassPoll.objects.filter(profile=profile, poll=poll), profile)}
+                                                      NeedPassPoll.objects.filter(poll=poll), profile)}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                      args).rendered_content
     return JsonResponse({'content': content}, status=200)
@@ -185,6 +185,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
 
 
 def get_possible_respondents(poll: Poll, company) -> QuerySet:
+    print(poll.start_from)
     if poll.start_from is None:
         return Profile.objects.filter(company=company).exclude(id__in=[poll.target.id, poll.initiator.id])
 
