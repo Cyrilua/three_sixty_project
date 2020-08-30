@@ -47,16 +47,15 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
                                   args).rendered_content
     move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html',
                                   args).rendered_content
-    # todo fix (сделать что то с пользователями без компании)
     company = profile.company
     target_id = -1 if poll.target is None else poll.target.id
     initiator_id = -1 if poll.initiator is None else poll.initiator.id
-    profiles = Profile.objects.filter(company=company)
 
-    profiles, checked = get_possible_respondents(poll, company)
+    profiles = get_possible_respondents(poll, company)
+    checked = NeedPassPoll.objects.filter(profile=profile, poll=poll)
     categories_args = {
-        'participants': _build_team_profiles_list(profiles.exclude(id=target_id).exclude(id=initiator_id),
-                                                  company, checked, profile),
+        'participants': _build_team_profiles_list(profiles.exclude(id=target_id).exclude(id=initiator_id), company,
+                                                  checked, profile),
         'company': {
             'countParticipants': profiles.count(),
         }
@@ -122,9 +121,8 @@ def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
         teams = company.group_set.all()
     else:
         teams = profile.groups.all()
-    profiles, checked = get_possible_respondents(poll, company)
     args = {
-        'teams': _build_team_list(teams, checked, profile)
+        'teams': _build_team_list(teams, NeedPassPoll.objects.filter(profile=profile, poll=poll), profile)
     }
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                      args).rendered_content
@@ -137,9 +135,9 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
         return JsonResponse({}, status=400)
     profile = get_user_profile(request)
     company = profile.company
-    profiles, checked = get_possible_respondents(poll, company)
+    profiles = get_possible_respondents(poll, company)
     args = {'participants': _build_team_profiles_list(profiles, company,
-                                                      checked, profile)}
+                                                      NeedPassPoll.objects.filter(profile=profile, poll=poll), profile)}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                      args).rendered_content
     return JsonResponse({'content': content}, status=200)
@@ -156,13 +154,13 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     profile = get_user_profile(request)
     company = profile.company
     if mode == 'participants':
-        profiles, checked = get_possible_respondents(poll, company)
+        profiles = get_possible_respondents(poll, company)
         start_from_company_or_polls = poll.start_from
         result_search = get_search_result_for_profiles(profiles, user_input.split(),
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
             'participants': _build_team_profiles_list(result_search, profile.company,
-                                                      checked,
+                                                      NeedPassPoll.objects.filter(profile=profile, poll=poll),
                                                       unbilding_user=profile)
         }
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
@@ -186,18 +184,15 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({'content': content,}, status=200)
 
 
-def get_possible_respondents(poll: Poll, company) -> (QuerySet, (QuerySet, list)):
-    print(poll.start_from)
+def get_possible_respondents(poll: Poll, company) -> QuerySet:
     if poll.start_from is None:
-        return Profile.objects.filter(company=company).exclude(id__in=[poll.target.id, poll.initiator.id]), \
-               Profile.objects.filter(id=0)
+        return Profile.objects.filter(company=company).exclude(id__in=[poll.target.id, poll.initiator.id])
 
     elif poll.start_from == 'team':
         team = Group.objects.filter(id=poll.from_id_group).first()
         profiles = team.profile_set.all().exclude(id__in=[poll.target.id, poll.initiator.id])
-        print(team)
-        return profiles, profiles
+        return profiles
 
     else:
         profiles = company.profile_set.exclude(id__in=[poll.target.id, poll.initiator.id])
-        return profiles, profiles
+        return profiles
