@@ -99,7 +99,7 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
     if request.is_ajax():
         profile = get_user_profile(request)
         if profile != Profile.objects.filter(id=profile_id).first():
-            return JsonResponse({}, 404)
+            return JsonResponse({}, status=404)
 
         selected_category = request.GET.get('selectedCategory', '')
         collected = _build_notifications(profile, selected_category)

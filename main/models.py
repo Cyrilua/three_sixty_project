@@ -310,6 +310,7 @@ class RangeAnswers(models.Model):
     answer = models.ForeignKey('Answers', on_delete=models.CASCADE)
     position_on_range = models.IntegerField(default=0)
     count = models.IntegerField(default=0)
+    objects = models.Manager()
 
     class Meta:
         db_table = "RangeAnswer"

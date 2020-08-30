@@ -1,5 +1,5 @@
 from main.views.auxiliary_general_methods import *
-from main.models import Poll, CreatedPoll, Answers, Choice, OpenQuestion
+from main.models import Poll, CreatedPoll, Answers, Choice, RangeAnswers
 from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
 
@@ -48,14 +48,28 @@ def _build_questions(poll: Poll) -> list:
 
 
 def _build_answers_choices(answer: Answers) -> list:
+    result = []
+
+    if answer.question.settings.type == 'range':
+        for range_answer in RangeAnswers.objects.filter(answer=answer):
+            range_answer: RangeAnswers
+            percent = "%.2f" % ((range_answer.count * 100) / answer.count_profile_answers)
+            result.append({
+                'countAnswer': range_answer.count,
+                'percent': percent,
+                'value': range_answer.position_on_range
+            })
+        print(result)
+        return result
+
     if answer.question.settings.type == 'openQuestion':
         return answer.open_answer.all()
+
     count_profile_answers = answer.count_profile_answers
     if answer.question.settings.type == 'checkbox':
         count_profile_answers = 0
         for i in answer.choices.all():
             count_profile_answers += i.count
-    result = []
     for choice in answer.choices.all():
         choice: Choice
         try:
@@ -73,4 +87,5 @@ def _build_answers_choices(answer: Answers) -> list:
             }
         }
         result.append(completed_choice)
+
     return result
