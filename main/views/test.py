@@ -18,15 +18,14 @@ from django.contrib.sites.shortcuts import get_current_site
 def test(request: WSGIRequest):
     # _test_send_email(request)
     #_test_filter(request)
-    _create_link(request)
+    _create_list_profiles(request)
     return render(request, 'main/test.html')
 
 
-def _create_link(request: WSGIRequest):
-    profile = get_user_profile(request)
-    test_res = PositionCompany.objects.filter(profile=profile, company=profile.company)
-
-    print(test_res)
+def _create_list_profiles(request: WSGIRequest):
+    poll = Poll.objects.get(id=108)
+    temp = poll.needpasspoll_set__profile.all()
+    print(temp)
 
 
 def _test_send_email(request):

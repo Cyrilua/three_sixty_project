@@ -94,7 +94,10 @@ def search_team_for_invite(request, profile_id: int) -> render:
     args = {
         'title': "Пригласить в команду",
         'teams': build_teams(teams, profile_id, alien_commands),
-        'profile': get_header_profile(current_profile)
+        'profile': get_header_profile(current_profile),
+        'alien_profile': {
+            'id': profile_id,
+        }
     }
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
 
@@ -104,12 +107,13 @@ def build_teams(commands: filter, alien_profile_id: int, alien_commands) -> list
     for team in commands:
         users = team.profile_set.all()
         collected_team = {
+            'id': team.pk,
             'name': team.name,
             'about': team.description,
             'members': len(users),
             'url': '/team/{}/'.format(team.id),
             'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id),
-            'is_may_be_invited': alien_commands.filter(id=team.pk).exists(),
+            'is_may_be_invited': not alien_commands.filter(id=team.pk).exists(),
         }
         result.append(collected_team)
     return result

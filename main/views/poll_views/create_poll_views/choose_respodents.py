@@ -184,8 +184,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
             'participants': _build_profiles_list(result_search, profile.company,
-                                                      checked,
-                                                      unbilding_user=profile)
+                                                 checked, unbilding_user=profile)
         }
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          content_participants_args).rendered_content
@@ -205,7 +204,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
                                          content_teams_args).rendered_content
     else:
         return JsonResponse({}, status=400)
-    return JsonResponse({'content': content,}, status=200)
+    return JsonResponse({'content': content, }, status=200)
 
 
 def get_possible_respondents(poll: Poll, company) -> QuerySet:
