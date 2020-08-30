@@ -48,12 +48,9 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     move = SimpleTemplateResponse('main/poll/select_interviewed/select_interviewed_head_move.html',
                                   args).rendered_content
     company = profile.company
-    target_id = -1 if poll.target is None else poll.target.id
-    initiator_id = -1 if poll.initiator is None else poll.initiator.id
 
     profiles = get_possible_respondents(poll, company)
     checked = NeedPassPoll.objects.filter(poll=poll)
-    print(checked)
     categories_args = {
         'participants': _build_team_profiles_list(profiles, company, checked, profile),
         'company': {
@@ -153,6 +150,10 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     user_input: str = request.POST['input']
     profile = get_user_profile(request)
     company = profile.company
+    list_checked = [int(i) for i in request.POST.getlist('checkedInterviewed[]')]
+
+    checked = NeedPassPoll.objects.filter(profile_id__in=list_checked)
+
     if mode == 'participants':
         profiles = get_possible_respondents(poll, company)
         start_from_company_or_polls = poll.start_from
@@ -160,7 +161,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
             'participants': _build_team_profiles_list(result_search, profile.company,
-                                                      NeedPassPoll.objects.filter(profile=profile, poll=poll),
+                                                      checked,
                                                       unbilding_user=profile)
         }
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
@@ -172,7 +173,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         else:
             teams: QuerySet = profile.groups.all()
         result_search = get_search_result_for_teams(teams, user_input)
-        collected_teams = _build_team_list(result_search, NeedPassPoll.objects.filter(poll=poll),
+        collected_teams = _build_team_list(result_search, checked,
                                            unbilding_user=profile)
         content_teams_args = {
             'teams': collected_teams
@@ -185,7 +186,6 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
 
 
 def get_possible_respondents(poll: Poll, company) -> QuerySet:
-    print(poll.start_from)
     if poll.start_from is None:
         return Profile.objects.filter(company=company).exclude(id__in=[poll.target.id, poll.initiator.id])
 
