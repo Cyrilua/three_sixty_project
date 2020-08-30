@@ -166,7 +166,7 @@ $(function () {
                 Snackbar.show({
                     text: `Произошла ошибка при удалении ${userName}`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

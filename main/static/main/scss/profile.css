@@ -293,6 +293,9 @@
   padding: 20px 30px;
   margin-bottom: 10px;
 }
+.content .content__body .notifications .notification.hide {
+  display: none;
+}
 .content .content__body .notifications .notification.is_unshown {
   display: none;
 }

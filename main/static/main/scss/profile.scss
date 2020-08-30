@@ -656,6 +656,10 @@
         padding: 20px 30px;
         margin-bottom: 10px;
 
+        &.hide{
+          display: none;
+        }
+
         &.is_unshown {
           display: none;
         }
