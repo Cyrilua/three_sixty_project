@@ -413,7 +413,7 @@ $(function () {
                 textColor: '#ff1841',
                 showAction: false,
                 duration: 4000,
-                customClass: 'custom',
+                customClass: 'custom center',
             });
             return;
         }
