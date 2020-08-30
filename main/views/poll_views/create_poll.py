@@ -22,7 +22,11 @@ def create_new_poll_from_company(request, company_id):
     company = Company.objects.filter(id=company_id).first()
     if company is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
     profile = get_user_profile(request)
+    if not company.profile_set.filter(id=profile.pk).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
     new_poll = Poll()
     new_poll.initiator = profile
     new_poll.start_from = 'company'
@@ -37,7 +41,11 @@ def poll_create_from_team(request, team_id):
     team = Group.objects.filter(id=team_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
     profile = get_user_profile(request)
+    if not team.profile_set.filter(id=profile.pk).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
     new_poll = Poll()
     new_poll.initiator = profile
     new_poll.start_from = 'team'
