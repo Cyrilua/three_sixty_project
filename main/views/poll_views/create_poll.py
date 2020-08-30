@@ -43,7 +43,8 @@ def poll_create_from_team(request, team_id):
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
-    if not team.profile_set.filter(id=profile.pk).exists():
+    if not team.profile_set.filter(id=profile.pk).exists() and \
+            not SurveyWizard.objects.filter(profile=profile).exists():
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
 
     new_poll = Poll()
