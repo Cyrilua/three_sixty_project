@@ -829,11 +829,12 @@ $(function () {
                 editor.addClass('disabled');
             },
             success: function (response) {
-                selectedInterviewed = response.countSelectedInterviewed;
-                $('.head__count-selected').text(selectedInterviewed);
                 let headMain = $('.head__main');
                 headMain.empty();
                 headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
+
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
 
                 let headMove = $('.head__move');
                 headMove.empty();

@@ -23,5 +23,7 @@ urlpatterns = [
     path('invites/invite/<int:profile_id>', team_views.join_user_from_page, name='join_user_from_page'),
     # Выгнать пользователя из команды
     path('leave/', team_views.kick_teammate, name='kick_teammate'),
+    # Присоединиться через уведомление
+    path('invite/', team_views.join_from_notification, name='join_from_notification')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

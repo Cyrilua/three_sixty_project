@@ -185,13 +185,12 @@ def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
         if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
         try:
-            new_invitation = Invitation.objects.get(profile_id=profile_id, invitation_group_id=group_id)
+            new_invitation = Invitation.objects.get(profile_id=profile_id, team=team)
         except ObjectDoesNotExist:
             new_invitation = Invitation()
-        new_invitation.type = 'team'
         new_invitation.profile = profile_added
         new_invitation.initiator = current_profile
-        new_invitation.invitation_group_id = group_id
+        new_invitation.team = team
         new_invitation.date = date.today()
         new_invitation.is_viewed = False
         new_invitation.is_rendered = False
@@ -220,3 +219,15 @@ def kick_teammate(request: WSGIRequest, group_id: int):
 
         team.profile_set.remove(teammate)
         return JsonResponse({}, status=200)
+
+
+def join_from_notification(request: WSGIRequest, group_id: int):
+    print('i am here')
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    team = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+    profile = get_user_profile(request)
+    profile.groups.add(team)
+    return redirect('/team/{}/'.format(team.pk))

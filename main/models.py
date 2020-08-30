@@ -96,8 +96,7 @@ class Invitation (models.Model):
         (1, 'company'),
     ]
 
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='team')
-    invitation_group_id = models.IntegerField(default=0)
+    team = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+')

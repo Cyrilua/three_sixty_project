@@ -180,7 +180,6 @@ $(function () {
                 checkView();
             },
             complete: function (response, status) {
-                category = activeCategory;
                 content.removeClass('loading');
                 if (status === 'error') {
                     Snackbar.show({
@@ -193,6 +192,7 @@ $(function () {
                 }
             },
             error: function () {
+                category = activeCategory;
             }
         })
     }

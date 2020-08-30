@@ -74,6 +74,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
         'headMove': move,
         'headMain': main,
         'pollId': poll.pk,
+        'countSelectedInterviewed': checked.count(),
     }
 
 
@@ -137,7 +138,6 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
     profile = get_user_profile(request)
     company = profile.company
     profiles, checked = get_possible_respondents(poll, company)
-    print(profiles)
     args = {'participants': _build_team_profiles_list(profiles, company,
                                                       checked, profile)}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',

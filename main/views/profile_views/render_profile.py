@@ -106,8 +106,6 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
         if collected is None:
             return JsonResponse({}, status=400)
 
-        print(collected)
-
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected}).rendered_content
         return JsonResponse({'content': content}, status=200)
@@ -134,7 +132,7 @@ def _build_notifications_poll(notifications_polls: list) -> list:
             type_notification = 'result'
             url = '/poll/result/{}/'.format(notification.poll.pk)
         else:
-            url = '/compiling_poll/{}/'.format(notification.poll.pk)
+            url = '/poll/compiling_poll/{}/'.format(notification.poll.pk)
             type_notification = 'poll'
         poll: Poll = notification.poll
         target_poll: Profile = poll.target
@@ -163,34 +161,22 @@ def _build_invites(profile: Profile) -> list:
     for invite in invitations:
         invite: Invitation
 
-        if invite.type == 'team':
-            group = Group.objects.filter(pk=invite.invitation_group_id).first()
-            watch_url = '/team/{}/'.format(group.pk)
-        elif invite.type == 'company':
-            group = Company.objects.filter(pk=invite.invitation_group_id).first()
-            watch_url = 'company/{}/'.format(group.pk)
-        else:
-            continue
-        if group is None:
-            continue
+        team = invite.team
 
         initiator: Profile = invite.initiator
         collected_notification = {
-            'url': '',  # todo присоединение к объединению
+            'href': '/team/{}/invite/'.format(team.pk),
             'date': invite.date,
-            'title': {
-                'name': group.name,
-                'url': watch_url,
-            },
+            'title': team.name,
             'more': {
                 'name': "{} {} {}".format(initiator.surname, initiator.name, initiator.patronymic),
                 'url': '/{}/'.format(initiator.pk)
             },
-            'about': group.description,
+            'about': team.description,
             'is_viewed': invite.is_viewed,
             # 'is_new': invite.is_rendered,
             'type': 'invite',
-            'id': invite.id,
+            'id': invite.pk,
         }
         result.append(collected_notification)
     invitations.update(is_rendered=True)
