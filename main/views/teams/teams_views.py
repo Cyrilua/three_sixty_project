@@ -90,16 +90,16 @@ def search_team_for_invite(request, profile_id: int) -> render:
     current_profile: Profile = get_user_profile(request)
 
     alien_commands = alien_profile.groups.all().values_list('id', flat=True)
-    teams = current_profile.groups.all().exclude(id__in=alien_commands)
+    teams = current_profile.groups.all()
     args = {
         'title': "Пригласить в команду",
-        'teams': build_teams(teams, profile_id),
+        'teams': build_teams(teams, profile_id, alien_commands),
         'profile': get_header_profile(current_profile)
     }
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
 
 
-def build_teams(commands: filter, alien_profile_id: int) -> list:
+def build_teams(commands: filter, alien_profile_id: int, alien_commands) -> list:
     result = []
     for team in commands:
         users = team.profile_set.all()
@@ -108,7 +108,8 @@ def build_teams(commands: filter, alien_profile_id: int) -> list:
             'about': team.description,
             'members': len(users),
             'url': '/team/{}/'.format(team.id),
-            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id)
+            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id),
+            'is_may_be_invited': alien_commands.filter(id=team.pk).exists(),
         }
         result.append(collected_team)
     return result
@@ -125,14 +126,17 @@ def invite_to_team(request:WSGIRequest, profile_id: int, group_id: int):
         if changed_profile_role is None:
             return JsonResponse({}, status=404)
 
+        team = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+
         try:
-            new_invitation = Invitation.objects.get(profile_id=profile_id, invitation_group_id=group_id)
+            new_invitation = Invitation.objects.get(profile_id=profile_id, team=team)
         except ObjectDoesNotExist:
             new_invitation = Invitation()
-        new_invitation.type = 'team'
         new_invitation.profile = changed_profile_role
         new_invitation.initiator = current_profile
-        new_invitation.invitation_group_id = group_id
+        new_invitation.team = team
         new_invitation.date = date.today()
         new_invitation.is_viewed = False
         new_invitation.is_rendered = False
