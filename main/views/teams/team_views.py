@@ -29,6 +29,7 @@ def team_view(request, group_id: int) -> render:
     company = team.company
     if company is not None:
         args['company'] = {
+            'id': company.pk,
             'href': '/company/{}/'.format(company.pk),
             'name': company.name,
         }
