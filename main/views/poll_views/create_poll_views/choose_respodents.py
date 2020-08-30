@@ -19,12 +19,19 @@ def save_information(request: WSGIRequest) -> Poll:
         return None
     first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
     version = 1 if first_respondent is None else first_respondent.version + 1
-    for profile_id in list_profiles:
+    _save_or_update_respondents(list_profiles, poll, version)
+    return poll
+
+
+def _save_or_update_respondents(profile_id_list: list, poll: Poll, version: int) -> list:
+    profiles = []
+
+    for profile_id in profile_id_list:
         try:
             profile = Profile.objects.get(id=int(profile_id))
         except (ValueError, ObjectDoesNotExist):
             continue
-
+        profiles.append(profile)
         try:
             need_pass: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile_id=profile_id)
         except ObjectDoesNotExist:
@@ -35,7 +42,7 @@ def save_information(request: WSGIRequest) -> Poll:
         need_pass.save()
     profiles_for_delete = NeedPassPoll.objects.filter(poll=poll).exclude(version=version)
     profiles_for_delete.delete()
-    return poll
+    return profiles
 
 
 def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
@@ -153,6 +160,12 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     list_checked = [int(i) for i in request.POST.getlist('checkedInterviewed[]')]
 
     checked = NeedPassPoll.objects.filter(profile_id__in=list_checked)
+
+    #list_checked = request.POST.getlist('checkedInterviewed[]')
+    #first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
+    #version = 1 if first_respondent is None else first_respondent.version + 1
+    #profiles = _save_or_update_respondents(list_checked, poll, version)
+    #checked = NeedPassPoll.objects.filter(profile__in=profiles)
 
     if mode == 'participants':
         profiles = get_possible_respondents(poll, company)
