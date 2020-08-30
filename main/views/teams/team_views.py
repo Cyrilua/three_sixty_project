@@ -222,7 +222,6 @@ def kick_teammate(request: WSGIRequest, group_id: int):
 
 
 def join_from_notification(request: WSGIRequest, group_id: int):
-    print('i am here')
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     team = Group.objects.filter(id=group_id).first()

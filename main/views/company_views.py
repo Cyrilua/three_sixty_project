@@ -1,46 +1,42 @@
-import uuid
+from datetime import datetime
 
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 
-from main.forms import CompanyForm
-from main.models import Company, PositionCompany, PlatformCompany, ProfilePhoto, \
-    SurveyWizard, Moderator, Group
+from main.models import ProfilePhoto, SurveyWizard, Moderator, Group
 from main.views.auxiliary_general_methods import *
 from .validators import validate_user_input_in_company_settings
-from django.contrib.sites.shortcuts import get_current_site
 
 
 def create_company(request):
-    # todo temp
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    user = auth.get_user(request)
     profile = get_user_profile(request)
+    company = Company()
+    company.owner = profile
+    company.name = "Новая компания"
+    company.description = "описание компании"
+    company.save()
+    _create_unique_key(company)
 
-    args = {'title': "Создание компании",
-            'company_form': CompanyForm()}
+    profile.company = company
+    profile.save()
 
-    if profile.company is not None:
-        return redirect('/')
+    return redirect('/company/{}/'.format(company.pk))
 
-    if request.method == 'POST':
-        company_form = CompanyForm(request.POST)
-        if company_form.is_valid():
-            company = company_form.save(commit=False)
-            company.owner = user
-            company.key = uuid.uuid4().__str__()
-            company.save()
 
-            profile.company = company
-            profile.save()
-
-            return redirect('/communications/')
-        else:
-            args['company_form'] = company_form
-    return render(request, 'main/companies/old/add_new_company.html', args)
+def _create_unique_key(company: Company):
+    team_id_changed = company.pk % 1000 + 1000
+    owner_id_changed = company.owner.pk % 1000 + 1000
+    date_now = datetime.today()
+    date_changed_str = '{}{}{}{}{}{}{}'.format(date_now.day, date_now.month,
+                                               date_now.year, date_now.hour, date_now.minute, date_now.second, date_now.microsecond)
+    key = '{}{}{}'.format(team_id_changed, owner_id_changed, date_changed_str)
+    company.key = key
+    company.save()
 
 
 def company_view(request: WSGIRequest, id_company: int):
