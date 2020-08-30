@@ -1342,8 +1342,6 @@ $(function () {
                 menu.addClass('disabled');
             },
             success: function (response) {
-                selectedInterviewed = response.countSelectedInterviewed;
-                $('.head__count-selected').text(selectedInterviewed);
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -1355,6 +1353,9 @@ $(function () {
                 let headMove = $('.head__move');
                 headMove.empty();
                 headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
 
                 let categories = $('.categories-block');
                 categories.empty();
@@ -1437,8 +1438,6 @@ $(function () {
                 menu.addClass('disabled');
             },
             success: function (response) {
-                selectedInterviewed = response.countSelectedInterviewed;
-                $('.head__count-selected').text(selectedInterviewed);
                 document.documentElement.style.setProperty('--mdc-theme-primary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-secondary', '#FF1841');
                 document.documentElement.style.setProperty('--mdc-theme-text-primary-on-dark', 'white');
@@ -1450,6 +1449,9 @@ $(function () {
                 let headMove = $('.head__move');
                 headMove.empty();
                 headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
+
+                selectedInterviewed = response.countSelectedInterviewed;
+                $('.head__count-selected').text(selectedInterviewed);
 
                 let categories = $('.categories-block');
                 categories.empty();
