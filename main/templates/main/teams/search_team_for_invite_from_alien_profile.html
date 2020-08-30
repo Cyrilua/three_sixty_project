@@ -30,7 +30,7 @@
                                     <span class="team__about">{{ team.about }}</span>
                                 </div>
                                 <button class="team__button button-white button-href-async"
-                                        data-href="{{ team.url_send_invite }}" {% if not alien_profile.is_may_be_invited %} disabled{% endif %}>Пригласить
+                                        data-href="{{ team.url_send_invite }}" {% if not team.is_may_be_invited %} disabled{% endif %}>Пригласить
                                 </button>
                             </div>
                         </div>
