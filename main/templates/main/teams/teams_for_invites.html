@@ -1,0 +1,21 @@
+{% load static %}
+
+{% for team in teams %}
+    <div class="team" data-name="{{ team.name }}" data-team-id="{{ team.id }}">
+        <div class="team__content rounded-block">
+            <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
+            <div class="team__details">
+                <div class="team__title">
+                    <a href="{{ team.url }}" class="team__name">{{ team.name }}</a>
+                </div>
+                <span class="team__members">Количество участников: {{ team.members }}</span>
+                <span class="team__about">{{ team.about }}</span>
+            </div>
+            <button class="team__button button-white" {% if not team.is_may_be_invited %}
+                    disabled{% endif %}>
+                Пригласить
+            </button>
+        </div>
+    </div>
+    <!-- /.team -->
+{% endfor %}
