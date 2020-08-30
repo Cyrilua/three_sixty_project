@@ -1,25 +1,30 @@
 {% load static %}
-{% for notif in notifications %}
-    <div class="notification rounded-block {% if not notif.is_viewed %}no-viewed{% endif %} {% if notif.is_new %}is_unshown{% endif %}"
-         data-type="{{ notif.type }}" data-id="{{ notif.id }}">
-        {#  data-type = poll | result | invite  #}
-        <div class="notification__image"></div>
-        <div class="notification__info">
-            <div class="notification__title">{{ notif.title }}</div>
-            <div class="notification__more">
-                <a href="{{ notif.more.url }}" class="notification__target" target="_blank">{{ notif.more.name }}</a>
+{% if notifications %}
+    {% for notif in notifications %}
+        <div class="notification rounded-block {% if not notif.is_viewed %}no-viewed{% endif %} {% if notif.is_new %}is_unshown{% endif %}"
+             data-type="{{ notif.type }}" data-id="{{ notif.id }}">
+            {#  data-type = poll | result | invite  #}
+            <div class="notification__image"></div>
+            <div class="notification__info">
+                <div class="notification__title">{{ notif.title }}</div>
+                <div class="notification__more">
+                    <a href="{{ notif.more.url }}" class="notification__target"
+                       target="_blank">{{ notif.more.name }}</a>
+                </div>
+                <div class="notification__about">
+                    {{ notif.about }}
+                </div>
+                <div class="notification__date">{{ notif.date }}</div>
             </div>
-            <div class="notification__about">
-                {{ notif.about }}
+            <div class="notification__actions">
+                {% if notif.type == 'invite' %}
+                    <div class="notification__close team__leave"></div>
+                {% endif %}
+                {#                <button class="button-red notification__open">123</button>#}
+                <a href="{{ notif.href }}" class="button-red notification__open" target="_blank"></a>
             </div>
-            <div class="notification__date">{{ notif.date }}</div>
         </div>
-        <div class="notification__actions">
-            {% if notif.type == 'invite' %}
-                <div class="notification__close team__leave"></div>
-            {% endif %}
-            {#                <button class="button-red notification__open">123</button>#}
-            <a href="{{ notif.href }}" class="button-red notification__open" target="_blank"></a>
-        </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% else %}
+    {% include 'main/includes/bad_search.html' with text='Сейчас уведомлений нет' %}
+{% endif %}

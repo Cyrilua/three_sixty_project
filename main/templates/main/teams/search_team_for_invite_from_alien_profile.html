@@ -30,42 +30,14 @@
                                     <span class="team__about">{{ team.about }}</span>
                                 </div>
                                 <button class="team__button button-white button-href-async"
-                                        data-href="{{ team.url_send_invite }}">Пригласить
+                                        data-href="{{ team.url_send_invite }}" {% if not alien_profile.is_may_be_invited %} disabled{% endif %}>Пригласить
                                 </button>
                             </div>
                         </div>
                         <!-- /.team -->
                     {% endfor %}
-                {% else %}
-                    <div class="team show" data-name="Крутая команда">
-                        <div class="team__content rounded-block">
-                            <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                            <div class="team__details">
-                                <div class="team__title">
-                                    <a href="#" class="team__name">Крутая команда</a>
-                                </div>
-                                <span class="team__members">35 участников</span>
-                                <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
-                            </div>
-                            <button class="team__button button-white button-href" data-href="#">Пригласить</button>
-                        </div>
-                    </div>
-                    <!-- /.team -->
-
-                    <div class="team show" data-name="Крутая не команда 123456789qwertyuisdfghjkcvbnm,.">
-                        <div class="team__content rounded-block">
-                            <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                            <div class="team__details">
-                                <div class="team__title">
-                                    <a href="#" class="team__name">Крутая не команда 123456789qwertyuisdfghjkcvbnm,.</a>
-                                </div>
-                                <span class="team__members">35 участников</span>
-                                <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
-                            </div>
-                            <button class="team__button button-white button-href" data-href="#">Пригласить</button>
-                        </div>
-                    </div>
-                    <!-- /.team -->
+{#                {% else %}#}
+{#                    {% include 'main/includes/bad_search.html' with text='Нет доступных команд. Создавайте команды, чтобы приглашать в них пользователей' %}#}
                 {% endif %}
             </div>
             <!-- /.teams -->
