@@ -1678,6 +1678,11 @@ $(function () {
             listKeys.push($(el).attr('data-question-id'))
         });
         // console.log(listQuestions)
+
+        let _pollId = $('.poll-editor').attr('data-poll-id');
+        if (_pollId) {
+            pollId = _pollId;
+        }
     }
 
     // Создание нового вопроса
