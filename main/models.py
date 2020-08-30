@@ -306,6 +306,15 @@ class Answers(models.Model):
         db_table = "Answer"
 
 
+class RangeAnswers(models.Model):
+    answer = models.ForeignKey('Answers', on_delete=models.CASCADE)
+    position_on_range = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = "RangeAnswer"
+
+
 class OpenQuestion(models.Model):
     text = models.CharField(max_length=100, default='')
     objects = models.Manager()

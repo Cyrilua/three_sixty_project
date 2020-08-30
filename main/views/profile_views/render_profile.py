@@ -34,7 +34,7 @@ def get_render_user_profile(request):
         'data': {
             'new': {
                 'polls': NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count(),
-                'results': CreatedPoll.objects.filter(profile=profile, is_viewed=False).count(),
+                'results': CreatedPoll.objects.filter(profile=profile, is_viewed=False, poll__count_passed__gt=2).count(),
                 'invites': Invitation.objects.filter(profile=profile, is_viewed=False).count()
             }
         }
@@ -187,14 +187,15 @@ def _build_invites(profile: Profile) -> list:
 def new_notification(request: WSGIRequest, profile_id: int):
     if request.is_ajax():
         profile = get_user_profile(request)
-        if profile.pk != profile_id:
-            return JsonResponse({}, status=400)
+        # todo забаговало
+        #if profile.pk != profile_id:
+        #    return JsonResponse({}, status=400)
 
         category = request.GET.get('category', '')
 
         if category == 'results':
             collected_notifications = _build_notifications_poll(
-                CreatedPoll.objects.filter(profile=profile, is_viewed=False))
+                CreatedPoll.objects.filter(profile=profile, is_viewed=False).filter(poll__count_passed__gt=2))
 
         elif category == 'polls':
             collected_notifications = _build_notifications_poll(
@@ -206,7 +207,7 @@ def new_notification(request: WSGIRequest, profile_id: int):
         else:
             return JsonResponse({}, status=400)
 
-        count_new_my_poll = CreatedPoll.objects.filter(profile=profile, is_viewed=False).count()
+        count_new_my_poll = CreatedPoll.objects.filter(profile=profile, is_viewed=False, poll__count_passed__gt=2).count()
         count_new_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
 
