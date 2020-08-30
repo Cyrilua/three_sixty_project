@@ -9,7 +9,7 @@ urlpatterns = [
     path('loading/<int:count_polls>/', polls_view.loading_polls),
     # Маячок о новом опросе для прохождения
     path('new_notif/', polls_view.load_notification_new_poll),
-    # Создание нового опроса todo
+    # Создание нового опроса
     path('poll/create/', create_poll.redirect_for_create, name='poll_create'),
     # Удаление шаблона
     path('template/remove/', polls_view.remove_template),

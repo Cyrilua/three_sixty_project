@@ -5,14 +5,14 @@ from django.core.handlers.wsgi import WSGIRequest
 
 
 def result_poll(request: WSGIRequest, poll_id: int) -> render:
-    try:
-        poll = Poll.objects.get(id=poll_id)
-    except ObjectDoesNotExist:
+    poll = Poll.objects.filter(id=poll_id).first()
+    if poll is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
     if poll.initiator != profile:
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
     target: Profile = poll.target
     args = {
         'poll': {
@@ -20,7 +20,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'color': poll.color,
             'name': poll.name_poll,
             'target': {
-                'href': '/{}/'.format(target.id),
+                'href': '/{}/'.format(target.pk),
                 'name': target.name,
                 'surname': target.surname,
                 'patronymic': target.patronymic
@@ -29,6 +29,8 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'questions': _build_questions(poll)
         }
     }
+    # todo only for debug
+    #CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
     return render(request, 'main/poll/poll_results.html', args)
 
 

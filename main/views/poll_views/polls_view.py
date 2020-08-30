@@ -31,9 +31,11 @@ def polls_view(request) -> render:
 
 def _build_templates(profile: Profile) -> dict:
     result = {
-        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True)],
+        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True,
+                                                                                             is_deleted=False)],
         'my': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=False,
-                                                                                        owner=profile)]
+                                                                                        owner=profile,
+                                                                                        is_deleted=False)]
     }
     return result
 
@@ -192,22 +194,21 @@ def remove_template(request) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
-        # todo throw exceptions.
-        #  Удалять только связь с пользователем. Удаление самого шаблона оставить на скрипт
         try:
             template_id = int(request.POST['id'])
         except ValueError:
             return JsonResponse({}, status=400)
+
         profile = get_user_profile(request)
-        try:
-            template: TemplatesPoll = TemplatesPoll.objects.get(id=template_id)
-        except ObjectDoesNotExist:
+        template = TemplatesPoll.objects.filter(id=template_id)
+        template_first = template.first()
+        if template_first is None:
             return JsonResponse({}, status=400)
 
-        if template.is_general or template.owner != profile:
+        if template_first.is_general or template_first.owner != profile:
             return JsonResponse({}, status=400)
 
-        template.delete()
+        template.update(is_deleted=True)
         return JsonResponse({}, status=200)
 
 

@@ -168,13 +168,8 @@ class TemplatesPoll(models.Model):
     owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
+    is_deleted = models.BooleanField(default=False)
     objects = models.Manager()
-
-    def delete(self, *args, **kwargs):
-        questions = self.questions.all()
-        for question in questions:
-            question.delete()
-        super(TemplatesPoll, self).delete(*args, **kwargs)
 
     class Meta:
         db_table = 'Template'

@@ -17,8 +17,22 @@ def redirect_for_create(request):
 
 
 def create_new_poll_from_company(request, company_id):
-    # todo
-    pass
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    company = Company.objects.filter(id=company_id).first()
+    if company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
+    profile = get_user_profile(request)
+    if not company.profile_set.filter(id=profile.pk).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
+    new_poll = Poll()
+    new_poll.initiator = profile
+    new_poll.start_from = 'company'
+    new_poll.from_id_group = company.pk
+    new_poll.save()
+    return redirect('/poll/editor/{}/'.format(new_poll.pk))
 
 
 def poll_create_from_team(request, team_id):
@@ -27,7 +41,12 @@ def poll_create_from_team(request, team_id):
     team = Group.objects.filter(id=team_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
     profile = get_user_profile(request)
+    if not team.profile_set.filter(id=profile.pk).exists() and \
+            not SurveyWizard.objects.filter(profile=profile).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
     new_poll = Poll()
     new_poll.initiator = profile
     new_poll.start_from = 'team'

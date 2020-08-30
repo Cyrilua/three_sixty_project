@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from main.views.auxiliary_general_methods import *  # todo не импортировать весь файл
+from main.views.auxiliary_general_methods import *
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, \
     AnswerChoice, NeedPassPoll, CreatedPoll
 from django.shortcuts import redirect, render

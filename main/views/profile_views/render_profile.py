@@ -113,7 +113,8 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
 
 def _build_notifications(profile: Profile, selected_category: str):
     if selected_category == 'results':
-        return _build_notifications_poll(CreatedPoll.objects.filter(profile=profile))
+        notifications = CreatedPoll.objects.filter(profile=profile).filter(poll__count_passed__gt=2)
+        return _build_notifications_poll(notifications)
 
     elif selected_category == 'polls':
         result = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))

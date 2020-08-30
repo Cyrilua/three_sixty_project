@@ -63,18 +63,32 @@ def build_questions(questions: list) -> list:
     return result
 
 
-def compiling_poll_link(request: WSGIRequest, poll_key: int) -> render:
-    # todo
-    return render(request, 'main/poll/taking_poll.html', {})
+def compiling_poll_link(request: WSGIRequest, poll_id: int, poll_key: int) -> render:
+    if auth.get_user(request).is_anonymous:
+        return JsonResponse({}, status=404)
+
+    poll = Poll.objects.filter(id=poll_id).first()
+    if poll is None:
+        return render(request, 'main/error/global_error.html', {'global_error': '404'})
+
+    if poll.key != poll_key:
+        return render(request, 'main/error/global_error.html', {'global_error': '400'})
+
+    return redirect('/poll/compiling_poll/{}/'.format(poll.pk))
 
 
 def send_answer(request: WSGIRequest, poll_id: int):
     if request.is_ajax():
-        # todo throw exceptions
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
         poll = Poll.objects.filter(id=poll_id)
+        if poll.first() is None:
+            return JsonResponse({}, status=400)
+
         _collect_answers(request, poll.first().questions.all().count())
         poll.update(count_passed=F('count_passed') + 1)
-        #NeedPassPoll.objects.filter(poll=poll.first(), profile=get_user_profile(request)).delete()
+        NeedPassPoll.objects.filter(poll=poll.first(), profile=get_user_profile(request)).delete()
         return JsonResponse({}, status=200)
 
 

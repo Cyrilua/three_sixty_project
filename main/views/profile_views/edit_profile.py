@@ -112,37 +112,54 @@ def _build_objects(list_objects: filter) -> list:
 
 def remove_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
-        try:
-            platform = PlatformCompany.objects.get(id=platform_id)
-        except ObjectDoesNotExist:
-            # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if platform is None:
             return JsonResponse({'resultStatus': 'error'}, status=200)
+
         platform.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def remove_position(request, position_id: int) -> redirect:
     if request.is_ajax():
-        position = PositionCompany.objects.get(id=position_id)
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        position = PositionCompany.objects.filter(id=position_id).first()
+        if position is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         position.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def add_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
-        platform = PlatformCompany.objects.get(id=platform_id)
+        platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if platform is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         platform.profile_set.add(profile)
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def add_position(request, position_id: int) -> redirect:
     if request.is_ajax():
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
-        position = PositionCompany.objects.get(id=position_id)
+        position = PositionCompany.objects.filter(id=position_id).first()
+        if position is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         position.profile_set.add(profile)
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
@@ -251,7 +268,6 @@ def save_birth_date(request) -> JsonResponse:
                 'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
             }
         }
-        print(birth_date_profile.birthday)
         return JsonResponse(args, status=200)
 
 
