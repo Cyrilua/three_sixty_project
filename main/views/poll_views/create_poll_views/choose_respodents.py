@@ -148,6 +148,22 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
 
 
 def search_step_3(request: WSGIRequest) -> JsonResponse:
+    def _build_profiles_list(profiles_list: filter, group: (Group, Company), checked_profiles: QuerySet,
+                             unbilding_user: Profile) -> list:
+        result = []
+        for profile_iter in profiles_list:
+            if profile_iter == unbilding_user:
+                continue
+            profile_iter: Profile
+            collected_profile = build_profile(profile_iter)
+            collected_profile['is_checked'] = checked_profiles.filter(id=profile_iter.pk).exists()
+            if group is not None:
+                collected_profile['is_leader'] = group.owner == profile_iter
+
+            result.append(collected_profile)
+
+        return result
+
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
@@ -159,13 +175,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     company = profile.company
     list_checked = [int(i) for i in request.POST.getlist('checkedInterviewed[]')]
 
-    checked = NeedPassPoll.objects.filter(profile_id__in=list_checked)
-
-    #list_checked = request.POST.getlist('checkedInterviewed[]')
-    #first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
-    #version = 1 if first_respondent is None else first_respondent.version + 1
-    #profiles = _save_or_update_respondents(list_checked, poll, version)
-    #checked = NeedPassPoll.objects.filter(profile__in=profiles)
+    checked = Profile.objects.filter(id__in=list_checked)
 
     if mode == 'participants':
         profiles = get_possible_respondents(poll, company)
@@ -173,7 +183,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         result_search = get_search_result_for_profiles(profiles, user_input.split(),
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
-            'participants': _build_team_profiles_list(result_search, profile.company,
+            'participants': _build_profiles_list(result_search, profile.company,
                                                       checked,
                                                       unbilding_user=profile)
         }
