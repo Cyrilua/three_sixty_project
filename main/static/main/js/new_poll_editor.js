@@ -446,13 +446,14 @@ $(function () {
                 menu.eq(0).removeClass('item--active');
                 menu.eq(1).addClass('item--active');
 
-                let participant = $('input[type=radio][name=participants]:checked').parent().parent().parent();
-                // selectedTarget = response.selectedTarget;
-                if (selectedTarget || participant.length > 0) {
+                let participant = $('input[type=radio][name=participants]:checked');
+                if (selectedTarget || participant.parent().parent().parent().length > 0) {
+                    selectedTarget = participant.attr('data-participant-id');
                     $('#nextToStep3').prop({
                         'disabled': false,
                     });
                     menu.eq(1).removeClass('disabled');
+                    accessStep3 = true;
                 }
                 // console.log(participant)
                 // participant.css({
@@ -841,7 +842,7 @@ $(function () {
                 headMain.empty();
                 headMain[0].insertAdjacentHTML('afterbegin', response.headMain);
 
-                selectedInterviewed = response.countSelectedInterviewed;
+                // selectedInterviewed = response.countSelectedInterviewed;
                 // $('.head__count-selected').text(selectedInterviewed);
 
                 let headMove = $('.head__move');
@@ -862,14 +863,15 @@ $(function () {
                 //     })
                 // }
                 let allParticipants = $('input[type=checkbox][name=participants]');
-
                 if (!interviewed) {
                     interviewed = {};
                     allParticipants.each(function (index, element) {
                         interviewed[`${$(element).attr('data-participant-id')}`] = $(element).prop('checked');
                     });
-                    console.log(interviewed)
+                    // console.log(interviewed)
                 }
+
+                getCountCheckedInterviewed();
 
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
                 if (selectedInterviewed > 0 || participants.length > 0) {
@@ -900,6 +902,15 @@ $(function () {
             error: function () {
             },
         });
+    }
+
+    function getCountCheckedInterviewed() {
+        selectedInterviewed = 0;
+        for (let key in interviewed) {
+            if (interviewed[key]) selectedInterviewed++;
+        }
+        // console.log(selectedInterviewed)
+        return selectedInterviewed;
     }
 
     // 2 и 3 шаг - выбор по командам - свернуть/развернуть команду
@@ -1074,6 +1085,16 @@ $(function () {
             } else {
                 $('.select__all').removeClass('all-checked');
             }
+            // console.log(getCountCheckedInterviewed())
+            if (getCountCheckedInterviewed() > 0) {
+                $('#sendPoll').prop({
+                    'disabled': false,
+                })
+            } else {
+                $('#sendPoll').prop({
+                    'disabled': true,
+                })
+            }
         } else if (category === 'teams') {
             let participantBlockInTeam = $(this).parent().parent().parent().parent();
             let checkboxesInTeam = participantBlockInTeam.children('.participant').children('.checkbox');
@@ -1111,11 +1132,22 @@ $(function () {
                         .addClass('changeEnd')
                         .trigger('click');
                 }
+
             } else {
                 $(this).removeClass('changeEnd');
+                // console.log(getCountCheckedInterviewed())
+                if (getCountCheckedInterviewed() > 0) {
+                    $('#sendPoll').prop({
+                        'disabled': false,
+                    })
+                } else {
+                    $('#sendPoll').prop({
+                        'disabled': true,
+                    })
+                }
             }
         }
-        console.log(interviewed)
+        // console.log(interviewed)
     });
 
     // body.on('changeEnd', 'input[type=checkbox][name=participants]', function () {
@@ -1413,7 +1445,7 @@ $(function () {
                 headMove.empty();
                 headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
 
-                selectedInterviewed = response.countSelectedInterviewed;
+                // selectedInterviewed = response.countSelectedInterviewed;
                 // $('.head__count-selected').text(selectedInterviewed);
 
                 let categories = $('.categories-block');
@@ -1434,8 +1466,11 @@ $(function () {
                     allParticipants.each(function (index, element) {
                         interviewed[`${$(element).attr('data-participant-id')}`] = $(element).prop('checked');
                     });
-                    console.log(interviewed)
+                    // console.log(interviewed)
                 }
+
+
+                getCountCheckedInterviewed();
 
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
                 if (selectedInterviewed > 0 || participants.length > 0) {
@@ -1518,7 +1553,7 @@ $(function () {
                 headMove.empty();
                 headMove[0].insertAdjacentHTML('afterbegin', response.headMove);
 
-                selectedInterviewed = response.countSelectedInterviewed;
+                // selectedInterviewed = response.countSelectedInterviewed;
                 // $('.head__count-selected').text(selectedInterviewed);
 
                 let categories = $('.categories-block');
@@ -1543,8 +1578,10 @@ $(function () {
                     allParticipants.each(function (index, element) {
                         interviewed[`${$(element).attr('data-participant-id')}`] = $(element).prop('checked');
                     });
-                    console.log(interviewed)
+                    // console.log(interviewed)
                 }
+
+                getCountCheckedInterviewed();
 
                 let participants = $('input[type=checkbox][name=participants]:checked').parent().parent().parent();
                 if (selectedInterviewed > 0 || participants.length > 0) {
