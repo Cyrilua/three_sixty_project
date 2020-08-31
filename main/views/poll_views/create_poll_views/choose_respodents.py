@@ -106,7 +106,8 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
             continue
         profile: Profile
         collected_profile = build_profile(profile)
-        collected_profile['is_checked'] = checked_profiles.filter(profile=profile).exists()
+        if checked_profiles is not  None:
+            collected_profile['is_checked'] = checked_profiles.filter(profile=profile).exists()
         if group is not None:
             collected_profile['is_leader'] = group.owner == profile
 
@@ -148,22 +149,6 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
 
 
 def search_step_3(request: WSGIRequest) -> JsonResponse:
-    def _build_profiles_list(profiles_list: filter, group: (Group, Company), checked_profiles: QuerySet,
-                             unbilding_user: Profile) -> list:
-        result = []
-        for profile_iter in profiles_list:
-            if profile_iter == unbilding_user:
-                continue
-            profile_iter: Profile
-            collected_profile = build_profile(profile_iter)
-            collected_profile['is_checked'] = checked_profiles.filter(id=profile_iter.pk).exists()
-            if group is not None:
-                collected_profile['is_leader'] = group.owner == profile_iter
-
-            result.append(collected_profile)
-
-        return result
-
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
@@ -173,9 +158,6 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     user_input: str = request.POST['input']
     profile = get_user_profile(request)
     company = profile.company
-    list_checked = [int(i) for i in request.POST.getlist('checkedInterviewed[]')]
-
-    checked = Profile.objects.filter(id__in=list_checked)
 
     if mode == 'participants':
         profiles = get_possible_respondents(poll, company)
@@ -183,8 +165,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         result_search = get_search_result_for_profiles(profiles, user_input.split(),
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
-            'participants': _build_profiles_list(result_search, profile.company,
-                                                 checked, unbilding_user=profile)
+            'participants': _build_team_profiles_list(result_search, profile.company, None, unbilding_user=profile)
         }
         content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                          content_participants_args).rendered_content
@@ -195,8 +176,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         else:
             teams: QuerySet = profile.groups.all()
         result_search = get_search_result_for_teams(teams, user_input)
-        collected_teams = _build_team_list(result_search, checked,
-                                           unbilding_user=profile)
+        collected_teams = _build_team_list(result_search, None,  unbilding_user=profile)
         content_teams_args = {
             'teams': collected_teams
         }

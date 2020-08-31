@@ -102,10 +102,6 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 
 def build_profile(profile) -> dict:
-    try:
-        photo = profile.profilephoto.photo
-    except ObjectDoesNotExist:
-        photo = None
     return {
         'href': '/{}/'.format(profile.pk),
         'id': profile.pk,
@@ -115,7 +111,7 @@ def build_profile(profile) -> dict:
         'roles': _get_roles(profile),
         'positions': [i.name for i in profile.positions.all()],
         'platforms': [i.name for i in profile.platforms.all()],
-        'photo': photo
+        'photo': profile.profilephoto.photo
     }
 
 
@@ -142,8 +138,6 @@ def search(request: WSGIRequest) -> JsonResponse:
 
     profile = get_user_profile(request)
     company = profile.company
-    checked_id = int(request.POST.get('checkedTarget', '-1'))
-    profile_checked = Profile.objects.filter(id=checked_id).first()
 
     if mode == 'participants':
         profiles = get_possible_respondents(poll, company)
@@ -151,7 +145,8 @@ def search(request: WSGIRequest) -> JsonResponse:
         result_search = get_search_result_for_profiles(profiles, user_input.split(),
                                                        company if start_from_company_or_polls else None)
         content_participants_args = {
-            'participants': _build_team_profiles_list(result_search, profile.company, profile_checked)
+            'participants': _build_team_profiles_list(result_search, profile.company,
+                                                      Profile.objects.filter(id=-1))
         }
         content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                          content_participants_args).rendered_content
@@ -162,7 +157,7 @@ def search(request: WSGIRequest) -> JsonResponse:
         else:
             teams: QuerySet = profile.groups.all()
         result_search = get_search_result_for_teams(teams, user_input)
-        collected_teams = _build_team_list(result_search, profile_checked)
+        collected_teams = _build_team_list(result_search, Profile.objects.filter(id=-1))
         content_teams_args = {
             'teams': collected_teams
         }
