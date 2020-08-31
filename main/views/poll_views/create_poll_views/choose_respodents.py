@@ -4,8 +4,7 @@ from django.http import JsonResponse
 from django.template.response import SimpleTemplateResponse
 from django.utils.datastructures import MultiValueDictKeyError
 
-from main.models import Poll, Group, SurveyWizard, Company, \
-    NeedPassPoll
+from main.models import Poll, Group, SurveyWizard, NeedPassPoll
 from main.views.auxiliary_general_methods import *
 from .choose_target import build_profile
 
@@ -14,9 +13,14 @@ def save_information(request: WSGIRequest) -> Poll:
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
-        list_profiles = request.POST.getlist('checkedInterviewed[]')
+        list_profiles = [int(i) for i in request.POST.getlist('checkedInterviewed[]')]
     except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
         return None
+
+    # todo
+    # respondents = NeedPassPoll.objects.filter(poll=poll).exclude(profile_id__in=list_profiles)
+    # print(respondents)
+
     first_respondent = NeedPassPoll.objects.filter(poll=poll).first()
     version = 1 if first_respondent is None else first_respondent.version + 1
     _save_or_update_respondents(list_profiles, poll, version)
@@ -56,7 +60,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
                                   args).rendered_content
     company = profile.company
 
-    profiles = get_possible_respondents(poll, company)
+    profiles = company.profile_set.all()
     checked = NeedPassPoll.objects.filter(poll=poll)
     categories_args = {
         'participants': _build_team_profiles_list(profiles, company, checked, profile),
@@ -106,7 +110,7 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
             continue
         profile: Profile
         collected_profile = build_profile(profile)
-        if checked_profiles is not  None:
+        if checked_profiles is not None:
             collected_profile['is_checked'] = checked_profiles.filter(profile=profile).exists()
         if group is not None:
             collected_profile['is_leader'] = group.owner == profile
@@ -138,9 +142,10 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
     poll = save_information(request)
     if poll is None:
         return JsonResponse({}, status=400)
+
     profile = get_user_profile(request)
     company = profile.company
-    profiles = get_possible_respondents(poll, company)
+    profiles = company.profile_set.all()
     args = {'participants': _build_team_profiles_list(profiles, company,
                                                       NeedPassPoll.objects.filter(poll=poll), profile)}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
@@ -160,7 +165,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     company = profile.company
 
     if mode == 'participants':
-        profiles = get_possible_respondents(poll, company)
+        profiles = company.profile_set.all()
         start_from_company_or_polls = poll.start_from
         result_search = get_search_result_for_profiles(profiles, user_input.split(),
                                                        company if start_from_company_or_polls else None)
@@ -186,16 +191,3 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content, }, status=200)
 
-
-def get_possible_respondents(poll: Poll, company) -> QuerySet:
-    if poll.start_from is None:
-        return Profile.objects.filter(company=company).exclude(id__in=[poll.target.id, poll.initiator.id])
-
-    elif poll.start_from == 'team':
-        team = Group.objects.filter(id=poll.from_id_group).first()
-        profiles = team.profile_set.all().exclude(id__in=[poll.target.id, poll.initiator.id])
-        return profiles
-
-    else:
-        profiles = company.profile_set.exclude(id__in=[poll.target.id, poll.initiator.id])
-        return profiles

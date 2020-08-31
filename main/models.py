@@ -190,8 +190,6 @@ class Poll(models.Model):
     questions = models.ManyToManyField('Questions')
     is_submitted = models.BooleanField(default=False)
     new_template = models.OneToOneField(TemplatesPoll, on_delete=models.CASCADE, null=True)
-    start_from = models.CharField(null=True, max_length=10)  # polls | team | company
-    from_id_group = models.IntegerField(null=True)
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):

@@ -1,5 +1,5 @@
 from main.views.auxiliary_general_methods import *
-from main.models import SurveyWizard, Poll, Group
+from main.models import SurveyWizard, Poll, Group, NeedPassPoll
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from . import create_poll_from_template
@@ -29,9 +29,14 @@ def create_new_poll_from_company(request, company_id):
 
     new_poll = Poll()
     new_poll.initiator = profile
-    new_poll.start_from = 'company'
-    new_poll.from_id_group = company.pk
     new_poll.save()
+    profiles = company.profile_set.all()
+    for profile in profiles:
+        new_need_pass = NeedPassPoll()
+        new_need_pass.profile = profile
+        new_need_pass.poll = new_poll
+        new_need_pass.save()
+
     return redirect('/poll/editor/{}/'.format(new_poll.pk))
 
 
@@ -52,6 +57,12 @@ def poll_create_from_team(request, team_id):
     new_poll.start_from = 'team'
     new_poll.from_id_group = team.pk
     new_poll.save()
+    profiles = team.profile_set.all()
+    for profile in profiles:
+        new_need_pass = NeedPassPoll()
+        new_need_pass.profile = profile
+        new_need_pass.poll = new_poll
+        new_need_pass.save()
     return redirect('/poll/editor/{}/'.format(new_poll.pk))
 
 

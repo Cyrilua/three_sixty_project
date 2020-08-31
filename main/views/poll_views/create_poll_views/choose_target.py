@@ -17,8 +17,8 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
 
     profile = get_user_profile(request)
-    company: Company = profile.company
-    profiles = get_possible_respondents(poll, company)
+    company = profile.company
+    profiles = company.profile_set.all()
 
     categories_args = {
         'participants': _build_team_profiles_list(profiles, company, poll.target),
@@ -66,7 +66,7 @@ def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse
         return JsonResponse({}, status=400)
     profile = get_user_profile(request)
     company = profile.company
-    profiles = get_possible_respondents(poll, company)
+    profiles = company.profile_set.all()
     args = {'participants': _build_team_profiles_list(profiles, company, poll.target)}
     content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
                                      args).rendered_content
@@ -140,10 +140,8 @@ def search(request: WSGIRequest) -> JsonResponse:
     company = profile.company
 
     if mode == 'participants':
-        profiles = get_possible_respondents(poll, company)
-        start_from_company_or_polls = poll.start_from
-        result_search = get_search_result_for_profiles(profiles, user_input.split(),
-                                                       company if start_from_company_or_polls else None)
+        profiles = company.profile_set.all()
+        result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
         content_participants_args = {
             'participants': _build_team_profiles_list(result_search, profile.company,
                                                       Profile.objects.filter(id=-1))
@@ -184,16 +182,3 @@ def save_information(request: WSGIRequest) -> Poll:
         poll.save()
     return poll
 
-
-def get_possible_respondents(poll: Poll, company) -> QuerySet:
-    if poll.start_from is None:
-        return Profile.objects.filter(company=company)
-
-    elif poll.start_from == 'team':
-        team = Group.objects.filter(id=poll.from_id_group).first()
-        profiles = team.profile_set.all()
-        return profiles
-
-    else:
-        profiles = company.profile_set.all()
-        return profiles
