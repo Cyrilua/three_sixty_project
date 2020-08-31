@@ -341,6 +341,7 @@ class Choice(models.Model):
 
 class TestTable(models.Model):
     code = models.CharField(max_length=100, default='')
+    photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
 
     class Meta:
         db_table = "TestTable"

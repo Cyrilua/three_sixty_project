@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.conf import settings
 from .auxiliary_general_methods import *
-from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany, Group, PositionCompany
+from main.models import TestTable, Profile, NeedPassPoll, Poll, PlatformCompany, Group, PositionCompany, ProfilePhoto
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from django.template import loader, Context
@@ -18,14 +18,20 @@ from django.contrib.sites.shortcuts import get_current_site
 def test(request: WSGIRequest):
     # _test_send_email(request)
     #_test_filter(request)
-    _create_list_profiles(request)
+    _create_new_profile(request)
     return render(request, 'main/test.html')
 
 
-def _create_list_profiles(request: WSGIRequest):
-    poll = Poll.objects.get(id=108)
-    temp = poll.needpasspoll_set__profile.all()
-    print(temp)
+def _create_new_profile(request: WSGIRequest):
+    profiles = filter(lambda x: not ProfilePhoto.objects.filter(profile=x).exists(), Profile.objects.all())
+    for i in profiles:
+        profile_photo = ProfilePhoto()
+        profile_photo.photo = 'images/photo.svg'
+        profile_photo.profile = i
+        profile_photo.save()
+    #test_row.photo = 'images/photo.svg'
+    #test_row.save()
+    #return test_row
 
 
 def _test_send_email(request):
