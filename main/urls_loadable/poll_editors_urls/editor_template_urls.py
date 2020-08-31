@@ -4,8 +4,7 @@ from ...views.poll_views import create_poll_from_template
 
 urlpatterns = [
     # Создание нового опроса через шаблон
-    path('', create_poll_from_template.create_poll_from_template,
-         name='create_poll_from_template'),
+    path('', create_poll_from_template.start_create_poll, name='create_poll_from_template'),
     # Сохранение шаблона
     path('save_as/', create_poll_from_template.save_template, name='save_template'),
     # Переход с первого на второй шаг

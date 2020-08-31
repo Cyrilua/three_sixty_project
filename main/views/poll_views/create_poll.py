@@ -9,11 +9,7 @@ from django.core.handlers.wsgi import WSGIRequest
 def redirect_for_create(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
-    profile = get_user_profile(request)
-    new_poll = Poll()
-    new_poll.initiator = profile
-    new_poll.save()
-    return redirect('/poll/editor/{}/'.format(new_poll.pk))
+    return redirect('/poll/editor/new/')
 
 
 def create_new_poll_from_company(request, company_id):
@@ -32,7 +28,7 @@ def create_new_poll_from_company(request, company_id):
     new_poll.company = company
     new_poll.save()
 
-    return redirect('/poll/editor/{}/'.format(new_poll.pk))
+    return get_render_poll(request, new_poll)
 
 
 def poll_create_from_team(request, team_id):
@@ -51,15 +47,23 @@ def poll_create_from_team(request, team_id):
     new_poll.initiator = profile
     new_poll.team = team
     new_poll.save()
-    return redirect('/poll/editor/{}/'.format(new_poll.pk))
+    return get_render_poll(request, new_poll)
 
 
-def poll_create(request, poll_id: int):
+def poll_create(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
-    poll = Poll.objects.filter(id=poll_id).first()
-    if poll.initiator != profile:
+    new_poll = Poll()
+    new_poll.initiator = profile
+    new_poll.save()
+    result = get_render_poll(request, new_poll)
+    return result
+
+
+def get_render_poll(request: WSGIRequest, poll: Poll):
+    profile = get_user_profile(request)
+    if poll.initiator != profile or poll.is_submitted:
         return render(request, 'main/errors/global_error.html', {'global_error': '400'})
     args = {
         'title': "Создание нового опроса",
@@ -92,132 +96,132 @@ def build_questions() -> list:
     return result
 
 
-def save_template(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def save_template(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.save_template(request, -1)
 
 
-def render_category_teams_on_step_2(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_category_teams_on_step_2(request: WSGIRequest, test=None) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_category_teams_on_step_2(request, -1)
 
 
-def render_category_participants_on_step_2(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_category_participants_on_step_2(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_category_participants_on_step_2(request, -1)
 
 
-def search_step_2(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def search_step_2(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.search_step_2(request, -1)
 
 
-def render_step_2_from_step_3(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_2_from_step_3(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_2_from_step_3(request, -1)
 
 
-def render_step_1_from_step_3(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_1_from_step_3(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_1_from_step_3(request, -1)
 
 
-def render_step_1_from_step_3_not_master(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_1_from_step_3_not_master(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     return render_step_1_from_step_3(request, -1)
 
 
-def render_step_3_from_step_2(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_3_from_step_2(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_3_from_step_2(request, -1)
 
 
-def render_step_3_from_step_1(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_3_from_step_1(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_3_from_step_1(request, -1)
 
 
-def render_step_3_from_step_1_not_master(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_3_from_step_1_not_master(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_3_from_step_1_not_master(request, -1)
 
 
-def render_step_1_from_step_2(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_1_from_step_2(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_1_from_step_2(request, -1)
 
 
-def render_step_2_from_step_1(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_step_2_from_step_1(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_step_2_from_step_1(request, -1)
 
 
-def poll_preview(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def poll_preview(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.poll_preview(request, -1)
 
 
-def poll_editor(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def poll_editor(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.poll_editor(request, -1)
 
 
-def cancel_created_poll(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def cancel_created_poll(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.cancel_created_poll(request, -1)
 
 
-def send_poll(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def send_poll(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.send_poll(request, -1)
 
 
-def render_category_teams_on_step_3(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_category_teams_on_step_3(request, -1)
 
 
-def render_category_participants_on_step_3(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
         return create_poll_from_template.render_category_participants_on_step_3(request, -1)
 
 
-def search_step_3(request: WSGIRequest, poll_id: int) -> JsonResponse:
+def search_step_3(request: WSGIRequest) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():

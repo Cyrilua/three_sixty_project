@@ -24,6 +24,8 @@ urlpatterns = [
     # Выгнать пользователя из команды
     path('leave/', team_views.kick_teammate, name='kick_teammate'),
     # Присоединиться через уведомление
-    path('invite/', team_views.join_from_notification, name='join_from_notification')
+    path('invite/', team_views.join_from_notification, name='join_from_notification'),
+    # Создание нового опроса через команду
+    path('create_poll/', team_views.redirect_create_poll, name='create_poll_from_team')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

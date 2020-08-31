@@ -6,6 +6,8 @@ from ..views import company_views
 urlpatterns = [
     # Просмотр компании
     path('', company_views.company_view, name='company_view'),
+    # Создать опрос
+    path('create_poll/', company_views.redirect_create_poll, name='create_poll_from_company'),
     # Настроки команды
     path('setting/', company_views.company_setting, name='company_setting'),
     # Добавить позицию

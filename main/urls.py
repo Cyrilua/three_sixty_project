@@ -42,12 +42,4 @@ urlpatterns = [
     path('test/', test.test),
     # Создание компании (для ясности стоит изменить url)
     path('add_company/', company_views.create_company, name='add_company'),
-
-
-    ######## Only for development ############# # todo
-    path('poll/create/new/<int:team_id>/', create_poll.poll_create_from_team, name='create_poll_from_team'),
-    # Создание опроса от компании
-    path('editor/new/from_company/<int:company_id>', create_poll.create_new_poll_from_company,
-         name='create_poll_from_company'),
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + password_urls.urlpatterns

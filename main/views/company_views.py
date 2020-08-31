@@ -39,6 +39,12 @@ def _create_unique_key(company: Company):
     company.save()
 
 
+def redirect_create_poll(request: WSGIRequest, id_company: int):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    return redirect('/poll/editor/company/{}/new/'.format(id_company))
+
+
 def company_view(request: WSGIRequest, id_company: int):
     if auth.get_user(request).is_anonymous:
         return redirect('/')

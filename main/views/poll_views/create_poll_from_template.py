@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from main.models import Poll, TemplatesPoll, SurveyWizard, NeedPassPoll, CreatedPoll, Questions, Answers, Choice
+from main.models import Poll, TemplatesPoll, SurveyWizard, NeedPassPoll, CreatedPoll, Questions, Answers, Choice, Group
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
@@ -12,10 +12,61 @@ from django.conf import settings
 from django.template.loader import get_template
 
 
-def create_poll_from_template(request, template_id) -> render:
+def start_create_poll(request, template_id=None, company_id=None, team_id=None) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
+    if template_id is not None:
+        return poll_create_from_template(request, template_id)
+
+    elif company_id is not None:
+        return create_new_poll_from_company(request, company_id)
+
+    elif team_id is not None:
+        return poll_create_from_team(request, team_id)
+
+    return poll_create(request)
+
+
+def create_new_poll_from_company(request, company_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    company = Company.objects.filter(id=company_id).first()
+    if company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
+    profile = get_user_profile(request)
+    if not company.profile_set.filter(id=profile.pk).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
+    new_poll = Poll()
+    new_poll.initiator = profile
+    new_poll.company = company
+    new_poll.save()
+
+    return get_render_poll(request, new_poll)
+
+
+def poll_create_from_team(request, team_id):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    team = Group.objects.filter(id=team_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
+    profile = get_user_profile(request)
+    if not team.profile_set.filter(id=profile.pk).exists() and \
+            not SurveyWizard.objects.filter(profile=profile).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
+    new_poll = Poll()
+    new_poll.initiator = profile
+    new_poll.team = team
+    new_poll.save()
+    return get_render_poll(request, new_poll)
+
+
+def poll_create_from_template(request, template_id):
     try:
         template: TemplatesPoll = TemplatesPoll.objects.get(id=template_id)
     except ObjectDoesNotExist:
@@ -35,12 +86,39 @@ def create_poll_from_template(request, template_id) -> render:
     return render(request, 'main/poll/new_poll_editor.html', args)
 
 
-def save_template(request: WSGIRequest, template_id: int) -> JsonResponse:
+def poll_create(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    profile = get_user_profile(request)
+    new_poll = Poll()
+    new_poll.initiator = profile
+    new_poll.save()
+    result = get_render_poll(request, new_poll)
+    return result
+
+
+def get_render_poll(request: WSGIRequest, poll: Poll):
+    profile = get_user_profile(request)
+    if poll.initiator != profile or poll.is_submitted:
+        return render(request, 'main/errors/global_error.html', {'global_error': '400'})
+    args = {
+        'title': "Создание нового опроса",
+        'poll': start_create.build_poll(poll),
+        'profile': get_header_profile(profile),
+    }
+    if SurveyWizard.objects.filter(profile=profile).exists():
+        args['is_master'] = 'is_master'
+
+    return render(request, 'main/poll/new_poll_editor.html', args)
+
+
+def save_template(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
+        # todo не сохраняются вопросы
         return editor.save_template(request)
 
 
-def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_1_from_step_3(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = choose_respodents.save_information(request)
         if poll is None:
@@ -49,11 +127,11 @@ def render_step_1_from_step_3(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
-def render_step_1_from_step_3_not_master(request: WSGIRequest, template_id) -> JsonResponse:
-    return render_step_1_from_step_3(request, template_id)
+def render_step_1_from_step_3_not_master(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
+    return render_step_1_from_step_3(request)
 
 
-def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_1_from_step_2(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = choose_target.save_information(request)
         if poll is None:
@@ -63,17 +141,17 @@ def render_step_1_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
-def poll_preview(request: WSGIRequest, template_id: int) -> JsonResponse:
+def poll_preview(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return editor.poll_preview(request)
 
 
-def poll_editor(request: WSGIRequest, template_id: int) -> JsonResponse:
+def poll_editor(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return editor.poll_editor(request)
 
 
-def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
+def cancel_created_poll(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         try:
             poll = Poll.objects.get(id=int(request.POST['pollId']))
@@ -84,22 +162,22 @@ def cancel_created_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
             return JsonResponse({}, status=200)
 
 
-def render_category_teams_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+def render_category_teams_on_step_2(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_target.render_category_teams_on_step_2(request)
 
 
-def render_category_participants_on_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+def render_category_participants_on_step_2(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_target.render_category_participants_on_step_2(request)
 
 
-def search_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+def search_step_2(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_target.search(request)
 
 
-def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_2_from_step_3(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = choose_respodents.save_information(request)
         if poll is None:
@@ -108,7 +186,7 @@ def render_step_2_from_step_3(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
-def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonResponse:
+def render_step_2_from_step_1(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
@@ -119,7 +197,7 @@ def render_step_2_from_step_1(request: WSGIRequest, template_id: int) -> JsonRes
         return JsonResponse(args, status=200)
 
 
-def render_step_3_from_step_1_not_master(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_3_from_step_1_not_master(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = editor.save_information(request)
         poll.target = get_user_profile(request)
@@ -130,7 +208,7 @@ def render_step_3_from_step_1_not_master(request: WSGIRequest, template_id) -> J
         return JsonResponse(args, status=200)
 
 
-def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_3_from_step_2(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = choose_target.save_information(request)
         if poll is None:
@@ -139,7 +217,7 @@ def render_step_3_from_step_2(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
-def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse:
+def render_step_3_from_step_1(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = editor.save_information(request)
         if poll is None:
@@ -149,22 +227,22 @@ def render_step_3_from_step_1(request: WSGIRequest, template_id) -> JsonResponse
         return JsonResponse(args, status=200)
 
 
-def render_category_teams_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
+def render_category_teams_on_step_3(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_respodents.render_category_teams_on_step_3(request)
 
 
-def render_category_participants_on_step_3(request: WSGIRequest, template_id: int) -> JsonResponse:
+def render_category_participants_on_step_3(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_respodents.render_category_participants_on_step_3(request)
 
 
-def search_step_3(request: WSGIRequest, template_id) -> JsonResponse:
+def search_step_3(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         return choose_respodents.search_step_3(request)
 
 
-def send_poll(request: WSGIRequest, template_id: int) -> JsonResponse:
+def send_poll(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         poll = choose_respodents.save_information(request)
         if poll is None:
