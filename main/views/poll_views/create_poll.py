@@ -29,13 +29,8 @@ def create_new_poll_from_company(request, company_id):
 
     new_poll = Poll()
     new_poll.initiator = profile
+    new_poll.company = company
     new_poll.save()
-    profiles = company.profile_set.all()
-    for profile in profiles:
-        new_need_pass = NeedPassPoll()
-        new_need_pass.profile = profile
-        new_need_pass.poll = new_poll
-        new_need_pass.save()
 
     return redirect('/poll/editor/{}/'.format(new_poll.pk))
 
@@ -54,15 +49,8 @@ def poll_create_from_team(request, team_id):
 
     new_poll = Poll()
     new_poll.initiator = profile
-    new_poll.start_from = 'team'
-    new_poll.from_id_group = team.pk
+    new_poll.team = team
     new_poll.save()
-    profiles = team.profile_set.all()
-    for profile in profiles:
-        new_need_pass = NeedPassPoll()
-        new_need_pass.profile = profile
-        new_need_pass.poll = new_poll
-        new_need_pass.save()
     return redirect('/poll/editor/{}/'.format(new_poll.pk))
 
 

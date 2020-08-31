@@ -61,7 +61,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     company = profile.company
 
     profiles = company.profile_set.all()
-    checked = NeedPassPoll.objects.filter(poll=poll)
+    checked = _get_checked(poll)
     categories_args = {
         'participants': _build_team_profiles_list(profiles, company, checked, profile),
         'company': {
@@ -110,7 +110,9 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
             continue
         profile: Profile
         collected_profile = build_profile(profile)
-        if checked_profiles is not None:
+        if type(checked_profiles.first()) == Profile:
+            collected_profile['is_checked'] = checked_profiles.filter(id=profile.pk).exists()
+        elif type(checked_profiles.first()) == NeedPassPoll:
             collected_profile['is_checked'] = checked_profiles.filter(profile=profile).exists()
         if group is not None:
             collected_profile['is_leader'] = group.owner == profile
@@ -130,8 +132,9 @@ def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
         teams = company.group_set.all()
     else:
         teams = profile.groups.all()
+    checked = _get_checked(poll)
     args = {
-        'teams': _build_team_list(teams, NeedPassPoll.objects.filter(poll=poll), profile)
+        'teams': _build_team_list(teams, checked, profile)
     }
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                      args).rendered_content
@@ -146,8 +149,8 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
     profile = get_user_profile(request)
     company = profile.company
     profiles = company.profile_set.all()
-    args = {'participants': _build_team_profiles_list(profiles, company,
-                                                      NeedPassPoll.objects.filter(poll=poll), profile)}
+    checked = _get_checked(poll)
+    args = {'participants': _build_team_profiles_list(profiles, company, checked, profile)}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                      args).rendered_content
     return JsonResponse({'content': content}, status=200)
@@ -191,3 +194,14 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content, }, status=200)
 
+
+def _get_checked(poll: Poll) -> QuerySet:
+    need_poll_pass = NeedPassPoll.objects.filter(poll=poll)
+    if need_poll_pass.first() is not None:
+        return need_poll_pass
+    if poll.company is not None:
+        return poll.company.profile_set.all().exclude(id__in=[poll.target.pk, poll.initiator.pk])
+    elif poll.team is not None:
+        return poll.team.profile_set.all().exclude(id__in=[poll.target.pk, poll.initiator.pk])
+    else:
+        return Profile.objects.none()
