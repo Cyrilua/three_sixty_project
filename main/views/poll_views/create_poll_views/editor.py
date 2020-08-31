@@ -99,6 +99,8 @@ def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, 
     first_question = poll.questions.all().first()
     version = 0 if first_question is None else first_question.version + 1
     ordinal_number = 0
+    print('###########!##$')
+    print(count_questions)
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:

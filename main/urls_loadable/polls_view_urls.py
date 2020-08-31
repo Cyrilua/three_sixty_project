@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ..views.poll_views import create_poll, polls_view
+from ..views.poll_views import polls_view
 
 urlpatterns = [
     # Страница просмотра опросов и шаблонов
@@ -10,7 +10,7 @@ urlpatterns = [
     # Маячок о новом опросе для прохождения
     path('new_notif/', polls_view.load_notification_new_poll),
     # Создание нового опроса
-    path('poll/create/', create_poll.redirect_for_create, name='poll_create'),
+    path('poll/create/', polls_view.redirect_for_create, name='poll_create'),
     # Удаление шаблона
     path('template/remove/', polls_view.remove_template),
     # Отметить опрос опросмотренным

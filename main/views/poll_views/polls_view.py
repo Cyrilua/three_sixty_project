@@ -5,6 +5,12 @@ from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
 
 
+def redirect_for_create(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    return redirect('/poll/editor/new/')
+
+
 def polls_view(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')

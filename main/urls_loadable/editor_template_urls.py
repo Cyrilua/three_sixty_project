@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ...views.poll_views import create_poll_from_template
+from main.views.poll_views import create_poll_from_template
 
 urlpatterns = [
     # Создание нового опроса через шаблон

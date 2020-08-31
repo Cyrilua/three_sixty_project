@@ -5,8 +5,6 @@ from django.urls import path, include
 from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls, company_url, \
     teams_views_urls, team_urls, profile_urls, password_urls
 from .views import user_views, company_views, test
-from .views.poll_views import create_poll
-from .views.teams import team_views
 
 app_name = "main"
 urlpatterns = [

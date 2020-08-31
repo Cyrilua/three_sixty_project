@@ -5,8 +5,8 @@ def build_poll(poll: (TemplatesPoll, Poll)) -> dict:
     is_template = type(poll) is TemplatesPoll
     result = {
         'color': '' if poll.color is None else poll.color,
-        'name': poll.name_poll,
-        'description': poll.description,
+        'name': poll.name_poll if poll.name_poll is not None else '',
+        'description': poll.description if poll.description is not None else '',
         'questions': build_questions(poll.questions.all(), is_template),
         'id': poll.pk,
     }
@@ -29,7 +29,7 @@ def build_questions(questions: list, from_template: bool) -> list:
                 'min': settings.min,
                 'max': settings.max,
                 'step': settings.step
-            }
+            },
         }
         if from_template:
             collected_question['answers'] = answers.values('text')

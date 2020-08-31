@@ -103,13 +103,37 @@ def get_render_poll(request: WSGIRequest, poll: Poll):
         return render(request, 'main/errors/global_error.html', {'global_error': '400'})
     args = {
         'title': "Создание нового опроса",
-        'poll': start_create.build_poll(poll),
+        'poll': build_poll(poll),
         'profile': get_header_profile(profile),
     }
     if SurveyWizard.objects.filter(profile=profile).exists():
         args['is_master'] = 'is_master'
 
     return render(request, 'main/poll/new_poll_editor.html', args)
+
+
+def build_poll(poll: Poll) -> dict:
+    result = {
+        'id': poll.pk,
+        'color': None,
+        'questions': build_questions(),
+    }
+    return result
+
+
+def build_questions() -> list:
+    result = []
+    collected_question = {
+        'is_template': True,
+        'type': 'radio',
+        'countAnswers': 1,
+        'answers': {
+            'text': '',
+        }
+    }
+    result.append(collected_question)
+    return result
+
 
 
 def save_template(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
