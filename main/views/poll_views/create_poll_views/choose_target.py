@@ -169,6 +169,7 @@ def search(request: WSGIRequest) -> JsonResponse:
 def save_information(request: WSGIRequest) -> Poll:
     try:
         poll_id = int(request.POST['pollId'])
+        print(poll_id)
         poll = Poll.objects.get(id=poll_id)
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
         return None

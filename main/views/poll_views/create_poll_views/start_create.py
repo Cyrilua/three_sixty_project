@@ -8,7 +8,6 @@ def build_poll(poll: (TemplatesPoll, Poll)) -> dict:
         'name': poll.name_poll if poll.name_poll is not None else '',
         'description': poll.description if poll.description is not None else '',
         'questions': build_questions(poll.questions.all(), is_template),
-        'id': poll.pk,
     }
     return result
 

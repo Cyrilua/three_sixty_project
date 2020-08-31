@@ -135,7 +135,6 @@ def build_questions() -> list:
     return result
 
 
-
 def save_template(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
         # todo не сохраняются вопросы
