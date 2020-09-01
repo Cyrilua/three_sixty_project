@@ -36,6 +36,7 @@ def get_render_user_profile(request):
             }
         }
     }
+    args['profile']['photo'] = photo
     return render(request, 'main/user/profile.html', args)
 
 

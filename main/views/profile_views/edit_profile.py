@@ -23,8 +23,6 @@ def upload_profile_photo(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     if request.is_ajax():
-        print(request.FILES)
-        print(request.POST)
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
         try:
@@ -39,7 +37,6 @@ def upload_profile_photo(request):
         photo_profile.save()
 
         result = photo_profile.photo.url
-        print(result)
 
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
@@ -51,7 +48,8 @@ def delete_profile_photo(request) -> render:
         except ObjectDoesNotExist:
             return JsonResponse({}, status=200)
         else:
-            photo.delete()
+            photo.photo = 'images/photo.svg'
+            photo.save()
         none_photo = '/static/main/images/photo.svg'
         return JsonResponse({'new_photo_url': none_photo}, status=200)
 
@@ -76,6 +74,7 @@ def edit_profile(request) -> render:
     }
 
     args['profile']['login'] = user.username
+    args['profile']['photo'] = photo
     try:
         birth_date = args['profile']['birthdate']
         args['profile']['birthdate'] = {
@@ -94,8 +93,6 @@ def edit_profile(request) -> render:
         profile_platforms = profile.platforms.all()
         args['new_platforms'] = _build_objects(filter(lambda x: x not in profile_platforms, platform))
 
-    if request.method == 'POST':
-        print(request.POST)
     return render(request, 'main/user/edit.html', args)
 
 

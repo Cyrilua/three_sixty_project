@@ -194,11 +194,10 @@ def company_setting(request: WSGIRequest, id_company: int):
                 'countParticipants': company.profile_set.all().count(),
                 'countTeams': Group.objects.filter(company=company).count()
             },
-            'profile': {
-                'is_boss': company.owner == profile,
-                'is_moderator': Moderator.objects.filter(profile=profile).exists()
-            }
+            'profile': get_header_profile(profile)
         }
+        args['profile']['is_boss'] = company.owner == profile
+        args['profile']['is_moderator'] = Moderator.objects.filter(profile=profile).exists()
         return render(request, 'main/companies/company_setting.html', args)
 
 
