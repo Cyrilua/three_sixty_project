@@ -172,7 +172,7 @@ def search_new_teammates(request: WSGIRequest, group_id: int) -> JsonResponse:
             return JsonResponse({}, status=404)
         profile = get_user_profile(request)
         user_input = request.GET.get('search', '').split()
-        profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company)
+        profiles = get_search_result_for_profiles(profile.company.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
         content = SimpleTemplateResponse('main/teams/new_future_teammates.html',
                                          {'users': completed_profiles}).rendered_content
