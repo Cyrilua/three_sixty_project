@@ -12,11 +12,6 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 
-from PIL import Image
-
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-
 
 @csrf_exempt
 def upload_profile_photo(request):
@@ -25,14 +20,11 @@ def upload_profile_photo(request):
     if request.is_ajax():
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
-        try:
-            photo_profile = ProfilePhoto.objects.get(profile=profile)
-        except ObjectDoesNotExist:
-            pass
-        else:
+        photo_profile = ProfilePhoto.objects.filter(profile=profile).first()
+        if photo_profile is None:
+            return JsonResponse({}, status=404)
+        if photo_profile.photo.url != '/media/images/photo.svg':
             photo_profile.delete()
-        photo_profile = ProfilePhoto()
-        photo_profile.profile = profile
         photo_profile.photo = user_photo
         photo_profile.save()
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)

@@ -237,7 +237,7 @@ def add_position(request: WSGIRequest, id_company) -> JsonResponse:
         position.name = name_position
         position.company = company
         position.save()
-        return JsonResponse({}, status=200)
+        return JsonResponse({'positionId': position.pk}, status=200)
 
 
 def remove_position(request: WSGIRequest, id_company: int, position_id: int) -> JsonResponse:
@@ -272,7 +272,7 @@ def add_platform(request: WSGIRequest, id_company):
         platform.name = name_platform
         platform.company = company
         platform.save()
-        return JsonResponse({}, status=200)
+        return JsonResponse({'platformId': platform.pk}, status=200)
 
 
 def remove_platform(request: WSGIRequest, id_company: int, platform_id: int) -> JsonResponse:
