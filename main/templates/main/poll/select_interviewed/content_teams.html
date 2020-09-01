@@ -4,7 +4,7 @@
         {% for team in teams %}
             <div class="team rounded-block" data-team-id="{{ team.id }}">
                 <div class="team__up">
-                    <img src="{% static 'main/images/team.svg' %}" alt="" class="team__photo">
+                    <div class="team__photo"></div>
                     <div class="info">
                         <div class="name">
                             <a href="{{ team.href }}" target="_blank" class="team__href">{{ team.name }}</a>
