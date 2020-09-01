@@ -407,7 +407,7 @@
 .content .content__body .notifications .notification .notification__actions .notification__open {
   display: flex;
   margin-top: auto;
-  margin-bottom: 0;
+  margin-bottom: auto;
   text-decoration: none;
 }
 .content .content__body .notifications .notification .notification__actions .notification__open:active {
