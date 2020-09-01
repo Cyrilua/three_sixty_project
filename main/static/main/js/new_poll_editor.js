@@ -337,11 +337,10 @@ $(function () {
                 }
                 Snackbar.show({
                     text: 'Шаблон успешно создан',
-                    showAction: true,
-                    duration: 3000,
-                    actionText: "Закрыть",
-                    actionTextColor: 'green',
+                    textColor: '#1ecb00',
                     customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
                 });
             },
             error: function () {
