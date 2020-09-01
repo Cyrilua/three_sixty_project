@@ -101,7 +101,7 @@ $(function () {
                 Snackbar.show({
                     text: `Ошибка удаления должности "${positionName}"`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -164,7 +164,7 @@ $(function () {
                 Snackbar.show({
                     text: `Ошибка удаления отдела "${platformName}"`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -201,7 +201,7 @@ $(function () {
                     Snackbar.show({
                         text: `Произошла ошибка при добавлении должности.`,
                         textColor: '#ff0000',
-                        customClass: 'custom no-animation',
+                        customClass: 'custom center',
                         showAction: false,
                         duration: 3000,
                     });
@@ -239,7 +239,7 @@ $(function () {
                     Snackbar.show({
                         text: 'Произошла ошибка при добавлении должности.',
                         textColor: '#ff0000',
-                        customClass: 'custom no-animation',
+                        customClass: 'custom center',
                         showAction: false,
                         duration: 3000,
                     });
@@ -306,7 +306,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Изменения сохранены.',
                     textColor: '#07bd00',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -321,7 +321,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при сохранении.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
