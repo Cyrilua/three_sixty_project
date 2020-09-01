@@ -56,7 +56,8 @@ def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> 
             'positions': teammate.positions.all(),
             'platforms': teammate.platforms.all(),
             'is_my_profile': teammate == current_profile,
-            'is_in_team': team.profile_set.filter(id=teammate.pk).exists()
+            'is_in_team': team.profile_set.filter(id=teammate.pk).exists() or
+                          Invitation.objects.filter(team=team, profile=teammate).exists()
         }
         result.append(collected_teammate)
     return result

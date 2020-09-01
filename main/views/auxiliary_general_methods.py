@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company, ProfilePhoto
 from django.db.models import Q
+from django.template.response import SimpleTemplateResponse
 
 UserModel = get_user_model()
 
@@ -140,3 +141,7 @@ def get_search_result_for_profiles(profiles, user_input: list, company: Company)
 
 def get_search_result_for_teams(teams, user_input: str):
     return teams.filter(name__istartswith=user_input)
+
+
+def get_render_bad_search(text: str):
+    return SimpleTemplateResponse('main/includes/bad_search.html', {'text': text}).rendered_content

@@ -29,8 +29,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'questions': _build_questions(poll)
         }
     }
-    # todo only for debug
-    #CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
+    CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
     return render(request, 'main/poll/poll_results.html', args)
 
 

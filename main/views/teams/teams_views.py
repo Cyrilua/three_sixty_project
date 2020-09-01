@@ -1,26 +1,26 @@
-import uuid
 from datetime import datetime
 
-from main.forms import TeamForm
-from main.models import Group, Moderator, PositionCompany, PlatformCompany, ProfilePhoto, SurveyWizard, Invitation
-from ..auxiliary_general_methods import *
-from ..company_views import _get_roles
-from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse
-from django.db.models import Q
-from django.template.response import SimpleTemplateResponse
-from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import redirect, render
+
+from main.models import Group, Invitation
+from ..auxiliary_general_methods import *
 
 
 def teams_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
+    teams = _build_teams(profile.groups.all(), profile)
     args = {
-        'teams': _build_teams(profile.groups.all(), profile),
+        'teams': teams,
         'profile': get_header_profile(profile)
     }
+    if len(teams) == 0:
+        args['error'] = {
+            'text': 'Вы не состоите ни в одной команде'
+        }
     return render(request, 'main/teams/teams_view.html', args)
 
 
@@ -61,7 +61,8 @@ def _create_unique_key(team: Group):
     owner_id_changed = team.owner.pk % 1000 + 1000
     date_now = datetime.today()
     date_changed_str = '{}{}{}{}{}{}{}'.format(date_now.day, date_now.month,
-                                               date_now.year, date_now.hour, date_now.minute, date_now.second, date_now.microsecond)
+                                               date_now.year, date_now.hour, date_now.minute, date_now.second,
+                                               date_now.microsecond)
     key = '{}{}{}'.format(team_id_changed, owner_id_changed, date_changed_str)
     team.key = key
     team.save()
@@ -76,8 +77,11 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         teams = profile.groups.all()
         teams = get_search_result_for_teams(teams, user_input)
         collected_teams = _build_teams(teams, profile)
-        content = SimpleTemplateResponse('main/teams/teams.html',
-                                         {'teams': collected_teams}).rendered_content
+        if len(collected_teams) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content = SimpleTemplateResponse('main/teams/teams.html',
+                                             {'teams': collected_teams}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
@@ -93,7 +97,7 @@ def search_team_for_invite(request, profile_id: int) -> render:
     teams = current_profile.groups.all()
     args = {
         'title': "Пригласить в команду",
-        'teams': build_teams(teams, profile_id, alien_commands),
+        'teams': build_teams(teams, alien_profile, alien_commands),
         'profile': get_header_profile(current_profile),
         'alien_profile': {
             'id': profile_id,
@@ -102,7 +106,7 @@ def search_team_for_invite(request, profile_id: int) -> render:
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
 
 
-def build_teams(commands: filter, alien_profile_id: int, alien_commands) -> list:
+def build_teams(commands: filter, alien_profile: Profile, alien_commands) -> list:
     result = []
     for team in commands:
         users = team.profile_set.all()
@@ -112,8 +116,9 @@ def build_teams(commands: filter, alien_profile_id: int, alien_commands) -> list
             'about': team.description,
             'members': len(users),
             'url': '/team/{}/'.format(team.id),
-            'url_send_invite': '/{}/invite/{}/'.format(alien_profile_id, team.id),
-            'is_may_be_invited': not alien_commands.filter(id=team.pk).exists(),
+            'url_send_invite': '/{}/invite/{}/'.format(alien_profile.pk, team.id),
+            'is_may_be_invited': not alien_commands.filter(id=team.pk).exists() and \
+                                 not Invitation.objects.filter(team=team, profile=alien_profile).exists(),
         }
         result.append(collected_team)
     return result

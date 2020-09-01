@@ -24,9 +24,6 @@ urlpatterns = [
     path('teams/', include(teams_views_urls)),
     # Промотр конкретной команды
     path('team/<int:group_id>/', include(team_urls)),
-    # Пригласить в команду с чужого профиля
-    #path('<int:profile_id>/invite/<int:group_id>/', teams_views_urls.teams_views.invite_to_team),
-
 
     # Страница просмотра опросов и шаблонов
     path('polls/', include(polls_view_urls)),
