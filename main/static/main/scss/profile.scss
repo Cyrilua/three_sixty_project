@@ -28,7 +28,7 @@
     }
 
     #createTeam,
-    .left-content-new_team{
+    .left-content-new_team {
       width: 100%;
     }
   }
@@ -656,7 +656,7 @@
         padding: 20px 30px;
         margin-bottom: 10px;
 
-        &.hide{
+        &.hide {
           display: none;
         }
 
@@ -752,6 +752,8 @@
             font-size: 24px;
             line-height: 28px;
             color: #000000;
+            margin-bottom: 0;
+            margin-top: 0;
           }
 
           .notification__more {
@@ -765,6 +767,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin-bottom: 0;
 
             .notification__target {
               font-weight: normal;
@@ -772,13 +775,17 @@
           }
 
           .notification__about {
-            min-height: 16px;
+            //min-height: 16px;
             font-style: normal;
             font-weight: normal;
             font-size: 14px;
             line-height: 16px;
             color: #595757;
             margin-top: 5px;
+
+            &.hide {
+              display: none;
+            }
           }
 
           .notification__date {
@@ -789,6 +796,7 @@
             line-height: 16px;
             color: #C4C4C4;
             margin-top: 5px;
+            margin-bottom: auto;
           }
         }
 

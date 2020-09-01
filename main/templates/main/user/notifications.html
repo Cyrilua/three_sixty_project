@@ -9,7 +9,7 @@
             <div class="notification__more">
                 <a href="{{ notif.more.url }}" class="notification__target" target="_blank">{{ notif.more.name }}</a>
             </div>
-            <div class="notification__about">
+            <div class="notification__about {% if not notif.about %} hide{% endif %}">
                 {{ notif.about }}
             </div>
             <div class="notification__date">{{ notif.date }}</div>
