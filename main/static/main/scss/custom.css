@@ -675,11 +675,11 @@ button {
   content: "Отдел";
 }
 .role-information .leader__info::before {
-  content: "Лидер";
+  content: "Создатель команды";
   font-weight: bold;
 }
 .role-information .leader__info::after {
-  content: " - член команды, у которого есть дополнительные обязанности лидерства";
+  content: " - этот пользователь может приглашать людей в команду и выгонять их из неё";
 }
 .role-information .boss__info::before {
   content: "Босс";
