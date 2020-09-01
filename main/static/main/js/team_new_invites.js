@@ -53,8 +53,9 @@ $(function () {
                 content.addClass('disabled');
             },
             success: function (response) {
-                content.empty();
-                content[0].append(response.content); // ..teammates.html
+                content.children('.users')
+                    .empty()
+                    .append(response.content); // ..teammates.html
             },
             complete: function () {
                 $('.content__body').removeClass('disabled');
