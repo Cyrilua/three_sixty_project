@@ -81,7 +81,7 @@ $(function () {
                         text: `${teammateName} был удален из команды`,
                         customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {
@@ -153,7 +153,7 @@ $(function () {
                         text: 'Вы покинули команду',
                         customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         // pos: 'bottom-center',
                         duration: 5000,

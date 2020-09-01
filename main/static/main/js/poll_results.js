@@ -38,8 +38,6 @@ $(function () {
                     text: 'Шаблон успешно создан',
                     showAction: true,
                     duration: 3000,
-                    actionText: "Закрыть",
-                    actionTextColor: 'green',
                     customClass: 'custom center',
                 });
             },
@@ -51,7 +49,7 @@ $(function () {
                     showAction: true,
                     duration: 3000,
                     actionText: "Повторить",
-                    actionTextColor: 'red',
+                    actionTextColor: '#5699FF',
                     customClass: 'custom center',
                     onActionClick: function (el) {
                         $(el).animate({

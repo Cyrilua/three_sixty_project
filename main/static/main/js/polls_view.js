@@ -118,7 +118,7 @@ $(function () {
                         text: `Шаблон "${templateName}" удален`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {

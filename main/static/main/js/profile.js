@@ -150,7 +150,7 @@ $(function () {
                         text: `Уведомление удалено`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         pos: 'bottom-center',
                         duration: 5000,
