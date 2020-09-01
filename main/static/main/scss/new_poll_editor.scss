@@ -487,6 +487,7 @@
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  cursor: pointer;
 
   .participant__photo {
     width: 70px;
@@ -513,6 +514,7 @@
 
       .participant__role {
         margin-left: 5px;
+        cursor: default;
       }
     }
 

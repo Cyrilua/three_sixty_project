@@ -359,6 +359,7 @@
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .participant .participant__photo {
   width: 70px;
@@ -383,6 +384,7 @@
 }
 .participant .info .name .participant__role {
   margin-left: 5px;
+  cursor: default;
 }
 .participant .info .positions-n-platforms {
   min-height: 27px;
