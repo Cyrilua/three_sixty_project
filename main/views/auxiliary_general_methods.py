@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company
+from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company, ProfilePhoto
 from django.db.models import Q
 
 UserModel = get_user_model()
@@ -106,6 +106,7 @@ def get_header_profile(profile: Profile) -> dict:
     args = {
         'name': profile.name,
         'surname': profile.surname,
+        'photo': ProfilePhoto.objects.filter(profile=profile).first().photo
     }
     company = profile.company
     if company is not None:

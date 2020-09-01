@@ -19,10 +19,7 @@ def profile_view(request, profile_id):
 
 def get_render_user_profile(request):
     profile = get_user_profile(request)
-    #try:
     photo = profile.profilephoto.photo
-    #except ObjectDoesNotExist:
-        #photo = None
 
     profile_data = _build_profile_data(auth.get_user(request), get_user_profile(request))
 
