@@ -17,6 +17,8 @@ urlpatterns = [
     path('search/', team_views.search_teammate, name='search'),
     # Приглашение новых участников через команду
     path('invites/', team_views.team_new_invites, name='team_new_invites'),
+    # Поиск новых участников на странице приглашения
+    path('invites/search/', team_views.search_new_teammates, name='search_new_teammate'),
     # Вступить в команду по ссылке
     path('invite_team/<str:key>/', team_views.join_using_link, name='join_using_link'),
     # Пригласить пользователя
