@@ -127,7 +127,7 @@ $(function () {
         let notificationId = notification.attr('data-id');
         let id;
         $.ajax({
-            url: `/notification/${notificationId}/remove/`,
+            url: `notification/${notificationId}/remove/`,
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
