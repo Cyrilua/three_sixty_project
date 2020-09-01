@@ -63,7 +63,6 @@ def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> 
 
 
 def redirect_create_poll(request, group_id):
-    print("####################")
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     return redirect('/poll/editor/team/{}/new/'.format(group_id))

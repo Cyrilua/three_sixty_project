@@ -265,3 +265,19 @@ def mark_notification_as_viewed(request: WSGIRequest, profile_id: int, notificat
             return JsonResponse({}, status=400)
         notification.update(is_viewed=True)
         return JsonResponse({}, status=200)
+
+
+def remove_invite(request: WSGIRequest, profile_id: int, notification_id: int):
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        profile = get_user_profile(request)
+        if profile.pk != profile_id:
+            return JsonResponse({}, status=400)
+
+        invite = Invitation.objects.filter(id=notification_id).first()
+        if invite is None:
+            return JsonResponse({}, status=404)
+        invite.delete()
+        return JsonResponse({}, status=200)

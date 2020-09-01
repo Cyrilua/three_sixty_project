@@ -119,7 +119,7 @@ def build_teams(commands: filter, alien_profile_id: int, alien_commands) -> list
     return result
 
 
-def invite_to_team(request:WSGIRequest, profile_id: int, group_id: int):
+def invite_to_team(request: WSGIRequest, profile_id: int):
     if request.is_ajax():
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
@@ -129,7 +129,7 @@ def invite_to_team(request:WSGIRequest, profile_id: int, group_id: int):
         changed_profile_role = Profile.objects.filter(id=profile_id).first()
         if changed_profile_role is None:
             return JsonResponse({}, status=404)
-
+        group_id = int(request.POST.get('teamId', '-1'))
         team = Group.objects.filter(id=group_id).first()
         if team is None:
             return JsonResponse({}, status=404)
