@@ -252,4 +252,6 @@ def join_from_notification(request: WSGIRequest, group_id: int):
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
     profile.groups.add(team)
+
+    Invitation.objects.filter(profile=profile, team=team).delete()
     return redirect('/team/{}/'.format(team.pk))
