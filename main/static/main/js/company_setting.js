@@ -44,6 +44,8 @@ $(function () {
         invite.css({
             display: 'none',
         })
+
+        console.log(ajaxRemove)
     });
 
     // Удаление должности
@@ -73,7 +75,7 @@ $(function () {
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: `Должность "${positionName}" была удалена`,
+                        text: `Должность "${positionName}" удалена`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
@@ -93,6 +95,7 @@ $(function () {
             },
             success: function (response) {
                 position.remove();
+                ajaxRemove[id].finish = true;
             },
             complete: function () {
             },
@@ -136,7 +139,7 @@ $(function () {
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: `Отдел "${platformName}" была удален`,
+                        text: `Отдел "${platformName}" удален`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
@@ -156,6 +159,7 @@ $(function () {
             },
             success: function (response) {
                 platform.remove();
+                ajaxRemove[id].finish = true;
             },
             complete: function () {
             },
