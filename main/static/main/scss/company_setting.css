@@ -83,7 +83,7 @@
   overflow-y: scroll;
 }
 .content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar {
-  width: 5px;
+  width: 0;
   box-sizing: content-box;
   background-color: transparent;
 }
