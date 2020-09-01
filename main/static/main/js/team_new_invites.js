@@ -17,7 +17,14 @@ $(function () {
                     disabled: true,
                 })
             },
-            success: function (){
+            success: function () {
+                Snackbar.show({
+                    text: 'Приглашение отправлено',
+                    textColor: '#1ecb00',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
             },
             complete: function () {
             },

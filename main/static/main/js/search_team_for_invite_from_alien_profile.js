@@ -94,6 +94,13 @@ $(function () {
                 });
             },
             success: function (response) {
+                Snackbar.show({
+                    text: 'Приглашение отправлено',
+                    textColor: '#1ecb00',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
             },
             error: function () {
                 $(event.target).prop({
