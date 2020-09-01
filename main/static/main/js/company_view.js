@@ -7,11 +7,6 @@ $(function () {
     let ajaxDismisses = [];
     let ajaxLoad;
 
-    // // Новый опрос внутри компании
-    // body.on('click', '#newPoll', function (event) {
-    //     //TODO
-    // });
-
     // Поиск
     body.on('input', '.search', function (event) {
         let category = $('.active-sort').attr('data-category');
@@ -467,6 +462,17 @@ $(function () {
             window.scrollBy(0, -(beforePos.y - afterPos.y));
         } else if (user.hasClass('user--edit')) {
             user.removeClass('user--edit').addClass('user--view');
+        }
+    });
+
+    // Закрыть редактирование юзеров в любом месте
+    body.click(function (event) {
+        let userActive = $('.user--edit');
+        if (userActive.length > 0 &&
+            $(event.target).closest('.scroll-top').length === 0 &&
+            $(event.target).closest('.header__content').length === 0 &&
+            $(event.target).closest('.user').attr('data-real-id') !== userActive.attr('data-real-id')) {
+            userActive.children('.user__edit').children('.edit__up').children('.actions').children('#edit').trigger('click');
         }
     });
 
