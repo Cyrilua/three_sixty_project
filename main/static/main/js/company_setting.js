@@ -308,7 +308,7 @@ $(function () {
                     'disabled': false,
                 });
                 Snackbar.show({
-                    text: 'Изменения сохранены.',
+                    text: 'Изменения сохранены',
                     textColor: '#07bd00',
                     customClass: 'custom center',
                     showAction: false,

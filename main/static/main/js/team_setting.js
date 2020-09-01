@@ -39,7 +39,7 @@ $(function () {
                     'disabled': true,
                 });
                 Snackbar.show({
-                    text: 'Сохранения сохранены.',
+                    text: 'Изменения сохранены',
                     textColor: '#07bd00',
                     customClass: 'custom center',
                     showAction: false,
