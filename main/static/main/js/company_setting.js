@@ -76,7 +76,7 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: `Должность "${positionName}" удалена`,
-                        customClass: 'custom no-animation center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
@@ -140,7 +140,7 @@ $(function () {
                     }, 5000);
                     Snackbar.show({
                         text: `Отдел "${platformName}" удален`,
-                        customClass: 'custom no-animation center',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
                         actionTextColor: 'yellow',
                         width: '910px',
