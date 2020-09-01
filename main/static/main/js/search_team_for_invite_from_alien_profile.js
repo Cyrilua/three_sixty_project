@@ -82,7 +82,7 @@ $(function () {
     body.on('click', '.team__button', function (event) {
         let teamId = $(this).closest('.team').attr('data-team-id');
         $.ajax({
-            url: '/send/',
+            url: 'send/',
             type: 'post',
             data: {
                 csrfmiddlewaretoken: csrf,
