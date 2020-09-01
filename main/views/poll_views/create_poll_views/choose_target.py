@@ -143,7 +143,7 @@ def search(request: WSGIRequest) -> JsonResponse:
         profiles = company.profile_set.all()
         result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
         collected_profile = _build_team_profiles_list(result_search, profile.company, Profile.objects.filter(id=-1))
-        if len(collected_profile):
+        if len(collected_profile) == 0:
             content = get_render_bad_search('По вашему запросу ничего не найдено')
         else:
             content_participants_args = {'participants': collected_profile}

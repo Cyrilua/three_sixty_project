@@ -158,8 +158,11 @@ def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
         user_input = request.GET.get('search', '').split()
         profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
-        content = SimpleTemplateResponse('main/teams/teammates.html',
-                                         {'teammates': completed_profiles}).rendered_content
+        if len(completed_profiles) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content = SimpleTemplateResponse('main/teams/teammates.html',
+                                             {'teammates': completed_profiles}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
@@ -174,8 +177,11 @@ def search_new_teammates(request: WSGIRequest, group_id: int) -> JsonResponse:
         user_input = request.GET.get('search', '').split()
         profiles = get_search_result_for_profiles(profile.company.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
-        content = SimpleTemplateResponse('main/teams/new_future_teammates.html',
-                                         {'users': completed_profiles}).rendered_content
+        if len(completed_profiles) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content = SimpleTemplateResponse('main/teams/new_future_teammates.html',
+                                             {'users': completed_profiles}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 

@@ -169,14 +169,14 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
 
     if mode == 'participants':
         profiles = company.profile_set.all()
-        start_from_company_or_polls = poll.start_from
-        result_search = get_search_result_for_profiles(profiles, user_input.split(),
-                                                       company if start_from_company_or_polls else None)
-        content_participants_args = {
-            'participants': _build_team_profiles_list(result_search, profile.company, None, unbilding_user=profile)
-        }
-        content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
-                                         content_participants_args).rendered_content
+        result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
+        collected_profiles = _build_team_profiles_list(result_search, profile.company, Profile.objects.none(), unbilding_user=profile)
+        if len(collected_profiles) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content_participants_args = {'participants': collected_profiles}
+            content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
+                                             content_participants_args).rendered_content
     elif mode == 'teams':
         user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
         if user_is_master:
@@ -184,12 +184,15 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         else:
             teams: QuerySet = profile.groups.all()
         result_search = get_search_result_for_teams(teams, user_input)
-        collected_teams = _build_team_list(result_search, None,  unbilding_user=profile)
-        content_teams_args = {
-            'teams': collected_teams
-        }
-        content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
-                                         content_teams_args).rendered_content
+        collected_teams = _build_team_list(result_search, Profile.objects.none(), unbilding_user=profile)
+        if len(collected_teams) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content_teams_args = {
+                'teams': collected_teams
+            }
+            content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
+                                             content_teams_args).rendered_content
     else:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content, }, status=200)
