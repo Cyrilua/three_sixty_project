@@ -22,6 +22,8 @@ $(function () {
     body.on('input', '.search', function (event) {
         let search = $(this).val();
         let teammates = content.children('.teammates');
+        removeSnackbars();
+        completeRequests();
         ajaxInput = $.ajax({
             url: 'search/',
             type: 'get',
@@ -205,5 +207,10 @@ $(function () {
                 $.ajax(ajaxRequests[id].request);
             }
         }
+    }
+
+    // Удаление снэкбаров
+    function removeSnackbars() {
+        $('.snackbar-container').remove();
     }
 });
