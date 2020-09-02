@@ -293,6 +293,9 @@
   padding: 20px 30px;
   margin-bottom: 10px;
 }
+.content .content__body .notifications .notification.hide {
+  display: none;
+}
 .content .content__body .notifications .notification.is_unshown {
   display: none;
 }
@@ -353,6 +356,8 @@
   font-size: 24px;
   line-height: 28px;
   color: #000000;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 .content .content__body .notifications .notification .notification__info .notification__more {
   min-height: 16px;
@@ -365,18 +370,21 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 0;
 }
 .content .content__body .notifications .notification .notification__info .notification__more .notification__target {
   font-weight: normal;
 }
 .content .content__body .notifications .notification .notification__info .notification__about {
-  min-height: 16px;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 16px;
   color: #595757;
   margin-top: 5px;
+}
+.content .content__body .notifications .notification .notification__info .notification__about.hide {
+  display: none;
 }
 .content .content__body .notifications .notification .notification__info .notification__date {
   min-height: 16px;
@@ -386,6 +394,7 @@
   line-height: 16px;
   color: #C4C4C4;
   margin-top: 5px;
+  margin-bottom: auto;
 }
 .content .content__body .notifications .notification .notification__actions {
   display: flex;
@@ -404,7 +413,7 @@
 .content .content__body .notifications .notification .notification__actions .notification__open {
   display: flex;
   margin-top: auto;
-  margin-bottom: 0;
+  margin-bottom: auto;
   text-decoration: none;
 }
 .content .content__body .notifications .notification .notification__actions .notification__open:active {

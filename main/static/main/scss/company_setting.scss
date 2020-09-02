@@ -89,6 +89,7 @@
             }
 
             .area__add {
+              background-color: transparent;
               width: 80px;
             }
           }
@@ -97,7 +98,7 @@
             overflow-y: scroll;
 
             &::-webkit-scrollbar {
-              width: 5px;
+              width: 0;
               //margin-left: 7px;
               box-sizing: content-box;
               background-color: transparent;

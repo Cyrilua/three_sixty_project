@@ -24,9 +24,28 @@ $(function () {
             })
             .select();
         document.execCommand("copy");
+        if (invite.val() !== '' && window.getSelection().toString() === invite.val()) {
+            Snackbar.show({
+                text: 'Ссылка скопирована',
+                textColor: '#1ecb00',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        } else {
+            Snackbar.show({
+                text: 'Ошибка при копировании ссылки',
+                textColor: '#ff0000',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        }
         invite.css({
             display: 'none',
         })
+
+        console.log(ajaxRemove)
     });
 
     // Удаление должности
@@ -56,10 +75,10 @@ $(function () {
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: `Должность "${positionName}" была удалена`,
-                        customClass: 'custom no-animation center',
+                        text: `Должность "${positionName}" удалена`,
+                        customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         pos: 'bottom-center',
                         duration: 5000,
@@ -76,6 +95,7 @@ $(function () {
             },
             success: function (response) {
                 position.remove();
+                ajaxRemove[id].finish = true;
             },
             complete: function () {
             },
@@ -84,7 +104,7 @@ $(function () {
                 Snackbar.show({
                     text: `Ошибка удаления должности "${positionName}"`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -119,10 +139,10 @@ $(function () {
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: `Отдел "${platformName}" была удален`,
-                        customClass: 'custom no-animation center',
+                        text: `Отдел "${platformName}" удален`,
+                        customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         pos: 'bottom-center',
                         duration: 5000,
@@ -139,6 +159,7 @@ $(function () {
             },
             success: function (response) {
                 platform.remove();
+                ajaxRemove[id].finish = true;
             },
             complete: function () {
             },
@@ -147,7 +168,7 @@ $(function () {
                 Snackbar.show({
                     text: `Ошибка удаления отдела "${platformName}"`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -184,7 +205,7 @@ $(function () {
                     Snackbar.show({
                         text: `Произошла ошибка при добавлении должности.`,
                         textColor: '#ff0000',
-                        customClass: 'custom no-animation',
+                        customClass: 'custom center',
                         showAction: false,
                         duration: 3000,
                     });
@@ -222,7 +243,7 @@ $(function () {
                     Snackbar.show({
                         text: 'Произошла ошибка при добавлении должности.',
                         textColor: '#ff0000',
-                        customClass: 'custom no-animation',
+                        customClass: 'custom center',
                         showAction: false,
                         duration: 3000,
                     });
@@ -287,9 +308,9 @@ $(function () {
                     'disabled': false,
                 });
                 Snackbar.show({
-                    text: 'Изменения сохранены.',
+                    text: 'Изменения сохранены',
                     textColor: '#07bd00',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -304,7 +325,7 @@ $(function () {
                 Snackbar.show({
                     text: 'Произошла ошибка при сохранении.',
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });

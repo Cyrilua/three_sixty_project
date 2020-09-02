@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from main.views.auxiliary_general_methods import *  # todo не импортировать весь файл
+from main.views.auxiliary_general_methods import *
 from main.models import Poll, TemplatesPoll, Questions, Settings, Group, Moderator, SurveyWizard, Company, \
     AnswerChoice, NeedPassPoll, CreatedPoll
 from django.shortcuts import redirect, render
@@ -17,7 +17,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     head_move = SimpleTemplateResponse('main/poll/select_target/select_target_head_move.html', {}).rendered_content
 
     profile = get_user_profile(request)
-    company: Company = profile.company
+    company = profile.company
     profiles = company.profile_set.all()
 
     categories_args = {
@@ -102,10 +102,6 @@ def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company),
 
 
 def build_profile(profile) -> dict:
-    try:
-        photo = profile.profilephoto.photo
-    except ObjectDoesNotExist:
-        photo = None
     return {
         'href': '/{}/'.format(profile.pk),
         'id': profile.pk,
@@ -115,7 +111,7 @@ def build_profile(profile) -> dict:
         'roles': _get_roles(profile),
         'positions': [i.name for i in profile.positions.all()],
         'platforms': [i.name for i in profile.platforms.all()],
-        'photo': photo
+        'photo': profile.profilephoto.photo
     }
 
 
@@ -132,58 +128,52 @@ def _get_roles(profile: Profile) -> list:
 
 
 def search(request: WSGIRequest) -> JsonResponse:
-    # todo включить в поиск сортировку по должностям/платформам.
-    #  искать по цепочке символов начиная с начала имени/фамилии
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
         mode = request.POST['mode']
         user_input: str = request.POST['input']
-    except (MultiValueDictKeyError, ValueError, ObjectDoesNotExist):
+    except (ValueError, ObjectDoesNotExist):
         return JsonResponse({}, status=400)
 
     profile = get_user_profile(request)
+    company = profile.company
+
     if mode == 'participants':
-        result_search = _search_participants(user_input, profile)
-        content_participants_args = {
-            'participants': _build_team_profiles_list(result_search, profile.company, poll.target)
-        }
-        content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
-                                         content_participants_args).rendered_content
+        profiles = company.profile_set.all()
+        result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
+        collected_profile = _build_team_profiles_list(result_search, profile.company, Profile.objects.filter(id=-1))
+        if len(collected_profile) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content_participants_args = {'participants': collected_profile}
+            content = SimpleTemplateResponse('main/poll/select_target/content_participants.html',
+                                             content_participants_args).rendered_content
     elif mode == 'teams':
-        result_search = _search_teams(user_input, profile)
-        collected_teams = _build_team_list(result_search, poll.target)
-        content_teams_args = {
-            'teams': collected_teams
-        }
-        content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
+        user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
+        if user_is_master:
+            teams: QuerySet = Group.objects.filter(company=profile.company)
+        else:
+            teams: QuerySet = profile.groups.all()
+        result_search = get_search_result_for_teams(teams, user_input)
+        collected_teams = _build_team_list(result_search, Profile.objects.filter(id=-1))
+        if len(collected_teams) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content_teams_args = {
+                'teams': collected_teams
+            }
+            content = SimpleTemplateResponse('main/poll/select_target/content_teams.html',
                                          content_teams_args).rendered_content
     else:
         return JsonResponse({}, status=400)
     return JsonResponse({'content': content}, status=200)
 
 
-def _search_participants(user_input: str, profile: Profile):
-    profiles = profile.company.profile_set.all()
-    user_input_list = user_input.split(' ')
-    for input_iter in user_input_list:
-        profiles = profiles.filter(
-            Q(name__icontains=input_iter) | Q(surname__icontains=input_iter) | Q(patronymic__icontains=input_iter))
-    return profiles
-
-
-def _search_teams(user_input, profile):
-    user_is_master = SurveyWizard.objects.filter(profile=profile).exists()
-    if user_is_master:
-        teams: QuerySet = Group.objects.filter(company=profile.company)
-    else:
-        teams: QuerySet = profile.groups.all()
-    return teams.filter(name__icontains=user_input)
-
-
 def save_information(request: WSGIRequest) -> Poll:
     try:
         poll_id = int(request.POST['pollId'])
+        print(poll_id)
         poll = Poll.objects.get(id=poll_id)
     except (MultiValueDictKeyError, ObjectDoesNotExist, ValueError):
         return None
@@ -196,3 +186,4 @@ def save_information(request: WSGIRequest) -> Poll:
         poll.target = profile
         poll.save()
     return poll
+

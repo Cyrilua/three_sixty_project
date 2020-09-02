@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 
 from main.forms import ProfileForm, UserChangeEmailForm, BirthDateForm
-from main.models import BirthDate
+from main.models import BirthDate, ProfilePhoto
 
 
 def user_register(request):
@@ -31,7 +31,6 @@ def user_register(request):
             return result_ajax
 
     if request.method == 'POST':
-        print('ia m here')
         result_post = request_post_method_processing(request, args)
         if result_post is not None:
             return result_post
@@ -52,11 +51,17 @@ def request_post_method_processing(request, args):
         user.email = request.POST.get('email', '')
         user.save()
         profile.save()
+
         birth_date = datetime.datetime.strptime(post['birthday'], '%d.%m.%Y').date()
-        date = BirthDate()
-        date.birthday = birth_date
-        date.profile = profile
-        date.save()
+        birthday = BirthDate()
+        birthday.birthday = birth_date
+        birthday.profile = profile
+        birthday.save()
+
+        profile_photo = ProfilePhoto()
+        profile_photo.profile = profile
+        profile_photo.photo = 'images/photo.svg'
+        profile_photo.save()
 
         # Убрать, если не нужна автоматическая авторизация после регистрации пользователя
         auth.login(request, user)
@@ -120,6 +125,7 @@ def send_email(request) -> JsonResponse:
         name = request.POST['name']
         surname = request.POST['surname']
         code = create_verification_code(email)
+        print(code)  # todo
         send_email_validate_message(name, surname, email, code)
         return JsonResponse({}, status=200)
 

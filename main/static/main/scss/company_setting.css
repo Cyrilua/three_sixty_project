@@ -77,13 +77,14 @@
   padding-left: 10px;
 }
 .content .content__body .setting.setting-vertical .area .area__head .area__add {
+  background-color: transparent;
   width: 80px;
 }
 .content .content__body .setting.setting-vertical .area .area__body {
   overflow-y: scroll;
 }
 .content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar {
-  width: 5px;
+  width: 0;
   box-sizing: content-box;
   background-color: transparent;
 }

@@ -11,6 +11,16 @@ $(function () {
     let showNews = $('#showNewNotif');
     let category;
     let ajaxLoad;
+    let ajaxRemoveNotif = [];
+
+    // Дуйствия при уходе со страницы
+    window.onbeforeunload = function () {
+        completeRequests(ajaxRemoveNotif);
+        return;
+    };
+    window.onunload = function () {
+        return;
+    };
 
     /**
      * При изменении размера экрана проверяем видено ли непросмотренное уведомление
@@ -74,7 +84,7 @@ $(function () {
                 },
             });
         }
-    }, 20000);
+    }, 1000);
 
     /**
      *Просмотр уведомления на клик
@@ -112,17 +122,65 @@ $(function () {
     /**
      * Удаление уведомлений
      */
-    body.on('click', '#notification-actions-menu-item', function () {
-        let notification = $(this).parent().parent().parent().parent().parent();
-        let category = notification.parent();
-        notification.remove();
-        if (category.children().length < 1) {
-            category.removeClass('show')
-                .addClass('hide');
-            category.parent().children('.center-content-notifications-empty')
-                .removeClass('hide')
-                .addClass('show');
-        }
+    body.on('click', '.notification__close ', function (event) {
+        let notification = $(this).parent().parent();
+        let notificationId = notification.attr('data-id');
+        let id;
+        $.ajax({
+            url: `notification/${notificationId}/remove/`,
+            type: 'post',
+            data: {
+                csrfmiddlewaretoken: csrf,
+            },
+            beforeSend: function (ajax, request) {
+                if (!ajaxRemoveNotif[id]) {
+                    id = ajaxRemoveNotif.length;
+                    ajax.abort();
+                    ajaxRemoveNotif.push({
+                        request: request,
+                        finish: false,
+                    });
+                    notification.addClass('hide');
+                    let t = setTimeout(function () {
+                        if (!ajaxRemoveNotif[id].finish) {
+                            $.ajax(request);
+                        }
+                    }, 5000);
+                    Snackbar.show({
+                        text: `Уведомление удалено`,
+                        customClass: 'custom no-animation center',
+                        actionText: 'Отмена',
+                        actionTextColor: '#5699FF',
+                        width: '910px',
+                        pos: 'bottom-center',
+                        duration: 5000,
+                        onActionClick: function (ele) {
+                            clearTimeout(t);
+                            $(ele).remove();
+                            ajaxRemoveNotif[id].finish = true;
+                            notification.removeClass('hide');
+                        },
+                    });
+                } else {
+                }
+            },
+            success: function (response) {
+                notification.remove();
+            },
+            complete: function () {
+                ajaxRemoveNotif[id].finish = true;
+            },
+            error: function () {
+                notification.removeClass('hide');
+                Snackbar.show({
+                    text: `Произошла ошибка при удалении уведомления`,
+                    textColor: '#ff0000',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
+            }
+        });
     });
 
     run();
@@ -156,11 +214,12 @@ $(function () {
      * @param {string} selectedCategory
      */
     function loading(activeCategory, selectedCategory) {
-        let data;
         $.ajax({
             url: 'loading',
             type: 'get',
-            data: data,
+            data: {
+                selectedCategory: selectedCategory
+            },
             beforeSend: function (ajax, request) {
                 if (ajaxLoad) {
                     ajaxLoad.abort();
@@ -180,7 +239,6 @@ $(function () {
                 checkView();
             },
             complete: function (response, status) {
-                category = activeCategory;
                 content.removeClass('loading');
                 if (status === 'error') {
                     Snackbar.show({
@@ -193,6 +251,7 @@ $(function () {
                 }
             },
             error: function () {
+                category = activeCategory;
             }
         })
     }
@@ -240,6 +299,7 @@ $(function () {
                 type: 'post',
                 data: {
                     csrfmiddlewaretoken: csrf,
+                    category: category,
                 },
                 beforeSend: function () {
                     $(target).addClass('visible-load');
@@ -255,6 +315,15 @@ $(function () {
                 },
             })
         } else {
+        }
+    }
+
+    // При уходе со страницы завершить все действия, если они не были завершены и не были отменены
+    function completeRequests(ajaxRequests) {
+        for (let id = 0; id < ajaxRequests.length; id++) {
+            if (!ajaxRequests[id].finish) {
+                $.ajax(ajaxRequests[id].request);
+            }
         }
     }
 });

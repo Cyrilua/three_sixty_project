@@ -16,6 +16,7 @@ $(function () {
     let ajaxInput;
     body.on('input', '.head__search', function (event) {
         let search = $(this).val();
+
         ajaxInput = $.ajax({
             url: 'search/',
             type: 'get',
@@ -29,8 +30,9 @@ $(function () {
                 content.addClass('disable');
             },
             success: function (response) {
-                content.empty();
-                content[0].append(response.content); // ..teams.html
+                content
+                    .empty()
+                    .append(response.content); // ..teams.html
             },
             complete: function () {
                 $('.content__body').removeClass('disable');
@@ -78,7 +80,7 @@ $(function () {
                         text: 'Вы покинули команду',
                     customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {

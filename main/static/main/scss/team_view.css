@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .content {
   display: flex;
   flex-direction: column;
@@ -126,6 +127,12 @@
 .content .content__body .teammates .teammate .info .info__bottom .positions-n-platforms .position,
 .content .content__body .teammates .teammate .info .info__bottom .positions-n-platforms .platform {
   margin-right: 5px;
+}
+.content .content__body .teammates .teammate .team__leave#kick {
+  background-image: url("../../main/images/icon/person_remove-24px.svg");
+}
+.content .content__body .teammates .teammate .team__leave#kick::before {
+  content: "Выгнать";
 }
 
 /*# sourceMappingURL=team_view.css.map */

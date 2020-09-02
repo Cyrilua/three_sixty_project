@@ -5,6 +5,12 @@ from django.template.response import SimpleTemplateResponse
 from django.http import JsonResponse
 
 
+def redirect_for_create(request):
+    if auth.get_user(request).is_anonymous:
+        return redirect('/')
+    return redirect('/poll/editor/new/')
+
+
 def polls_view(request) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
@@ -16,8 +22,9 @@ def polls_view(request) -> render:
             'templates': _build_templates(profile),
             'new': {
                 'polls': NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
-            }
+            },
         },
+        'profile': get_header_profile(profile)
     }
     args['data']['quatity'] = {
         'templates': {
@@ -30,9 +37,11 @@ def polls_view(request) -> render:
 
 def _build_templates(profile: Profile) -> dict:
     result = {
-        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True)],
+        'general': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=True,
+                                                                                             is_deleted=False)],
         'my': [_collect_template(template) for template in TemplatesPoll.objects.filter(is_general=False,
-                                                                                        owner=profile)]
+                                                                                        owner=profile,
+                                                                                        is_deleted=False)]
     }
     return result
 
@@ -191,22 +200,21 @@ def remove_template(request) -> JsonResponse:
         return redirect('/')
 
     if request.is_ajax():
-        # todo throw exceptions.
-        #  Удалять только связь с пользователем. Удаление самого шаблона оставить на скрипт
         try:
             template_id = int(request.POST['id'])
         except ValueError:
             return JsonResponse({}, status=400)
+
         profile = get_user_profile(request)
-        try:
-            template: TemplatesPoll = TemplatesPoll.objects.get(id=template_id)
-        except ObjectDoesNotExist:
+        template = TemplatesPoll.objects.filter(id=template_id)
+        template_first = template.first()
+        if template_first is None:
             return JsonResponse({}, status=400)
 
-        if template.is_general or template.owner != profile:
+        if template_first.is_general or template_first.owner != profile:
             return JsonResponse({}, status=400)
 
-        template.delete()
+        template.update(is_deleted=True)
         return JsonResponse({}, status=200)
 
 

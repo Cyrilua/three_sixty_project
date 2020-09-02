@@ -14,11 +14,15 @@
                 <div class="info">
                     <h1 class="team__name">{{ team.name }}</h1>
                     <div class="company-substrate">
-                        <a href="{{ company.href }}" class="company__href">{{ company.name }}</a>
+                        {% if company.id %}
+                            <a href="{% url 'main:company_view' id_company=company.id %}"
+                               class="company__href">{{ company.name }}</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="actions">
-                    <a href="{% url 'main:create_poll_from_team' team_id=team.id %}" class="new-poll button-red a-button">Провести опрос</a>
+                    <a href="{% url 'main:create_poll_from_team' group_id=team.id %}"
+                       class="new-poll button-red a-button">Провести опрос</a>
                 </div>
             </div>
             <div class="head__middle">
@@ -31,7 +35,8 @@
         <div class="head__bottom rounded-block">
             <input type="text" class="search input-field" placeholder="Поиск по участникам..." autocomplete="off">
             {% if is_leader %}
-                <a href="{% url 'main:team_new_invites' team_id=team.id %}" class="button-white send-invites a-button">Пригласить ещё</a>
+                <a href="{% url 'main:team_new_invites' group_id=team.id %}" class="button-white send-invites a-button">Пригласить
+                    ещё</a>
             {% endif %}
         </div>
         <div class="content__body">

@@ -21,6 +21,7 @@ $(function () {
     let ajaxInput;
     body.on('input', '.search', function (event) {
         let search = $(this).val();
+        let teammates = content.children('.teammates');
         ajaxInput = $.ajax({
             url: 'search/',
             type: 'get',
@@ -34,8 +35,8 @@ $(function () {
                 content.addClass('disabled');
             },
             success: function (response) {
-                content.empty();
-                content[0].append(response.content); // ..teammates.html
+                teammates.empty();
+                teammates.append(response.content); // ..teammates.html
             },
             complete: function () {
                 $('.content__body').removeClass('disabled');
@@ -54,9 +55,9 @@ $(function () {
 
     // Кикнуть из команды
     body.on('click', '#kick', function (event) {
-        let team = $(this).parent();
-        let teammateId = team.attr('data-real-id');
-        let teammateName = team.children('.info').children('.info__top').children('.teammate-href').text();
+        let teammate = $(this).parent();
+        let teammateId = teammate.attr('data-real-id');
+        let teammateName = teammate.children('.info').children('.info__top').children('.teammate-href').text();
         let id;
         $.ajax({
             url: `leave/`,
@@ -73,20 +74,20 @@ $(function () {
                         request: request,
                         finish: false,
                     });
-                    $(team).css({
+                    $(teammate).css({
                         'display': 'none',
                     });
                     Snackbar.show({
                         text: `${teammateName} был удален из команды`,
                         customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
-                            $(team).css({
+                            $(teammate).css({
                                 'display': 'flex',
                             });
                         },
@@ -100,19 +101,13 @@ $(function () {
                 }
             },
             success: function (response) {
-                window.onbeforeunload = function () {
-                    return;
-                };
-                window.onunload = function () {
-                    return;
-                };
-                location.href = '/teams/';
+                teammate.remove();
             },
             complete: function () {
                 ajaxRequests[id].finish = true;
             },
             error: function () {
-                $(team).css({
+                $(teammate).css({
                     'display': 'flex',
                 });
                 Snackbar.show({
@@ -158,7 +153,7 @@ $(function () {
                         text: 'Вы покинули команду',
                         customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         // pos: 'bottom-center',
                         duration: 5000,
@@ -166,6 +161,7 @@ $(function () {
                             clearTimeout(t);
                             ajaxRequests[id].finish = true;
                             $(ele).remove();
+                            cont.removeClass('disabled');
                             $(teammate).css({
                                 'display': 'flex',
                             });

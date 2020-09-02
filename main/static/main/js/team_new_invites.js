@@ -17,7 +17,14 @@ $(function () {
                     disabled: true,
                 })
             },
-            success: function (){
+            success: function () {
+                Snackbar.show({
+                    text: 'Приглашение отправлено',
+                    textColor: '#1ecb00',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
             },
             complete: function () {
             },
@@ -53,8 +60,9 @@ $(function () {
                 content.addClass('disabled');
             },
             success: function (response) {
-                content.empty();
-                content[0].append(response.content); // ..teammates.html
+                content.children('.users')
+                    .empty()
+                    .append(response.content); // ..teammates.html
             },
             complete: function () {
                 $('.content__body').removeClass('disabled');

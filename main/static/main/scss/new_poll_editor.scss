@@ -47,10 +47,12 @@
         right: 80px;
         bottom: 30px;
         transform: translateX(50%);
-        &::before{
+
+        &::before {
           content: '(';
         }
-        &::after{
+
+        &::after {
           content: ')';
         }
       }
@@ -487,6 +489,7 @@
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  cursor: pointer;
 
   .participant__photo {
     width: 70px;
@@ -513,6 +516,7 @@
 
       .participant__role {
         margin-left: 5px;
+        cursor: default;
       }
     }
 
@@ -548,6 +552,12 @@
         padding-bottom: 10px;
 
         .team__up {
+          .team__photo {
+            background-image: url('../../main/images/team_active.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+
           .team__actions {
             .team__action {
               &:after {
@@ -573,7 +583,12 @@
         padding: 20px 30px;
 
         .team__photo {
-          width: 70px;
+          display: block;
+          background-image: url('../../main/images/team.svg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 76px;
+          height: 70px;
           margin-right: 10px;
         }
 

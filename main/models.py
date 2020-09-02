@@ -95,11 +95,12 @@ class Invitation (models.Model):
         (1, 'company'),
     ]
 
-    type = models.CharField(max_length=15, choices=TYPE_CHOICES, default='team')
-    invitation_group_id = models.IntegerField(default=0)
+    team = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+')
+    is_viewed = models.BooleanField(default=False)
+    is_rendered = models.BooleanField(default=False)
     objects = models.Manager()
 
     class Meta:
@@ -166,13 +167,8 @@ class TemplatesPoll(models.Model):
     owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
     questions = models.ManyToManyField('Questions')
     color = models.CharField(max_length=20, null=True)  # purple, red, blue, None
+    is_deleted = models.BooleanField(default=False)
     objects = models.Manager()
-
-    def delete(self, *args, **kwargs):
-        questions = self.questions.all()
-        for question in questions:
-            question.delete()
-        super(TemplatesPoll, self).delete(*args, **kwargs)
 
     class Meta:
         db_table = 'Template'
@@ -193,10 +189,12 @@ class Poll(models.Model):
     questions = models.ManyToManyField('Questions')
     is_submitted = models.BooleanField(default=False)
     new_template = models.OneToOneField(TemplatesPoll, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)
+    team = models.ForeignKey(Group, null=True, on_delete=models.CASCADE)
+
     objects = models.Manager()
 
     def delete(self, *args, **kwargs):
-        # TODO удаление ответов
         self.questions.all().delete()
         self.answers_set.all().delete()
         super(Poll, self).delete(*args, **kwargs)
@@ -308,6 +306,16 @@ class Answers(models.Model):
         db_table = "Answer"
 
 
+class RangeAnswers(models.Model):
+    answer = models.ForeignKey('Answers', on_delete=models.CASCADE)
+    position_on_range = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)
+    objects = models.Manager()
+
+    class Meta:
+        db_table = "RangeAnswer"
+
+
 class OpenQuestion(models.Model):
     text = models.CharField(max_length=100, default='')
     objects = models.Manager()
@@ -333,6 +341,7 @@ class Choice(models.Model):
 
 class TestTable(models.Model):
     code = models.CharField(max_length=100, default='')
+    photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
 
     class Meta:
         db_table = "TestTable"
