@@ -12,6 +12,8 @@ def teams_view(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
     teams = _build_teams(profile.groups.all(), profile)
     args = {
         'teams': teams,
@@ -44,10 +46,12 @@ def create_team(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
     new_group = Group()
     new_group.owner = profile
     new_group.name = 'Новая команда'
-    new_group.description = 'Измение описание в настройках'
+    new_group.description = 'Измените описание в настройках'
     new_group.company = profile.company
     new_group.save()
     _create_unique_key(new_group)
@@ -73,6 +77,8 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
         profile = get_user_profile(request)
+        if profile.company is None:
+            return JsonResponse({}, status=403)
         user_input = request.GET.get('search', '')
         teams = profile.groups.all()
         teams = get_search_result_for_teams(teams, user_input)
@@ -92,7 +98,8 @@ def team_for_invite(request, profile_id: int) -> render:
     if alien_profile is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     current_profile: Profile = get_user_profile(request)
-
+    if current_profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
     alien_commands = alien_profile.groups.all().values_list('id', flat=True)
     teams = current_profile.groups.all()
     args = {
@@ -114,6 +121,8 @@ def search_team_for_invite(request, profile_id: int) -> JsonResponse:
         if alien_profile is None:
             return JsonResponse({}, status=404)
         profile = get_user_profile(request)
+        if profile.company is None:
+            return JsonResponse({}, status=403)
         user_input = request.GET.get('search', '')
         teams = profile.groups.all()
         teams = get_search_result_for_teams(teams, user_input)
@@ -151,10 +160,13 @@ def invite_to_team(request: WSGIRequest, profile_id: int):
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
+        if current_profile.company is None:
+            return JsonResponse({}, status=403)
 
         changed_profile_role = Profile.objects.filter(id=profile_id).first()
         if changed_profile_role is None:
             return JsonResponse({}, status=404)
+
         group_id = int(request.POST.get('teamId', '-1'))
         team = Group.objects.filter(id=group_id).first()
         if team is None:

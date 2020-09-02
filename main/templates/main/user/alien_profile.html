@@ -16,7 +16,7 @@
                     <img src="{% static 'main/images/photo.svg' %}" alt="" class="left-content-photo">
                 {% endif %}
                 {#                <button class="left-content-new_poll button-red button-href" data-href="#">Пригласить в команду</button>#}
-                <a href="{% url 'main:search_team_for_invite' profile_id=alien_profile.id %}"
+                <a href="{% url 'main:team_for_invite' profile_id=alien_profile.id %}"
                    class="button-red a-button" id="inviteToTeam">Пригласить в команду</a>
             </div>
             <div class="center-content">
