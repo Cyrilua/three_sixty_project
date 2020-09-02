@@ -52,7 +52,11 @@ def company_view(request: WSGIRequest, id_company: int):
         company: Company = Company.objects.filter(pk=id_company).first()
         if company is None:
             return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
         profile = get_user_profile(request)
+        if profile.company is None or profile.company != company:
+            return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
         args = {
             'company': {
                 'id': company.pk,
