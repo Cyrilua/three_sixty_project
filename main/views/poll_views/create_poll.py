@@ -16,6 +16,10 @@ def start_create_poll(request, template_id=None, company_id=None, team_id=None) 
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
+    profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     if template_id is not None:
         return poll_create_from_template(request, template_id)
 
@@ -101,6 +105,10 @@ def get_render_poll(request: WSGIRequest, poll: Poll):
     profile = get_user_profile(request)
     if poll.initiator != profile or poll.is_submitted:
         return render(request, 'main/errors/global_error.html', {'global_error': '400'})
+
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     args = {
         'title': "Создание нового опроса",
         'poll': build_poll(poll),
@@ -137,7 +145,6 @@ def build_questions() -> list:
 
 def save_template(request, template_id=None, company_id=None, team_id=None) -> JsonResponse:
     if request.is_ajax():
-        # todo не сохраняются вопросы
         return editor.save_template(request)
 
 

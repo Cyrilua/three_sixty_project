@@ -8,6 +8,11 @@ from django.http import JsonResponse
 def redirect_for_create(request):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     return redirect('/poll/editor/new/')
 
 
@@ -16,6 +21,9 @@ def polls_view(request) -> render:
         return redirect('/')
 
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     args = {
         'title': "Опросы",
         'data': {
