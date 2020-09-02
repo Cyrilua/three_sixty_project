@@ -10,7 +10,9 @@ urlpatterns = [
     # Поиск по командам
     path('search/', teams_views.search_teams, name='search'),
     # Список команд для приглашения со страницы чужого профиля
-    path('invite/<int:profile_id>/', teams_views.search_team_for_invite, name='search_team_for_invite'),
+    path('invite/<int:profile_id>/', teams_views.team_for_invite, name='search_team_for_invite'),
+    # Поиск по списку команд
+    path('invite/<int:profile_id>/search/', teams_views.search_teams, name='search_team_for_invite'),
     # Пригласить в команду с чужого профиля
     path('invite/<int:profile_id>/send/', teams_views.invite_to_team)
 ]

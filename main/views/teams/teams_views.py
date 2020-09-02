@@ -85,7 +85,7 @@ def search_teams(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({'content': content}, status=200)
 
 
-def search_team_for_invite(request, profile_id: int) -> render:
+def team_for_invite(request, profile_id: int) -> render:
     if auth.get_user(request).is_anonymous:
         return redirect('/')
     alien_profile = Profile.objects.filter(id=profile_id).first()
@@ -104,6 +104,27 @@ def search_team_for_invite(request, profile_id: int) -> render:
         }
     }
     return render(request, 'main/teams/search_team_for_invite_from_alien_profile.html', args)
+
+
+def search_team_for_invite(request, profile_id: int) -> JsonResponse:
+    if request.is_ajax():
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+        alien_profile = Profile.objects.filter(id=profile_id).first()
+        if alien_profile is None:
+            return JsonResponse({}, status=404)
+        profile = get_user_profile(request)
+        user_input = request.GET.get('search', '')
+        teams = profile.groups.all()
+        teams = get_search_result_for_teams(teams, user_input)
+        alien_commands = alien_profile.groups.all().values_list('id', flat=True)
+        collected_teams = build_teams(teams, profile, alien_commands)
+        if len(collected_teams) == 0:
+            content = get_render_bad_search('По вашему запросу ничего не найдено')
+        else:
+            content = SimpleTemplateResponse('main/teams/teams_for_invites.html',
+                                             {'teams': collected_teams}).rendered_content
+        return JsonResponse({'content': content}, status=200)
 
 
 def build_teams(commands: filter, alien_profile: Profile, alien_commands) -> list:
