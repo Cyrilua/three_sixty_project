@@ -189,7 +189,10 @@ def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
             content = get_render_bad_search('По вашему запросу ничего не найдено')
         else:
             content = SimpleTemplateResponse('main/teams/teammates.html',
-                                             {'teammates': completed_profiles}).rendered_content
+                                             {
+                                                 'teammates': completed_profiles,
+                                                 'is_leader': team.owner == profile
+                                             }).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
