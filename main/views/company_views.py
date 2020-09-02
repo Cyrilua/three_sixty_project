@@ -92,14 +92,18 @@ def _load_users(company: Company, profile: Profile, search: str):
     if search != '':
         profiles = get_search_result_for_profiles(profiles, search.split(), company)
     collected_profiles = _build_profiles(profiles)
-    args = {
-        'users': collected_profiles,
-        'profile': {
-            'is_boss': company.owner == profile,
-            'is_moderator': Moderator.objects.filter(profile=profile).exists()
+    if len(collected_profiles) == 0:
+        content = get_render_bad_search('По вашему запросу ничего не найдено')
+    else:
+        args = {
+            'users': collected_profiles,
+            'profile': {
+                'is_boss': company.owner == profile,
+                'is_moderator': Moderator.objects.filter(profile=profile).exists()
+            }
         }
-    }
-    return SimpleTemplateResponse('main/companies/users.html', args).rendered_content
+        content = SimpleTemplateResponse('main/companies/users.html', args).rendered_content
+    return content
 
 
 def _build_profiles(profiles: list):
@@ -142,14 +146,18 @@ def _load_teams(company: Company, profile: Profile, search: str):
             'quantity': team.profile_set.all().count(),
             'description': team.description,
         })
-    args = {
-        'teams': collected_teams,
-        'profile': {
-            'is_boss': company.owner == profile,
-            'is_moderator': Moderator.objects.filter(profile=profile).exists()
+    if len(collected_teams) == 0:
+        content = get_render_bad_search('По вашему запросу ничего не найдено')
+    else:
+        args = {
+            'teams': collected_teams,
+            'profile': {
+                'is_boss': company.owner == profile,
+                'is_moderator': Moderator.objects.filter(profile=profile).exists()
+            }
         }
-    }
-    return SimpleTemplateResponse('main/companies/teams.html', args).rendered_content
+        content = SimpleTemplateResponse('main/companies/teams.html', args).rendered_content
+    return content
 
 
 def remove_team(request: WSGIRequest, id_company: int, team_id: int):
