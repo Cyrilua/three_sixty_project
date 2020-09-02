@@ -183,7 +183,7 @@ def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
             return JsonResponse({}, status=403)
 
         user_input = request.GET.get('search', '').split()
-        profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company)
+        profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company, team)
         completed_profiles = _build_teammates(profiles, team, profile)
         if len(completed_profiles) == 0:
             content = get_render_bad_search('По вашему запросу ничего не найдено')
