@@ -3,10 +3,10 @@
     <div class="menu-r unselectable">
         <ul class="menu rounded-block">
             <li class="menu__item {{ menu_company }}">
-                <a href="{% url 'main:company_view' id_company=company.id %}" class="item__link">Компания</a>
+                <a href="{% url 'main:company_view' id_company=profile.company.id %}" class="item__link">Компания</a>
             </li>
             <li class="menu__item {{ menu_setting }}">
-                <a href="{% url 'main:company_setting' id_company=company.id %}" class="item__link">Настройки</a>
+                <a href="{% url 'main:company_setting' id_company=profile.company.id %}" class="item__link">Настройки</a>
             </li>
         </ul>
     </div>
