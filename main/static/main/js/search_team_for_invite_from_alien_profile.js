@@ -10,7 +10,7 @@ $(function () {
     body.on('input', '.search__input', function () {
         let search = $(this).val();
         $.ajax({
-            url: '/search/',
+            url: 'search/',
             type: 'get',
             data: {
                 search: search,
