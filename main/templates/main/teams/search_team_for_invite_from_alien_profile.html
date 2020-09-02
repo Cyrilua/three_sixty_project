@@ -9,77 +9,21 @@
 {% block content-user %}
 
     <div class="content">
+        {% csrf_token %}
         <div class="search rounded-block">
-            <button class="search__button button-white button-href" data-href="#">Готово</button>
+            <a href="{% url 'main:profile' profile_id=alien_profile.id %}" class="search__button button-white a-button">Готово</a>
             <input type="text" class="search__input input-field" placeholder="Поиск по командам...">
         </div>
         <!-- /.search -->
         <div class="result">
-            {% csrf_token %}
-            <div class="teams show">
+            <div class="teams">
                 {% if teams %}
-                    {% for team in teams %}
-                        <div class="team show" data-name="{{ team.name }}">
-                            <div class="team__content rounded-block">
-                                <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                                <div class="team__details">
-                                    <div class="team__title">
-                                        <a href="{{ team.url }}" class="team__name">{{ team.name }}</a>
-                                    </div>
-                                    <span class="team__members">Количество участников: {{ team.members }}</span>
-                                    <span class="team__about">{{ team.about }}</span>
-                                </div>
-                                <button class="team__button button-white button-href-async"
-                                        data-href="{{ team.url_send_invite }}">Пригласить
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.team -->
-                    {% endfor %}
+                    {% include 'main/teams/teams_for_invites.html' %}
                 {% else %}
-                    <div class="team show" data-name="Крутая команда">
-                        <div class="team__content rounded-block">
-                            <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                            <div class="team__details">
-                                <div class="team__title">
-                                    <a href="#" class="team__name">Крутая команда</a>
-                                </div>
-                                <span class="team__members">35 участников</span>
-                                <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
-                            </div>
-                            <button class="team__button button-white button-href" data-href="#">Пригласить</button>
-                        </div>
-                    </div>
-                    <!-- /.team -->
-
-                    <div class="team show" data-name="Крутая не команда 123456789qwertyuisdfghjkcvbnm,.">
-                        <div class="team__content rounded-block">
-                            <img src="{% static 'main/images/teamIcon.svg' %}" alt="" class="team__icon">
-                            <div class="team__details">
-                                <div class="team__title">
-                                    <a href="#" class="team__name">Крутая не команда 123456789qwertyuisdfghjkcvbnm,.</a>
-                                </div>
-                                <span class="team__members">35 участников</span>
-                                <span class="team__about">Здесь можно вставить краткое описание команды команды команды команды Здесь можно вставить краткое описание команды команды команды команды</span>
-                            </div>
-                            <button class="team__button button-white button-href" data-href="#">Пригласить</button>
-                        </div>
-                    </div>
-                    <!-- /.team -->
+                    {% include 'main/includes/bad_search.html' with text='По вашему запросу<br>ничего не найдено' %}
                 {% endif %}
             </div>
             <!-- /.teams -->
-
-            <div class="result__empty hide">
-                {% include 'main/includes/bad_search.html' with text="Нет доступных команд.<br>Создавайте команды, чтобы приглашать<br>в них пользователей" only %}
-            </div>
-            <!-- /.result_empty -->
-
-            <div class="result__not-find hide">
-                {% include 'main/includes/bad_search.html' with text="По вашему запросу<br>ничего не найдено" only %}
-            </div>
-            <!-- /.result__not-find -->
-
         </div>
         <!-- /.result -->
     </div>

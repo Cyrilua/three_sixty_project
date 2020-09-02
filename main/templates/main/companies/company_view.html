@@ -16,7 +16,7 @@
                 </div>
                 <div class="actions">
                     {% if profile.is_boss or profile.is_master %}
-                        <a href="{% url 'main:create_poll_from_company' company_id=company.id %}" class="button-red" id="newPoll">Провести опрос</a>
+                        <a href="{% url 'main:create_poll_from_company' id_company=company.id %}" class="button-red a-button" id="newPoll">Провести опрос</a>
                     {% endif %}
                 </div>
             </div>

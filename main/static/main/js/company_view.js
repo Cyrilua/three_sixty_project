@@ -7,11 +7,6 @@ $(function () {
     let ajaxDismisses = [];
     let ajaxLoad;
 
-    // // Новый опрос внутри компании
-    // body.on('click', '#newPoll', function (event) {
-    //     //TODO
-    // });
-
     // Поиск
     body.on('input', '.search', function (event) {
         let category = $('.active-sort').attr('data-category');
@@ -26,7 +21,10 @@ $(function () {
         let selectedCategory = $(this).attr('data-category');
         // console.log(activeCategory)
         if (activeCategory !== selectedCategory) {
-            loading(activeCategory, selectedCategory);
+            let search = $('.search');
+            search.val('');
+            let input = search.val();
+            loading(activeCategory, selectedCategory, input);
         }
     });
 
@@ -71,7 +69,7 @@ $(function () {
                         text: `Команда "${teamName}" была удалена`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         pos: 'bottom-center',
                         duration: 5000,
@@ -135,7 +133,7 @@ $(function () {
                         text: `${userName} был удален из компании`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         pos: 'bottom-center',
                         duration: 5000,
@@ -163,7 +161,7 @@ $(function () {
                 Snackbar.show({
                     text: `Произошла ошибка при удалении ${userName}`,
                     textColor: '#ff0000',
-                    customClass: 'custom no-animation',
+                    customClass: 'custom center',
                     showAction: false,
                     duration: 3000,
                 });
@@ -410,7 +408,7 @@ $(function () {
                 textColor: '#ff1841',
                 showAction: false,
                 duration: 4000,
-                customClass: 'custom',
+                customClass: 'custom center',
             });
             return;
         }
@@ -464,6 +462,17 @@ $(function () {
             window.scrollBy(0, -(beforePos.y - afterPos.y));
         } else if (user.hasClass('user--edit')) {
             user.removeClass('user--edit').addClass('user--view');
+        }
+    });
+
+    // Закрыть редактирование юзеров в любом месте
+    body.click(function (event) {
+        let userActive = $('.user--edit');
+        if (userActive.length > 0 &&
+            $(event.target).closest('.scroll-top').length === 0 &&
+            $(event.target).closest('.header__content').length === 0 &&
+            $(event.target).closest('.user').attr('data-real-id') !== userActive.attr('data-real-id')) {
+            userActive.children('.user__edit').children('.edit__up').children('.actions').children('#edit').trigger('click');
         }
     });
 
@@ -756,26 +765,38 @@ $(function () {
                 }
                 ajaxLoad = ajax;
                 content.addClass('loading');
-                if (!input) {
+
+                $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
+                $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
+
+                if (activeCategory !== selectedCategory) {
                     search.prop({
-                        'disabled': true,
-                    });
+                        disabled: true,
+                    })
                 }
             },
             success: function (response) {
-                $(`.active-sort[data-category=${activeCategory}]`).removeClass('active-sort');
-                $(`.category[data-category=${selectedCategory}]`).addClass('active-sort');
                 content
                     .empty()
                     .prepend(response.content);
-            },
-            complete: function (response, status) {
-                content.removeClass('loading');
-                if (!input) {
-                    search.prop({
-                        'disabled': false,
+                if (selectedCategory === 'teams') {
+                    $('.search').attr({
+                        'placeholder': 'Поиск по командам...'
+                    });
+                } else if (selectedCategory === 'users') {
+                    $('.search').attr({
+                        'placeholder': 'Поиск по участникам...'
                     });
                 }
+
+            },
+            complete: function (response, status) {
+                if (activeCategory !== selectedCategory) {
+                    search.prop({
+                        disabled: false,
+                    })
+                }
+                content.removeClass('loading');
                 if (status === 'error') {
                     Snackbar.show({
                         text: 'Произошла ошибка при загрузке данных.',
@@ -787,6 +808,8 @@ $(function () {
                 }
             },
             error: function () {
+                $(`.active-sort[data-category=${selectedCategory}]`).removeClass('active-sort');
+                $(`.category[data-category=${activeCategory}]`).addClass('active-sort');
             }
         });
     }

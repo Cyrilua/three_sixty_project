@@ -12,11 +12,6 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 
-from PIL import Image
-
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-
 
 @csrf_exempt
 def upload_profile_photo(request):
@@ -25,17 +20,13 @@ def upload_profile_photo(request):
     if request.is_ajax():
         user_photo = request.FILES['0']
         profile = get_user_profile(request)
-        try:
-            photo_profile = ProfilePhoto.objects.get(profile=profile)
-        except ObjectDoesNotExist:
-            pass
-        else:
+        photo_profile = ProfilePhoto.objects.filter(profile=profile).first()
+        if photo_profile is None:
+            return JsonResponse({}, status=404)
+        if photo_profile.photo.url != '/media/images/photo.svg':
             photo_profile.delete()
-        photo_profile = ProfilePhoto()
-        photo_profile.profile = profile
         photo_profile.photo = user_photo
         photo_profile.save()
-        result = photo_profile.photo.url
         return JsonResponse({'new_photo_url': photo_profile.photo.url}, status=200)
 
 
@@ -46,7 +37,8 @@ def delete_profile_photo(request) -> render:
         except ObjectDoesNotExist:
             return JsonResponse({}, status=200)
         else:
-            photo.delete()
+            photo.photo = 'images/photo.svg'
+            photo.save()
         none_photo = '/static/main/images/photo.svg'
         return JsonResponse({'new_photo_url': none_photo}, status=200)
 
@@ -71,6 +63,7 @@ def edit_profile(request) -> render:
     }
 
     args['profile']['login'] = user.username
+    args['profile']['photo'] = photo
     try:
         birth_date = args['profile']['birthdate']
         args['profile']['birthdate'] = {
@@ -89,8 +82,6 @@ def edit_profile(request) -> render:
         profile_platforms = profile.platforms.all()
         args['new_platforms'] = _build_objects(filter(lambda x: x not in profile_platforms, platform))
 
-    if request.method == 'POST':
-        print(request.POST)
     return render(request, 'main/user/edit.html', args)
 
 
@@ -107,37 +98,54 @@ def _build_objects(list_objects: filter) -> list:
 
 def remove_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
-        try:
-            platform = PlatformCompany.objects.get(id=platform_id)
-        except ObjectDoesNotExist:
-            # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if platform is None:
             return JsonResponse({'resultStatus': 'error'}, status=200)
+
         platform.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def remove_position(request, position_id: int) -> redirect:
     if request.is_ajax():
-        position = PositionCompany.objects.get(id=position_id)
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
+        position = PositionCompany.objects.filter(id=position_id).first()
+        if position is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         position.profile_set.remove(get_user_profile(request))
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def add_platform(request, platform_id: int) -> redirect:
     if request.is_ajax():
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
-        platform = PlatformCompany.objects.get(id=platform_id)
+        platform = PlatformCompany.objects.filter(id=platform_id).first()
+        if platform is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         platform.profile_set.add(profile)
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
 
 def add_position(request, position_id: int) -> redirect:
     if request.is_ajax():
-        # todo throw exception
+        if auth.get_user(request).is_anonymous:
+            return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
-        position = PositionCompany.objects.get(id=position_id)
+        position = PositionCompany.objects.filter(id=position_id).first()
+        if position is None:
+            return JsonResponse({'resultStatus': 'error'}, status=200)
+
         position.profile_set.add(profile)
         return JsonResponse({'resultStatus': 'success'}, status=200)
 
@@ -246,7 +254,6 @@ def save_birth_date(request) -> JsonResponse:
                 'date': '{}.{}.{}'.format(birth_date.day, birth_date.month, birth_date.year)
             }
         }
-        print(birth_date_profile.birthday)
         return JsonResponse(args, status=200)
 
 

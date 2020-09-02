@@ -270,6 +270,7 @@
   border-radius: 5px;
   overflow-y: auto;
   overflow-x: hidden;
+  box-shadow: -4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .position__substrate .add__menu .menu .menu__item,
 .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .positions__data .platform__substrate .add__menu .menu .menu__item, .edit .center-content .info-n-edit .edit__platforms-n-positions .positions .platforms__data .position__substrate .add__menu .menu .menu__item,

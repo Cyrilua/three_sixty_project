@@ -118,7 +118,7 @@ $(function () {
                         text: `Шаблон "${templateName}" удален`,
                         customClass: 'custom no-animation center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {
@@ -157,21 +157,21 @@ $(function () {
         })
     });
 
-    // Создание нового опроса/шаблона
-    body.on('click', '.template-new', function () {
-        $.ajax({
-            url: 'poll/create/',
-            type: 'post',
-            data: {
-                csrfmiddlewaretoken: csrf,
-            },
-            success: function (response) {
-                window.location.href = response.urlNewPoll;
-            },
-            error: function () {
-            },
-        })
-    });
+    // // Создание нового опроса/шаблона
+    // body.on('click', '.template-new', function () {
+    //     $.ajax({
+    //         url: 'poll/create/',
+    //         type: 'post',
+    //         data: {
+    //             csrfmiddlewaretoken: csrf,
+    //         },
+    //         success: function (response) {
+    //             window.location.href = response.urlNewPoll;
+    //         },
+    //         error: function () {
+    //         },
+    //     })
+    // });
 
     // Проверка новых опросов для прохождения (каждую сеекунду)
     setInterval(function () {

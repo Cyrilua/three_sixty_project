@@ -39,7 +39,7 @@ $(function () {
                     'disabled': true,
                 });
                 Snackbar.show({
-                    text: 'Сохранения сохранены.',
+                    text: 'Изменения сохранены',
                     textColor: '#07bd00',
                     customClass: 'custom center',
                     showAction: false,
@@ -98,13 +98,31 @@ $(function () {
             })
             .select();
         document.execCommand("copy");
+        if (invite.val() !== '' && window.getSelection().toString() === invite.val()) {
+            Snackbar.show({
+                text: 'Ссылка скопирована',
+                textColor: '#1ecb00',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        } else {
+            Snackbar.show({
+                text: 'Ошибка при копировании ссылки',
+                textColor: '#ff0000',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+        }
         invite.css({
             display: 'none',
-        })
+        });
     });
 
     // Удаление команды
     body.on('click', '#remove-team', function (event) {
+        let menu = $('.menu__item ');
         $.ajax({
             url: `remove/`,
             type: 'post',
@@ -115,21 +133,25 @@ $(function () {
                 if (ajaxTeamRemove === undefined) {
                     ajax.abort();
                     ajaxTeamRemove = request;
+                    content.addClass('disabled');
+                    menu.addClass('disabled');
                     let t = setTimeout(function () {
                         if (ajaxTeamRemove !== undefined) {
                             $.ajax(request);
                         }
                     }, 5000);
                     Snackbar.show({
-                        text: 'Команда будет удалена через 5 секунд',
-                    customClass: 'custom center',
+                        text: 'Команда удалена',
+                        customClass: 'custom center',
                         actionText: 'Отмена',
-                        actionTextColor: 'yellow',
+                        actionTextColor: '#5699FF',
                         width: '910px',
                         duration: 5000,
                         onActionClick: function (ele) {
                             clearTimeout(t);
                             $(ele).remove();
+                            content.removeClass('disabled');
+                            menu.removeClass('disabled');
                             ajaxTeamRemove = undefined;
                         },
                     });
@@ -149,6 +171,8 @@ $(function () {
                 ajaxTeamRemove = undefined;
             },
             error: function () {
+                content.removeClass('disabled');
+                menu.removeClass('disabled');
                 Snackbar.show({
                     text: 'Произошла ошибка при удалении команды.',
                     textColor: '#ff0000',

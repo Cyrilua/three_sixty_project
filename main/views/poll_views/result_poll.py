@@ -1,18 +1,18 @@
 from main.views.auxiliary_general_methods import *
-from main.models import Poll, CreatedPoll, Answers, Choice, OpenQuestion
+from main.models import Poll, CreatedPoll, Answers, Choice, RangeAnswers
 from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
 
 
 def result_poll(request: WSGIRequest, poll_id: int) -> render:
-    try:
-        poll = Poll.objects.get(id=poll_id)
-    except ObjectDoesNotExist:
+    poll = Poll.objects.filter(id=poll_id).first()
+    if poll is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
     if poll.initiator != profile:
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
     target: Profile = poll.target
     args = {
         'poll': {
@@ -20,7 +20,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'color': poll.color,
             'name': poll.name_poll,
             'target': {
-                'href': '/{}/'.format(target.id),
+                'href': '/{}/'.format(target.pk),
                 'name': target.name,
                 'surname': target.surname,
                 'patronymic': target.patronymic
@@ -29,6 +29,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'questions': _build_questions(poll)
         }
     }
+    CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
     return render(request, 'main/poll/poll_results.html', args)
 
 
@@ -46,14 +47,27 @@ def _build_questions(poll: Poll) -> list:
 
 
 def _build_answers_choices(answer: Answers) -> list:
+    result = []
+
+    if answer.question.settings.type == 'range':
+        for range_answer in RangeAnswers.objects.filter(answer=answer):
+            range_answer: RangeAnswers
+            percent = "%.2f" % ((range_answer.count * 100) / answer.count_profile_answers)
+            result.append({
+                'countAnswer': range_answer.count,
+                'percent': percent,
+                'value': range_answer.position_on_range
+            })
+        return result
+
     if answer.question.settings.type == 'openQuestion':
         return answer.open_answer.all()
+
     count_profile_answers = answer.count_profile_answers
     if answer.question.settings.type == 'checkbox':
         count_profile_answers = 0
         for i in answer.choices.all():
             count_profile_answers += i.count
-    result = []
     for choice in answer.choices.all():
         choice: Choice
         try:
@@ -71,4 +85,5 @@ def _build_answers_choices(answer: Answers) -> list:
             }
         }
         result.append(completed_choice)
+
     return result

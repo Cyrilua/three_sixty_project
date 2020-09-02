@@ -10,8 +10,8 @@ from .auxiliary_general_methods import check_code
 import emoji
 
 
-
 def validate_login(login: str) -> list:
+    print(login)
     result = []
     login = login.lower()
     users = User.objects.all()

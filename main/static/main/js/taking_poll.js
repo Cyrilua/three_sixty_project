@@ -60,7 +60,7 @@ $(function () {
                     showAction: true,
                     duration: 4000,
                     actionText: "Повторить",
-                    actionTextColor: 'red',
+                    actionTextColor: '#5699FF',
                     customClass: 'custom center',
                     onActionClick: function (el) {
                         $(el).animate({

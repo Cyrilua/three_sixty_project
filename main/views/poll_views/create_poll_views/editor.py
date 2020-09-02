@@ -99,6 +99,8 @@ def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, 
     first_question = poll.questions.all().first()
     version = 0 if first_question is None else first_question.version + 1
     ordinal_number = 0
+    print('###########!##$')
+    print(count_questions)
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
@@ -189,7 +191,7 @@ def _create_or_change_poll(request: WSGIRequest, poll: Poll) -> Poll:
     data_key = 'template[{}]'
     poll.name_poll = data[data_key.format('name')]
     poll.description = data[data_key.format('description')]
-    poll.color = data[data_key.format('color')]
+    poll.color = data.get(data_key.format('color'), None)
     poll.creation_date = datetime.today()
     profile = get_user_profile(request)
     if not SurveyWizard.objects.filter(profile=profile).exists():
@@ -217,7 +219,6 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
 
 
 def poll_preview(request: WSGIRequest) -> JsonResponse:
-    print(request.POST)
     try:
         poll_id = int(request.POST['pollId'])
         poll = Poll.objects.get(id=poll_id)
