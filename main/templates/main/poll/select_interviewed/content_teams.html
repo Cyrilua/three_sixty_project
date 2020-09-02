@@ -21,7 +21,7 @@
                     <div class="participants">
                         {% for participant in team.participants %}
                             <div class="participant rounded-block">
-                                <img src="{{ participant.photo }}" alt="" class="participant__photo">
+                                <img src="{{ participant.photo.url }}" alt="" class="participant__photo">
                                 <div class="info">
                                     <div class="name">
                                         <a href="{{ participant.href }}" target="_blank"
