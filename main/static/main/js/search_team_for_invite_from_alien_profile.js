@@ -27,18 +27,20 @@ $(function () {
                     .empty()
                     .prepend(response.content);
             },
-            complete: function () {
+            complete: function (response, status) {
                 $('.result').removeClass('loading');
                 ajaxSearch = null;
+                if (status === 'error') {
+                    Snackbar.show({
+                        text: 'Ошибка при поиске',
+                        textColor: '#ff1841',
+                        showAction: false,
+                        duration: 3000,
+                        customClass: 'custom center',
+                    });
+                }
             },
             error: function () {
-                Snackbar.show({
-                    text: 'Ошибка при поиске',
-                    textColor: '#ff1841',
-                    showAction: false,
-                    duration: 3000,
-                    customClass: 'custom center',
-                });
             }
         })
         // if (teams.length > 0) {

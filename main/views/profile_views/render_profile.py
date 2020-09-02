@@ -104,8 +104,11 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
         if collected is None:
             return JsonResponse({}, status=400)
 
-        content = SimpleTemplateResponse('main/user/notifications.html',
-                                         {'notifications': collected}).rendered_content
+        if len(collected) == 0:
+            content = get_render_bad_search('Сейчас нет уведомлений')
+        else:
+            content = SimpleTemplateResponse('main/user/notifications.html',
+                                             {'notifications': collected}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
@@ -209,8 +212,11 @@ def new_notification(request: WSGIRequest, profile_id: int):
         count_new_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
 
-        content = SimpleTemplateResponse('main/includes/bad_search.html',
-                                         {'notifications': collected_notifications}).rendered_content
+        if len(collected_notifications) == 0:
+            content = get_render_bad_search('Сейчас уведомлений нет')
+        else:
+            content = SimpleTemplateResponse('main/user/notifications.html',
+                                             {'notifications': collected_notifications}).rendered_content
         args = {
             'notificationsCount':
                 {

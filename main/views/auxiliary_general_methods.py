@@ -119,7 +119,7 @@ def get_header_profile(profile: Profile) -> dict:
     return args
 
 
-def get_search_result_for_profiles(profiles, user_input: list, company: Company):
+def get_search_result_for_profiles(profiles, user_input: list, company: Company, team=None):
     for input_iter in user_input:
         profiles = profiles.filter(
             Q(name__istartswith=input_iter) |
@@ -130,12 +130,18 @@ def get_search_result_for_profiles(profiles, user_input: list, company: Company)
                 .filter(company=company) \
                 .filter(name__istartswith=input_iter) \
                 .values_list('profile__id', flat=True)
-            profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
+            if team is not None:
+                profiles_by_positions = team.profile_set.all().filter(id__in=id_profiles_by_positions)
+            else:
+                profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
             id_profiles_by_platforms = PlatformCompany.objects \
                 .filter(company=company) \
                 .filter(name__istartswith=input_iter) \
                 .values_list('profile__id', flat=True)
-            profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
+            if team is not None:
+                profiles_by_platforms = team.profile_set.all().filter(id__in=id_profiles_by_platforms)
+            else:
+                profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
             profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
     return profiles
 

@@ -10,7 +10,7 @@ urlpatterns = [
     # Настройки команды
     path('settings/', team_views.team_settings_view, name='team_setting'),
     # Удаление команды
-    path('<settings/remove/', team_views.team_remove, name='team_remove'),
+    path('settings/remove/', team_views.team_remove, name='team_remove'),
     # Удаление команды
     path('settings/change/', team_views.team_change, name='team_change'),
     # Поиск

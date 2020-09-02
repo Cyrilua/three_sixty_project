@@ -18,8 +18,12 @@ def compiling_poll(request: WSGIRequest, poll_id: int) -> render:
             return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
         profile = get_user_profile(request)
+        if profile.company is None:
+            return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
         if not NeedPassPoll.objects.filter(poll=poll, profile=profile).exists():
             return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+
         collected_poll = _build_poll_compiling(poll)
         return render(request, 'main/poll/taking_poll.html', {'poll': collected_poll})
 

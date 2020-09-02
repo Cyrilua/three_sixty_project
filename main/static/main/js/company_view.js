@@ -751,6 +751,9 @@ $(function () {
      */
     function loading(activeCategory, selectedCategory, input) {
         let search = $('.search');
+        removeSnackbars();
+        completeRequests(ajaxDismisses);
+        completeRequests(ajaxRemoveTeams);
         $.ajax({
             url: 'load/',
             type: 'get',
@@ -812,5 +815,10 @@ $(function () {
                 $(`.category[data-category=${activeCategory}]`).addClass('active-sort');
             }
         });
+    }
+
+    // Удаление снэкбаров
+    function removeSnackbars() {
+        $('.snackbar-container').remove();
     }
 });
