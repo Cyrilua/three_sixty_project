@@ -16,6 +16,8 @@ def team_view(request, group_id: int) -> render:
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
     args = {
         'team': {
             'id': team.pk,
@@ -66,6 +68,11 @@ def _build_teammates(teammates: list, team: Group, current_profile: Profile) -> 
 def redirect_create_poll(request, group_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
+    profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     return redirect('/poll/editor/team/{}/new/'.format(group_id))
 
 
@@ -76,7 +83,11 @@ def team_settings_view(request, group_id):
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     args = {
         'team': {
             'id': team.pk,
@@ -95,11 +106,14 @@ def team_remove(request, group_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
 
+    profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     team: Group = Group.objects.filter(id=group_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
-    profile = get_user_profile(request)
     if team.owner != profile or not _profile_is_owner_or_moderator(profile):
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
     team.delete()
@@ -123,6 +137,9 @@ def team_change(request: WSGIRequest, group_id: int) -> redirect:
             return JsonResponse({}, status=404)
 
         profile = get_user_profile(request)
+        if profile.company is None:
+            return JsonResponse({}, status=403)
+
         if team.owner != profile or not _profile_is_owner_or_moderator(profile):
             return JsonResponse({}, status=403)
 
@@ -135,10 +152,15 @@ def team_change(request: WSGIRequest, group_id: int) -> redirect:
 def team_new_invites(request, group_id):
     if auth.get_user(request).is_anonymous:
         return redirect('/')
+
     team = Group.objects.filter(id=group_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
+
     profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     company = profile.company
     args = {
         'users': _build_teammates(company.profile_set.all(), team, profile),
@@ -151,10 +173,15 @@ def search_teammate(request: WSGIRequest, group_id: int) -> JsonResponse:
     if request.is_ajax():
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
+
         team = Group.objects.filter(id=group_id).first()
         if team is None:
             return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
+        if profile.company is None:
+            return JsonResponse({}, status=403)
+
         user_input = request.GET.get('search', '').split()
         profiles = get_search_result_for_profiles(team.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
@@ -170,10 +197,15 @@ def search_new_teammates(request: WSGIRequest, group_id: int) -> JsonResponse:
     if request.is_ajax():
         if auth.get_user(request).is_anonymous:
             return JsonResponse({}, status=404)
+
         team = Group.objects.filter(id=group_id).first()
         if team is None:
             return JsonResponse({}, status=404)
+
         profile = get_user_profile(request)
+        if profile.company is None:
+            return JsonResponse({}, status=403)
+
         user_input = request.GET.get('search', '').split()
         profiles = get_search_result_for_profiles(profile.company.profile_set.all(), user_input, profile.company)
         completed_profiles = _build_teammates(profiles, team, profile)
@@ -214,6 +246,10 @@ def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
         current_profile = get_user_profile(request)
         if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
+
+        if current_profile.company is None:
+            return JsonResponse({}, status=403)
+
         try:
             new_invitation = Invitation.objects.get(profile_id=profile_id, team=team)
         except ObjectDoesNotExist:
@@ -238,6 +274,9 @@ def kick_teammate(request: WSGIRequest, group_id: int):
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
+        if current_profile.company is None:
+            return JsonResponse({}, status=403)
+
         teammate_id = int(request.POST.get('teammateId', '-1'))
         teammate = Profile.objects.filter(id=teammate_id).first()
         if teammate is None:
@@ -257,8 +296,11 @@ def join_from_notification(request: WSGIRequest, group_id: int):
     team = Group.objects.filter(id=group_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
-    profile = get_user_profile(request)
-    profile.groups.add(team)
 
+    profile = get_user_profile(request)
+    if profile.company is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
+    profile.groups.add(team)
     Invitation.objects.filter(profile=profile, team=team).delete()
     return redirect('/team/{}/'.format(team.pk))
