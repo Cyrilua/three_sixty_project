@@ -16,7 +16,8 @@ $(function () {
     let ajaxInput;
     body.on('input', '.head__search', function (event) {
         let search = $(this).val();
-
+        removeSnackbars();
+        completeRequests();
         ajaxInput = $.ajax({
             url: 'search/',
             type: 'get',
@@ -123,5 +124,10 @@ $(function () {
                 $.ajax(ajaxRequests[id].request);
             }
         }
+    }
+
+    // Удаление снэкбаров
+    function removeSnackbars() {
+        $('.snackbar-container').remove();
     }
 });
