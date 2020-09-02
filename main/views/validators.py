@@ -132,5 +132,5 @@ def validate_code(code: str, email: str) -> list:
 
 
 def validate_user_input_in_company_settings(user_input: str) -> bool:
-    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _\-0-9.,]')
+    reg = re.compile('[^a-zA-Zа-яА-ЯёЁЙй _\-0-9.,()]')
     return len(reg.sub('', user_input)) == len(user_input) and not bool(emoji.get_emoji_regexp().search(user_input))

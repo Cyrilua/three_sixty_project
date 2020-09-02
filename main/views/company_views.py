@@ -308,12 +308,12 @@ def save_settings_change(request: WSGIRequest, id_company: int):
             return JsonResponse({}, status=404)
         if not _profile_is_owner_or_moderator(profile):
             return JsonResponse({}, status=403)
-        name = request.POST.get('name')
-        description = request.POST.get('description')
+        name = request.POST.get('name', company.name)
+        description = request.POST.get('description', company.description)
         if name is None or description is None:
             return JsonResponse({}, status=403)
-        if not validate_user_input_in_company_settings(name) or not validate_user_input_in_company_settings(
-                description):
+        if not validate_user_input_in_company_settings(name) or \
+                not validate_user_input_in_company_settings(description):
             return JsonResponse({}, status=400)
 
         company_queryset.update(name=name, description=description)
@@ -337,7 +337,7 @@ def assign_role_profile(request: WSGIRequest, id_company: int, profile_id: int) 
 
         role = request.POST.get('roleName', '')
         if role == 'master':
-            if current_profile != company.owner or not Moderator.objects.filter(profile=current_profile).exists():
+            if current_profile != company.owner and not Moderator.objects.filter(profile=current_profile).exists():
                 return JsonResponse({}, status=403)
             if SurveyWizard.objects.filter(profile=changed_profile_role).exists():
                 return JsonResponse({}, status=400)
@@ -346,10 +346,8 @@ def assign_role_profile(request: WSGIRequest, id_company: int, profile_id: int) 
             new_master.company = company
             new_master.save()
         elif role == 'moderator':
-            if current_profile != company.owner:
+            if current_profile != company.owner or Moderator.objects.filter(profile=changed_profile_role).exists():
                 return JsonResponse({}, status=403)
-            if Moderator.objects.filter(profile=changed_profile_role).exists():
-                return JsonResponse({}, status=400)
             new_moderator = Moderator()
             new_moderator.profile = changed_profile_role
             new_moderator.company = company
