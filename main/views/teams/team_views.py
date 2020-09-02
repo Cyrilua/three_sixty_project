@@ -140,7 +140,7 @@ def team_change(request: WSGIRequest, group_id: int) -> redirect:
         if profile.company is None:
             return JsonResponse({}, status=403)
 
-        if team.owner != profile or not _profile_is_owner_or_moderator(profile):
+        if team.owner != profile and not _profile_is_owner_or_moderator(profile):
             return JsonResponse({}, status=403)
 
         team.name = request.POST.get('name', team.name)
