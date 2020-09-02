@@ -47,7 +47,7 @@ def create_team(request):
     new_group = Group()
     new_group.owner = profile
     new_group.name = 'Новая команда'
-    new_group.description = 'Описание'
+    new_group.description = 'Измение описание в настройках'
     new_group.company = profile.company
     new_group.save()
     _create_unique_key(new_group)
