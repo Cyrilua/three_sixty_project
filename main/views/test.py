@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.db.models import Q
 from itertools import chain
+from django.utils.html import escape
 
 from django.contrib.sites.shortcuts import get_current_site
 
@@ -19,8 +20,18 @@ from django.contrib.sites.shortcuts import get_current_site
 def test(request: WSGIRequest):
     # _test_send_email(request)
     #_test_filter(request)
-    _delete_companies(request)
+    #_delete_companies(request)
+    print(get_url_host(request))
     return render(request, 'main/test.html')
+
+
+def get_url_host(request):
+    if request.is_secure():
+        protocol = 'https'
+    else:
+        protocol = 'http'
+    host = escape(request.get_host)
+    return '%s://%s' % (protocol, host)
 
 
 def _delete_companies(request: WSGIRequest):
