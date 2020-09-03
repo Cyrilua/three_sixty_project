@@ -155,9 +155,6 @@ $(function () {
             },
             error: function () {
                 user.removeClass('hide');
-                // $(user).css({
-                //     'display': 'flex',
-                // });
                 Snackbar.show({
                     text: `Произошла ошибка при удалении ${userName}`,
                     textColor: '#ff0000',
