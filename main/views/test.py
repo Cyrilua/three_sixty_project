@@ -20,8 +20,28 @@ def test(request: WSGIRequest):
     # _test_send_email(request)
     #_test_filter(request)
     #_delete_companies(request)
-    print(get_url_host(request))
+    # print(get_url_host(request))
+    _sending_emails(request, Poll.objects.get(id=107))
     return render(request, 'main/test.html')
+
+
+def _sending_emails(request: WSGIRequest, poll: Poll):
+    for need_pass in NeedPassPoll.objects.filter(poll=poll):
+        need_pass: NeedPassPoll
+        email = "aleksandr.korolyov.99@mail.ru"
+        mail_subject = 'Новый опрос'
+        link = "1234"
+
+        context = {
+            'type_email': 'verification',
+            'user': {
+                'name': poll.target.name,
+                'patronymic': poll.target.patronymic
+            },
+            'code': link
+        }
+        message = get_template('main/email/email.html').render(context)
+        send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
 
 
 def get_url_host(request):
