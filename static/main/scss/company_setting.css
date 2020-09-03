@@ -1,0 +1,167 @@
+.content {
+  padding: 0;
+  margin-bottom: 20vh;
+}
+.content .content__body {
+  padding: 30px 140px;
+}
+.content .content__body .subtitle {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 21px;
+  color: #595757;
+}
+.content .content__body .setting {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.content .content__body .setting.setting-no-input {
+  align-items: center;
+}
+.content .content__body .setting.setting-no-input .subtitle {
+  margin: 0;
+}
+.content .content__body .setting.setting-no-input #href-invite {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.content .content__body .setting.setting-no-input #copy {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2269D5;
+  margin: 0 auto 0 25px;
+}
+.content .content__body .setting.setting-vertical {
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 49.5%;
+  margin-bottom: 0;
+}
+.content .content__body .setting.setting-vertical .subtitle {
+  margin: 0 0 15px;
+}
+.content .content__body .setting.setting-vertical .area {
+  height: 310px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.content .content__body .setting.setting-vertical .area.loading::after {
+  top: calc(50% - 12.5px);
+}
+.content .content__body .setting.setting-vertical .area .area__head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  padding: 0 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.content .content__body .setting.setting-vertical .area .area__head .area__new-name {
+  height: 100%;
+  width: 200px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+  padding-left: 10px;
+}
+.content .content__body .setting.setting-vertical .area .area__head .area__add {
+  background-color: transparent;
+  width: 80px;
+}
+.content .content__body .setting.setting-vertical .area .area__body {
+  overflow-y: scroll;
+}
+.content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar {
+  width: 0;
+  box-sizing: content-box;
+  background-color: transparent;
+}
+.content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar-thumb {
+  background: #e2e2e2;
+  border-radius: 5px;
+}
+.content .content__body .setting.setting-vertical .area .area__body::-webkit-scrollbar-thumb:hover {
+  background: #C4C4C4;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  transition: 0.2s background-color;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item.hide {
+  display: none;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item:hover {
+  background-color: #F0F1F6;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item .item__text {
+  max-width: 250px;
+  margin-left: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item .item__remove {
+  margin-right: 10px;
+  cursor: pointer;
+  opacity: 0.1;
+  transition: 0.2s opacity;
+}
+.content .content__body .setting.setting-vertical .area .area__body .area__item .item__remove:hover {
+  opacity: 0.7;
+}
+.content .content__body .content__top .subtitle {
+  margin-top: 10px;
+}
+.content .content__body .content__top #companyName {
+  width: 400px;
+}
+.content .content__body .content__top #companyDescription {
+  width: 400px;
+  height: 100px;
+  resize: none;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #595757;
+}
+.content .content__body .content__bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.content .content__footer {
+  border-top: 1px solid #E5E5E5;
+  height: 100px;
+}
+.content .content__footer .actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+}
+.content .content__footer .actions #saveChanges {
+  width: 180px;
+}
+
+/*# sourceMappingURL=company_setting.css.map */

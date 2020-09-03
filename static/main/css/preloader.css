@@ -1,0 +1,129 @@
+/*body {*/
+/*    overflow-y: hidden;*/
+/*}*/
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: whitesmoke;
+    z-index: 1100;
+    opacity: 1;
+    /*animation: .5s linear 1 reverse appearance;*/
+}
+
+@keyframes appearance {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-top-color: transparent;
+    transform: translateY(-50%) translateX(-50%);
+    animation: 2s spin3 infinite linear;
+}
+
+.done .preloader {
+    display: none;
+}
+
+/*.preloader-hiding body {*/
+/*    overflow-y: scroll;*/
+/*}*/
+
+.preloader-hiding .preloader {
+    transition: opacity .7s;
+    opacity: 0;
+}
+
+@keyframes spin {
+    from {
+        transform: translateY(-50%) translateX(-50%) rotate(0deg);
+        border: 5px solid red;
+        border-top-color: transparent;
+    }
+    to {
+        transform: translateY(-50%) translateX(-50%) rotate(360deg);
+        border: 5px solid green;
+
+        border-top-color: transparent;
+    }
+}
+
+@keyframes spin2 {
+    0% {
+        border: 5px solid red;
+        transform: translateY(-50%) translateX(-50%) rotate(0deg);
+        border-top-color: transparent;
+    }
+    14% {
+        border: 5px solid orange;
+        transform: translateY(-50%) translateX(-50%) rotate(51deg);
+        border-top-color: transparent;
+    }
+    28% {
+        border: 5px solid yellow;
+        transform: translateY(-50%) translateX(-50%) rotate(102deg);
+        border-top-color: transparent;
+    }
+    42% {
+        border: 5px solid green;
+        transform: translateY(-50%) translateX(-50%) rotate(153deg);
+        border-top-color: transparent;
+    }
+    56% {
+        border: 5px solid skyblue;
+        transform: translateY(-50%) translateX(-50%) rotate(204deg);
+        border-top-color: transparent;
+    }
+    70% {
+        border: 5px solid blue;
+        transform: translateY(-50%) translateX(-50%) rotate(255deg);
+        border-top-color: transparent;
+    }
+    85% {
+        border: 5px solid purple;
+        transform: translateY(-50%) translateX(-50%) rotate(306deg);
+        border-top-color: transparent;
+    }
+    100% {
+        border: 5px solid red;
+        transform: translateY(-50%) translateX(-50%) rotate(360deg);
+        border-top-color: transparent;
+    }
+}
+
+@keyframes spin3 {
+    0% {
+        border: 5px solid red;
+        transform: translateY(-50%) translateX(-50%) rotate(0deg);
+        border-top-color: transparent;
+    }
+    33% {
+        border: 5px solid #0089ff;
+        transform: translateY(-50%) translateX(-50%) rotate(120deg);
+        border-top-color: transparent;
+    }
+    66% {
+        border: 5px solid #ff00ec;
+        transform: translateY(-50%) translateX(-50%) rotate(240deg);
+        border-top-color: transparent;
+    }
+    100% {
+        border: 5px solid red;
+        transform: translateY(-50%) translateX(-50%) rotate(360deg);
+        border-top-color: transparent;
+    }
+}

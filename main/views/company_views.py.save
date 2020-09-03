@@ -9,7 +9,7 @@ from django.template.response import SimpleTemplateResponse
 from main.models import ProfilePhoto, SurveyWizard, Moderator, Group
 from main.views.auxiliary_general_methods import *
 from .validators import validate_user_input_in_company_settings
-from django.utils.html import escape
+
 
 def create_company(request):
     if auth.get_user(request).is_anonymous:
@@ -199,7 +199,7 @@ def company_setting(request: WSGIRequest, id_company: int):
             'company': {
                 'name': company.name,
                 'description': company.description,
-                'hrefForInvite': ''.join(['http://', escape(request.get_host()), '/company/{}/'.format(company.pk),
+                'hrefForInvite': ''.join(['http://', mpany/{}/'.format(company.pk),
                                           'invite_company/', company.key]),
                 'positions': PositionCompany.objects.filter(company=company),
                 'platforms': PlatformCompany.objects.filter(company=company),
