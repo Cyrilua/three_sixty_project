@@ -29,6 +29,7 @@ def get_photo_height(width, height):
 def send_email_validate_message(name: str, surname: str, email: str, code: str) -> None:
     mail_subject = 'Код подтверждения'
     message = render_to_string('main/validate_email.html', {
+        'type_email': 'verification',
         'profile': {
             'name': name,
             'surname': surname

@@ -329,6 +329,7 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
                '/poll/compiling_poll_link/{}/'.format(poll.key)  # todo check link
 
         context = {
+            'type_email': 'notification',
             'user': {
                 'name': poll.target.name,
                 'patronymic': poll.target.patronymic
