@@ -238,10 +238,10 @@ $(function () {
                     .prepend(response.content);
                 category = selectedCategory;
                 // Проверка непросмотренный опросов на просмотр
-                checkView();
             },
             complete: function (response, status) {
                 content.removeClass('loading');
+                checkView();
                 if (status === 'error') {
                     Snackbar.show({
                         text: 'Произошла ошибка при загрузке данных.',
