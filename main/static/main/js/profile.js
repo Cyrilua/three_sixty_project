@@ -214,6 +214,8 @@ $(function () {
      * @param {string} selectedCategory
      */
     function loading(activeCategory, selectedCategory) {
+        removeSnackbars();
+        completeRequests(ajaxRemoveNotif);
         $.ajax({
             url: 'loading',
             type: 'get',
@@ -325,5 +327,10 @@ $(function () {
                 $.ajax(ajaxRequests[id].request);
             }
         }
+    }
+
+    // Удаление снэкбаров
+    function removeSnackbars() {
+        $('.snackbar-container').remove();
     }
 });
