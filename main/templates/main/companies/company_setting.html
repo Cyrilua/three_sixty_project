@@ -14,17 +14,17 @@
                 <div class="setting">
                     <h3 class="subtitle">Название</h3>
                     <input type="text" class="input-field" id="companyName" placeholder="Введите название копании"
-                           value="{{ company.name }}" maxlength="40">
+                           value="{{ company.name }}" maxlength="40" autocomplete="off">
                 </div>
                 <div class="setting">
                     <h3 class="subtitle">Описание</h3>
                     <textarea class="input-field" placeholder="Введите описание" id="companyDescription"
-                              maxlength="500">{{ company.description }}</textarea>
+                              maxlength="500" autocomplete="off">{{ company.description }}</textarea>
                 </div>
 
                 <div class="setting setting-no-input">
                     <h3 class="subtitle">Ссылка для вступления</h3>
-                    <textarea id="href-invite" readonly>{{ company.hrefForInvite }}</textarea>
+                    <textarea id="href-invite" readonly autocomplete="off">{{ company.hrefForInvite }}</textarea>
                     <a class="copy" id="copy">Скопировать</a>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <div class="area" id="positions">
                         <div class="area__head">
                             <input type="text" class="input-no-outline area__new-name" id="namePosition"
-                                   placeholder="Придумайте название...">
+                                   placeholder="Придумайте название..." autocomplete="off">
                             <button class="button-white area__add" id="addPosition" disabled>Добавить</button>
                         </div>
                         <div class="area__body">
@@ -54,7 +54,7 @@
                     <div class="area" id="platforms">
                         <div class="area__head">
                             <input type="text" class="input-no-outline area__new-name" id="namePlatform"
-                                   placeholder="Придумайте название...">
+                                   placeholder="Придумайте название..." autocomplete="off">
                             <button class="button-white area__add" id="addPlatform" disabled>Добавить</button>
                         </div>
                         <div class="area__body">

@@ -67,7 +67,7 @@
                 {% elif question.type == 'openQuestion' %}
                     <div class="open-answer">
                             <textarea class="textarea-line answer" name="" id="" rows="1" placeholder="Поле для ответа"
-                                      maxlength="500"></textarea>
+                                      maxlength="500" autocomplete="off"></textarea>
                     </div>
                 {% elif question.type == 'range' %}
                     <div class="range-answer">

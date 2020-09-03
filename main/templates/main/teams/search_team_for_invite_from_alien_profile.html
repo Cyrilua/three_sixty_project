@@ -12,7 +12,7 @@
         {% csrf_token %}
         <div class="search rounded-block">
             <a href="{% url 'main:profile' profile_id=alien_profile.id %}" class="search__button button-white a-button">Готово</a>
-            <input type="text" class="search__input input-field" placeholder="Поиск по командам...">
+            <input type="text" class="search__input input-field" placeholder="Поиск по командам..." autocomplete="off">
         </div>
         <!-- /.search -->
         <div class="result">
