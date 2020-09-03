@@ -18,11 +18,12 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 def test(request: WSGIRequest):
-    # _test_send_email(request)
-    #_test_filter(request)
-    #_delete_companies(request)
-    # print(get_url_host(request))
-    _sending_emails(request, Poll.objects.get(id=107))
+    profiles = Profile.objects.all()
+    for profile in profiles:
+        photo = ProfilePhoto()
+        photo.profile = profile
+        photo.photo = 'images/photo.svg'
+        photo.save()
     return render(request, 'main/test.html')
 
 
