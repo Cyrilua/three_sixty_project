@@ -10,7 +10,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
-    if poll.initiator != profile:
+    if poll.initiator != profile or poll.count_passed < 2:
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
 
     target: Profile = poll.target
@@ -29,7 +29,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'questions': _build_questions(poll)
         }
     }
-    CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
+    CreatedPoll.objects.filter(profile=profile, poll=poll).update(is_viewed=True)
     return render(request, 'main/poll/poll_results.html', args)
 
 
