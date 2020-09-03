@@ -10,7 +10,7 @@
     <div class="content">
         {% csrf_token %}
         <div class="content__head rounded-block">
-            <button class="button-white button-href" id="backToTeam" data-href="{% url 'main:team_view' group_id=8 %}">Готово</button>
+            <button class="button-white button-href" id="backToTeam" data-href="{% url 'main:team_view' group_id=team.id %}">Готово</button>
             <input type="text" class="input-field" id="search" placeholder="Поиск людей в  компании..." autocomplete="off">
         </div>
         <div class="content__body">
