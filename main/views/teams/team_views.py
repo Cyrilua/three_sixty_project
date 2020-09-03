@@ -73,6 +73,13 @@ def redirect_create_poll(request, group_id):
     if profile.company is None:
         return render(request, 'main/errors/global_error.html', {'global_error': "403"})
 
+    team = Group.objects.filter(id=group_id).first()
+    if team is None:
+        return render(request, 'main/errors/global_error.html', {'global_error': "404"})
+
+    if team.profile_set.filter(id=profile.pk).exists():
+        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+
     return redirect('/poll/editor/team/{}/new/'.format(group_id))
 
 
@@ -247,7 +254,7 @@ def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
-        if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
+        if team.owner != current_profile and not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
 
         if current_profile.company is None:

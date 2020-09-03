@@ -29,5 +29,4 @@ urlpatterns = [
     path('invite/', team_views.join_from_notification, name='join_from_notification'),
     # Создание нового опроса через команду
     path('create_poll/', team_views.redirect_create_poll, name='create_poll_from_team')
-
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -68,7 +68,7 @@ def build_questions(questions: list) -> list:
 
 def compiling_poll_link(request: WSGIRequest, poll_id: int, poll_key: int) -> render:
     if auth.get_user(request).is_anonymous:
-        return JsonResponse({}, status=404)
+        return redirect('/')
 
     poll = Poll.objects.filter(id=poll_id).first()
     if poll is None:

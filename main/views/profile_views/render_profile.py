@@ -104,17 +104,14 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
         if collected is None:
             return JsonResponse({}, status=400)
 
-        if len(collected) == 0:
-            content = get_render_bad_search('Сейчас нет уведомлений')
-        else:
-            content = SimpleTemplateResponse('main/user/notifications.html',
-                                             {'notifications': collected}).rendered_content
+        content = SimpleTemplateResponse('main/user/notifications.html',
+                                         {'notifications': collected}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
 def _build_notifications(profile: Profile, selected_category: str):
     if selected_category == 'results':
-        notifications = CreatedPoll.objects.filter(profile=profile).filter(poll__count_passed__gt=2)
+        notifications = CreatedPoll.objects.filter(profile=profile, is_viewed=False).filter(poll__count_passed__gt=2)
         return _build_notifications_poll(notifications)
 
     elif selected_category == 'polls':
@@ -212,11 +209,9 @@ def new_notification(request: WSGIRequest, profile_id: int):
         count_new_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
 
-        if len(collected_notifications) == 0:
-            content = get_render_bad_search('Сейчас уведомлений нет')
-        else:
-            content = SimpleTemplateResponse('main/user/notifications.html',
-                                             {'notifications': collected_notifications}).rendered_content
+
+        content = SimpleTemplateResponse('main/user/notifications.html',
+                                         {'notifications': collected_notifications}).rendered_content
         args = {
             'notificationsCount':
                 {

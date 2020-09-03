@@ -2,6 +2,8 @@ from main.views.auxiliary_general_methods import *
 from main.models import Poll, CreatedPoll, Answers, Choice, RangeAnswers
 from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
+from .create_poll_views.editor import _save_template_from_poll
+from django.http import JsonResponse
 
 
 def result_poll(request: WSGIRequest, poll_id: int) -> render:
@@ -10,7 +12,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
         return render(request, 'main/errors/global_error.html', {'global_error': '404'})
 
     profile = get_user_profile(request)
-    if poll.initiator != profile:
+    if poll.initiator != profile or poll.count_passed < 2:
         return render(request, 'main/errors/global_error.html', {'global_error': '403'})
 
     target: Profile = poll.target
@@ -29,7 +31,7 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             'questions': _build_questions(poll)
         }
     }
-    CreatedPoll.objects.filter(profile=profile, poll=poll).delete()
+    CreatedPoll.objects.filter(profile=profile, poll=poll).update(is_viewed=True)
     return render(request, 'main/poll/poll_results.html', args)
 
 
@@ -87,3 +89,13 @@ def _build_answers_choices(answer: Answers) -> list:
         result.append(completed_choice)
 
     return result
+
+
+def save_template(request, poll_id):
+    if request.is_ajax():
+        poll = Poll.objects.filter(id=poll_id).first()
+        if poll is None:
+            return JsonResponse({}, status=404)
+        template = _save_template_from_poll(poll)
+        poll.new_template = template
+        return JsonResponse({}, status=200)

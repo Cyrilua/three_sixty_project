@@ -262,7 +262,7 @@ class Settings(models.Model):
         ('checkbox', 3),
     ]
 
-    type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=10)
+    type = models.CharField(choices=TYPE_CHOICES, default='range', max_length=20)
     min = models.IntegerField(null=True)
     max = models.IntegerField(null=True)
     step = models.IntegerField(null=True)

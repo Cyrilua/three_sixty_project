@@ -12,15 +12,38 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.db.models import Q
 from itertools import chain
+from django.utils.html import escape
 
 from django.contrib.sites.shortcuts import get_current_site
 
 
 def test(request: WSGIRequest):
-    # _test_send_email(request)
-    #_test_filter(request)
-    _delete_companies(request)
+    profiles = Profile.objects.all()
+    for profile in profiles:
+        photo = ProfilePhoto()
+        photo.profile = profile
+        photo.photo = 'images/photo.svg'
+        photo.save()
     return render(request, 'main/test.html')
+
+
+def _sending_emails(request: WSGIRequest, poll: Poll):
+    for need_pass in NeedPassPoll.objects.filter(poll=poll):
+        need_pass: NeedPassPoll
+        email = "aleksandr.korolyov.99@mail.ru"
+        mail_subject = 'Новый опрос'
+        link = "1234"
+
+        context = {
+            'type_email': 'verification',
+            'user': {
+                'name': poll.target.name,
+                'patronymic': poll.target.patronymic
+            },
+            'code': link
+        }
+        message = get_template('main/email/email.html').render(context)
+        send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
 
 
 def _delete_companies(request: WSGIRequest):

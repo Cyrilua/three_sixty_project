@@ -10,6 +10,9 @@ from django.template.loader import render_to_string
 from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company, ProfilePhoto
 from django.db.models import Q
 from django.template.response import SimpleTemplateResponse
+from django.template.loader import get_template
+from django.core.mail import send_mail
+from django.conf import settings
 
 UserModel = get_user_model()
 
@@ -29,17 +32,16 @@ def get_photo_height(width, height):
 
 def send_email_validate_message(name: str, surname: str, email: str, code: str) -> None:
     mail_subject = 'Код подтверждения'
-    message = render_to_string('main/validate_email.html', {
+    context = {
+        'type_email': 'verification',
         'profile': {
             'name': name,
             'surname': surname
         },
         'code': code
-    })
-    email = EmailMessage(
-        mail_subject, message, to=[email]
-    )
-    email.send()
+    }
+    message = get_template('main/email/email.html').render(context)
+    send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
 
 
 def check_code(code: str, email: str) -> bool:
