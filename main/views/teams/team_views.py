@@ -254,7 +254,7 @@ def join_user_from_page(request: WSGIRequest, group_id: int, profile_id: int):
             return JsonResponse({}, status=404)
 
         current_profile = get_user_profile(request)
-        if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
+        if team.owner != current_profile and not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
 
         if current_profile.company is None:

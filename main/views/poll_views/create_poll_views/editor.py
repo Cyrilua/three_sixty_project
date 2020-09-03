@@ -36,10 +36,13 @@ def save_template(request: WSGIRequest) -> JsonResponse:
                 _change_template(request, template)
                 version = _create_new_questions_or_change(request, template)
                 template.questions.all().exclude(version=version).delete()
+                poll.new_template = template
+                poll.save()
             elif category == 'preview':
                 template = _save_template_from_poll(poll)
             else:
                 return JsonResponse({}, status=400)
+
     return JsonResponse({'templateId': template.pk}, status=200)
 
 
