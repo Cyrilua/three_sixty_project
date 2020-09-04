@@ -326,9 +326,10 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
         email = need_pass.profile.user.email
         mail_subject = 'Новый опрос'
         link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
-               '/poll/compiling_poll_link/{}/'.format(poll.key)  # todo check link
+               '/poll/compiling_poll_link/{}/{}/'.format(poll.pk, poll.key)
 
         context = {
+            'type_email': 'notification',
             'user': {
                 'name': poll.target.name,
                 'patronymic': poll.target.patronymic

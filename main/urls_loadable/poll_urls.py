@@ -18,5 +18,5 @@ urlpatterns = [
     # Прохождение опроса (отправка ответа)
     path('compiling_poll/<int:poll_id>/send/', compiling_poll.send_answer, name='compiling_poll_send'),
     # Прохождение опроса через ссылку
-    path('compiling_poll_link/<str:poll_key>/', compiling_poll.compiling_poll_link,  name='compiling_poll_link'),
+    path('compiling_poll_link/<int:poll_id>/<str:poll_key>/', compiling_poll.compiling_poll_link, name='compiling_poll_link'),
 ]
