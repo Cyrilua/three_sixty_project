@@ -25,7 +25,7 @@ def polls_view(request) -> render:
         # todo
         return render(request, 'main/errors/global_error.html', {
             'global_error': "custom",
-            "global_error_info": "Вы не состоите в компании. \n Вступите в компанию для получения доступа к этой функции сайта",
+            "global_error_info": "Вы не состоите в компании. Вступите в компанию для получения доступа к этой функции сайта",
             "back_page": {
                 'href': "/{}/".format(profile.pk),
                 'text': "На главную"
@@ -115,7 +115,7 @@ def _get_render_sorted_polls_or_bad_search(profile: Profile, type_polls: str, so
     if count_polls == 0 and count_loaded_polls == 0:
         return _render_page_no_polls(type_polls)
 
-    result = _pre_render_item_polls(polls)
+    result = _pre_render_item_polls(polls, type_polls == 'polls')
     if count_polls < count_will_loaded_polls - 1:
         return JsonResponse({'newElems': result, 'is_last': True}, status=200)
     return JsonResponse({'newElems': result, 'is_last': False}, status=200)
@@ -131,7 +131,7 @@ def _render_page_no_polls(type_polls: str) -> JsonResponse:
     return JsonResponse({'newElems': result, 'is_last': True}, status=200)
 
 
-def _pre_render_item_polls(rendered_polls: list) -> str:
+def _pre_render_item_polls(rendered_polls: list, need_pass) -> str:
     args = {
         'data': {
             'polls': []
@@ -142,7 +142,7 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
         poll = rendered_poll.poll
         if not poll.is_submitted:
             continue
-        collected_poll = _build_poll(poll)
+        collected_poll = _build_poll(poll, need_pass)
         if type(rendered_poll) == NeedPassPoll:
             collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
             collected_poll['url'] = '/poll/compiling_poll/{}/'.format(poll.pk)
@@ -155,15 +155,16 @@ def _pre_render_item_polls(rendered_polls: list) -> str:
     return result
 
 
-def _build_poll(poll: Poll) -> dict:
+def _build_poll(poll: Poll, need_pass) -> dict:
     collected_poll = {
         'title': poll.name_poll,
         'answers_count': poll.count_passed,
         'date': build_date(poll.creation_date),
         'url': '/poll/result/{}/'.format(poll.pk),
-        'id': poll.pk,
-        'is_disabled': poll.count_passed < 2
+        'id': poll.pk
     }
+    if not need_pass:
+        collected_poll['is_disabled'] = poll.count_passed < 2
     if poll.color is not None:
         collected_poll['color'] = poll.color
     target = poll.target
@@ -201,7 +202,7 @@ def _render_new_not_viewed_polls(rendered_polls):
         rendered_poll: NeedPassPoll
 
         poll = rendered_poll.poll
-        collected_poll = _build_poll(poll)
+        collected_poll = _build_poll(poll, True)
         collected_poll['is_not_viewed'] = not rendered_poll.is_viewed
         collected_poll['is_new'] = True
         args['data']['polls'].append(collected_poll)

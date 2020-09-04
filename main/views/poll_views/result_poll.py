@@ -105,4 +105,5 @@ def save_template(request, poll_id):
             return JsonResponse({}, status=404)
         template = _save_template_from_poll(poll)
         poll.new_template = template
+        poll.save()
         return JsonResponse({}, status=200)

@@ -53,6 +53,7 @@ def _save_template_from_poll(poll: Poll) -> TemplatesPoll:
     template.description = poll.description
     template.color = poll.color
     template.owner = poll.initiator
+    template.is_deleted = False
     template.save()
     _create_questions_from_poll(poll, template)
     return template
@@ -80,6 +81,7 @@ def _create_questions_from_poll(poll: Poll, template: TemplatesPoll):
 
         new_question.settings = new_settings
         new_question.save()
+        template.questions.add(new_question)
 
 
 def _change_template(request: WSGIRequest, template: TemplatesPoll):
