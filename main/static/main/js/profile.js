@@ -75,7 +75,7 @@ $(function () {
                         invitesNotif.addClass('hide');
                     }
 
-                    if (response.newElems) {
+                    if (response.content) {
                         showNews.removeClass('hide');
                         $('.notifications').prepend(response.content);
                     }
