@@ -21,7 +21,11 @@ def test(request: WSGIRequest):
     #_test_filter(request)
     #_delete_companies(request)
     # print(get_url_host(request))
-    _sending_emails(request, Poll.objects.get(id=107))
+    #_sending_emails(request, Poll.objects.get(id=107))
+    profile = get_user_profile(request)
+    print(profile.pk)
+    notifications = NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)
+    print(notifications)
     return render(request, 'main/test.html')
 
 
