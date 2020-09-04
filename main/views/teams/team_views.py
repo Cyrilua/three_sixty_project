@@ -28,6 +28,7 @@ def team_view(request, group_id: int) -> render:
         'profile': get_header_profile(profile),
         'teammates': _build_teammates(team.profile_set.all(), team, profile),
     }
+    args['profile']['is_in_team'] = team.profile_set.filter(id=profile.pk).exists()
     company = team.company
     if company is not None:
         args['company'] = {
@@ -171,7 +172,10 @@ def team_new_invites(request, group_id):
     company = profile.company
     args = {
         'users': _build_teammates(company.profile_set.all(), team, profile),
-        'profile': get_header_profile(profile)
+        'profile': get_header_profile(profile),
+        'team': {
+            'id': team.pk
+        }
     }
     return render(request, 'main/teams/team_new_invites.html', args)
 

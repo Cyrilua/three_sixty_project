@@ -60,10 +60,10 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
                                   args).rendered_content
     company = profile.company
 
-    profiles = company.profile_set.all()
+    profiles = company.profile_set.all().exclude(id__in=[poll.initiator.pk, poll.target.pk])
     checked = _get_checked(poll)
     categories_args = {
-        'participants': _build_team_profiles_list(profiles, company, checked, profile),
+        'participants': _build_team_profiles_list(profiles, company, checked, [profile, poll.target]),
         'company': {
             'countParticipants': profiles.count(),
         }
@@ -85,7 +85,7 @@ def get_rendered_page(request: WSGIRequest, poll: Poll) -> dict:
     }
 
 
-def _build_team_list(teams: (list, filter), checked_profiles: QuerySet, unbilding_user: Profile) -> list:
+def _build_team_list(teams: (list, filter), checked_profiles: QuerySet, unbilding_user: list) -> list:
     result = []
     for team in teams:
         team: Group
@@ -103,10 +103,10 @@ def _build_team_list(teams: (list, filter), checked_profiles: QuerySet, unbildin
 
 
 def _build_team_profiles_list(profiles: (list, filter), group: (Group, Company), checked_profiles: QuerySet,
-                              unbilding_user: Profile) -> list:
+                              unbilding_user: list) -> list:
     result = []
     for profile in profiles:
-        if profile == unbilding_user:
+        if profile in unbilding_user:
             continue
         profile: Profile
         collected_profile = build_profile(profile)
@@ -134,7 +134,7 @@ def render_category_teams_on_step_3(request: WSGIRequest) -> JsonResponse:
         teams = profile.groups.all()
     checked = _get_checked(poll)
     args = {
-        'teams': _build_team_list(teams, checked, profile)
+        'teams': _build_team_list(teams, checked, [profile, poll.target])
     }
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_teams.html',
                                      args).rendered_content
@@ -148,9 +148,9 @@ def render_category_participants_on_step_3(request: WSGIRequest) -> JsonResponse
 
     profile = get_user_profile(request)
     company = profile.company
-    profiles = company.profile_set.all()
+    profiles = company.profile_set.all().exclude(id__in=[poll.initiator.pk, poll.target.pk])
     checked = _get_checked(poll)
-    args = {'participants': _build_team_profiles_list(profiles, company, checked, profile)}
+    args = {'participants': _build_team_profiles_list(profiles, company, checked, [profile, poll.target])}
     content = SimpleTemplateResponse('main/poll/select_interviewed/content_participants.html',
                                      args).rendered_content
     return JsonResponse({'content': content}, status=200)
@@ -168,9 +168,9 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
     company = profile.company
 
     if mode == 'participants':
-        profiles = company.profile_set.all()
+        profiles = company.profile_set.all().exclude(id__in=[poll.initiator.pk, poll.target.pk])
         result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
-        collected_profiles = _build_team_profiles_list(result_search, profile.company, Profile.objects.none(), unbilding_user=profile)
+        collected_profiles = _build_team_profiles_list(result_search, profile.company, Profile.objects.none(), [profile, poll.target])
         if len(collected_profiles) == 0:
             content = get_render_bad_search('По вашему запросу ничего не найдено')
         else:
@@ -184,7 +184,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
         else:
             teams: QuerySet = profile.groups.all()
         result_search = get_search_result_for_teams(teams, user_input)
-        collected_teams = _build_team_list(result_search, Profile.objects.none(), unbilding_user=profile)
+        collected_teams = _build_team_list(result_search, Profile.objects.none(), [profile, poll.target])
         if len(collected_teams) == 0:
             content = get_render_bad_search('По вашему запросу ничего не найдено')
         else:
