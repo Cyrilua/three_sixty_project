@@ -101,15 +101,18 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
 
         selected_category = request.GET.get('selectedCategory', '')
         collected = _build_notifications(profile, selected_category)
+
         if collected is None:
             return JsonResponse({}, status=400)
-
-        content = SimpleTemplateResponse('main/user/notifications.html',
-                                         {'notifications': collected}).rendered_content
+        if len(collected) == 0:
+            content = get_render_bad_search("Сейчас нет уведомлений")
+        else:
+            content = SimpleTemplateResponse('main/user/notifications.html',
+                                             {'notifications': collected}).rendered_content
         return JsonResponse({'content': content}, status=200)
 
 
-def _build_notifications(profile: Profile, selected_category: str):
+def _build_notifications(profile: Profile, selected_category: str) -> list:
     if selected_category == 'results':
         notifications = CreatedPoll.objects.filter(profile=profile, is_viewed=False).filter(poll__count_passed__gt=2)
         return _build_notifications_poll(notifications)
@@ -198,7 +201,6 @@ def new_notification(request: WSGIRequest, profile_id: int):
 
         elif category == 'polls':
             notifications = NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)
-            print(notifications)
             collected_notifications = _build_notifications_poll(notifications)
 
         elif category == 'invites':
