@@ -67,7 +67,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 .content .content__body .setting.setting-vertical .area .area__head .area__new-name {
-  height: 50px;
+  height: 100%;
   width: 200px;
   font-style: normal;
   font-weight: normal;
