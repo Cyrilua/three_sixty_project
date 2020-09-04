@@ -4,7 +4,11 @@
         {#  data-type = poll | result | invite  #}
         <div class="notification__image"></div>
         <div class="notification__info">
-            <div class="notification__title">{{ notif.title }}</div>
+            {% if notif.type == 'invite' %}
+                <div class="notification__title"><a href="{{ notif.title.href }}" target="_blank">{{ notif.title }}</a></div>
+            {% else %}
+                <div class="notification__title">{{ notif.title }}</div>
+            {% endif %}
             <div class="notification__more">
                 <a href="{{ notif.more.url }}" class="notification__target"
                    target="_blank">{{ notif.more.name }}</a>
