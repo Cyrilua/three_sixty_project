@@ -11,7 +11,14 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
 
     profile = get_user_profile(request)
     if poll.initiator != profile or poll.count_passed < 2:
-        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+        return render(request, 'main/errors/global_error.html', {
+            'global_error': "custom",
+            "global_error_info": "Результаты опроса ещё недоступны, нужно дождаться большего количества ответов",
+            "back_page": {
+                'href': "/polls/",
+                'text': "К опросам"
+            },
+        })
 
     target: Profile = poll.target
     args = {
