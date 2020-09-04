@@ -5,7 +5,7 @@
         <div class="notification__image"></div>
         <div class="notification__info">
             {% if notif.type == 'invite' %}
-                <div class="notification__title"><a href="{{ notif.title.href }}" target="_blank">{{ notif.title }}</a></div>
+                <div class="notification__title"><a href="{{ notif.title.href }}" target="_blank">{{ notif.title.text }}</a></div>
             {% else %}
                 <div class="notification__title">{{ notif.title }}</div>
             {% endif %}

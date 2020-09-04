@@ -115,18 +115,18 @@ def loading(request: WSGIRequest, profile_id: int) -> JsonResponse:
 def _build_notifications(profile: Profile, selected_category: str) -> list:
     if selected_category == 'results':
         notifications = CreatedPoll.objects.filter(profile=profile, is_viewed=False).filter(poll__count_passed__gt=2)
-        return _build_notifications_poll(notifications)
+        return _build_notifications_poll(notifications, True)
 
     elif selected_category == 'polls':
-        result = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile))
+        result = _build_notifications_poll(NeedPassPoll.objects.filter(profile=profile), True)
         return result
 
     elif selected_category == 'invites':
-        return _build_invites(Invitation.objects.filter(profile=profile))
+        return _build_invites(Invitation.objects.filter(profile=profile), True)
     return None
 
 
-def _build_notifications_poll(notifications_polls) -> list:
+def _build_notifications_poll(notifications_polls, from_loading_function) -> list:
     result = []
     for notification in notifications_polls:
         notification: (CreatedPoll, NeedPassPoll)
@@ -148,7 +148,7 @@ def _build_notifications_poll(notifications_polls) -> list:
             'date': poll.creation_date,
             'href': url,
             'is_viewed': notification.is_viewed,
-            'is_new': not notification.is_rendered,
+            'is_new': not notification.is_rendered if not from_loading_function else False,
             'type': type_notification,
             'id': notification.id,
         }
@@ -157,7 +157,7 @@ def _build_notifications_poll(notifications_polls) -> list:
     return result
 
 
-def _build_invites(notifications_polls) -> list:
+def _build_invites(notifications_polls, from_loading_function) -> list:
     result = []
     for invite in notifications_polls:
         invite: Invitation
@@ -168,16 +168,20 @@ def _build_invites(notifications_polls) -> list:
         collected_notification = {
             'href': '/team/{}/invite/'.format(team.pk),
             'date': invite.date,
-            'title': team.name,
+            'title': {
+                "text": team.name,
+                "href": "/team/{}/".format(team.pk)
+            },
             'more': {
                 'name': "{} {} {}".format(initiator.surname, initiator.name, initiator.patronymic),
                 'url': '/{}/'.format(initiator.pk)
             },
             'about': team.description,
             'is_viewed': invite.is_viewed,
-            'is_new': not invite.is_rendered,
+            'is_new': not invite.is_rendered if not from_loading_function else False,
             'type': 'invite',
             'id': invite.pk,
+
         }
         result.append(collected_notification)
     notifications_polls.update(is_rendered=True)
@@ -196,14 +200,14 @@ def new_notification(request: WSGIRequest, profile_id: int):
         if category == 'results':
             notifications = CreatedPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)\
                 .filter(poll__count_passed__gt=2)
-            collected_notifications = _build_notifications_poll(notifications)
+            collected_notifications = _build_notifications_poll(notifications, False)
 
         elif category == 'polls':
             notifications = NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)
-            collected_notifications = _build_notifications_poll(notifications)
+            collected_notifications = _build_notifications_poll(notifications, False)
 
         elif category == 'invites':
-            collected_notifications = _build_invites(Invitation.objects.filter(profile=profile, is_rendered=False))
+            collected_notifications = _build_invites(Invitation.objects.filter(profile=profile, is_rendered=False), False)
 
         else:
             return JsonResponse({}, status=400)
