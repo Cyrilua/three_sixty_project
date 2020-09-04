@@ -214,6 +214,8 @@ $(function () {
      * @param {string} selectedCategory
      */
     function loading(activeCategory, selectedCategory) {
+        removeSnackbars();
+        completeRequests(ajaxRemoveNotif);
         $.ajax({
             url: 'loading',
             type: 'get',
@@ -236,10 +238,10 @@ $(function () {
                     .prepend(response.content);
                 category = selectedCategory;
                 // Проверка непросмотренный опросов на просмотр
-                checkView();
             },
             complete: function (response, status) {
                 content.removeClass('loading');
+                checkView();
                 if (status === 'error') {
                     Snackbar.show({
                         text: 'Произошла ошибка при загрузке данных.',
@@ -325,5 +327,10 @@ $(function () {
                 $.ajax(ajaxRequests[id].request);
             }
         }
+    }
+
+    // Удаление снэкбаров
+    function removeSnackbars() {
+        $('.snackbar-container').remove();
     }
 });

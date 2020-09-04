@@ -21,8 +21,10 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <a href="{% url 'main:create_poll_from_team' group_id=team.id %}"
-                       class="new-poll button-red a-button">Провести опрос</a>
+                    {% if profile.is_in_team %}
+                        <a href="{% url 'main:create_poll_from_team' group_id=team.id %}"
+                           class="new-poll button-red a-button">Провести опрос</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="head__middle">

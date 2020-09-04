@@ -14,7 +14,7 @@
             <div class="register-form-fields step-1">
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ user_form.username.id_for_label }}">Логин</label>
-                    {{ user_form.username|attr:"placeholder:Придумайте логин"|add_class:"input-field" }}
+                    {{ user_form.username|attr:"placeholder:Придумайте логин"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -23,7 +23,7 @@
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ email_form.email.id_for_label }}">Электронная
                         почта</label>
-                    {{ email_form.email|attr:"placeholder:Ваша электронная почта"|add_class:"input-field" }}
+                    {{ email_form.email|attr:"placeholder:Ваша электронная почта"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ user_form.password1.id_for_label }}">Пароль</label>
-                    {{ user_form.password1|attr:"placeholder:Придумайте пароль"|add_class:"input-field" }}
+                    {{ user_form.password1|attr:"placeholder:Придумайте пароль"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -40,7 +40,7 @@
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ user_form.password2.id_for_label }}">Повторите
                         пароль</label>
-                    {{ user_form.password2|attr:"placeholder:Повторите пароль"|attr:"disabled:disabled"|add_class:"input-field" }}
+                    {{ user_form.password2|attr:"placeholder:Повторите пароль"|attr:'autocomplete:off'|attr:"disabled:disabled"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -50,7 +50,7 @@
             <div class="register-form-fields step-2 hide">
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ profile_form.surname.id_for_label }}">Фамилия</label>
-                    {{ profile_form.surname|attr:"placeholder:Ваша фамилия"|add_class:"input-field" }}
+                    {{ profile_form.surname|attr:"placeholder:Ваша фамилия"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ profile_form.name.id_for_label }}">Имя</label>
-                    {{ profile_form.name|attr:"placeholder:Ваше имя"|add_class:"input-field" }}
+                    {{ profile_form.name|attr:"placeholder:Ваше имя"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ profile_form.patronymic.id_for_label }}">Отчество</label>
-                    {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|add_class:"input-field" }}
+                    {{ profile_form.patronymic|attr:"placeholder:Ваше отчество"|attr:'autocomplete:off'|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -75,7 +75,7 @@
                 <div class="form-grouping">
                     <label class="form-fields-label" for="{{ birth_date_form.birthday.id_for_label }}">День
                         рождения</label>
-                    {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:"type:"|add_class:"input-field" }}
+                    {{ birth_date_form.birthday|attr:"placeholder:Ваш день родения"|attr:'autocomplete:off'|attr:"type:"|add_class:"input-field" }}
                     <div class="popup">
                         <div class="popup_message">
                         </div>
@@ -92,7 +92,7 @@
                     </p>
                 </div>
                 <div class="form-grouping">
-                    <input type="text" class="input-field" id="code" placeholder="Код подтверждения">
+                    <input type="text" class="input-field" id="code" autocomplete="off" placeholder="Код подтверждения">
                     <div class="popup">
                         <div class="popup_message">
                         </div>

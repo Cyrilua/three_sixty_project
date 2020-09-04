@@ -137,7 +137,7 @@
                                                                     {% if new_role == 'moderator' %}
                                                                         Модератор
                                                                     {% elif new_role == 'master' %}
-                                                                        Мастр опросов
+                                                                        Мастер опросов
                                                                     {% endif %}
                                                                 </div>
                                                                 <div class="item__line"></div>
@@ -152,7 +152,9 @@
                             </div>
                             <div class="actions">
                                 <div class="team__leave edit" id="edit"></div>
-                                <a id="dismiss">Выгнать из компании</a>
+                                {% if not user.is_boss %}
+                                    <a id="dismiss">Выгнать из компании</a>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="edit__bottom">

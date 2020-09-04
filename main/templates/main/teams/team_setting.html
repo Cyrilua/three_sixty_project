@@ -14,16 +14,16 @@
                 <div class="name">
                     <h3 class="subtitle">Название</h3>
                     <input type="text" class="input-field" id="teamName" placeholder="Введите название команды"
-                           value="{{ team.name }}" maxlength="40">
+                           value="{{ team.name }}" maxlength="40" autocomplete="off">
                 </div>
                 <div class="description">
                     <h3 class="subtitle">Описание</h3>
-                    <textarea class="input-field" placeholder="Введите описание" id="teamDescription"
+                    <textarea class="input-field" placeholder="Введите описание" id="teamDescription" autocomplete="off"
                               maxlength="500">{{ team.description }}</textarea>
                 </div>
                 <div class="href-invite">
                     <h3 class="subtitle">Ссылка для вступления</h3>
-                    <textarea id="href-invite" readonly>{{ team.hrefForInvite }}</textarea>
+                    <textarea id="href-invite" readonly autocomplete="off">{{ team.hrefForInvite }}</textarea>
                     <a class="copy" id="copy">Скопировать</a>
                 </div>
                 <a class="remove-team" id="remove-team">Удалить команду</a>
