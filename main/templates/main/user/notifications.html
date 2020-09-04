@@ -6,7 +6,8 @@
         <div class="notification__info">
             <div class="notification__title">{{ notif.title }}</div>
             <div class="notification__more">
-                <a href="{{ notif.more.url }}" class="notification__target" target="_blank">{{ notif.more.name }}</a>
+                <a href="{{ notif.more.url }}" class="notification__target"
+                   target="_blank">{{ notif.more.name }}</a>
             </div>
             <div class="notification__about {% if not notif.about %} hide{% endif %}">
                 {{ notif.about }}

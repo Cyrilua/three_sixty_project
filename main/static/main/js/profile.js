@@ -40,6 +40,7 @@ $(function () {
      * Показать новые уведомления
      */
     body.on('click', '.show-new-poll', function (event) {
+        $('.bad-search').remove();
         $('.is_unshown').removeClass('is_unshown');
         showNews.addClass('hide');
     });
