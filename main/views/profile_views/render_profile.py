@@ -52,7 +52,7 @@ def _build_profile_data(user, profile):
     company = profile.company
     roles = []
     if company is not None:
-        roles = _get_user_roles(user, profile, company)
+        roles = _get_user_roles(profile, company)
         profile_data['company'] = {
             'id': company.id,
             'url': '/company_view/{}/'.format(company.id),
@@ -70,9 +70,9 @@ def _build_profile_data(user, profile):
     return [profile_data, roles]
 
 
-def _get_user_roles(user, profile, company):
+def _get_user_roles(profile, company):
     roles = []
-    if company is not None and company.owner.id == user.id:
+    if company is not None and company.owner.id == profile.id:
         roles.append('boss')
 
     if SurveyWizard.objects.filter(profile=profile).exists():
