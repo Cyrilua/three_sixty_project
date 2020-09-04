@@ -1,4 +1,4 @@
-{% extends 'main/wrapper.html' %}
+{% extends 'main/general/wrapper.html' %}
 
 {% load static %}
 
@@ -110,7 +110,7 @@
                                         </div>
                                     {% endfor %}
                                 {% else %}
-                                    <div class="center-content-information-platform-empty">Нет должностей</div>
+                                    <div class="center-content-information-platform-empty">Нет отделов</div>
                                 {% endif %}
                             </div>
 
@@ -181,7 +181,7 @@
                         </div>
                     </div>
                     <div class="body__bottom unselectable">
-                        <div class="show-new-poll rounded-block hide">
+                        <div class="show-new-poll rounded-block hide" id="showNewNotif">
                             <div class="label">
                                 <img src="{% static 'main/images/icon/expand_less-24px.svg' %}" alt="" class="up">
                                 <span class="text">Показать новые опросы</span>

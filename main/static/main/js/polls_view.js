@@ -201,6 +201,7 @@ $(function () {
 
     // Показать новые опросы
     body.on('click', '.show-new-poll', function () {
+        $('.bad-search').remove();
         $(this).addClass('hide');
         let elems = unshowPolls.children('.poll-item');
         let newElems = unshowPolls.html();

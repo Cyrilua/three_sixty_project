@@ -128,6 +128,11 @@ $(function () {
             }
 
         });
+        if (Object.keys(progress).length === 0) {
+            $('.done-poll').prop({
+                'disabled': false,
+            });
+        }
     }
 
     function sliderDeclaration(el) {

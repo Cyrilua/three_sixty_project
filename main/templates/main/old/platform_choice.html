@@ -1,4 +1,4 @@
-{% extends 'main/wrapper.html' %}
+{% extends 'main/general/wrapper.html' %}
 
 {% load static %}
 
@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h1 style="text-align: center">Выбор должности</h1>
+            <h1 style="text-align: center">Выбор платформы</h1>
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="id_position">Выберите должность</label>
-                        <select class="form-control" name="id_position">
+                        <label for="id_platform">Выберите платформу</label>
+                        <select class="form-control" name="id_platform">
                             <option value="-1">---</option>>
-                            {% for position in list_positions %}
-                                <option value="{{ position.id }}">{{ position.name }}</option>
+                            {% for platform in list_platforms %}
+                                <option value="{{ platform.id }}">{{ platform.name }}</option>
                             {% endfor %}
                         </select>
                     </div>

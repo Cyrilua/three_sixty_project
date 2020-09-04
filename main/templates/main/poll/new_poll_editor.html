@@ -1,4 +1,4 @@
-{% extends 'main/wrapper.html' %}
+{% extends 'main/general/wrapper.html' %}
 {% load static %}
 
 {% block sidebar-nav %}
@@ -37,7 +37,6 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'main/scss/new_poll_editor.min.css' %}">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main/css/libraries/scroll_top.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/taking_poll.min.css' %}">
     <link rel="stylesheet" href="{% static 'main/scss/bad_search.min.css' %}">

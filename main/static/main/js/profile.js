@@ -40,8 +40,10 @@ $(function () {
      * Показать новые уведомления
      */
     body.on('click', '.show-new-poll', function (event) {
+        $('.bad-search').remove();
         $('.is_unshown').removeClass('is_unshown');
         showNews.addClass('hide');
+        checkView();
     });
 
     /**
@@ -75,7 +77,7 @@ $(function () {
                         invitesNotif.addClass('hide');
                     }
 
-                    if (response.newElems) {
+                    if (response.content) {
                         showNews.removeClass('hide');
                         $('.notifications').prepend(response.content);
                     }
