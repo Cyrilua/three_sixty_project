@@ -10,7 +10,7 @@
     <div class="content">
         {% csrf_token %}
         <div class="content__head rounded-block">
-            <input class="head__search input-field" placeholder="Поиск по командам...">
+            <input class="head__search input-field" placeholder="Поиск по командам..." autocomplete="off">
             <a href="{% url 'main:create_team' %}" class="head__button button-white a-button">
                 Создать команду
             </a>
