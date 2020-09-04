@@ -123,7 +123,7 @@ def _build_notifications(profile: Profile, selected_category: str):
     return None
 
 
-def _build_notifications_poll(notifications_polls: list) -> list:
+def _build_notifications_poll(notifications_polls) -> list:
     result = []
     for notification in notifications_polls:
         notification: (CreatedPoll, NeedPassPoll)
@@ -173,7 +173,7 @@ def _build_invites(profile: Profile) -> list:
             },
             'about': team.description,
             'is_viewed': invite.is_viewed,
-            # 'is_new': invite.is_rendered,
+            'is_new': not invite.is_rendered,
             'type': 'invite',
             'id': invite.pk,
         }
@@ -193,11 +193,11 @@ def new_notification(request: WSGIRequest, profile_id: int):
 
         if category == 'results':
             collected_notifications = _build_notifications_poll(
-                CreatedPoll.objects.filter(profile=profile, is_viewed=False).filter(poll__count_passed__gt=2))
+                CreatedPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False).filter(poll__count_passed__gt=2))
 
         elif category == 'polls':
             collected_notifications = _build_notifications_poll(
-                NeedPassPoll.objects.filter(profile=profile, is_viewed=False))
+                NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False))
 
         elif category == 'invites':
             collected_notifications = _build_invites(profile)
@@ -208,7 +208,6 @@ def new_notification(request: WSGIRequest, profile_id: int):
         count_new_my_poll = CreatedPoll.objects.filter(profile=profile, is_viewed=False, poll__count_passed__gt=2).count()
         count_new_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
-
 
         content = SimpleTemplateResponse('main/user/notifications.html',
                                          {'notifications': collected_notifications}).rendered_content
