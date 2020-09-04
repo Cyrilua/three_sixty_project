@@ -18,7 +18,7 @@
             {#            <img src="{% static 'main/images/icon/cached-24px.svg' %}" alt="" class="update">#}
         </div>
         <div class="color">
-            <div class="color__variable {% if poll.color == None %}color__variable--select{% endif %}"
+            <div class="color__variable {% if not poll.color %}color__variable--select{% endif %}"
                  data-color=""></div>
             <div class="color__variable purple {% if poll.color == 'purple' %}color__variable--select{% endif %}"
                  data-color="purple"></div>

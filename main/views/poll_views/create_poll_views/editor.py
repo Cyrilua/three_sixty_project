@@ -54,6 +54,7 @@ def _save_template_from_poll(poll: Poll) -> TemplatesPoll:
     template.description = poll.description
     template.color = poll.color
     template.owner = poll.initiator
+    template.is_deleted = False
     template.save()
     _create_questions_from_poll(poll, template)
     return template
@@ -81,6 +82,7 @@ def _create_questions_from_poll(poll: Poll, template: TemplatesPoll):
 
         new_question.settings = new_settings
         new_question.save()
+        template.questions.add(new_question)
 
 
 def _change_template(request: WSGIRequest, template: TemplatesPoll):
@@ -102,8 +104,6 @@ def _create_new_questions_or_change(request: WSGIRequest, poll: (TemplatesPoll, 
     first_question = poll.questions.all().first()
     version = 0 if first_question is None else first_question.version + 1
     ordinal_number = 0
-    print('###########!##$')
-    print(count_questions)
     for question_number in range(count_questions):
         data_key = 'template[questions][{}]'.format(question_number) + '[{}]'
         try:
@@ -239,7 +239,7 @@ def poll_preview(request: WSGIRequest) -> JsonResponse:
             poll.new_template = template
             poll.save()
     poll.questions.all().exclude(version=version).delete()
-    created_poll = build_poll(poll)
+    created_poll = _build_poll(poll)
     if poll.target is not None:
         created_poll['target'] = {
             'name': poll.target.name,
@@ -249,6 +249,43 @@ def poll_preview(request: WSGIRequest) -> JsonResponse:
     content = SimpleTemplateResponse('main/poll/taking_poll_preview.html',
                                      {'poll': created_poll}).rendered_content
     return JsonResponse({'content': content, 'pollId': poll.pk}, status=200)
+
+
+def _build_poll(poll: (TemplatesPoll, Poll)) -> dict:
+    is_template = type(poll) is TemplatesPoll
+    result = {
+        'color': '' if poll.color is None else poll.color,
+        'name': poll.name_poll if poll.name_poll is not None else '',
+        'description': poll.description if poll.description is not None else '',
+        'questions': _build_questions(poll.questions.all(), is_template),
+    }
+    return result
+
+
+def _build_questions(questions: list, from_template: bool) -> list:
+    result = []
+    for question in questions:
+        question: Questions
+        settings: Settings = question.settings
+        answers = settings.answer_choice.all()
+        collected_question = {
+            'is_template': True,
+            'type': settings.type,
+            'id': question.pk if not from_template else '',
+            'name': question.text,
+            'countAnswers': answers.count(),
+            'answer': {
+                'min': settings.min,
+                'max': settings.max,
+                'step': settings.step
+            },
+        }
+        if from_template:
+            collected_question['answers'] = answers.values('text')
+        else:
+            collected_question['answers'] = answers.values('id', 'text')
+        result.append(collected_question)
+    return result
 
 
 def poll_editor(request: WSGIRequest) -> JsonResponse:

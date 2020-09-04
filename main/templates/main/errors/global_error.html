@@ -10,6 +10,8 @@
         {% include 'main/includes/global_error.html' with global_error_info='Страница не найдена' home_page='true' %}
     {% elif global_error == '500' %}
         {% include 'main/includes/global_error.html' with global_error_info='Внутренняя ошибка сервера' text='Пожалуйста, обновите страницу через несколько минут' %}
+    {% elif global_error == 'custom' %}
+        {% include 'main/includes/global_error_custom.html' %}
     {% endif %}
 {% endblock %}
 

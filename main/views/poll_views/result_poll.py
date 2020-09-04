@@ -2,8 +2,8 @@ from main.views.auxiliary_general_methods import *
 from main.models import Poll, CreatedPoll, Answers, Choice, RangeAnswers
 from django.shortcuts import redirect, render
 from django.core.handlers.wsgi import WSGIRequest
-from .create_poll_views.editor import _save_template_from_poll
 from django.http import JsonResponse
+from .create_poll_views.editor import _save_template_from_poll
 
 
 def result_poll(request: WSGIRequest, poll_id: int) -> render:
@@ -13,7 +13,14 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
 
     profile = get_user_profile(request)
     if poll.initiator != profile or poll.count_passed < 2:
-        return render(request, 'main/errors/global_error.html', {'global_error': '403'})
+        return render(request, 'main/errors/global_error.html', {
+            'global_error': "custom",
+            "global_error_info": "Результаты опроса ещё недоступны, нужно дождаться большего количества ответов",
+            "back_page": {
+                'href': "/polls/",
+                'text': "К опросам"
+            },
+        })
 
     target: Profile = poll.target
     args = {
@@ -98,4 +105,5 @@ def save_template(request, poll_id):
             return JsonResponse({}, status=404)
         template = _save_template_from_poll(poll)
         poll.new_template = template
+        poll.save()
         return JsonResponse({}, status=200)

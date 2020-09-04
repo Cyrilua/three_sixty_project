@@ -9,21 +9,21 @@
                 Главная
             </a>
         </li>
-        <li class="{{ menu_polls }} menu-item">
+        <li class="{{ menu_polls }} menu-item {% if not profile.company.id %} disabled{% endif %}">
             <a class="menu-link" href="{% url 'main:new_poll_view' %}">
                 <img src="{% static 'main/images/icon/assignment-24px.svg' %}" alt="" class="item__icon">
                 Опросы
             </a>
         </li>
-        <li class="{{ menu_teams }} menu-item">
+        <li class="{{ menu_teams }} menu-item {% if not profile.company.id %} disabled{% endif %}">
             <a class="menu-link" href="{% url 'main:teams_view' %}">
                 <img src="{% static 'main/images/icon/people-24px.svg' %}" alt="" class="item__icon">
                 Команды
             </a>
         </li>
-{#        <li class="{{ menu_settings }} menu-item">#}
-{#            <a class="menu-link" href="#">События</a>#}
-{#        </li>#}
+        {#        <li class="{{ menu_settings }} menu-item">#}
+        {#            <a class="menu-link" href="#">События</a>#}
+        {#        </li>#}
     </ul>
 </div>
 

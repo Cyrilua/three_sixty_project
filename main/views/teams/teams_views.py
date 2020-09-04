@@ -13,7 +13,15 @@ def teams_view(request):
         return redirect('/')
     profile = get_user_profile(request)
     if profile.company is None:
-        return render(request, 'main/errors/global_error.html', {'global_error': "403"})
+        # todo
+        return render(request, 'main/errors/global_error.html', {
+            'global_error': "custom",
+            "global_error_info": "Вы не состоите в компании. Вступите в компанию для получения доступа к этой функции сайта",
+            "back_page": {
+                'href': "/{}/".format(profile.pk),
+                'text': "На главную"
+            },
+        })
     teams = _build_teams(profile.groups.all(), profile)
     args = {
         'teams': teams,
