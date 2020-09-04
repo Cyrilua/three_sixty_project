@@ -667,6 +667,14 @@ $(function () {
                         if (pollId === undefined) {
                             pollId = response.pollId;
                         }
+                        $('.question').each(function (key, el) {
+                            // Инициализация слайдеров
+                            if ($(el).attr('data-question-type') === 'range') {
+                                sliderDeclaration(el,
+                                    parseInt($(el).children('.range-answer').children('.min').text()),
+                                    parseInt($(el).children('.range-answer').children('.max').text()));
+                            }
+                        });
                     } else if (partUrl === 'editor') {
                         $('.color').removeClass('hide');
                         run();
@@ -1822,6 +1830,7 @@ $(function () {
             selectDeclaration(el);
             // Инициализация слайдеров
             if ($(el).attr('data-question-type') === 'range') {
+                console.log(1)
                 sliderDeclaration(el);
             }
             // Заносим в listKeys
@@ -2251,11 +2260,16 @@ $(function () {
         });
     }
 
-    function sliderDeclaration(el) {
+    function sliderDeclaration(el, min, max) {
         let slider = new mdc.slider.MDCSlider(el.querySelector('.mdc-slider'));
-        slider.min = parseInt($(el).find('.slider-range__min').val());
-        slider.max = parseInt($(el).find('.slider-range__max').val());
-        slider.step = parseInt($(el).find('.slider-range__step').val());
+        if (!min && !max) {
+            slider.min = parseInt($(el).find('.slider-range__min').val());
+            slider.max = parseInt($(el).find('.slider-range__max').val());
+        } else {
+            slider.min = min;
+            slider.max = max;
+        }
+        slider.step = 1;
         slider.listen('MDCSlider:change', () => {
             // console.log(`Value changed to ${slider.value}`);
         });

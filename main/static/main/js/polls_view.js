@@ -103,6 +103,10 @@ $(function () {
                         finish: false,
                     });
                     template.addClass('hide');
+                    let myTemplates = $('.my-templates');
+                    if (myTemplates.children('.template-item').not('.hide').length === 0) {
+                        myTemplates.prepend('<span class="pale" id="no-my-templates">Нет шаблонов</span>');
+                    }
                     // if (myTemplates.children('.template-item').not('.hide').length < 1) {
                     // myTemplatesBlock.addClass('hide');
                     // $('.more')
@@ -125,6 +129,7 @@ $(function () {
                             clearTimeout(t);
                             $(ele).remove();
                             ajaxRemoveTemplates[id].finish = true;
+                            $('#no-my-templates').remove();
                             template.removeClass('hide');
                         },
                     });
@@ -133,6 +138,7 @@ $(function () {
             },
             success: function (response) {
                 template.remove();
+
                 // if (myTemplates.children('.template-item').not('.hide').length < 1) {
                 // myTemplatesBlock.addClass('hide');
                 // $('.more').remove();
@@ -142,6 +148,7 @@ $(function () {
                 ajaxRemoveTemplates[id].finish = true;
             },
             error: function () {
+                $('#no-my-templates').remove();
                 template.removeClass('hide');
                 // if (myTemplates.children('.template-item').not('.hide').length === 1) {
                 // $('.more').trigger('click')

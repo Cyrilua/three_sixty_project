@@ -1,6 +1,10 @@
 {% extends 'main/general/wrapper.html' %}
 {% load static %}
 
+{% block sidebar-nav %}
+    {% include 'main/includes/menu.html' with menu_polls="active" %}
+{% endblock %}
+
 {% block content-user %}
 
     <div class="results">
