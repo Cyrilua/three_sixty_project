@@ -1285,21 +1285,40 @@ $(function () {
                 //     'disabled': true,
                 // });
             },
-            success: function () {
-                window.onunload = function () {
-                    return;
-                };
-                window.onbeforeunload = function () {
-                    return;
-                };
-                location.href = '/polls/';
+            success: function (response) {
+                if (!response.error) {
+                    window.onunload = function () {
+                        return;
+                    };
+                    window.onbeforeunload = function () {
+                        return;
+                    };
+                    location.href = '/polls/';
+                } else {
+                    Snackbar.show({
+                        text: response.error,
+                        textColor: '#ff0000',
+                        customClass: 'custom center',
+                        showAction: false,
+                        duration: 3000,
+                    });
+                }
             },
-            error: function () {
+            complete: function () {
                 editor.removeClass('disabled');
                 menu.removeClass('disabled');
                 // $(el.target).prop({
                 //     'disabled': false,
                 // });
+            },
+            error: function () {
+                Snackbar.show({
+                    text: `Произошла ошибка отправке опроса`,
+                    textColor: '#ff0000',
+                    customClass: 'custom center',
+                    showAction: false,
+                    duration: 3000,
+                });
             }
         })
     });
