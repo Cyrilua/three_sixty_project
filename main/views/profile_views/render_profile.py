@@ -145,7 +145,7 @@ def _build_notifications_poll(notifications_polls) -> list:
             'date': poll.creation_date,
             'href': url,
             'is_viewed': notification.is_viewed,
-
+            'is_new': not notification.is_rendered,
             'type': type_notification,
             'id': notification.id,
         }
@@ -192,12 +192,14 @@ def new_notification(request: WSGIRequest, profile_id: int):
         category = request.GET.get('category', '')
 
         if category == 'results':
-            collected_notifications = _build_notifications_poll(
-                CreatedPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False).filter(poll__count_passed__gt=2))
+            notifications = CreatedPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)\
+                .filter(poll__count_passed__gt=2)
+            collected_notifications = _build_notifications_poll(notifications)
 
         elif category == 'polls':
-            collected_notifications = _build_notifications_poll(
-                NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False))
+            notifications = NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)
+            print(notifications)
+            collected_notifications = _build_notifications_poll(notifications)
 
         elif category == 'invites':
             collected_notifications = _build_invites(profile)
