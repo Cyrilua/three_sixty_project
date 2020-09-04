@@ -154,6 +154,7 @@ def _build_poll(poll: Poll) -> dict:
         'date': build_date(poll.creation_date),
         'url': '/poll/result/{}/'.format(poll.pk),
         'id': poll.pk,
+        'is_disabled': poll.count_passed < 2
     }
     if poll.color is not None:
         collected_poll['color'] = poll.color
