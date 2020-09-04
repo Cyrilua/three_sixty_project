@@ -3,11 +3,11 @@
 <div class="content_error">
     <div class="global_error">
         <img src="{% static 'main/images/sadSmiley.svg' %}" alt="" class="smiley">
-        <span class="error-number">{{ global_error }}</span>
+{#        <span class="error-number">{{ global_error }}</span>#}
     </div>
     <div class="error__info">{{ global_error_info }}</div>
-    {% if home_page %}
-        <a href="/" class="home-page">На главную</a>
+    {% if back_page %}
+        <a href="{{ back_page.href }}" class="home-page">{{ back_page.text }}</a>
     {% elif text %}
         <span class="text">{{ text }}</span>
     {% endif %}
