@@ -70,7 +70,8 @@ def company_view(request: WSGIRequest, id_company: int):
             'profile': get_header_profile(profile)
         }
         args['profile']['is_boss'] = company.owner == profile
-        args['profile']['is_master'] = SurveyWizard.objects.filter(profile=profile).exists()
+        args['profile']['is_moderator'] = Moderator.objects.filter(profile=profile).exists()
+        print(args)
         return render(request, 'main/companies/company_view.html', args)
 
 
