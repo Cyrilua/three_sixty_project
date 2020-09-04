@@ -1354,6 +1354,7 @@ button {
     content: '';
     background-color: rgba(0, 0, 0, 0.1);
     animation: .5s linear 1 blackout;
+    will-change: opacity;
   }
 
   &::after {
@@ -1366,6 +1367,7 @@ button {
     background: rgb(219, 0, 255);
     background: linear-gradient(121deg, rgba(219, 0, 255, 1) 0%, rgba(255, 24, 65, 1) 100%);
     animation: .5s linear 1 blackout, 1.5s linear infinite loadingCube;
+    will-change: opacity;
   }
 }
 

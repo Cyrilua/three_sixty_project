@@ -1094,6 +1094,7 @@ button {
   content: "";
   background-color: rgba(0, 0, 0, 0.1);
   animation: 0.5s linear 1 blackout;
+  will-change: opacity;
 }
 .loading::after {
   content: "";
@@ -1105,6 +1106,7 @@ button {
   background: #db00ff;
   background: linear-gradient(121deg, #db00ff 0%, #ff1841 100%);
   animation: 0.5s linear 1 blackout, 1.5s linear infinite loadingCube;
+  will-change: opacity;
 }
 
 @keyframes blackout {
