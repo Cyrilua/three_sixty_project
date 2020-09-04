@@ -122,7 +122,7 @@ def _build_notifications(profile: Profile, selected_category: str) -> list:
         return result
 
     elif selected_category == 'invites':
-        return _build_invites(profile)
+        return _build_invites(Invitation.objects.filter(profile=profile))
     return None
 
 
@@ -157,10 +157,9 @@ def _build_notifications_poll(notifications_polls) -> list:
     return result
 
 
-def _build_invites(profile: Profile) -> list:
+def _build_invites(notifications_polls) -> list:
     result = []
-    invitations = Invitation.objects.filter(profile=profile)
-    for invite in invitations:
+    for invite in notifications_polls:
         invite: Invitation
 
         team = invite.team
@@ -181,7 +180,7 @@ def _build_invites(profile: Profile) -> list:
             'id': invite.pk,
         }
         result.append(collected_notification)
-    invitations.update(is_rendered=True)
+    notifications_polls.update(is_rendered=True)
     return result
 
 
@@ -204,7 +203,7 @@ def new_notification(request: WSGIRequest, profile_id: int):
             collected_notifications = _build_notifications_poll(notifications)
 
         elif category == 'invites':
-            collected_notifications = _build_invites(profile)
+            collected_notifications = _build_invites(Invitation.objects.filter(profile=profile, is_rendered=False))
 
         else:
             return JsonResponse({}, status=400)

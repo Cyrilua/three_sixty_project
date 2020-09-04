@@ -277,7 +277,8 @@ def send_poll(request, template_id=None, company_id=None, team_id=None) -> JsonR
         poll = choose_respodents.save_information(request)
         if poll is None:
             return JsonResponse({}, status=400)
-
+        if NeedPassPoll.objects.filter(poll=poll).count() < 2:
+            return JsonResponse({'error': "Выберите минимум двух человек"}, status=200)
         poll.is_submitted = True
         poll.save()
         _create_unique_key(poll)
