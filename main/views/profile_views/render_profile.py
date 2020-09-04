@@ -205,6 +205,9 @@ def new_notification(request: WSGIRequest, profile_id: int):
         else:
             return JsonResponse({}, status=400)
 
+        if len(collected_notifications) != 0:
+            print(collected_notifications)
+
         count_new_my_poll = CreatedPoll.objects.filter(profile=profile, is_viewed=False, poll__count_passed__gt=2).count()
         count_new_polls = NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()
         count_new_invitations = Invitation.objects.filter(profile=profile, is_viewed=False).count()
