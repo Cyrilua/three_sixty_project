@@ -13,6 +13,8 @@ urlpatterns = [
     path('editor/company/<int:company_id>/new/', include(editor_template_urls)),
     # Просмотр результата опроса
     path('result/<int:poll_id>/', result_poll.result_poll, name='poll_result'),
+    # Сохранить шаблон
+    path('result/<int:poll_id>/save_as/', result_poll.save_template, name='save_template'),
     # Прохождение опроса (рендер)
     path('compiling_poll/<int:poll_id>/', compiling_poll.compiling_poll, name='compiling_poll_render'),
     # Прохождение опроса (отправка ответа)
