@@ -128,7 +128,7 @@ $(function () {
             }
 
         });
-        if (progress.length === 0) {
+        if (Object.keys(progress).length === 0) {
             $('.done-poll').prop({
                 'disabled': false,
             });
