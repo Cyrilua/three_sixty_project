@@ -43,6 +43,7 @@ $(function () {
         $('.bad-search').remove();
         $('.is_unshown').removeClass('is_unshown');
         showNews.addClass('hide');
+        checkView();
     });
 
     /**
