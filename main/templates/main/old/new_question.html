@@ -1,18 +1,18 @@
-{% extends "main/wrapper.html" %}
+{% extends "main/general/wrapper.html" %}
 
 {% block content-user %}
 
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h1>Добавление вопроса в опрос</h1>
+            <h1>Добавление нового вопроса</h1>
 
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="question">ID вопроса</label>
-                        <input class="form-control" aria-describedby="usernameHelp" placeholder="Введите ID вопроса"
+                        <input class="form-control" aria-describedby="usernameHelp" placeholder="введите новый вопрос"
                                type="text"
                                name="question" value="" id="question">
                     </div>
