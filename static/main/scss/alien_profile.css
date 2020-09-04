@@ -1,0 +1,17 @@
+.content .left-content {
+  height: 310px;
+}
+.content .left-content #inviteToTeam {
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 0;
+  width: 100%;
+}
+.content .center-content .center-content-information .center-content-information-more .center-content-information-more-details {
+  display: block;
+  border-top: 1px solid #E5E5E5;
+  margin-top: 0;
+  padding-top: 15px;
+}
+
+/*# sourceMappingURL=alien_profile.css.map */

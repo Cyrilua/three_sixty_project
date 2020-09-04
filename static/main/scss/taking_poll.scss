@@ -1,0 +1,210 @@
+.taking-poll {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20vh;
+
+  &[data-color=red] {
+    .poll__head {
+      border-top-color: #FF1841;
+    }
+  }
+
+  &[data-color=blue] {
+    .poll__head {
+      border-top-color: #001AFF;
+    }
+  }
+
+  &[data-color=purple] {
+    .poll__head {
+      border-top-color: #DB00FF;
+    }
+  }
+
+  .poll__head {
+    border-top: 20px solid #C4C4C4;
+    margin-bottom: 10px;
+
+    .poll__name {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      color: #000000;
+    }
+
+    .poll__target {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      color: #595757;
+      margin-top: 35px;
+      display: block;
+
+      .target {
+        font-weight: normal;
+      }
+    }
+
+    .description {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #595757;
+      margin-top: 20px;
+      display: block;
+    }
+  }
+
+  .questions {
+    display: flex;
+    flex-direction: column;
+
+    .question {
+      margin-bottom: 10px;
+      padding-top: 45px;
+      padding-bottom: 50px;
+
+      &[data-question-type=radio] {
+        .question__head {
+          .question__type {
+            &:before {
+              content: 'Один из списка';
+            }
+          }
+        }
+      }
+
+      &[data-question-type=checkbox] {
+        .question__head {
+          .question__type {
+            &:before {
+              content: 'Несколько из списка';
+            }
+          }
+        }
+      }
+
+      &[data-question-type=openQuestion] {
+        .question__head {
+          .question__type {
+            &:before {
+              content: 'Развёрнутый ответ';
+            }
+          }
+        }
+
+        .open-answer {
+          margin-top: 47px;
+
+          .answer {
+
+          }
+        }
+      }
+
+      &[data-question-type=range] {
+        .question__head {
+          .question__type {
+            &:before {
+              content: 'Шкала';
+            }
+          }
+        }
+
+        .range-answer {
+          width: 500px;
+          margin: 47px auto 0;
+          position: relative;
+
+          .min,
+          .max {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 21px;
+            color: #595757;
+          }
+
+          .min {
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+          }
+
+          .max {
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+          }
+        }
+      }
+
+      &[data-question-type=radio],
+      &[data-question-type=checkbox] {
+        .question__answers {
+          display: flex;
+          flex-direction: column;
+
+          .answer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 30px;
+            height: 20px;
+
+            &:first-child {
+              margin-top: 47px;
+            }
+
+            .radio,
+            .checkbox {
+              margin-left: -14px;
+            }
+
+            .answer__text {
+              margin-right: auto;
+              margin-left: -4px;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 16px;
+              color: #595757;
+            }
+          }
+        }
+      }
+
+      .question__head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .question__name {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 21px;
+          color: #000000;
+        }
+
+        .question__type {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          color: #595757;
+        }
+      }
+    }
+  }
+
+  .actions {
+    .done-poll {
+      width: 100px;
+    }
+  }
+}
