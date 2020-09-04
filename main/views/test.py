@@ -19,11 +19,14 @@ from django.contrib.sites.shortcuts import get_current_site
 
 def test(request: WSGIRequest):
     profiles = Profile.objects.all()
+    number = 1
     for profile in profiles:
-        photo = ProfilePhoto()
-        photo.profile = profile
-        photo.photo = 'images/photo.svg'
-        photo.save()
+        if profile.name == '':
+            profile.name = "Name{}".format(number)
+            profile.surname = "Surname{}".format(number)
+            profile.patronymic = "Patronymic{}".format(number)
+            profile.save()
+            number += 1
     return render(request, 'main/test.html')
 
 
