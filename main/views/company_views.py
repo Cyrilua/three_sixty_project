@@ -96,7 +96,7 @@ def _load_users(company: Company, profile: Profile, search: str):
     profiles = company.profile_set.all()
     if search != '':
         profiles = get_search_result_for_profiles(profiles, search, company)
-    collected_profiles = _build_profiles(profiles)
+    collected_profiles = _build_profiles(profiles, profile)
     if len(collected_profiles) == 0:
         content = get_render_bad_search('По вашему запросу ничего не найдено')
     else:
@@ -111,7 +111,7 @@ def _load_users(company: Company, profile: Profile, search: str):
     return content
 
 
-def _build_profiles(profiles: list):
+def _build_profiles(profiles: list, current_profile: Profile):
     result = []
     for profile in profiles:
         profile: Profile
@@ -127,11 +127,12 @@ def _build_profiles(profiles: list):
             'surname': profile.surname,
             'patronymic': profile.patronymic,
             'roles': _get_roles(profile),
-            'new_roles': _get_new_roles(profile),
+            'new_roles': _get_new_roles(profile, current_profile),
             'positions': profile.positions.all(),
             'new_positions': PositionCompany.objects.filter(company=profile.company).exclude(profile=profile),
             'platforms': profile.platforms.all(),
             'new_platforms': PlatformCompany.objects.filter(company=profile.company).exclude(profile=profile),
+            'is_boss': profile.company.owner == profile
         }
         result.append(collected_profile)
     return result
@@ -225,11 +226,13 @@ def _get_roles(profile: Profile) -> list:
     return roles
 
 
-def _get_new_roles(profile: Profile) -> list:
+def _get_new_roles(profile: Profile, current_profile) -> list:
     roles = []
+    if current_profile.company is None:
+        return roles
     if not SurveyWizard.objects.filter(profile=profile).exists():
         roles.append('master')
-    if not Moderator.objects.filter(profile=profile).exists():
+    if not Moderator.objects.filter(profile=profile).exists() and current_profile.company.owner == current_profile:
         roles.append('moderator')
     return roles
 

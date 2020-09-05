@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 
-from main.models import Group, Moderator, Invitation
+from main.models import Group, Moderator, Invitation, SurveyWizard
 from ..auxiliary_general_methods import *
 from ..company_views import _get_roles
 
@@ -71,14 +71,14 @@ def redirect_create_poll(request, group_id):
         return redirect('/')
 
     profile = get_user_profile(request)
-    if profile.company is None:
+    if profile.company is None or (profile.company.owner != profile and not SurveyWizard.objects.filter(profile=profile).exists()):
         return render(request, 'main/errors/global_error.html', {'global_error': "403"})
 
     team = Group.objects.filter(id=group_id).first()
     if team is None:
         return render(request, 'main/errors/global_error.html', {'global_error': "404"})
 
-    if team.profile_set.filter(id=profile.pk).exists():
+    if not profile.groups.filter(id=group_id).exists():
         return render(request, 'main/errors/global_error.html', {'global_error': "403"})
 
     return redirect('/poll/editor/team/{}/new/'.format(group_id))
