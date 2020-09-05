@@ -113,7 +113,7 @@ $(function () {
                     'display': 'flex',
                 });
                 Snackbar.show({
-                    text: 'Произошла ошибка при выходе вo команды.',
+                    text: 'Произошла ошибка при удалении участника из команды',
                     textColor: '#ff0000',
                     customClass: 'custom center',
                     showAction: false,
