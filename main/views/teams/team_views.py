@@ -297,7 +297,7 @@ def kick_teammate(request: WSGIRequest, group_id: int):
             team.profile_set.remove(current_profile)
             return JsonResponse({}, status=200)
 
-        if team.owner != current_profile or not _profile_is_owner_or_moderator(current_profile):
+        if team.owner != current_profile and not _profile_is_owner_or_moderator(current_profile):
             return JsonResponse({}, status=403)
 
         team.profile_set.remove(teammate)
