@@ -333,15 +333,16 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
     for need_pass in NeedPassPoll.objects.filter(poll=poll):
         need_pass: NeedPassPoll
         email = need_pass.profile.user.email
+        print(email)
         mail_subject = 'Новый опрос'
         link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
                '/poll/compiling_poll_link/{}/{}/'.format(poll.pk, poll.key)
-
+        profile = need_pass.profile
         context = {
             'type_email': 'notification',
             'user': {
-                'name': poll.target.name,
-                'patronymic': poll.target.patronymic
+                'name': profile.name,
+                'patronymic': profile.patronymic
             },
             'url': link
         }
