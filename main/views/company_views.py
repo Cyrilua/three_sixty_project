@@ -535,5 +535,6 @@ def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id:
         teams = Group.objects.filter(company=company, profile=changed_profile)
         for team in teams:
             team.profile_set.remove(changed_profile)
-
+        SurveyWizard.objects.filter(profile=changed_profile).delete()
+        Moderator.objects.filter(profile=changed_profile).delete()
         return JsonResponse({}, status=200)
