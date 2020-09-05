@@ -36,7 +36,7 @@ $(function () {
                 //     .addClass('status--done');
                 Snackbar.show({
                     text: 'Шаблон успешно создан',
-                    showAction: true,
+                    showAction: false,
                     duration: 3000,
                     customClass: 'custom center',
                 });
