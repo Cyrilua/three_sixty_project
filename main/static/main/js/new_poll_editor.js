@@ -1303,6 +1303,8 @@ $(function () {
                     };
                     location.href = '/polls/';
                 } else {
+                    editor.removeClass('disabled');
+                    menu.removeClass('disabled');
                     Snackbar.show({
                         text: response.error,
                         textColor: '#ff0000',
@@ -1313,8 +1315,6 @@ $(function () {
                 }
             },
             complete: function () {
-                editor.removeClass('disabled');
-                menu.removeClass('disabled');
                 // $(el.target).prop({
                 //     'disabled': false,
                 // });
