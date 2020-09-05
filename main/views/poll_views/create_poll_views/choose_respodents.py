@@ -169,7 +169,7 @@ def search_step_3(request: WSGIRequest) -> JsonResponse:
 
     if mode == 'participants':
         profiles = company.profile_set.all().exclude(id__in=[poll.initiator.pk, poll.target.pk])
-        result_search = get_search_result_for_profiles(profiles, user_input.split(), company)
+        result_search = get_search_result_for_profiles(profiles, user_input, company)
         collected_profiles = _build_team_profiles_list(result_search, profile.company, Profile.objects.none(), [profile, poll.target])
         if len(collected_profiles) == 0:
             content = get_render_bad_search('По вашему запросу ничего не найдено')

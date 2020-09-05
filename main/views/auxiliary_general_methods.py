@@ -120,31 +120,39 @@ def get_header_profile(profile: Profile) -> dict:
     return args
 
 
-def get_search_result_for_profiles(profiles, user_input: list, company: Company, team=None):
-    for input_iter in user_input:
-        profiles = profiles.filter(
+def get_search_result_for_profiles(profiles, user_input: str, company: Company, team=None):
+    result = profiles
+    for input_iter in user_input.split():
+        result = result.filter(
             Q(name__istartswith=input_iter) |
             Q(surname__istartswith=input_iter) |
             Q(patronymic__istartswith=input_iter))
-        if company is not None:
-            id_profiles_by_positions = PositionCompany.objects \
-                .filter(company=company) \
-                .filter(name__istartswith=input_iter) \
-                .values_list('profile__id', flat=True)
-            if team is not None:
-                profiles_by_positions = team.profile_set.all().filter(id__in=id_profiles_by_positions)
-            else:
-                profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
-            id_profiles_by_platforms = PlatformCompany.objects \
-                .filter(company=company) \
-                .filter(name__istartswith=input_iter) \
-                .values_list('profile__id', flat=True)
-            if team is not None:
-                profiles_by_platforms = team.profile_set.all().filter(id__in=id_profiles_by_platforms)
-            else:
-                profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
-            profiles = profiles.union(profiles_by_platforms, profiles_by_positions)
-    return profiles
+
+    if company is not None:
+        profiles_by_platforms, profiles_by_positions = _get_search_result_by_positions_and_platforms(
+            user_input, profiles, company, team)
+        result = result.union(profiles_by_platforms, profiles_by_positions)
+    return result
+
+
+def _get_search_result_by_positions_and_platforms(user_input: str, profiles, company: Company, team=None):
+    id_profiles_by_positions = PositionCompany.objects \
+        .filter(company=company) \
+        .filter(name__istartswith=user_input) \
+        .values_list('profile__id', flat=True)
+    if team is not None:
+        profiles_by_positions = team.profile_set.all().filter(id__in=id_profiles_by_positions)
+    else:
+        profiles_by_positions = Profile.objects.filter(id__in=id_profiles_by_positions)
+    id_profiles_by_platforms = PlatformCompany.objects \
+        .filter(company=company) \
+        .filter(name__istartswith=user_input) \
+        .values_list('profile__id', flat=True)
+    if team is not None:
+        profiles_by_platforms = team.profile_set.all().filter(id__in=id_profiles_by_platforms)
+    else:
+        profiles_by_platforms = Profile.objects.filter(id__in=id_profiles_by_platforms)
+    return profiles_by_positions, profiles_by_platforms
 
 
 def get_search_result_for_teams(teams, user_input: str):

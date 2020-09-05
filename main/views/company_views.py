@@ -95,7 +95,7 @@ def load_teams_and_users(request: WSGIRequest, id_company: int) -> JsonResponse:
 def _load_users(company: Company, profile: Profile, search: str):
     profiles = company.profile_set.all()
     if search != '':
-        profiles = get_search_result_for_profiles(profiles, search.split(), company)
+        profiles = get_search_result_for_profiles(profiles, search, company)
     collected_profiles = _build_profiles(profiles)
     if len(collected_profiles) == 0:
         content = get_render_bad_search('По вашему запросу ничего не найдено')
