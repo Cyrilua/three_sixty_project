@@ -248,7 +248,7 @@ $(function () {
     // Подгрузка данных
     function loading(countNewEl, scroll) {
         if (!categoryContentBlock.hasClass('loading') && !categoryContentBlock.hasClass('full')) {
-            categoryContentBlock.addClass('loading');
+            // categoryContentBlock.addClass('loading');
             sortable.addClass('disabled');
             updater.removeClass('hide');
             if (scroll) {
@@ -278,7 +278,7 @@ $(function () {
                     }
                 },
                 complete: function () {
-                    categoryContentBlock.removeClass('loading');
+                    // categoryContentBlock.removeClass('loading');
                     sortable.removeClass('disabled');
                     updater.addClass('hide');
                     if (scroll) {

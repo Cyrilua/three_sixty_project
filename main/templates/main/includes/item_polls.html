@@ -1,6 +1,6 @@
 {% for poll in data.polls %}
     <a href="{{ poll.url }}"
-       class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href {% if poll.is_disabled %}disabled{% endif %}
+       class="category-item poll-item {{ poll.color }} unselectable rounded-block button-href {% if poll.is_disabled %}disabled-poll{% endif %}
             {% if poll.is_not_viewed %}no-viewed{% endif %} {% if poll.is_new %}new-poll{% endif %}"
        data-href="{{ poll.url }}" {% if poll.id %}data-id="{{ poll.id }}{% endif %}">
         <div class="poll__main">
