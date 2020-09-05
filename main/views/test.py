@@ -17,15 +17,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 def test(request: WSGIRequest):
-    # _test_send_email(request)
-    #_test_filter(request)
-    #_delete_companies(request)
-    # print(get_url_host(request))
-    #_sending_emails(request, Poll.objects.get(id=107))
-    profile = get_user_profile(request)
-    print(profile.pk)
-    notifications = NeedPassPoll.objects.filter(profile=profile, is_viewed=False, is_rendered=False)
-    print(notifications)
+    #send_email_validate_message("Тест", "Тестович", "aleksandr.korolyov.99@mail.ru", "27t3736")
     return render(request, 'main/test.html')
 
 

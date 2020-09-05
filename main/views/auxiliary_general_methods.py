@@ -29,13 +29,13 @@ def get_photo_height(width, height):
     return result
 
 
-def send_email_validate_message(name: str, surname: str, email: str, code: str) -> None:
+def send_email_validate_message(name: str, patronymic: str, email: str, code: str) -> None:
     mail_subject = 'Код подтверждения'
     context = {
         'type_email': 'verification',
-        'profile': {
+        'user': {
             'name': name,
-            'surname': surname
+            'patronymic': patronymic
         },
         'code': code
     }
