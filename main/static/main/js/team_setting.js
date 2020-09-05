@@ -79,12 +79,12 @@ $(function () {
                 $('#saveChanges').prop({
                     'disabled': false,
                 });
-                console.log(false)
+                // console.log(false)
             } else {
                 $('#saveChanges').prop({
                     'disabled': true,
                 });
-                console.log(true)
+                // console.log(true)
             }
         }
     });

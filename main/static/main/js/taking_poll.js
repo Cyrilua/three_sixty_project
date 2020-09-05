@@ -38,7 +38,7 @@ $(function () {
 
     function ajaxSendResults() {
         let answers = getAnswers();
-        console.log(answers)
+        // console.log(answers)
         let content = $('.taking-poll');
         $.ajax({
             url: 'send/',
