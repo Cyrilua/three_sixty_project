@@ -18,7 +18,7 @@ $(function () {
         let template = getTemplate();
         // let status = $(this).parent().children('.save__status');
         let results = $('.results');
-        console.log(template)
+        // console.log(template)
         $.ajax({
             url: 'save_as/',
             type: 'post',
@@ -72,7 +72,7 @@ $(function () {
         statistics.each(function (key, el) {
             let variables = $(el).children('.statistics-answer');
             let widthVariables = Math.ceil(el.offsetWidth / variables.length / 3 * 2);
-            console.log(variables.length)
+            // console.log(variables.length)
             variables.each(function (key, elem) {
                 let percent = $(elem).children('.percent').text();
                 let height = el.offsetHeight / 100 * percent;

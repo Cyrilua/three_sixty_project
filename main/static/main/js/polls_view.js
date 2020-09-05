@@ -222,7 +222,7 @@ $(function () {
 
 
     $(window).resize(function () {
-        console.log('resize')
+        // console.log('resize')
         // Подгрузка данных при изменении размера экрана (частный случай)
         loadingPolls();
         // Просмотр нового опроса

@@ -89,7 +89,7 @@ $(function () {
                 csrfmiddlewaretoken: csrf,
             },
             success: function (response) {
-                console.log(response.new_photo_url)
+                // console.log(response.new_photo_url)
                 $(photo).attr({
                     'src': response.new_photo_url,
                     // 'src': "../image/photo.svg",
@@ -126,7 +126,7 @@ $(function () {
     // Обновление фото
     body.on('change', '.upd-photo', function () {
         let files = this.files;
-        console.log(files)
+        // console.log(files)
         // ничего не делаем если files пустой
         if (typeof files == 'undefined') return;
         // создадим объект данных формы
@@ -135,7 +135,7 @@ $(function () {
         $.each(files, function (key, value) {
             data.append(key, value);
         });
-        console.log(data)
+        // console.log(data)
         $.ajax({
             url: 'edit/photo/update',
             type: 'post',
@@ -146,7 +146,7 @@ $(function () {
             // отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
             contentType: false,
             success: function (response) {
-                console.log(response.new_photo_url)
+                // console.log(response.new_photo_url)
                 $(photo).attr({
                     'src': response.new_photo_url,
                 });
@@ -260,7 +260,7 @@ $(function () {
 
     body.on('input', '.input-field', function (el) {
         let id = $(this)[0].id;
-        console.log(id)
+        // console.log(id)
         if (id === 'password_old' || id === 'password_for_email') {
             let popup = $(this).parent().children('.popup');
             popup.addClass('old');
@@ -941,7 +941,7 @@ $(function () {
                             showErrors(elem, response.resultError);
                         }
                     } else if (id === 'password_old') {
-                        console.log("Старый пароль")
+                        // console.log("Старый пароль")
                         // if (response.resultStatus === 'success') {
                         //     required.password_old = true;
                         //     errors.password_old = false;
@@ -952,7 +952,7 @@ $(function () {
                         //     showErrors(elem, response.resultError);
                         // }
                     } else if (id === 'password1') {
-                        console.log(response)
+                        // console.log(response)
                         password2.val('');
                         required.password2 = false;
                         errors.password2 = false;

@@ -1830,7 +1830,7 @@ $(function () {
             selectDeclaration(el);
             // Инициализация слайдеров
             if ($(el).attr('data-question-type') === 'range') {
-                console.log(1)
+                // console.log(1)
                 sliderDeclaration(el);
             }
             // Заносим в listKeys
