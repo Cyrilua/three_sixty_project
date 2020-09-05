@@ -36,7 +36,8 @@ def result_poll(request: WSGIRequest, poll_id: int) -> render:
             },
             'dascription': poll.description,
             'questions': _build_questions(poll)
-        }
+        },
+        'profile': get_header_profile(profile),
     }
     CreatedPoll.objects.filter(profile=profile, poll=poll).update(is_viewed=True)
     return render(request, 'main/poll/poll_results.html', args)

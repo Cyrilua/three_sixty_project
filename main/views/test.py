@@ -13,16 +13,16 @@ from django.template.loader import get_template
 from django.db.models import Q
 from itertools import chain
 from django.utils.html import escape
+from .poll_views.create_poll import _sending_emails
 
 from django.contrib.sites.shortcuts import get_current_site
 
 
 def test(request: WSGIRequest):
-
     return render(request, 'main/test.html')
 
 
-def _sending_emails(request: WSGIRequest, poll: Poll):
+def _sending_emails1(request: WSGIRequest, poll: Poll):
     for need_pass in NeedPassPoll.objects.filter(poll=poll):
         need_pass: NeedPassPoll
         email = "aleksandr.korolyov.99@mail.ru"

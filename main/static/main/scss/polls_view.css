@@ -422,9 +422,6 @@
 .show-new-poll.hide {
   display: none;
 }
-.show-new-poll:hover .label .up {
-  animation: 0.5s linear infinite up;
-}
 .show-new-poll .label {
   display: flex;
   justify-content: center;

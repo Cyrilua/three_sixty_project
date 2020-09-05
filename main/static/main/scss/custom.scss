@@ -979,6 +979,14 @@ button {
   will-change: opacity;
 }
 
+.disabled-poll {
+  pointer-events: none;
+  opacity: .5;
+  animation: .5s linear 1 start;
+  will-change: opacity;
+  z-index: -1;
+}
+
 @keyframes start {
   from {
     opacity: 1;
