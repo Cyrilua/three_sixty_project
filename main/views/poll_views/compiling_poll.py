@@ -25,7 +25,11 @@ def compiling_poll(request: WSGIRequest, poll_id: int) -> render:
             return render(request, 'main/errors/global_error.html', {'global_error': '403'})
 
         collected_poll = _build_poll_compiling(poll)
-        return render(request, 'main/poll/taking_poll.html', {'poll': collected_poll})
+        args = {
+            'poll': collected_poll,
+            'profile': get_header_profile(profile),
+        }
+        return render(request, 'main/poll/taking_poll.html', args)
 
 
 def _build_poll_compiling(poll: Poll):
