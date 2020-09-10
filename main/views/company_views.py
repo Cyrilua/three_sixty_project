@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 
-from main.models import ProfilePhoto, SurveyWizard, Moderator, Group
+from main.models import ProfilePhoto, SurveyWizard, Moderator, Group, NeedPassPoll, Poll
 from main.views.auxiliary_general_methods import *
 from .validators import validate_user_input_in_company_settings
 
@@ -543,4 +543,6 @@ def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id:
                 team.delete()
         SurveyWizard.objects.filter(profile=changed_profile).delete()
         Moderator.objects.filter(profile=changed_profile).delete()
+        NeedPassPoll.objects.filter(profile=changed_profile).delete()
+        Poll.objects.filter(target=changed_profile).delete()
         return JsonResponse({}, status=200)
