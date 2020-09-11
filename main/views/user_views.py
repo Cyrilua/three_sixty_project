@@ -121,11 +121,12 @@ def get_result(errors: list):
 
 def send_email(request) -> JsonResponse:
     if request.is_ajax():
-        email = request.POST['email']
-        name = request.POST['name']
-        surname = request.POST['surname']
+        email = request.POST.get('email', '')
+        name = request.POST.get('name', '')
+        surname = request.POST.get('surname', '')
         code = create_verification_code(email)
-        send_email_validate_message(name, surname, email, code)
+        domain = request.POST.get('host', None)
+        send_email_validate_message(name, surname, email, code, domain)
         return JsonResponse({}, status=200)
 
 

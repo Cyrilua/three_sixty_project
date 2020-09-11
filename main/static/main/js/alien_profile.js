@@ -11,6 +11,6 @@ $(function () {
                 'bottom': 'calc(100% + 14px)'
             })
         }
-        aCompany.removeClass('hide')
+        aCompany.removeClass('hide');
     });
 });

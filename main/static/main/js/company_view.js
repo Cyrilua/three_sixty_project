@@ -404,7 +404,7 @@ $(function () {
                 text: 'Нельзя удалить роль босса',
                 textColor: '#ff1841',
                 showAction: false,
-                duration: 4000,
+                duration: 3000,
                 customClass: 'custom center',
             });
             return;
@@ -443,7 +443,16 @@ $(function () {
                 //view
                 userViewRole.remove();
             },
-            error: function () {
+            error: function (response) {
+                if (response.message) {
+                    Snackbar.show({
+                        text: response.message,
+                        textColor: '#ff1841',
+                        showAction: false,
+                        duration: 3000,
+                        customClass: 'custom center',
+                    });
+                }
             }
         });
     });

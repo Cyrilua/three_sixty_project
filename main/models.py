@@ -197,6 +197,8 @@ class Poll(models.Model):
     def delete(self, *args, **kwargs):
         self.questions.all().delete()
         self.answers_set.all().delete()
+        NeedPassPoll.objects.filter(poll=self).delete()
+        CreatedPoll.objects.filter(poll=self).delete()
         super(Poll, self).delete(*args, **kwargs)
 
     class Meta:

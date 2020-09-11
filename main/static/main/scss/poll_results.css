@@ -95,8 +95,14 @@
 .results .poll .questions .question[data-question-type=radio] .question__head .question__type:before {
   content: "Один из списка";
 }
+.results .poll .questions .question[data-question-type=radio] .question__answers .answer .answer__result .result__count::after {
+  content: " гол.";
+}
 .results .poll .questions .question[data-question-type=checkbox] .question__head .question__type:before {
   content: "Несколько из списка";
+}
+.results .poll .questions .question[data-question-type=checkbox] .question__answers .answer .answer__result .result__count::after {
+  content: " гол.";
 }
 .results .poll .questions .question[data-question-type=openQuestion] {
   padding-left: 0;
@@ -228,6 +234,9 @@
   font-size: 14px;
   line-height: 16px;
   color: #000000;
+}
+.results .poll .questions .question[data-question-type=radio] .question__answers .answer .answer__result .result__percent::after, .results .poll .questions .question[data-question-type=checkbox] .question__answers .answer .answer__result .result__percent::after {
+  content: "%";
 }
 .results .poll .questions .question .question__head {
   display: flex;

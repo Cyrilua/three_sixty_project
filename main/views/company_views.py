@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import SimpleTemplateResponse
 
-from main.models import ProfilePhoto, SurveyWizard, Moderator, Group
+from main.models import ProfilePhoto, SurveyWizard, Moderator, Group, NeedPassPoll, Poll
 from main.views.auxiliary_general_methods import *
 from .validators import validate_user_input_in_company_settings
 from django.utils.html import escape
@@ -543,4 +543,19 @@ def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id:
                 team.delete()
         SurveyWizard.objects.filter(profile=changed_profile).delete()
         Moderator.objects.filter(profile=changed_profile).delete()
+        NeedPassPoll.objects.filter(profile=changed_profile).delete()
+        Poll.objects.filter(target=changed_profile).delete()
         return JsonResponse({}, status=200)
+
+
+def get_invite_link(request, id_company):
+    if request.is_ajax():
+        try:
+            company = Company.objects.filter(id=int(id_company)).first()
+        except ValueError:
+            return JsonResponse({}, status=400)
+
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        return JsonResponse({'link': '/company/{}/''invite_company/{}'.format(company.pk, company.key)})

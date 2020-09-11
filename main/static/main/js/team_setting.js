@@ -91,13 +91,48 @@ $(function () {
 
     // Скопировать пригласительную ссылку
     body.on('click', '#copy', function (event) {
+        if ($(event.target).hasClass('gettingLink')) {
+            Snackbar.show({
+                text: 'Процесс получения ссылки',
+                textColor: '#e0c100',
+                customClass: 'custom center',
+                showAction: false,
+                duration: 3000,
+            });
+            return;
+        }
         const invite = $('#href-invite');
+        if (invite.val() === '' && !$(event.target).hasClass('gettingLink')) {
+            $.ajax({
+                url: 'get_link_invite/',
+                type: 'get',
+                data: {},
+                beforeSend: function () {
+                    $(event.target).addClass('gettingLink');
+                },
+                success: function (response) {
+                    invite.val('http://' + `${location.host}` + response.link);   // response.link = '/...'
+                },
+                complete: function () {
+                    $(event.target).removeClass('gettingLink');
+                    tryCopy(invite);
+                },
+                error: function () {
+                }
+            })
+        } else {
+            tryCopy(invite);
+        }
+    });
+
+    function tryCopy(invite) {
         invite
             .css({
                 display: 'block',
             })
             .select();
         document.execCommand("copy");
+
         if (invite.val() !== '' && window.getSelection().toString() === invite.val()) {
             Snackbar.show({
                 text: 'Ссылка скопирована',
@@ -115,10 +150,11 @@ $(function () {
                 duration: 3000,
             });
         }
+
         invite.css({
             display: 'none',
-        });
-    });
+        })
+    }
 
     // Удаление команды
     body.on('click', '#remove-team', function (event) {

@@ -2,17 +2,16 @@ import hashlib
 import random
 from datetime import date
 
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company, ProfilePhoto
-from django.db.models import Q
-from django.template.response import SimpleTemplateResponse
-from django.template.loader import get_template
 from django.core.mail import send_mail
-from django.conf import settings
+from django.db.models import Q
+from django.template.loader import get_template
+from django.template.response import SimpleTemplateResponse
+
+from main.models import Profile, VerificationCode, PositionCompany, PlatformCompany, Company, ProfilePhoto
 
 UserModel = get_user_model()
 
@@ -30,7 +29,7 @@ def get_photo_height(width, height):
     return result
 
 
-def send_email_validate_message(name: str, patronymic: str, email: str, code: str) -> None:
+def send_email_validate_message(name: str, patronymic: str, email: str, code: str, host: str) -> None:
     mail_subject = 'Код подтверждения'
     context = {
         'type_email': 'verification',
@@ -40,6 +39,11 @@ def send_email_validate_message(name: str, patronymic: str, email: str, code: st
         },
         'code': code
     }
+
+    company = Company.objects.all().last()
+    if host is not None:
+        link = ''.join(['http://', host, '/company/{}/'.format(company.pk), 'invite_company/', company.key])
+        context['invite'] = link
     message = get_template('main/email/email.html').render(context)
     send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
 

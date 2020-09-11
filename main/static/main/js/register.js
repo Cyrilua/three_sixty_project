@@ -143,6 +143,7 @@ $(function () {
                 name: name.val(),
                 email: email.val(),
                 csrfmiddlewaretoken: csrf,
+                host: location.hostname,
             },
             beforeSend: function () {
                 $('.step-2').addClass('hide');

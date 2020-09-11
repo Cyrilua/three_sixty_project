@@ -23,6 +23,6 @@ $(function () {
         if (sessionStorage.getItem('emailForResetPass').length){
             sessionStorage.removeItem('emailForResetPass');
         }
-    })
+    });
 });
 

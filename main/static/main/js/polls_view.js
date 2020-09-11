@@ -204,7 +204,7 @@ $(function () {
             error: function () {
             },
         });
-    }, 1000);
+    }, 60000);
 
     // Показать новые опросы
     body.on('click', '.show-new-poll', function () {
