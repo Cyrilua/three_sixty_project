@@ -22,7 +22,6 @@ def polls_view(request) -> render:
 
     profile = get_user_profile(request)
     if profile.company is None:
-        # todo
         return render(request, 'main/errors/global_error.html', {
             'global_error': "custom",
             "global_error_info": "Вы не состоите в компании. Вступите в компанию для получения доступа к этой функции сайта",
