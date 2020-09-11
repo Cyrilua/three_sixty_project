@@ -201,8 +201,8 @@ def company_setting(request: WSGIRequest, id_company: int):
             'company': {
                 'name': company.name,
                 'description': company.description,
-                'hrefForInvite': ''.join(['http://', escape(request.get_host()), '/company/{}/'.format(company.pk),
-                                          'invite_company/', company.key]),
+                #'hrefForInvite': ''.join(['http://', escape(request.get_host()), '/company/{}/'.format(company.pk),
+                #                          'invite_company/', company.key]),
                 'positions': PositionCompany.objects.filter(company=company),
                 'platforms': PlatformCompany.objects.filter(company=company),
                 'countParticipants': company.profile_set.all().count(),

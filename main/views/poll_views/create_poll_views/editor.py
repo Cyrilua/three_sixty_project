@@ -135,7 +135,7 @@ def _create_or_change_settings(request: WSGIRequest, question_number: int, quest
     else:
         settings = question.settings
     settings.type = data[data_key.format('type')]
-    settings.step = add_if_contains_key('[settingsSlider][step]')
+    settings.step = 1
     settings.min = add_if_contains_key('[settingsSlider][min]')
     settings.max = add_if_contains_key('[settingsSlider][max]')
     settings.save()
@@ -277,7 +277,7 @@ def _build_questions(questions: list, from_template: bool) -> list:
             'answer': {
                 'min': settings.min,
                 'max': settings.max,
-                'step': settings.step
+                'step': 1
             },
         }
         if from_template:
