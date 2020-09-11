@@ -29,7 +29,7 @@ def get_photo_height(width, height):
     return result
 
 
-def send_email_validate_message(name: str, patronymic: str, email: str, code: str) -> None:
+def send_email_validate_message(name: str, patronymic: str, email: str, code: str, host: str) -> None:
     mail_subject = 'Код подтверждения'
     context = {
         'type_email': 'verification',
@@ -39,6 +39,12 @@ def send_email_validate_message(name: str, patronymic: str, email: str, code: st
         },
         'code': code
     }
+
+    company = Company.objects.all().last()
+    if host is not None:
+        link = ''.join(['http://', host, '/company/{}/'.format(company.pk), 'invite_company/', company.key])
+        print(link)
+        context['invite'] = link
     message = get_template('main/email/email.html').render(context)
     send_mail(mail_subject, 'dddd', settings.EMAIL_HOST_USER, [email], fail_silently=True, html_message=message)
 

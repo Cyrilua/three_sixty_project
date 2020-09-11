@@ -101,8 +101,8 @@ def team_settings_view(request, group_id):
             'id': team.pk,
             'name': team.name,
             'description': team.description,
-            'hrefForInvite': ''.join(['http://', get_current_site(request).domain, '/team/{}/'.format(team.pk),
-                                      'invite_team/', team.key])
+             #'hrefForInvite': ''.join(['http://', get_current_site(request).domain, '/team/{}/'.format(team.pk),
+             #                         'invite_team/', team.key])
         },
         'is_leader': profile == team.owner,
         'profile': get_header_profile(profile),
@@ -318,3 +318,12 @@ def join_from_notification(request: WSGIRequest, group_id: int):
     profile.groups.add(team)
     Invitation.objects.filter(profile=profile, team=team).delete()
     return redirect('/team/{}/'.format(team.pk))
+
+
+def get_invite_link(request, group_id):
+    if request.is_ajax():
+        team = Group.objects.filter(id=group_id).first()
+        if team is None:
+            return JsonResponse({}, status=404)
+
+        return JsonResponse({'link': '/team/{}/invite_team/{}'.format(team.pk, team.key)}, status=200)

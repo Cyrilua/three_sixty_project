@@ -293,7 +293,7 @@ def send_email_verification_code(request):
         profile = get_user_profile(request)
         email = request.POST['values[email]']
         code = create_verification_code(email)
-        send_email_validate_message(profile.name, profile.surname, email, code)
+        send_email_validate_message(profile.name, profile.surname, email, code, None)
         return JsonResponse({}, status=200)
 
 

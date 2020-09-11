@@ -13,6 +13,8 @@ urlpatterns = [
     path('settings/remove/', team_views.team_remove, name='team_remove'),
     # Удаление команды
     path('settings/change/', team_views.team_change, name='team_change'),
+    # Получить ссылку для вступления в команду
+    path('settings/get_link_invite/', team_views.get_invite_link),
     # Поиск
     path('search/', team_views.search_teammate, name='search'),
     # Приглашение новых участников через команду

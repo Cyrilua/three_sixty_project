@@ -546,3 +546,16 @@ def kick_profile_from_company(request: WSGIRequest, id_company: int, profile_id:
         NeedPassPoll.objects.filter(profile=changed_profile).delete()
         Poll.objects.filter(target=changed_profile).delete()
         return JsonResponse({}, status=200)
+
+
+def get_invite_link(request, id_company):
+    if request.is_ajax():
+        try:
+            company = Company.objects.filter(id=int(id_company)).first()
+        except ValueError:
+            return JsonResponse({}, status=400)
+
+        if company is None:
+            return JsonResponse({}, status=404)
+
+        return JsonResponse({'link': '/company/{}/''invite_company/{}'.format(company.pk, company.key)})
