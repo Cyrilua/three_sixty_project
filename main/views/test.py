@@ -18,7 +18,6 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 def test(request: WSGIRequest):
-    send_email_validate_message("Александр", "Тест", "aleksandr.korolyov.99@mail.ru", 55255, "127.0.0.1")
     return render(request, 'main/test.html')
 
 

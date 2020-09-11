@@ -83,7 +83,7 @@ def poll_create_from_template(request, template_id):
     except ObjectDoesNotExist:
         return redirect('/')
 
-    if template.owner is not None and template.owner != get_user_profile(request):
+    if not template.is_general and template.owner is not None and template.owner != get_user_profile(request):
         return redirect('/')
     profile = get_user_profile(request)
     args = {
