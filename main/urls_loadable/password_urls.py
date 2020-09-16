@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.urls import reverse_lazy
+from django.conf import settings
 
 urlpatterns = [
     # Сообщение об успешной смене пароля
@@ -28,8 +29,12 @@ urlpatterns = [
         subject_template_name='main/password/password_reset_subject.txt',
         email_template_name='main/email/email.html',
         html_email_template_name='main/email/email.html',
-        success_url=reverse_lazy('main:password_reset_done')),
-         name='password_reset'),
+        success_url=reverse_lazy('main:password_reset_done'),
+        extra_email_context={
+            'type_email': "reset",
+            'domain': settings.ALLOWED_HOSTS[-1],
+        },),
+        name='password_reset'),
     # Сообщение об успешном сбросе пароля
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='main/password/old/password_reset_complete.html'),

@@ -332,10 +332,9 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
     for need_pass in NeedPassPoll.objects.filter(poll=poll):
         need_pass: NeedPassPoll
         email = need_pass.profile.user.email
-        print(email)
+        host = request.POST.get('host', '127.0.0.1:8000')
         mail_subject = 'Новый опрос'
-        link = "{}://{}".format(request._get_scheme(), request.get_host()) + \
-               '/poll/compiling_poll_link/{}/{}/'.format(poll.pk, poll.key)
+        link = "http://{}".format(host) + '/poll/compiling_poll_link/{}/{}/'.format(poll.pk, poll.key)
         profile = need_pass.profile
         context = {
             'type_email': 'notification',

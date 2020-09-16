@@ -1,11 +1,11 @@
 <span class="mail__text" style="display: inline-block;
 box-sizing: border-box;
-margin-top: 25px;">Здравствуйте, <strong>{{ user.name }} {{ user.patronymic }}!</strong></span>
+margin-top: 25px;">Здравствуйте, <strong>{{ user }}!</strong></span>
 <span class="mail__text" style="display: inline-block;
 box-sizing: border-box;
 margin-top: 25px;">
     Мы получили запрос на восстановление пароля от вашей учётной записи на сайте ПРОЕКТ360, для создания нового пароля
-    <a href="{{ url }}" style="" target="_blank">перейдите&nbsp;по&nbsp;ссылке</a>&nbsp;.
+    <a href="{{ protocol }}://{{ domain }}{% url 'main:password_reset_confirm' uidb64=uid token=token %}" style="" target="_blank">перейдите&nbsp;по&nbsp;ссылке</a>&nbsp;.
 </span>
 <span class="mail__text" style="display: inline-block;
 box-sizing: border-box;
