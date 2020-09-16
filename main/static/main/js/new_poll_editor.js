@@ -1285,6 +1285,7 @@ $(function () {
                 pollId: pollId,
                 csrfmiddlewaretoken: csrf,
                 checkedInterviewed: checkedInterviewed,
+                host: location.hostname,
             },
             beforeSend: function () {
                 menu.addClass('disabled');
@@ -1320,6 +1321,8 @@ $(function () {
                 // });
             },
             error: function () {
+                menu.removeClass('disabled');
+                editor.removeClass('disabled');
                 Snackbar.show({
                     text: `Произошла ошибка отправке опроса`,
                     textColor: '#ff0000',
