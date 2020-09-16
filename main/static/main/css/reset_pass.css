@@ -94,6 +94,11 @@
     margin: 0 0 auto;
 }
 
+.reset-pass-repeat{
+    display: flex;
+    justify-content: center;
+}
+
 .reset-pass-repeat-letter {
     font-weight: normal;
     font-size: 16px;
