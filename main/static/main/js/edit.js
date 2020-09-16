@@ -387,6 +387,7 @@ $(function () {
             values = {
                 email: email.val(),
                 password_for_email: passwordForEmail.val(),
+                host: location.hostname,
             }
         } else if (partUrl === 'email_code') {
             values = {
@@ -471,6 +472,7 @@ $(function () {
                             data: {
                                 csrfmiddlewaretoken: csrf,
                                 values: values,
+                                host: location.hostname,
                             },
                             success: function () {
                             },
