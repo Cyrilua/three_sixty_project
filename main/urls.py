@@ -4,7 +4,7 @@ from django.urls import path, include
 
 from .urls_loadable import register_urls, edit_profile_urls, polls_view_urls, poll_urls, company_url, \
     teams_views_urls, team_urls, profile_urls, password_urls
-from .views import user_views, company_views, test
+from .views import user_views, company_views
 
 app_name = "main"
 urlpatterns = [
@@ -32,8 +32,6 @@ urlpatterns = [
     # Страница компании
     path('company/<int:id_company>/', include(company_url)),
 
-    ############ Only for debug ###############
-    path('test/', test.test),
     # Создание компании (для ясности стоит изменить url)
     path('add_company/', company_views.create_company, name='add_company'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + password_urls.urlpatterns

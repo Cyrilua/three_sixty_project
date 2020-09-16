@@ -108,10 +108,10 @@ class Invitation (models.Model):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     owner = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='+')
     key = models.CharField(max_length=36, unique=True, default='')
-    description = models.CharField(max_length=150, default='')
+    description = models.CharField(max_length=500, default='')
     objects = models.Manager()
 
     class Meta:
@@ -122,7 +122,7 @@ class Company(models.Model):
 
 
 class PlatformCompany(models.Model):
-    name = models.CharField(max_length=100, default='')
+    name = models.CharField(max_length=50, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -134,7 +134,7 @@ class PlatformCompany(models.Model):
 
 
 class PositionCompany (models.Model):
-    name = models.CharField(max_length=100, default='')
+    name = models.CharField(max_length=50, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     objects = models.Manager()
 
@@ -146,8 +146,8 @@ class PositionCompany (models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=20, default='')
-    description = models.CharField(max_length=150, default='')
+    name = models.CharField(max_length=40, default='')
+    description = models.CharField(max_length=500, default='')
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     key = models.CharField(max_length=36, default='')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
@@ -161,7 +161,7 @@ class Group(models.Model):
 
 
 class TemplatesPoll(models.Model):
-    name_poll = models.CharField(max_length=50)
+    name_poll = models.CharField(max_length=150)
     description = models.CharField(max_length=500, null=True)
     is_general = models.BooleanField(default=False)
     owner = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE)
@@ -181,7 +181,7 @@ class Poll(models.Model):
     key = models.CharField(max_length=100, default='')
     initiator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='+', null=True)
     target = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    name_poll = models.CharField(max_length=50, default='')
+    name_poll = models.CharField(max_length=150, default='')
     description = models.CharField(max_length=500, null=True)
     count_passed = models.IntegerField(default=0)
     creation_date = models.DateField(null=True)
@@ -239,7 +239,7 @@ class CreatedPoll(models.Model):
 
 class Questions(models.Model):
     settings = models.OneToOneField('Settings', on_delete=models.CASCADE, null=True)
-    text = models.CharField(max_length=100)
+    text = models.CharField(max_length=150)
     version = models.IntegerField(default=0)
     ordinal_number = models.IntegerField(default=0)
     objects = models.Manager()
@@ -280,7 +280,7 @@ class Settings(models.Model):
 
 
 class AnswerChoice(models.Model):
-    text = models.CharField(max_length=50, default='')
+    text = models.CharField(max_length=150, default='')
     objects = models.Manager()
 
     class Meta:
@@ -319,7 +319,7 @@ class RangeAnswers(models.Model):
 
 
 class OpenQuestion(models.Model):
-    text = models.CharField(max_length=100, default='')
+    text = models.CharField(max_length=150, default='')
     objects = models.Manager()
 
     class Meta:
@@ -339,11 +339,3 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.answer_choice
-
-
-class TestTable(models.Model):
-    code = models.CharField(max_length=100, default='')
-    photo = models.ImageField(null=True, upload_to='media/images/', blank=True)
-
-    class Meta:
-        db_table = "TestTable"

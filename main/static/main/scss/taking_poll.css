@@ -127,6 +127,7 @@
   align-items: center;
 }
 .taking-poll .questions .question .question__head .question__name {
+  width: 650px;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
