@@ -3,6 +3,7 @@ from django.urls import path
 from django.urls import reverse_lazy
 from django.conf import settings
 
+domain = settings.ALLOWED_HOSTS[-1]
 urlpatterns = [
     # Сообщение об успешной смене пароля
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(
@@ -32,9 +33,9 @@ urlpatterns = [
         success_url=reverse_lazy('main:password_reset_done'),
         extra_email_context={
             'type_email': "reset",
-            'domain': settings.ALLOWED_HOSTS[-1],
+            'domain': domain,
             'icon': {
-                'href': "http://{}/static/main/images/newLogo.jpg".format("127.0.0.1:8000"),
+                'href': "http://{}/static/main/images/newLogo.jpg".format(domain),
             }
         },),
         name='password_reset'),
