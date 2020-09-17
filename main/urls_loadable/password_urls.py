@@ -33,6 +33,9 @@ urlpatterns = [
         extra_email_context={
             'type_email': "reset",
             'domain': settings.ALLOWED_HOSTS[-1],
+            'icon': {
+                'href': "http://{}/static/main/images/newLogo.jpg".format("127.0.0.1:8000"),
+            }
         },),
         name='password_reset'),
     # Сообщение об успешном сбросе пароля
