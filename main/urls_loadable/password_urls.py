@@ -35,7 +35,7 @@ urlpatterns = [
             'type_email': "reset",
             'domain': domain,
             'icon': {
-                'href': "http://{}/static/main/images/newLogo.jpg".format(domain),
+                'href': "http://{}/static/main/images/newLogo.png".format(domain),
             }
         },),
         name='password_reset'),

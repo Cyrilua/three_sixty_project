@@ -32,6 +32,9 @@ def get_photo_height(width, height):
 def send_email_validate_message(name: str, patronymic: str, email: str, code: str, host: str) -> None:
     mail_subject = 'Код подтверждения'
     context = {
+        'icon': {
+            'href': "http://{}/static/main/images/newLogo.png".format(host),
+        },
         'type_email': 'verification',
         'user': {
             'name': name,

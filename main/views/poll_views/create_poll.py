@@ -337,6 +337,9 @@ def _sending_emails(request: WSGIRequest, poll: Poll):
         link = "http://{}".format(host) + '/poll/compiling_poll_link/{}/{}/'.format(poll.pk, poll.key)
         profile = need_pass.profile
         context = {
+            'icon': {
+                'href': "http://{}/static/main/images/newLogo.png".format(host),
+            },
             'type_email': 'notification',
             'user': {
                 'name': profile.name,
