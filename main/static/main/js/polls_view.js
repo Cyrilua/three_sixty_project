@@ -326,6 +326,18 @@ $(function () {
                 success: function (response) {
                     $(target).removeClass('no-viewed');
                     $(target).removeClass('new-poll');
+
+                    if (response.notifications > 0) {
+                        pollsNotif.text(response.notifications);
+                        pollsNotif.removeClass('hide');
+                        if (response.newElems && category === 'polls') {
+                            showNews.removeClass('hide');
+                            emptyBlock.addClass('hide');
+                            unshowPolls[0].insertAdjacentHTML('afterbegin', response.newElems);
+                        }
+                    } else {
+                        pollsNotif.addClass('hide');
+                    }
                 },
                 complete: function () {
                     $(target).removeClass('visible-load');

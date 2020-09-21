@@ -47,7 +47,7 @@ $(function () {
     });
 
     /**
-     * Проверка новых уведомлений (каждую сеекунду)
+     * Проверка новых уведомлений (каждую минуту)
      */
     setInterval(function () {
         if (category && !content.hasClass('loading')) {
@@ -311,6 +311,25 @@ $(function () {
                 success: function (response) {
                     $(target).removeClass('no-viewed');
                     $(target).removeClass('is_unshown');
+
+                    if (response.notificationsCount.polls > 0) {
+                        pollsNotif.text(response.notificationsCount.polls);
+                        pollsNotif.removeClass('hide');
+                    } else {
+                        pollsNotif.addClass('hide');
+                    }
+                    if (response.notificationsCount.results > 0) {
+                        resultsNotif.text(response.notificationsCount.results);
+                        resultsNotif.removeClass('hide');
+                    } else {
+                        resultsNotif.addClass('hide');
+                    }
+                    if (response.notificationsCount.invites > 0) {
+                        invitesNotif.text(response.notificationsCount.invites);
+                        invitesNotif.removeClass('hide');
+                    } else {
+                        invitesNotif.addClass('hide');
+                    }
                 },
                 complete: function () {
                     $(target).removeClass('visible-load');
