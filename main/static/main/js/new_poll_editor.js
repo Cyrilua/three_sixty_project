@@ -277,6 +277,7 @@ $(function () {
             beforeSend: function () {
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
             },
             success: function () {
                 window.onunload = function () {
@@ -290,6 +291,7 @@ $(function () {
             complete: function () {
                 menu.removeClass('disabled');
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
             }
         });
     }
@@ -415,6 +417,7 @@ $(function () {
                 //     'disabled': true,
                 // });
                 editor.addClass('disabled');
+                editor.addClass('loading');
                 menu.addClass('disabled');
             },
             success: function (response) {
@@ -466,6 +469,7 @@ $(function () {
                 //     'disabled': false,
                 // });
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
                 menu.eq(1).removeClass('disabled');
                 menu.eq(0).removeClass('disabled');
                 if (accessStep3) {
@@ -498,6 +502,7 @@ $(function () {
                 // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -531,6 +536,7 @@ $(function () {
                     menu.eq(2).removeClass('disabled');
                 }
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
             },
         });
     }
@@ -843,6 +849,7 @@ $(function () {
                 // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -905,6 +912,7 @@ $(function () {
                 // });
                 menu.removeClass('disabled');
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
             },
             error: function () {
             },
@@ -1206,6 +1214,7 @@ $(function () {
                 // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -1256,6 +1265,7 @@ $(function () {
                     menu.eq(2).removeClass('disabled');
                 }
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
             },
         });
     }
@@ -1290,6 +1300,7 @@ $(function () {
             beforeSend: function () {
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
                 // $(el.target).prop({
                 //     'disabled': true,
                 // });
@@ -1319,6 +1330,7 @@ $(function () {
                 // $(el.target).prop({
                 //     'disabled': false,
                 // });
+                editor.removeClass('loading');
             },
             error: function () {
                 menu.removeClass('disabled');
@@ -1393,6 +1405,7 @@ $(function () {
                 // });
                 menu.addClass('disabled');
                 editor.addClass('disabled');
+                editor.addClass('loading');
             },
             success: function (response) {
                 let headMain = $('.head__main');
@@ -1426,6 +1439,7 @@ $(function () {
                     menu.eq(2).removeClass('disabled');
                 }
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
             },
         });
     }
@@ -1459,6 +1473,7 @@ $(function () {
                 //     'disabled': true,
                 // });
                 editor.addClass('disabled');
+                editor.addClass('loading');
                 menu.addClass('disabled');
             },
             success: function (response) {
@@ -1522,6 +1537,7 @@ $(function () {
                 //     'disabled': false,
                 // });
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
                 menu.eq(1).removeClass('disabled');
                 menu.eq(0).removeClass('disabled');
                 if (accessStep3) {
@@ -1567,6 +1583,7 @@ $(function () {
                 //     'disabled': true,
                 // });
                 editor.addClass('disabled');
+                editor.addClass('loading');
                 menu.addClass('disabled');
             },
             success: function (response) {
@@ -1633,6 +1650,7 @@ $(function () {
                 //     'disabled': false,
                 // });
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
                 menu.eq(0).removeClass('disabled');
                 if (accessStep3) {
                     menu.eq(1).removeClass('disabled');
@@ -1671,6 +1689,7 @@ $(function () {
                 //     'disabled': true,
                 // });
                 editor.addClass('disabled');
+                editor.addClass('loading');
                 menu.addClass('disabled');
             },
             success: function (response) {
@@ -1700,6 +1719,7 @@ $(function () {
                 //     'disabled': false,
                 // });
                 editor.removeClass('disabled');
+                editor.removeClass('loading');
                 menu.eq(1).removeClass('disabled');
                 menu.eq(0).removeClass('disabled');
             },
