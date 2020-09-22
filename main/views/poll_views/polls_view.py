@@ -237,14 +237,13 @@ def remove_template(request) -> JsonResponse:
 
 def mark_as_viewed(request, poll_id) -> JsonResponse:
     if request.is_ajax():
-        profile = get_user_profile(request)
+
         try:
             poll: Poll = Poll.objects.get(id=poll_id)
-            need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=profile)
+            need_pass_poll: NeedPassPoll = NeedPassPoll.objects.get(poll=poll, profile=get_user_profile(request))
         except ObjectDoesNotExist:
             return JsonResponse({}, status=400)
 
         need_pass_poll.is_viewed = True
         need_pass_poll.save()
-        return JsonResponse({
-            "notifications": NeedPassPoll.objects.filter(profile=profile, is_viewed=False).count()}, status=200)
+        return JsonResponse({}, status=200)
